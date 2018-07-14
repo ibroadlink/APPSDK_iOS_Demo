@@ -1,0 +1,6 @@
+framework module BLLetFamily {
+  umbrella header "BLLetFamily.h"
+
+  export *
+  module * { export * }
+}

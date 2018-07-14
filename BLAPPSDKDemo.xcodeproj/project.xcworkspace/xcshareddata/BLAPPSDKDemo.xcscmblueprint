@@ -1,0 +1,27 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "b82d8bbc-e85c-4281-a596-2159fc2d1ca6",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "b82d8bbc-e85c-4281-a596-2159fc2d1ca6" : {
+      "DVTSourceControlWorkingCopyRepositoryBranchesLocationKey" : "branches",
+      "DVTSourceControlWorkingCopyRepositoryTagsLocationKey" : "tags",
+      "DVTSourceControlWorkingCopyRepositoryPrimaryBranchLocationKey" : "trunk"
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "b82d8bbc-e85c-4281-a596-2159fc2d1ca6" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "62F847D4-8E82-4748-8EC5-015F7591805F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "b82d8bbc-e85c-4281-a596-2159fc2d1ca6" : "sdk\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "BLAPPSDKDemo",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "branches\/zjj\/BLAPPSDKDemo_iOS\/BLAPPSDKDemo.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/192.168.1.222\/netlib\/sdk",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "b82d8bbc-e85c-4281-a596-2159fc2d1ca6"
+    }
+  ]
+}
