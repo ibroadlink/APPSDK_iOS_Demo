@@ -31,7 +31,7 @@
     [self setExtraCellLineHidden:_MyDeviceTable];
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     _blController = delegate.let.controller;
-//    [self queryDeviceState:_devicearray];
+    [self queryDeviceState:_devicearray];
     
 }
 
@@ -54,10 +54,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-//- (void)queryDeviceState:(NSArray<BLDNADevice *> *)tempArray {
-//    BLQueryDeviceStatusResult *result = [[BLLet sharedLet].controller queryDeviceOnServer:tempArray];
-//    NSLog(@"array:%@",result.statusMaparray);
-//}
+- (void)queryDeviceState:(NSArray<BLDNADevice *> *)tempArray {
+    BLQueryDeviceStatusResult *result = [[BLLet sharedLet].controller queryDeviceOnServer:tempArray];
+    NSLog(@"array:%@",result.statusMaparray);
+}
 
 #pragma mark - Navigation
 // In a storyboard-based application, you will often want to do a little preparation before navigation

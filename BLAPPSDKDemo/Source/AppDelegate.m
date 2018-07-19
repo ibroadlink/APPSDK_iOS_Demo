@@ -60,12 +60,12 @@
     self.let = [BLLet sharedLetWithLicense:SDK_LICENSE];        // Init APPSDK
     [self.let setDebugLog:BL_LEVEL_ALL];                           // Set APPSDK debug log level
     [self.let.controller setSDKRawDebugLevel:BL_LEVEL_ALL];        // Set DNASDK debug log level
-    self.let.configParam.controllerSendCount = 1;
+    self.let.configParam.controllerSendCount = 5;
     
     [BLLet sharedLet].configParam.controllerLocalTimeout = 2000;
     [BLLet sharedLet].configParam.controllerRemoteTimeout = 4000;
     
-//    self.let.configParam.controllerScriptDownloadVersion = 1;
+    self.let.configParam.controllerScriptDownloadVersion = 1;
     
     
     [self.let.controller startProbe:3000];                           // Start probe device
@@ -84,7 +84,7 @@
     BLPicker *blPicker = [BLPicker sharedPickerWithLicenseId:licenseId License:self.let.configParam.sdkLicense];
     [blPicker startPick];
     NSString *cliendId = @"c39a135e4829daa4c307e60255699416";
-    NSString *redirectURI = @"http://latiao.izanpin.com/";
+    NSString *redirectURI = @"http://www.broadlink.com/";
     self.blOauth = [[BLOAuth alloc] initWithLicenseId:licenseId cliendId:cliendId redirectURI:redirectURI];
     
     //BLLetCloud

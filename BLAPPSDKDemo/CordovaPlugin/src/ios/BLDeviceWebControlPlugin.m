@@ -55,20 +55,18 @@
     NSMutableDictionary *dataDic = [NSMutableDictionary dictionaryWithCapacity:0];
     [dataDic setDictionary:[info objectAtIndex:2]];
     [dataDic setObject:[selectDevice getDid] forKey:@"did"];
-
-    NSString *controlResult;
-    if ([dataDic[@"act"] isEqualToString:@"get"] || [dataDic[@"act"] isEqualToString:@"set"]) {
-        NSString *dataStr = [self p_toJsonString:dataDic];
-        controlResult = [selectControl dnaControl:[selectDevice getDid] subDevDid:nil
-                                          dataStr:dataStr command:@"dev_ctrl" scriptPath:nil];
-        NSLog(@"%@",controlResult);
-    }else {
-        NSString *dataStr = [self p_toJsonString:dataDic];
-        controlResult = [selectControl dnaControl:[selectDevice getDid] subDevDid:nil
-                                          dataStr:dataStr command:@"dev_subdev_timer" scriptPath:nil];
-    }
     
-    mainBlock(YES, [self p_toDictory:controlResult]);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *controlResult;
+        NSString *dataStr = [self p_toJsonString:dataDic];
+        controlResult = [selectControl dnaControl:[selectDevice getDid] subDevDid:nil
+                                          dataStr:dataStr command:info[3] scriptPath:nil];
+        NSLog(@"%@",controlResult);
+        
+        mainBlock(YES, [self p_toDictory:controlResult]);
+    });
+    
+    
 }
 
 - (void)notification:(CDVInvokedUrlCommand *)command {

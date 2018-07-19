@@ -77,7 +77,7 @@
                     for (NSDictionary *dic in responseBodydic[@"brand"]) {
                         [array addObject: [[CateGory alloc] initWithDic:dic]];
                     }
-                    _categories = array;
+                    self.categories = array;
                 }
                 
                 [self.tableView reloadData];
@@ -108,10 +108,12 @@
                     for (NSDictionary *dic in responseBodydic[@"providerinfo"]) {
                         [array addObject: [[Provider alloc] initWithDic:dic]];
                     }
-                    _categories = array;
+                    self.categories = array;
                 }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
                 
-                [self.tableView reloadData];
             }
             
         }

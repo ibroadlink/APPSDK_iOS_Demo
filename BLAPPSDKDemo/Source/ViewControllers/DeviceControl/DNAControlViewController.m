@@ -11,7 +11,7 @@
 #import "DropDownList.h"
 
 @interface DNAControlViewController ()<UITextFieldDelegate>
-
+@property (nonatomic, weak)NSTimer *stateTimer;
 @end
 
 @implementation DNAControlViewController {
@@ -28,6 +28,13 @@
     _valInputTextField.delegate = self;
     _paramInputTextField.delegate = self;
 }
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [_stateTimer invalidate];
+    _stateTimer = nil;
+}
+    
 
 - (IBAction)paramSelectedList:(id)sender {
     CGFloat drop_X = self.paramInputTextField.frame.origin.x;
@@ -59,9 +66,19 @@
     _keyList = [NSArray arrayWithArray:keyArray];
     NSLog(@"keyList:%@",_keyList);
     
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        [self testDnaControl];
-//    });
+    
+//    if (![_stateTimer isValid]) {
+//        __weak typeof(self) weakSelf = self;
+//        _stateTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f repeats:YES block:^(NSTimer * _Nonnull timer) {
+//            NSInteger i = [weakSelf.valInputTextField.text integerValue];
+//            if (i == 0) {
+//                weakSelf.valInputTextField.text = @"1";
+//            }else{
+//                weakSelf.valInputTextField.text = @"0";
+//            }
+//            [weakSelf testDnaControl];
+//        }];
+//    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -93,35 +110,54 @@
 }
 
 - (void)testDnaControl {
-    NSString *action = @"set";
-    NSString *param = @"pwr";
-    NSString *val;
-    NSUInteger failedCount = 0;
-    NSDate *date = [NSDate date];
+    //dev_ctrl
+    NSDictionary *dataDic = @{
+                              @"vals": @[
+                                       @[@{
+                                  @"val": @([_valInputTextField.text integerValue]),
+                                  @"idx": @1
+                              }]
+                                       ],
+                              @"did": @"00000000000000000000780f773149c2",
+                              @"act": @"set",
+                              @"params": @[@"pwr"]
+                              };
+    //dev_taskdata
+//    NSDictionary *dataDic = @{
+//                              @"type": @0,
+//                              @"index": @0,
+//                              @"did": @"00000000000000000000780f773149c2"
+//                              };
     
-    for (int i = 0; i < 2000; i++) {
-        val = (i % 2 == 0) ? @"1" : @"0";
-        
-        BLStdData *stdData = [[BLStdData alloc] init];
-        [stdData setValue:val forParam:param];
-        
-        BLStdControlResult *result = [_blController dnaControl:self.device.did stdData:stdData action:action];
-        if (![result succeed]) {
-            failedCount++;
-        }
-        NSLog(@"====UDP_TEST====Did:%@ Type:%ld getError:%ld getMsg:%@ sendCount:%d failed:%lu",
-              self.device.did, self.device.type, (long)result.error, result.msg, i, (unsigned long)failedCount);
-        usleep(50 * 1000);
-    }
-    NSLog(@"====UDP_TEST====Over spend time : %f", [date timeIntervalSinceNow]);
+    //dev_taskadd
+//    BOOL enable = true;
+//    NSDictionary *dataDic = @{
+//                              @"did": @"00000000000000000000780f773149c2",
+//                              @"enable": @(enable),
+//                              @"data": @{
+//                                  @"vals": @[
+//                                           @[@{
+//                                      @"val": @0,
+//                                      @"idx": @1
+//                                  }]
+//                                           ],
+//                                  @"params": @[@"pwr"]
+//                              },
+//                              @"type": @0,
+//                              @"time": @"2018-07-18 11:31:00"
+//                              };
+    NSString *dataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dataDic options:0 error:nil] encoding:NSUTF8StringEncoding];
+    NSString *result = [_blController dnaControl:self.device.did subDevDid:nil dataStr:dataStr command:@"dev_ctrl" scriptPath:nil sendcount:5];
     
+    
+    _resultTextView.text = result;
 }
 
 
 
 - (void)dnaControlWithAction:(NSString *)action param:(NSString *)param val:(NSString *)val {
     BLStdData *stdData = [[BLStdData alloc] init];
-    [stdData setValue:val forParam:param];
+    [stdData setValue:@([val integerValue]) forParam:param];
 //    [stdData setValue:val forParam:@"ntlight"];
     
     BLStdControlResult *result = [_blController dnaControl:[_device getDid] stdData:stdData action:action];

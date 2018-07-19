@@ -11,6 +11,7 @@
 #import "BLStatusBar.h"
 #import "AppDelegate.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "DropDownList.h"
 
 @interface FamilyListViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -169,7 +170,25 @@
 }
 
 - (IBAction)addFamilyBtnClick:(UIBarButtonItem *)sender {
-    [self performSegueWithIdentifier:@"CreateFamilyView" sender:nil];
+    NSArray *keyList = @[@"创建家庭",@"加入家庭"];
+    CGFloat drop_X = CGRectGetMaxX(self.navigationController.navigationBar.frame) - 100;
+    CGFloat drop_Y = 5;
+    CGFloat drop_W = 100;
+    CGFloat drop_H = keyList.count * 40 + 10;
+    
+    DropDownList *dropList = [[DropDownList alloc] initWithFrame:CGRectMake(drop_X, drop_Y, drop_W, drop_H) dataArray:keyList onTheView:self.view] ;
+    
+    dropList.myBlock = ^(NSInteger row,NSString *title)
+    {
+        if (row == 0) {
+            [self performSegueWithIdentifier:@"CreateFamilyView" sender:nil];
+        }else {
+            [self performSegueWithIdentifier:@"JoinFamilyView" sender:nil];
+        }
+    };
+    
+    [self.view addSubview:dropList];
+    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

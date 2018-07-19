@@ -238,9 +238,9 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideIndicatorOnWindow];
             if ([result succeed]) {
-                _resultText.text = [NSString stringWithFormat:@"ScriptPath:%@", [result getSavePath]];
+                self.resultText.text = [NSString stringWithFormat:@"ScriptPath:%@", [result getSavePath]];
             } else {
-                _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+                self.resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
             }
         });
     }];
@@ -260,12 +260,12 @@
             BOOL isUnzip = [SSZipArchive unzipFileAtPath:[result getSavePath] toDestination:unzipPath];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                _resultText.text = [NSString stringWithFormat:@"isUnzip:%d \nDownload File:%@ \nUIPath:%@", isUnzip, [result getSavePath], unzipPath];
+                self.resultText.text = [NSString stringWithFormat:@"isUnzip:%d \nDownload File:%@ \nUIPath:%@", isUnzip, [result getSavePath], unzipPath];
             });
         } else {
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+                self.resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
             });
         }
         NSLog(@"End downloadUI zip");

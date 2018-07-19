@@ -94,7 +94,7 @@
                     downloadInfo *downloadinfo = [[downloadInfo alloc] initWithDic:pdic];
                     [array addObject: downloadinfo];
                 }
-                _modelsArray = array;
+                self.modelsArray = array;
                 [self.tableView reloadData];
             }
         }
@@ -102,7 +102,7 @@
 }
 
 - (void)querySTBIRCodeDownloadUrl:(Provider *)provider {
-    [self.blircode requestSTBIRCodeScriptDownloadUrlWithLocateid:provider.locateid providerid:provider.providerid brandId:@0 completionHandler:^(BLBaseBodyResult * _Nonnull result) {
+    [self.blircode requestSTBIRCodeScriptDownloadUrlWithLocateid:provider.locateid providerid:provider.providerid brandId:0 completionHandler:^(BLBaseBodyResult * _Nonnull result) {
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
             NSLog(@"response:%@", result.responseBody);
@@ -116,7 +116,7 @@
                     downloadInfo *downloadinfo = [[downloadInfo alloc] initWithDic:pdic];
                     [array addObject: downloadinfo];
                 }
-                _modelsArray = array;
+                self.modelsArray = array;
                 [self.tableView reloadData];
             }
 

@@ -13,6 +13,7 @@
 #import "OperateViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "ControlViewController.h"
+#import "FamilyMoreDetailViewController.h"
 
 @interface FamilyDetailViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *familyIdLabel;
@@ -40,6 +41,7 @@
     [self.navigationItem setRightBarButtonItem:rButton];
     
     [self setExtraCellLineHidden:self.moduleTable];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -212,6 +214,21 @@
     }];
 }
 
+//修改房间名称
+//{"familyid":"8163addec29e56f79fc2cb4bfb65f0c8","roomid":"2903666308776082445","name":"次卧","type":2,"order":2}
+- (void)modefileRoom {
+    BLRoomInfo *roomInfo = [[BLRoomInfo alloc]init];
+    roomInfo.familyId = self.familyId;
+    roomInfo.roomId = @"2903666308776082445";
+    roomInfo.name = @"茶水间";
+    roomInfo.type = 2;
+    roomInfo.order = 2;
+    roomInfo.action = @"modify";
+    [[BLFamilyController sharedManager] manageRoomsWithFamilyId:self.familyId familyVersion:self.familyAllInfo.familyBaseInfo.familyVersion rooms:@[roomInfo] completionHandler:^(BLManageRoomsResult * _Nonnull result) {
+        NSLog(@"familyVersion result:%@",result.familyVersion);
+    }];
+}
+
 - (NSArray *)getDeviceArrayGroupByRoom {
     NSMutableArray *deviceGroupArray = [NSMutableArray array];
     //将模块按照房间分组
@@ -247,7 +264,7 @@
     
     BLModuleInfo *blmoduleInfo = self.deviceGroupArray[indexPath.section][indexPath.row];
     NSString *moduleName = blmoduleInfo.name;
-    NSString *moduleId = blmoduleInfo.moduleId;
+//    NSString *moduleId = blmoduleInfo.moduleId;
     NSString *roomId = blmoduleInfo.roomId;
     
     
@@ -354,6 +371,10 @@
     
 }
 
+- (IBAction)FamilyMoreDetailBtn:(id)sender {
+    [self performSegueWithIdentifier:@"FamilyMoreDetailView" sender:self.familyId];
+}
+
 #pragma mark - Navigation
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -370,6 +391,12 @@
         if ([target isKindOfClass:[ControlViewController class]]) {
             ControlViewController* opVC = (ControlViewController *)target;
             opVC.savePath = (NSString *)sender;
+        }
+    }else if ([segue.identifier isEqualToString:@"FamilyMoreDetailView"]) {
+        UIViewController *target = segue.destinationViewController;
+        if ([target isKindOfClass:[FamilyMoreDetailViewController class]]) {
+            FamilyMoreDetailViewController* opVC = (FamilyMoreDetailViewController *)target;
+            opVC.familyId = (NSString *)sender;
         }
     }
 }
