@@ -374,7 +374,7 @@
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
             NSString *codeUrl = dic[@"codeUrl"];
             NSString *savePath = [delegate.let.controller.queryIRCodeScriptPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.gz",blmoduleInfo.moduleId]];
-            NSMutableDictionary *paramDic = [BLCommonTools getURLParameters:codeUrl];
+            NSMutableDictionary *paramDic = [[BLCommonTools alloc] getURLParameters:codeUrl];
             [[BLIRCode sharedIrdaCode] downloadIRCodeScriptWithUrl:codeUrl savePath:savePath randkey:paramDic[@"mkey"] completionHandler:^(BLDownloadResult * _Nonnull result) {}];
             [self performSegueWithIdentifier:@"controllerView" sender:savePath];
         } else {
