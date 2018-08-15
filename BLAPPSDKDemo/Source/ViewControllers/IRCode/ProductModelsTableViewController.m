@@ -108,7 +108,7 @@
 }
 
 - (void)queryDeviceCloudVersionWithTypeId:(NSInteger)typeId brandId:(NSInteger)brandId {
-    [self.blircode requestIRCodeCloudScriptDownloadUrlWithType:typeId brand:brandId completionHandler:^(BLBaseBodyResult * _Nonnull result) {
+    [self.blircode requestIRCodeScriptDownloadUrlWithType:typeId brand:brandId completionHandler:^(BLBaseBodyResult * _Nonnull result) {
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
             NSLog(@"response:%@", result.responseBody);

@@ -2632,6 +2632,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="5ao-JM-nWI"/>
+                    <connections>
+                        <segue destination="T04-lR-Jpp" kind="push" identifier="DeviceWebControlView" id="BPN-zN-W63"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4nT-4e-57o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -3315,6 +3318,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="ScX-IX-nAS"/>
+        <segue reference="BPN-zN-W63"/>
         <segue reference="idO-iL-STa"/>
         <segue reference="lbb-sz-x5V"/>
     </inferredMetricsTieBreakers>

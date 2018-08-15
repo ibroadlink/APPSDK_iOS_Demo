@@ -9,7 +9,8 @@
 #import "GateWayViewController.h"
 #import "AppDelegate.h"
 #import "BLStatusBar.h"
-
+#import "DeviceWebControlViewController.h"
+#import "SSZipArchive.h"
 @interface GateWayViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) BLController *blController;
@@ -63,7 +64,24 @@
 //点击控制
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     BLDNADevice *subDevice = _subDevicelist[indexPath.row];
-    [self OtherButton:subDevice];
+    NSString *unzipPath = [_blController queryUIPath:[subDevice getPid]];
+    
+    [_blController addDevice:subDevice];
+    //下载子设备脚本
+    [_blController downloadScript:subDevice.pid completionHandler:^(BLDownloadResult * _Nonnull result) {NSLog(@"resultsavePath:%@",result.savePath);}];
+    [_blController downloadUI:subDevice.pid completionHandler:^(BLDownloadResult * _Nonnull result) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SSZipArchive unzipFileAtPath:[result getSavePath] toDestination:unzipPath];
+            if ([self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_JS_FILE] ) {
+                self.device.pDid = subDevice.did;
+                self.device.pid = subDevice.pid;
+                [self performSegueWithIdentifier:@"DeviceWebControlView" sender:self.device];
+            }
+        });
+        
+    }];
+    
+    
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -213,4 +231,36 @@
         return NULL;
     }];
 }
+
+- (BOOL)copyCordovaJsToUIPathWithFileName:(NSString*)fileName {
+    NSString *uiPath = [[_blController queryUIPath:[_device getPid]] stringByDeletingLastPathComponent];  //  ../Let/ui/
+    NSString *fullPathFileName = [uiPath stringByAppendingPathComponent:fileName];  // ../Let/ui/fileName
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:fullPathFileName] == NO) {
+        NSString *path = [[NSBundle mainBundle] pathForResource:fileName ofType:nil];
+        NSError *error;
+        BOOL success = [fileManager copyItemAtPath:path toPath:fullPathFileName error:&error];
+        if (success) {
+            NSLog(@"%@ copy success",fileName);
+            return YES;
+        } else {
+            NSLog(@"%@ copy failed",fileName);
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+     if ([segue.identifier isEqualToString:@"DeviceWebControlView"]) {
+        UIViewController *target = segue.destinationViewController;
+        if ([target isKindOfClass:[DeviceWebControlViewController class]]) {
+            DeviceWebControlViewController* vc = (DeviceWebControlViewController *)target;
+            BLDNADevice *subDevice = (BLDNADevice *)sender;
+            vc.selectDevice = subDevice;
+        }
+    }
+}
+
 @end

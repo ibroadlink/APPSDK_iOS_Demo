@@ -26,14 +26,7 @@
 		02B89AD72047A540004E0088 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 02B89ACE2047A53F004E0088 /* index.html */; };
 		02B89AD82047A540004E0088 /* index.js in Resources */ = {isa = PBXBuildFile; fileRef = 02B89AD02047A53F004E0088 /* index.js */; };
 		02B89ADB2047DF20004E0088 /* OauthBindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02B89ADA2047DF20004E0088 /* OauthBindViewController.m */; };
-		3A33D15B20F5E911002B0603 /* BLLetPlugins.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A33D15520F5E8FF002B0603 /* BLLetPlugins.framework */; };
-		3A33D15C20F5E911002B0603 /* BLLetBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A33D15620F5E900002B0603 /* BLLetBase.framework */; };
-		3A33D15D20F5E911002B0603 /* BLLetFamily.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A33D15720F5E902002B0603 /* BLLetFamily.framework */; };
-		3A33D15E20F5E911002B0603 /* BLLetCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A33D15820F5E905002B0603 /* BLLetCore.framework */; };
-		3A33D15F20F5E911002B0603 /* BLLetAccount.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A33D15920F5E908002B0603 /* BLLetAccount.framework */; };
-		3A33D16020F5E911002B0603 /* BLLetCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A33D15A20F5E911002B0603 /* BLLetCloud.framework */; };
 		3A9B60E02100377D0048540B /* JoinFamilyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9B60DF2100377D0048540B /* JoinFamilyViewController.m */; };
-		3A9B60E321007F830048540B /* FamilyMoreDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9B60E221007F830048540B /* FamilyMoreDetailViewController.m */; };
 		3AAC2A2A20EB250D00031DEC /* BLUserSaftyInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC2A2920EB250D00031DEC /* BLUserSaftyInfoCell.m */; };
 		3AAC2A2D20EB252200031DEC /* BLUserLogoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC2A2C20EB252200031DEC /* BLUserLogoutCell.m */; };
 		3ACDE3C120EC9CF00016461D /* ModifyPhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACDE3C020EC9CF00016461D /* ModifyPhoneViewController.m */; };
@@ -112,16 +105,8 @@
 		02B89AD02047A53F004E0088 /* index.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
 		02B89AD92047DF20004E0088 /* OauthBindViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OauthBindViewController.h; sourceTree = "<group>"; };
 		02B89ADA2047DF20004E0088 /* OauthBindViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OauthBindViewController.m; sourceTree = "<group>"; };
-		3A33D15520F5E8FF002B0603 /* BLLetPlugins.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BLLetPlugins.framework; sourceTree = "<group>"; };
-		3A33D15620F5E900002B0603 /* BLLetBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BLLetBase.framework; sourceTree = "<group>"; };
-		3A33D15720F5E902002B0603 /* BLLetFamily.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BLLetFamily.framework; sourceTree = "<group>"; };
-		3A33D15820F5E905002B0603 /* BLLetCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BLLetCore.framework; sourceTree = "<group>"; };
-		3A33D15920F5E908002B0603 /* BLLetAccount.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BLLetAccount.framework; sourceTree = "<group>"; };
-		3A33D15A20F5E911002B0603 /* BLLetCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BLLetCloud.framework; sourceTree = "<group>"; };
 		3A9B60DE2100377C0048540B /* JoinFamilyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoinFamilyViewController.h; sourceTree = "<group>"; };
 		3A9B60DF2100377D0048540B /* JoinFamilyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JoinFamilyViewController.m; sourceTree = "<group>"; };
-		3A9B60E121007F830048540B /* FamilyMoreDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FamilyMoreDetailViewController.h; sourceTree = "<group>"; };
-		3A9B60E221007F830048540B /* FamilyMoreDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FamilyMoreDetailViewController.m; sourceTree = "<group>"; };
 		3AAC2A2520EB24C600031DEC /* BLUserHeadImageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUserHeadImageCell.h; sourceTree = "<group>"; };
 		3AAC2A2820EB250D00031DEC /* BLUserSaftyInfoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUserSaftyInfoCell.h; sourceTree = "<group>"; };
 		3AAC2A2920EB250D00031DEC /* BLUserSaftyInfoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLUserSaftyInfoCell.m; sourceTree = "<group>"; };
@@ -225,33 +210,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				02AE62F3200713A700847CE5 /* libsqlite3.0.tbd in Frameworks */,
-				3A33D15E20F5E911002B0603 /* BLLetCore.framework in Frameworks */,
-				3A33D15F20F5E911002B0603 /* BLLetAccount.framework in Frameworks */,
 				02AE62F12007139B00847CE5 /* libz.1.2.5.tbd in Frameworks */,
-				3A33D15D20F5E911002B0603 /* BLLetFamily.framework in Frameworks */,
 				AADA6EE36D3CC88AD40F195C /* libPods-BLAPPSDKDemo.a in Frameworks */,
-				3A33D15B20F5E911002B0603 /* BLLetPlugins.framework in Frameworks */,
-				3A33D15C20F5E911002B0603 /* BLLetBase.framework in Frameworks */,
-				3A33D16020F5E911002B0603 /* BLLetCloud.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		029689E0207B440F00AE9608 /* BLLet */ = {
-			isa = PBXGroup;
-			children = (
-				3A33D15920F5E908002B0603 /* BLLetAccount.framework */,
-				3A33D15620F5E900002B0603 /* BLLetBase.framework */,
-				3A33D15A20F5E911002B0603 /* BLLetCloud.framework */,
-				3A33D15820F5E905002B0603 /* BLLetCore.framework */,
-				3A33D15720F5E902002B0603 /* BLLetFamily.framework */,
-				3A33D15520F5E8FF002B0603 /* BLLetPlugins.framework */,
-			);
-			path = BLLet;
-			sourceTree = "<group>";
-		};
 		02B42DA320B2A14B00700177 /* Account */ = {
 			isa = PBXGroup;
 			children = (
@@ -287,8 +253,6 @@
 				3A9B60DF2100377D0048540B /* JoinFamilyViewController.m */,
 				70503D6F1FDBE4D5002D3371 /* FamilyDetailViewController.h */,
 				70503D931FDBE4D5002D3371 /* FamilyDetailViewController.m */,
-				3A9B60E121007F830048540B /* FamilyMoreDetailViewController.h */,
-				3A9B60E221007F830048540B /* FamilyMoreDetailViewController.m */,
 				70503D791FDBE4D5002D3371 /* FamilyListViewController.h */,
 				70503D5E1FDBE4D5002D3371 /* FamilyListViewController.m */,
 			);
@@ -527,7 +491,6 @@
 		705B096B1D4F28DA00805109 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				029689E0207B440F00AE9608 /* BLLet */,
 				70503D951FDBE4D5002D3371 /* Utils */,
 				70503D5A1FDBE4D5002D3371 /* ViewControllers */,
 				70DDAEE81DC73D4A005E4278 /* AppDelegate.h */,
@@ -589,7 +552,7 @@
 				TargetAttributes = {
 					705B09501D4F1C5B00805109 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 95ZV6F8F65;
+						DevelopmentTeam = 5YQ85Q9UV8;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -709,7 +672,6 @@
 				70503DB81FDBE4D6002D3371 /* FamilyDetailViewController.m in Sources */,
 				02B67D051FF5E10D009320C1 /* CloudTimerViewController.m in Sources */,
 				025A168720E33CBC00D75DAB /* RestPasswordViewController.m in Sources */,
-				3A9B60E321007F830048540B /* FamilyMoreDetailViewController.m in Sources */,
 				70503DA21FDBE4D5002D3371 /* CreateFamilyViewController.m in Sources */,
 				70503DA01FDBE4D5002D3371 /* LoginsTableViewController.m in Sources */,
 				0261054220E21AE400883EFC /* BLLoadingButton.m in Sources */,
@@ -872,7 +834,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 95ZV6F8F65;
+				DEVELOPMENT_TEAM = 5YQ85Q9UV8;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -902,7 +864,7 @@
 					"-ObjC",
 				);
 				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.com.broadlink.econtrol.plus;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.com.broadlink.blappsdkdemo.baihk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -920,7 +882,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 95ZV6F8F65;
+				DEVELOPMENT_TEAM = 5YQ85Q9UV8;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -950,7 +912,7 @@
 					"-ObjC",
 				);
 				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.com.broadlink.econtrol.plus;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.com.broadlink.blappsdkdemo.baihk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

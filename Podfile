@@ -2,6 +2,7 @@
 # platform :ios, '9.0'
 
 source 'https://github.com/ibroadlink/BLLibSpecs.git'
+#source 'http://gitlab.broadlink.com.cn/appsdk/BLLibSpecsSelf'
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'BLAPPSDKDemo' do

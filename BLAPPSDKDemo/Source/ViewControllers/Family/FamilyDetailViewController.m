@@ -364,24 +364,24 @@
     
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     BLModuleInfo *blmoduleInfo = self.deviceGroupArray[indexPath.section][indexPath.row];
-    BLModuleIncludeDev *moduleDevice = blmoduleInfo.moduleDevs[0];
-    BLDNADevice *device = [delegate.let.controller getDevice:moduleDevice.did];
-    
-    if (blmoduleInfo.moduleType == BLSDKModuleType_RM_AC) {
-        NSString *extend = blmoduleInfo.extend;
-        NSData *jsonData = [extend dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
-        NSString *codeUrl = dic[@"codeUrl"];
-        NSString *savePath = [delegate.let.controller.queryIRCodeScriptPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.gz",blmoduleInfo.moduleId]];
-        [[BLIRCode sharedIrdaCode] downloadIRCodeScriptWithUrl:codeUrl savePath:savePath randkey:nil completionHandler:^(BLDownloadResult * _Nonnull result) {
-            if ([result succeed]) {
-                
-            }
-        }];
-//        [self performSegueWithIdentifier:@"controllerView" sender:savePath];
-    } else {
-        [self performSegueWithIdentifier:@"OperateView" sender:device];
+    if (blmoduleInfo.moduleDevs.count > 0) {
+        BLModuleIncludeDev *moduleDevice = blmoduleInfo.moduleDevs[0];
+        BLDNADevice *device = [delegate.let.controller getDevice:moduleDevice.did];
+        
+        if (blmoduleInfo.moduleType == BLSDKModuleType_RM_AC) {
+            NSString *extend = blmoduleInfo.extend;
+            NSData *jsonData = [extend dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
+            NSString *codeUrl = dic[@"codeUrl"];
+            NSString *savePath = [delegate.let.controller.queryIRCodeScriptPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.gz",blmoduleInfo.moduleId]];
+            NSMutableDictionary *paramDic = [BLCommonTools getURLParameters:codeUrl];
+            [[BLIRCode sharedIrdaCode] downloadIRCodeScriptWithUrl:codeUrl savePath:savePath randkey:paramDic[@"mkey"] completionHandler:^(BLDownloadResult * _Nonnull result) {}];
+            [self performSegueWithIdentifier:@"controllerView" sender:savePath];
+        } else {
+            [self performSegueWithIdentifier:@"OperateView" sender:device];
+        }
     }
+    
 }
 
 #pragma mark - Navigation

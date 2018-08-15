@@ -14,7 +14,7 @@
 @interface DeviceWebControlViewController : CDVViewController
 
 @property (nonatomic, strong) BLDNADevice *selectDevice;
-
+@property (nonatomic, strong) NSString *subDevicePid;
 @end
 
 @interface DeviceControlIndexCommandDelegate : CDVCommandDelegateImpl

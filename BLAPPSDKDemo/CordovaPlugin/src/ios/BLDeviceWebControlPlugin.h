@@ -13,5 +13,6 @@
 - (void)deviceinfo:(CDVInvokedUrlCommand*)command;
 - (void)devicecontrol:(CDVInvokedUrlCommand*)command;
 - (void)notification:(CDVInvokedUrlCommand*)command;
-
+- (void)deviceAuth:(CDVInvokedUrlCommand *)command;
+- (void)getDeviceProfile:(CDVInvokedUrlCommand *)command;
 @end
