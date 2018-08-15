@@ -157,10 +157,23 @@
 
 - (void)dnaControlWithAction:(NSString *)action param:(NSString *)param val:(NSString *)val {
     BLStdData *stdData = [[BLStdData alloc] init];
-    [stdData setValue:@([val integerValue]) forParam:param];
+    [stdData setValue:val forParam:param];
 //    [stdData setValue:val forParam:@"ntlight"];
     
     BLStdControlResult *result = [_blController dnaControl:[_device getDid] stdData:stdData action:action];
+//    NSDictionary *dataDic = @{
+//                              @"vals": @[
+//                                      @[@{
+//                                            @"val": @([_valInputTextField.text integerValue]),
+//                                            @"idx": @1
+//                                            }]
+//                                      ],
+//                              @"did": @"0000000000000000000034ea34a7335b",
+//                              @"act": @"get",
+//                              @"params": @[@"ac_bind"]
+//                              };
+//    NSString *dataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dataDic options:0 error:nil] encoding:NSUTF8StringEncoding];
+//    NSString *stringResult = [_blController dnaControl:self.device.did subDevDid:nil dataStr:dataStr command:@"dev_ctrl" scriptPath:nil sendcount:1];
     
     if ([result succeed]) {
         NSDictionary *dic = [[result getData] toDictionary];

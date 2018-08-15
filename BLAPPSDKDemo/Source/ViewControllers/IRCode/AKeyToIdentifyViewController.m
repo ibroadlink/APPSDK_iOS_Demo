@@ -26,7 +26,7 @@
     [super viewDidLoad];
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     self.blcontroller = delegate.let.controller;
-    self.blircode = delegate.let.ircode;
+    self.blircode = [BLIRCode sharedIrdaCode];
 }
 
 - (void)dealloc {
@@ -50,8 +50,9 @@
                 NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
                 NSArray *downloadInfos = [responseDic objectForKey:@"downloadinfo"];
                 if (downloadInfos && downloadInfos.count > 0) {
+                    
+                    self.randkey = downloadInfos[0][@"fixkey"];
                     self.downloadUrl = downloadInfos[0][@"downloadurl"];
-                    self.randkey = downloadInfos[0][@"randkey"];
                     NSString *name = downloadInfos[0][@"name"];
                     self.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:name];
                 }
@@ -126,17 +127,20 @@
 }
 
 - (void)queryIRCodeScriptInfoSavePath:(NSString *)savePath randkey:(NSString *)randkey deviceType:(NSInteger)devicetype {
-    BLIRCodeInfoResult *result = [self.blircode queryIRCodeInfomationWithScript:savePath deviceType:devicetype];
-    NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
-    if ([result succeed]) {
-        NSLog(@"info:%@", result.infomation);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.resultTxt.text = result.infomation;
-        });
-        
-    }else{
-        [BLStatusBar showTipMessageWithStatus:result.msg];
-    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BLIRCodeInfoResult *result = [self.blircode queryIRCodeInfomationWithScript:savePath deviceType:devicetype];
+        NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
+        if ([result succeed]) {
+            NSLog(@"info:%@", result.infomation);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.resultTxt.text = result.infomation;
+            });
+            
+        }else{
+            [BLStatusBar showTipMessageWithStatus:result.msg];
+        }
+    });
+    
 
 }
 

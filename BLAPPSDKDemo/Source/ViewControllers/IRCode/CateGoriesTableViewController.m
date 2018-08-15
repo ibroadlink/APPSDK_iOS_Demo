@@ -47,7 +47,7 @@
     [super viewDidLoad];
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     self.blcontroller = delegate.let.controller;
-    self.blircode = delegate.let.ircode;
+    self.blircode = [BLIRCode sharedIrdaCode];
     [self queryDeviceTypes];
     _categories = [NSArray new];
 }
@@ -79,8 +79,10 @@
                     }
                     self.categories = array;
                 }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
                 
-                [self.tableView reloadData];
                 
             }else{
                 [BLStatusBar showTipMessageWithStatus:result.msg];

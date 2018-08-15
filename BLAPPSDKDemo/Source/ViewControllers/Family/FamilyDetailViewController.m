@@ -13,13 +13,13 @@
 #import "OperateViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "ControlViewController.h"
-#import "FamilyMoreDetailViewController.h"
 
 @interface FamilyDetailViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *familyIdLabel;
 @property (weak, nonatomic) IBOutlet UILabel *familyVersionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *familyNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *familyAddressLabel;
+@property (weak, nonatomic) IBOutlet UILabel *invitedQrcodeLabel;
 
 @property (weak, nonatomic) IBOutlet UITableView *moduleTable;
 
@@ -49,7 +49,7 @@
     [self queryFamilyAllInfoWithId:self.familyId];
     if (![_stateTimer isValid]) {
         __weak typeof(self) weakSelf = self;
-        _stateTimer = [NSTimer scheduledTimerWithTimeInterval:3.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
+        _stateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
             [weakSelf.moduleTable reloadData];
         }];
     }
@@ -82,7 +82,7 @@
             self.familyAllInfo = result.allFamilyInfoArray.firstObject;
             //将模块按照房间id分组
             self.deviceGroupArray = [self getDeviceArrayGroupByRoom];
-            
+//            NSString *qrcode = [self InvitedQrcode:self.familyId];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self hideIndicatorOnWindow];
                 self.familyIdLabel.text = [NSString stringWithFormat:@"FamilyID: %@", self.familyId];
@@ -91,6 +91,7 @@
                                                 self.familyAllInfo.familyBaseInfo.familyCountry, self.familyAllInfo.familyBaseInfo.familyProvince,
                                                 self.familyAllInfo.familyBaseInfo.familyCity, self.familyAllInfo.familyBaseInfo.familyArea];
                 self.familyVersionLabel.text = [NSString stringWithFormat:@"FamilyVersion: %@", self.familyAllInfo.familyBaseInfo.familyVersion];
+                self.invitedQrcodeLabel.text = [NSString stringWithFormat:@"InvitedQrcode: %@", [self InvitedQrcode:self.familyId]];
                 [self.moduleTable reloadData];
             });
             
@@ -104,6 +105,17 @@
             [BLStatusBar showTipMessageWithStatus:[@"Query FamilyAllInfo With Id Failed! " stringByAppendingString:result.msg]];
         }
     }];
+}
+
+- (NSString *)InvitedQrcode:(NSString *)familyid {
+    __block NSString *qrcode;
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);  //创建信号量
+    [[BLFamilyController sharedManager] getFamilyInvitedQrcodeWithFamilyId:familyid completionHandler:^(BLFamilyInvitedQrcodeGetResult * _Nonnull result) {
+        qrcode = result.qrcode;
+        dispatch_semaphore_signal(sema);  //在此发送信号量
+    }];
+    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);  //关键点，在此等待信号量
+    return qrcode;
 }
 
 //把家庭设备add到SDK管理
@@ -267,29 +279,31 @@
 //    NSString *moduleId = blmoduleInfo.moduleId;
     NSString *roomId = blmoduleInfo.roomId;
     
-    
-    BLModuleIncludeDev *moduleDevice = blmoduleInfo.moduleDevs[0];
-    BLDNADevice *device = [[BLLet sharedLet].controller getDevice:moduleDevice.did];
-    
-    NSString *roomName;
-    for (BLRoomInfo *roomInfo in self.familyAllInfo.roomBaseInfoArray) {
-        if ([roomId isEqualToString:roomInfo.roomId]) {
-            roomName = roomInfo.name;
-            break;
+    if (blmoduleInfo.moduleDevs.count != 0) {
+        BLModuleIncludeDev *moduleDevice = blmoduleInfo.moduleDevs[0];
+        BLDNADevice *device = [[BLLet sharedLet].controller getDevice:moduleDevice.did];
+        
+        NSString *roomName;
+        for (BLRoomInfo *roomInfo in self.familyAllInfo.roomBaseInfoArray) {
+            if ([roomId isEqualToString:roomInfo.roomId]) {
+                roomName = roomInfo.name;
+                break;
+            }
         }
+        
+        UILabel *moduleNameLabel = (UILabel *)[cell viewWithTag:300];
+        moduleNameLabel.text = moduleName;
+        
+        UILabel *moduleIdLabel = (UILabel *)[cell viewWithTag:301];
+        moduleIdLabel.text = [NSString stringWithFormat:@"%@",[self getstate:device.state]];
+        
+        UILabel *roomNameLabel = (UILabel *)[cell viewWithTag:302];
+        roomNameLabel.text = [NSString stringWithFormat:@"%lu",(unsigned long)device.type];
+        
+        UIImageView *headImageView = (UIImageView *)[cell viewWithTag:304];
+        [headImageView sd_setImageWithURL:[NSURL URLWithString:blmoduleInfo.iconPath]];
     }
     
-    UILabel *moduleNameLabel = (UILabel *)[cell viewWithTag:300];
-    moduleNameLabel.text = moduleName;
-    
-    UILabel *moduleIdLabel = (UILabel *)[cell viewWithTag:301];
-    moduleIdLabel.text = [NSString stringWithFormat:@"%@",[self getstate:device.state]];
-    
-    UILabel *roomNameLabel = (UILabel *)[cell viewWithTag:302];
-    roomNameLabel.text = [NSString stringWithFormat:@"%lu",(unsigned long)device.type];
-    
-    UIImageView *headImageView = (UIImageView *)[cell viewWithTag:304];
-    [headImageView sd_setImageWithURL:[NSURL URLWithString:blmoduleInfo.iconPath]];
     
     return cell;
 }
@@ -359,7 +373,7 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
         NSString *codeUrl = dic[@"codeUrl"];
         NSString *savePath = [delegate.let.controller.queryIRCodeScriptPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.gz",blmoduleInfo.moduleId]];
-        [[BLLet sharedLet].ircode downloadIRCodeScriptWithUrl:codeUrl savePath:savePath randkey:nil completionHandler:^(BLDownloadResult * _Nonnull result) {
+        [[BLIRCode sharedIrdaCode] downloadIRCodeScriptWithUrl:codeUrl savePath:savePath randkey:nil completionHandler:^(BLDownloadResult * _Nonnull result) {
             if ([result succeed]) {
                 
             }
@@ -368,11 +382,6 @@
     } else {
         [self performSegueWithIdentifier:@"OperateView" sender:device];
     }
-    
-}
-
-- (IBAction)FamilyMoreDetailBtn:(id)sender {
-    [self performSegueWithIdentifier:@"FamilyMoreDetailView" sender:self.familyId];
 }
 
 #pragma mark - Navigation
@@ -391,12 +400,6 @@
         if ([target isKindOfClass:[ControlViewController class]]) {
             ControlViewController* opVC = (ControlViewController *)target;
             opVC.savePath = (NSString *)sender;
-        }
-    }else if ([segue.identifier isEqualToString:@"FamilyMoreDetailView"]) {
-        UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[FamilyMoreDetailViewController class]]) {
-            FamilyMoreDetailViewController* opVC = (FamilyMoreDetailViewController *)target;
-            opVC.familyId = (NSString *)sender;
         }
     }
 }

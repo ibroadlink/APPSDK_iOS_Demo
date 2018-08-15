@@ -13,6 +13,7 @@
 #import <BLLetCloud/BLLetCloud.h>
 #import <BLLetAccount/BLLetAccount.h>
 #import <BLLetFamily/BLLetFamily.h>
+#import <BLLetIRCode/BLLetIRCode.h>
 
 #import "AppMacro.h"
 #import "BLStatusBar.h"

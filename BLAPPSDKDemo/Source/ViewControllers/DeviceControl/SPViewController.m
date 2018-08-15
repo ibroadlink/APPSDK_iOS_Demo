@@ -12,16 +12,15 @@
 @interface SPViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *timerTableView;
 @property (nonatomic, strong) NSMutableArray *timerList;
+@property (nonatomic, strong) BLController *blController;
 @end
 
-@implementation SPViewController{
-    BLController *_blController;
-}
+@implementation SPViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    _blController = delegate.let.controller;
+    self.blController = delegate.let.controller;
     self.timerList = [[NSMutableArray alloc] init];
     [self GetSpSwitch];
     self.timerTableView.delegate = self;
@@ -61,7 +60,7 @@
 - (void)GetTimerList{
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setParams:@[@"tmrtsk",@"pertsk",@"cyctsk",@"randtsk"] values:@[@[@{@"val":@"", @"idx":@(1)}],@[@{ @"val":@"", @"idx":@(1)}],@[@{ @"val":@"", @"idx":@(1)}],@[@{ @"val":@"", @"idx":@(1)}]]];
-    BLStdControlResult *result = [_blController dnaControl:[_device getDid] stdData:stdData action:@"get"];
+    BLStdControlResult *result = [self.blController dnaControl:[self.device getDid] stdData:stdData action:@"get"];
     if ([result succeed]) {
         NSDictionary *dic = [[result getData] toDictionary];
         NSArray *dicArray = dic[@"vals"];
@@ -100,12 +99,14 @@
     UIAlertAction *tmrtskAction = [UIAlertAction actionWithTitle:@"单次定时" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         BLStdData *stdData = [[BLStdData alloc] init];
         [stdData setParams:@[@"tmrtsk"] values:@[@[@{@"val":@"+0800@20170730-175226|1@null|0",@"idx":@(1)}]]];
-        BLStdControlResult *result = [_blController dnaControl:[_device getDid] stdData:stdData action:@"set"];
+        BLStdControlResult *result = [self.blController dnaControl:[self.device getDid] stdData:stdData action:@"set"];
         if ([result succeed]) {
-            BLStdControlResult *result = [_blController dnaControl:[_device getDid] stdData:stdData action:@"get"];
-            NSDictionary *dic = [[result getData] toDictionary];
-            NSString *switchResult = dic[@"vals"][0][0][@"val"];
-            [BLStatusBar showTipMessageWithStatus:switchResult];
+            BLStdControlResult *result = [self.blController dnaControl:[self.device getDid] stdData:stdData action:@"get"];
+            if ([result succeed]) {
+                NSDictionary *dic = [[result getData] toDictionary];
+                NSString *switchResult = dic[@"vals"][0][0][@"val"];
+                [BLStatusBar showTipMessageWithStatus:switchResult];
+            }
         } else {
             [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
         }
@@ -114,12 +115,14 @@
     UIAlertAction *pertskAction = [UIAlertAction actionWithTitle:@"周期定时" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         BLStdData *stdData = [[BLStdData alloc] init];
         [stdData setParams:@[@"pertsk"] values:@[@[@{@"val":@"1|+0800-095700@null|null|0|0",@"idx":@(1)},@{@"val":@"1|+0800-164420@null|null|0|0", @"idx":@(1)}]]];
-        BLStdControlResult *result = [_blController dnaControl:[_device getDid] stdData:stdData action:@"set"];
+        BLStdControlResult *result = [self.blController dnaControl:[self.device getDid] stdData:stdData action:@"set"];
         if ([result succeed]) {
-            BLStdControlResult *result = [_blController dnaControl:[_device getDid] stdData:stdData action:@"get"];
-            NSDictionary *dic = [[result getData] toDictionary];
-            NSString *switchResult = dic[@"vals"][0][0][@"val"];
-            [BLStatusBar showTipMessageWithStatus:switchResult];
+            BLStdControlResult *result = [self.blController dnaControl:[self.device getDid] stdData:stdData action:@"get"];
+            if ([result succeed]) {
+                NSDictionary *dic = [[result getData] toDictionary];
+                NSString *switchResult = dic[@"vals"][0][0][@"val"];
+                [BLStatusBar showTipMessageWithStatus:switchResult];
+            }
         } else {
             [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
         }
@@ -128,12 +131,14 @@
     UIAlertAction *cyctskAction = [UIAlertAction actionWithTitle:@"循环定时" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         BLStdData *stdData = [[BLStdData alloc] init];
         [stdData setParams:@[@"cyctsk"] values:@[@[@{@"val":@"1|+0800-183037@183537|300|300|null",@"idx":@(1)}]]];
-        BLStdControlResult *result = [_blController dnaControl:[_device getDid] stdData:stdData action:@"set"];
+        BLStdControlResult *result = [self.blController dnaControl:[self.device getDid] stdData:stdData action:@"set"];
         if ([result succeed]) {
-            BLStdControlResult *result = [_blController dnaControl:[_device getDid] stdData:stdData action:@"get"];
-            NSDictionary *dic = [[result getData] toDictionary];
-            NSString *switchResult = dic[@"vals"][0][0][@"val"];
-            [BLStatusBar showTipMessageWithStatus:switchResult];
+            BLStdControlResult *result = [self.blController dnaControl:[self.device getDid] stdData:stdData action:@"get"];
+            if ([result succeed]) {
+                NSDictionary *dic = [[result getData] toDictionary];
+                NSString *switchResult = dic[@"vals"][0][0][@"val"];
+                [BLStatusBar showTipMessageWithStatus:switchResult];
+            }
         } else {
             [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
         }
@@ -142,12 +147,14 @@
     UIAlertAction *randtskAction = [UIAlertAction actionWithTitle:@"防盗定时" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         BLStdData *stdData = [[BLStdData alloc] init];
         [stdData setParams:@[@"randtsk"] values:@[@[@{@"val":@"1|+0800-000000@235901|10|12347",@"idx":@(1)}]]];
-        BLStdControlResult *result = [_blController dnaControl:[_device getDid] stdData:stdData action:@"set"];
+        BLStdControlResult *result = [self.blController dnaControl:[self.device getDid] stdData:stdData action:@"set"];
         if ([result succeed]) {
-            BLStdControlResult *result = [_blController dnaControl:[_device getDid] stdData:stdData action:@"get"];
-            NSDictionary *dic = [[result getData] toDictionary];
-            NSString *switchResult = dic[@"vals"][0][0][@"val"];
-            [BLStatusBar showTipMessageWithStatus:switchResult];
+            BLStdControlResult *result = [self.blController dnaControl:[self.device getDid] stdData:stdData action:@"get"];
+            if ([result succeed]) {
+                NSDictionary *dic = [[result getData] toDictionary];
+                NSString *switchResult = dic[@"vals"][0][0][@"val"];
+                [BLStatusBar showTipMessageWithStatus:switchResult];
+            }
         } else {
             [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
         }
@@ -158,8 +165,6 @@
     [alertController addAction:cyctskAction];
     [alertController addAction:randtskAction];
     [self presentViewController:alertController animated:YES completion:nil];
-    
-    
 }
 
 - (void)dnaControlWithAction:(NSString *)action param:(NSString *)param val:(NSString *)val {
@@ -168,7 +173,7 @@
         [stdData setValue:val forParam:param];
         
         
-        BLStdControlResult *result = [_blController dnaControl:[_device getDid] stdData:stdData action:action];
+        BLStdControlResult *result = [self.blController dnaControl:[self.device getDid] stdData:stdData action:action];
 
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([result succeed]) {

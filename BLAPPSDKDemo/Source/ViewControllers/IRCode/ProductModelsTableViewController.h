@@ -28,6 +28,7 @@
 @property(nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *downloadUrl;
 @property (nonatomic, strong) NSString *randkey;
+@property (nonatomic, strong) NSString *fixkey;
 @property (nonatomic, strong) NSString *savePath;
 @property(nonatomic, assign) NSInteger brandId;
 @property(nonatomic, assign) NSInteger devtype;

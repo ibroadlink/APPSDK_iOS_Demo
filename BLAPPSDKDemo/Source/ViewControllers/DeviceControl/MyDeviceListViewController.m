@@ -15,7 +15,7 @@
 @interface MyDeviceListViewController ()
 
 @property (nonatomic, weak)NSTimer *stateTimer;
-
+@property (nonatomic, strong)BLController *blController;
 @end
 
 @implementation MyDeviceListViewController{
@@ -30,7 +30,7 @@
     _devicearray =  [NSMutableArray arrayWithArray: _myDevices];
     [self setExtraCellLineHidden:_MyDeviceTable];
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    _blController = delegate.let.controller;
+    self.blController = delegate.let.controller;
     [self queryDeviceState:_devicearray];
     
 }
@@ -38,10 +38,10 @@
 - (void)viewDidAppear:(BOOL)animated {
     if (![_stateTimer isValid]) {
         __weak typeof(self) weakSelf = self;
-        _stateTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
+        _stateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
             for (int i = 0; i < weakSelf.devicearray.count; i ++) {
                 BLDNADevice *device = weakSelf.devicearray[i];
-                device.state = [_blController queryDeviceState:[device getDid]];
+                device.state = [weakSelf.blController queryDeviceState:[device getDid]];
                 [weakSelf.devicearray replaceObjectAtIndex:i withObject:device];
             }
             [weakSelf.MyDeviceTable reloadData];

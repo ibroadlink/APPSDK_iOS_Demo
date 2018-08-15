@@ -50,6 +50,7 @@
     if (self) {
         _downloadUrl = dic[@"downloadurl"];
         _name = dic[@"name"];
+        _fixkey = dic[@"fixkey"];
         _randkey = dic[@"randkey"];
     }
     return self;
@@ -70,9 +71,11 @@
     _modelsArray = [NSArray array];
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     self.blcontroller = delegate.let.controller;
-    self.blircode = delegate.let.ircode;
-    if (_devtype == BL_IRCODE_DEVICE_AC || _devtype == BL_IRCODE_DEVICE_TV) {
+    self.blircode = [BLIRCode sharedIrdaCode];
+    if (_devtype == BL_IRCODE_DEVICE_AC) {
         [self queryDeviceVersionWithTypeId:_devtype brandId:_cateGory.brandid];
+    }else if (_devtype == BL_IRCODE_DEVICE_TV){
+        [self queryDeviceCloudVersionWithTypeId:_devtype brandId:_cateGory.brandid];
     }else if (_devtype == BL_IRCODE_DEVICE_TV_BOX){
         [self querySTBIRCodeDownloadUrl:_provider];
     }
@@ -80,7 +83,7 @@
 }
 
 - (void)queryDeviceVersionWithTypeId:(NSInteger)typeId brandId:(NSInteger)brandId {
-    [self.blircode requestIRCodeScriptDownloadUrlWithType:typeId brand:brandId completionHandler:^(BLBaseBodyResult * _Nonnull result) {
+    [self.blircode requestIRCodeCloudScriptDownloadUrlWithType:typeId brand:brandId completionHandler:^(BLBaseBodyResult * _Nonnull result) {
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
             NSLog(@"response:%@", result.responseBody);
@@ -95,7 +98,35 @@
                     [array addObject: downloadinfo];
                 }
                 self.modelsArray = array;
-                [self.tableView reloadData];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
+            }
+        }
+    }];
+}
+
+- (void)queryDeviceCloudVersionWithTypeId:(NSInteger)typeId brandId:(NSInteger)brandId {
+    [self.blircode requestIRCodeCloudScriptDownloadUrlWithType:typeId brand:brandId completionHandler:^(BLBaseBodyResult * _Nonnull result) {
+        NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
+        if ([result succeed]) {
+            NSLog(@"response:%@", result.responseBody);
+            if (result.responseBody) {
+                
+                NSData *responseData = [result.responseBody dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
+                
+                NSMutableArray *array = [NSMutableArray new];
+                for (NSDictionary *pdic in responseDic[@"downloadinfo"]) {
+                    downloadInfo *downloadinfo = [[downloadInfo alloc] initWithDic:pdic];
+                    [array addObject: downloadinfo];
+                }
+                self.modelsArray = array;
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
             }
         }
     }];
@@ -117,7 +148,9 @@
                     [array addObject: downloadinfo];
                 }
                 self.modelsArray = array;
-                [self.tableView reloadData];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
             }
 
         }

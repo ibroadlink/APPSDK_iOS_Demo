@@ -21,7 +21,7 @@
     NSLog(@"%@",self.tvList);
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     self.blcontroller = delegate.let.controller;
-    self.blircode = delegate.let.ircode;
+    self.blircode = [BLIRCode sharedIrdaCode];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -54,20 +54,43 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     //获取的ircode使用RM发射接口发射
-    if (_devtype == BL_IRCODE_DEVICE_TV) {
-        BLIRCodeDataResult *result = [self.blircode queryTVIRCodeDataWithScript:self.savePath deviceType:BL_IRCODE_DEVICE_TV funcname:self.tvList[indexPath.row]];
-        NSString *ircode = result.ircode;
-        NSLog(@"ircode----%@",ircode);
-        [BLStatusBar showTipMessageWithStatus:ircode];
-    }else if (_devtype == BL_IRCODE_DEVICE_TV_BOX){
-        BLIRCodeDataResult *result = [self.blircode queryTVIRCodeDataWithScript:self.savePath deviceType:BL_IRCODE_DEVICE_TV_BOX funcname:self.tvList[indexPath.row]];
-        NSString *ircode = result.ircode;
-        NSLog(@"ircode----%@",ircode);
-        [BLStatusBar showTipMessageWithStatus:ircode];
+    NSString *ircode = [self queryTVIRCodeDataWithScript:self.savePath funcname:self.tvList[indexPath.row]];
+    NSLog(@"ircode----%@",ircode);
+    [BLStatusBar showTipMessageWithStatus:ircode];
+    
+    
+}
 
+- (NSString *)queryTVIRCodeDataWithScript:(NSString *_Nonnull)savePath funcname:(NSString *_Nonnull)funcname {
+    NSDictionary *infomation =[NSJSONSerialization JSONObjectWithData:[[NSString stringWithContentsOfFile:savePath usedEncoding:nil error:nil] dataUsingEncoding:NSUTF8StringEncoding] options:NSUTF8StringEncoding error:nil] ;
+    NSArray *infoList = [infomation objectForKey:@"functionList"];
+
+    for (NSDictionary *info in infoList) {
+        if (funcname == info[@"function"]) {
+            NSArray *dataArray = [info objectForKey:@"code"];
+            if (![BLCommonTools isEmptyArray:dataArray]) {
+                char *ircodeByte = NULL;
+                NSUInteger dataLen = dataArray.count;
+                ircodeByte = (char *)malloc(sizeof(char) * (2 * dataLen));
+                if (ircodeByte == NULL) {
+                    BLLogError(@"ircode data malloc failed!");
+                } else {
+                    for (int i = 0; i < dataLen; i++) {
+                        ircodeByte[i] = [dataArray[i] charValue];
+                    }
+                    
+                    NSData *irdata = [NSData dataWithBytes:ircodeByte length:dataLen];
+                    return  [BLCommonTools data2hexString:irdata];
+                }
+                if (ircodeByte) {
+                    free(ircodeByte);
+                }
+            }
+        }
+        
     }
     
-    
+    return nil;
 }
 
 @end

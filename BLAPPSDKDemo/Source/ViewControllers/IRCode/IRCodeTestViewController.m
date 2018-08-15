@@ -66,7 +66,7 @@
     
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     self.blcontroller = delegate.let.controller;
-    self.blircode = delegate.let.ircode;
+    self.blircode = [BLIRCode sharedIrdaCode];
     [self.blircode requestIRCodeDeviceTypesCompletionHandler:^(BLBaseBodyResult * _Nonnull result) {
         NSLog(@"result:%@",result.msg);
     }];
@@ -159,9 +159,9 @@
                     for (NSDictionary *dic in responseBodydic[@"subareainfo"]) {
                         [array addObject: [[SubAreaInfo alloc] initWithDic:dic]];
                     }
-                    _subAreainfo = array;
+                    self->_subAreainfo = array;
                     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"地区选择" message:@"选择国家或地区" preferredStyle:UIAlertControllerStyleActionSheet];
-                    for (SubAreaInfo *subAreainfo in _subAreainfo) {
+                    for (SubAreaInfo *subAreainfo in self->_subAreainfo) {
                         UIAlertAction *archiveAction = [UIAlertAction actionWithTitle:subAreainfo.name style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                             [self querySubAreaLocateid:subAreainfo];
                         }];

@@ -91,6 +91,9 @@
     self.blCloudTime = [BLCloudTime sharedManagerWithLicenseId:licenseId License:self.let.configParam.sdkLicense];
     self.blCloudScene = [BLCloudScene sharedManagerWithLicenseId:licenseId License:self.let.configParam.sdkLicense];
     self.blCloudLinkage = [BLCloudLinkage sharedManagerWithLicenseId:licenseId License:self.let.configParam.sdkLicense];
+    
+    //BLLetIRCode
+   [BLIRCode sharedIrdaCodeWithlicenseId:licenseId];
 
     //从数据库取出所有设备加入SDK管理
     NSArray *storeDevices = [[DeviceDB sharedOperateDB] readAllDevicesFromSql];
@@ -100,7 +103,10 @@
     //本地登录
     BLUserDefaults *userDefault = [BLUserDefaults shareUserDefaults];
     if ([userDefault getUserId] && [userDefault getSessionId]) {
-        [_account localLoginWithUsrid:[userDefault getUserId] session:[userDefault getSessionId] completionHandler:nil];
+        [_account localLoginWithUsrid:[userDefault getUserId] session:[userDefault getSessionId] completionHandler:^(BLLoginResult * _Nonnull result) {
+            [NSThread sleepForTimeInterval:0.5];
+            NSLog(@"loginUserid:%@",[BLFamilyController sharedManager].loginUserid);
+        }];
     }
 //    _apiUrls = [BLApiUrls sharedApiUrl];
 //    NSString *checkApiResult = [self.apiUrls checkApiUrlHosts];

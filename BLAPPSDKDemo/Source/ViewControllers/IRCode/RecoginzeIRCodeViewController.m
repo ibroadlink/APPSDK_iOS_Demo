@@ -24,7 +24,7 @@
     [super viewDidLoad];
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     self.blcontroller = delegate.let.controller;
-    self.blircode = delegate.let.ircode;
+    self.blircode = [BLIRCode sharedIrdaCode];
     self.tvList = [NSArray array];
 }
 
@@ -34,10 +34,10 @@
 }
 
 - (IBAction)downLoadIRCodeScript:(id)sender {
-    if (_downloadinfo.devtype == BL_IRCODE_DEVICE_AC || _downloadinfo.devtype == BL_IRCODE_DEVICE_TV ){
+    if (_downloadinfo.devtype == BL_IRCODE_DEVICE_AC){
         _downloadinfo.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:_downloadinfo.name];
-        [self downloadIRCodeScript:_downloadinfo.downloadUrl savePath:_downloadinfo.savePath randkey:_downloadinfo.randkey];
-    }else if (_downloadinfo.devtype == BL_IRCODE_DEVICE_TV_BOX){
+        [self downloadIRCodeScript:_downloadinfo.downloadUrl savePath:_downloadinfo.savePath randkey:_downloadinfo.fixkey];
+    }else if (_downloadinfo.devtype == BL_IRCODE_DEVICE_TV_BOX || _downloadinfo.devtype == BL_IRCODE_DEVICE_TV){
         _downloadinfo.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:_downloadinfo.name];
         [self downloadIRCodeScript:_downloadinfo.downloadUrl savePath:_downloadinfo.savePath randkey:_downloadinfo.randkey];
     }
@@ -47,7 +47,7 @@
     if (_downloadinfo.devtype == BL_IRCODE_DEVICE_AC) {
         [self queryIRCodeScriptInfoSavePath:_downloadinfo.savePath randkey:nil deviceType:BL_IRCODE_DEVICE_AC];
     }else if (_downloadinfo.devtype == BL_IRCODE_DEVICE_TV || _downloadinfo.devtype == BL_IRCODE_DEVICE_TV_BOX){
-        [self queryIRCodeScriptInfoSavePath:_downloadinfo.savePath randkey:nil deviceType:BL_IRCODE_DEVICE_TV];
+        [self queryCloudCodeScriptInfoSavePath:_downloadinfo.savePath randkey:nil deviceType:BL_IRCODE_DEVICE_TV];
     }
 }
 
@@ -67,7 +67,7 @@
         if ([result succeed]) {
             NSLog(@"savepath:%@", result.savePath);
             dispatch_async(dispatch_get_main_queue(), ^{
-                _ResultTxt.text = result.savePath;
+                self->_ResultTxt.text = result.savePath;
             });
             
         }
@@ -79,30 +79,27 @@
     NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
     if ([result succeed]) {
         NSLog(@"info:%@", result.infomation);
-        self.tvList = [self matchString:result.infomation toRegexString:@"\\w+"];
         dispatch_async(dispatch_get_main_queue(), ^{
-            _ResultTxt.text = result.infomation;
+            self->_ResultTxt.text = result.infomation;
         });
         
     }
 }
 
-- (void)querySTBIRCodeDownloadUrl:(Provider *)provider  {
-    [self.blircode requestSTBIRCodeScriptDownloadUrlWithLocateid:provider.locateid providerid:provider.providerid brandId:@0  completionHandler:^(BLBaseBodyResult * _Nonnull result) {
-        NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
-        if ([result succeed]) {
-            NSLog(@"response:%@", result.responseBody);
-            NSDictionary *resp = [NSJSONSerialization JSONObjectWithData:[result.responseBody dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-            NSArray *downloadInfos = [resp objectForKey:@"downloadinfo"];
-            if (downloadInfos && downloadInfos.count > 0) {
-                self.downloadUrl = downloadInfos[0][@"downloadurl"];
-                self.randkey = downloadInfos[0][@"randkey"];
-                NSString *name = downloadInfos[0][@"name"];
-                self.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:name];
-            }
-        }
-    }];
+- (void)queryCloudCodeScriptInfoSavePath:(NSString *)savePath randkey:(NSString *)randkey deviceType:(NSInteger)devicetype {
+    NSDictionary *infomation =[NSJSONSerialization JSONObjectWithData:[[NSString stringWithContentsOfFile:savePath usedEncoding:nil error:nil] dataUsingEncoding:NSUTF8StringEncoding] options:NSUTF8StringEncoding error:nil] ;
+    NSArray *infoList = [infomation objectForKey:@"functionList"];
+    NSString *function = @"";
+    for (NSDictionary *dic in infoList) {
+        function = [function stringByAppendingString:[NSString stringWithFormat:@"%@,",dic[@"function"]]];
+    }
+    self.tvList = [self matchString:function toRegexString:@"\\w+"];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self->_ResultTxt.text = function;
+    });
 }
+
+
 
 
 #pragma mark - Navigation

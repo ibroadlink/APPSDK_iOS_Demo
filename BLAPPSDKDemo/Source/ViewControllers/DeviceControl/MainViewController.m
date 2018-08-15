@@ -31,7 +31,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _titles = @[@"Probe Device In Lan", @"MyDevices", @"Config Devices", @"Oauth Bind"];
+    _titles = @[@"Probe Device In Lan", @"MyDevices", @"Config Devices"];
     _blController = [BLLet sharedLet].controller;
     
 //    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(logout)];

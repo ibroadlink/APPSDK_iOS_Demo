@@ -33,7 +33,7 @@ int tag = 0;
     _directionTextField.delegate = self;
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     self.blcontroller = delegate.let.controller;
-    self.blircode = delegate.let.ircode;
+    self.blircode = [BLIRCode sharedIrdaCode];
 }
 
 - (IBAction)queryACIRCodeData:(id)sender {

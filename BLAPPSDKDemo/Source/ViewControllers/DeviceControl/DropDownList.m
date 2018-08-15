@@ -49,8 +49,8 @@
         
         /* 2.定义tableview */
         self.dropDownTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 10, frame.size.width, frame.size.height - 10) style:UITableViewStylePlain];
-        self.dropDownTableView.layer.cornerRadius = 5;
-        self.dropDownTableView.layer.masksToBounds = YES;
+        self.dropDownTableView.layer.cornerRadius = 50;
+        self.dropDownTableView.layer.masksToBounds = NO;
         self.dropDownTableView.delegate = self;
         self.dropDownTableView.dataSource = self;
         self.dropDownTableView.backgroundColor = [UIColor clearColor];

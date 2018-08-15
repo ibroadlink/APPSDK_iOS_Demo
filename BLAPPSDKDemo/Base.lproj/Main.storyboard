@@ -903,7 +903,7 @@
                                     <action selector="buttonClick:" destination="Srr-kv-OGQ" eventType="touchUpInside" id="MB4-H2-Ig3"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PrS-01-9Ap">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PrS-01-9Ap">
                                 <rect key="frame" x="16" y="485" width="343" height="147"/>
                                 <color key="backgroundColor" red="0.49750473239999998" green="0.81086141879999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1657,7 +1657,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GLA-dS-5vb">
-                                <rect key="frame" x="0.0" y="64" width="375" height="98"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="115"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FamilyID:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FqS-2r-ohS">
                                         <rect key="frame" x="8" y="8" width="52" height="14.5"/>
@@ -1683,26 +1683,21 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WUG-P9-VKe">
-                                        <rect key="frame" x="307" y="29" width="60" height="40"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="uiz-hM-z9c"/>
-                                        </constraints>
-                                        <connections>
-                                            <action selector="FamilyMoreDetailBtn:" destination="5lK-Y9-rVq" eventType="touchUpInside" id="g5a-Lp-vzS"/>
-                                        </connections>
-                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="InvitedQrcode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ag5-39-Fae">
+                                        <rect key="frame" x="8" y="96" width="84" height="15"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.49750473239999998" green="0.81086141879999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="WUG-P9-VKe" secondAttribute="bottom" constant="29" id="3hR-0X-awv"/>
+                                    <constraint firstItem="Ag5-39-Fae" firstAttribute="top" secondItem="kTD-pp-0z3" secondAttribute="bottom" constant="7" id="1P4-zi-YJU"/>
                                     <constraint firstItem="FqS-2r-ohS" firstAttribute="leading" secondItem="GLA-dS-5vb" secondAttribute="leading" constant="8" id="G5R-qp-VY8"/>
-                                    <constraint firstItem="WUG-P9-VKe" firstAttribute="top" secondItem="GLA-dS-5vb" secondAttribute="top" constant="29" id="HD9-dS-Xeg"/>
-                                    <constraint firstItem="WUG-P9-VKe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="IPA-Ec-lom" secondAttribute="trailing" constant="8" symbolic="YES" id="HK4-tg-DQx"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Ag5-39-Fae" secondAttribute="trailing" constant="20" symbolic="YES" id="IT5-ms-YQ7"/>
                                     <constraint firstItem="rkf-0T-sIZ" firstAttribute="leading" secondItem="FqS-2r-ohS" secondAttribute="leading" id="Qbd-sE-SCQ"/>
-                                    <constraint firstAttribute="height" constant="98" id="WEo-U9-2zP"/>
+                                    <constraint firstAttribute="height" constant="115" id="WEo-U9-2zP"/>
                                     <constraint firstItem="FqS-2r-ohS" firstAttribute="top" secondItem="GLA-dS-5vb" secondAttribute="topMargin" id="XCc-e9-65f"/>
-                                    <constraint firstItem="WUG-P9-VKe" firstAttribute="leading" secondItem="rkf-0T-sIZ" secondAttribute="trailing" constant="214" id="Xj8-kN-iQZ"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="FqS-2r-ohS" secondAttribute="trailing" constant="20" symbolic="YES" id="acP-tY-eh1"/>
                                     <constraint firstItem="kTD-pp-0z3" firstAttribute="leading" secondItem="FqS-2r-ohS" secondAttribute="leading" id="kBr-Cu-PcP"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kTD-pp-0z3" secondAttribute="trailing" constant="20" symbolic="YES" id="nM0-1t-ZaL"/>
@@ -1710,11 +1705,11 @@
                                     <constraint firstItem="kTD-pp-0z3" firstAttribute="top" secondItem="rkf-0T-sIZ" secondAttribute="bottom" constant="7" id="r1d-cY-3WP"/>
                                     <constraint firstItem="IPA-Ec-lom" firstAttribute="leading" secondItem="FqS-2r-ohS" secondAttribute="leading" id="rSn-yK-8x1"/>
                                     <constraint firstItem="rkf-0T-sIZ" firstAttribute="top" secondItem="IPA-Ec-lom" secondAttribute="bottom" constant="7" id="uER-3u-grm"/>
-                                    <constraint firstAttribute="trailing" secondItem="WUG-P9-VKe" secondAttribute="trailing" constant="8" id="vKu-D6-xd0"/>
+                                    <constraint firstItem="Ag5-39-Fae" firstAttribute="leading" secondItem="kTD-pp-0z3" secondAttribute="leading" id="wAw-Bo-4I0"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" tag="502" contentMode="scaleToFill" alwaysBounceVertical="YES" pagingEnabled="YES" bouncesZoom="NO" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="73" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Rrr-9a-cmw">
-                                <rect key="frame" x="0.0" y="161" width="375" height="506"/>
+                                <rect key="frame" x="0.0" y="178" width="375" height="489"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <color key="sectionIndexBackgroundColor" red="0.96470588235294119" green="0.95686274509803915" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
@@ -1788,46 +1783,15 @@
                         <outlet property="familyIdLabel" destination="FqS-2r-ohS" id="yln-Bw-rVx"/>
                         <outlet property="familyNameLabel" destination="IPA-Ec-lom" id="Ngj-ga-xB5"/>
                         <outlet property="familyVersionLabel" destination="kTD-pp-0z3" id="VYV-lT-jgT"/>
+                        <outlet property="invitedQrcodeLabel" destination="Ag5-39-Fae" id="bPh-TW-L7o"/>
                         <outlet property="moduleTable" destination="Rrr-9a-cmw" id="yer-dW-VaA"/>
                         <segue destination="H7l-Gz-m11" kind="push" identifier="OperateView" id="idO-iL-STa"/>
                         <segue destination="yPk-cQ-dOd" kind="push" identifier="controllerView" id="ScX-IX-nAS"/>
-                        <segue destination="4uE-TD-T9Y" kind="push" identifier="FamilyMoreDetailView" id="E3n-fM-57K"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QxK-bA-DuV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="297" y="2009"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="z7K-Ry-QHt">
-            <objects>
-                <viewController id="4uE-TD-T9Y" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="IAq-YD-SZg"/>
-                        <viewControllerLayoutGuide type="bottom" id="7eu-k7-EKQ"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Ot6-Df-mgs">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rnx-H7-YmM">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="7eu-k7-EKQ" firstAttribute="top" secondItem="rnx-H7-YmM" secondAttribute="bottom" id="XrX-id-3rT"/>
-                            <constraint firstAttribute="trailing" secondItem="rnx-H7-YmM" secondAttribute="trailing" id="kLi-JD-vc0"/>
-                            <constraint firstItem="rnx-H7-YmM" firstAttribute="leading" secondItem="Ot6-Df-mgs" secondAttribute="leading" id="pDz-KR-MmA"/>
-                            <constraint firstItem="rnx-H7-YmM" firstAttribute="top" secondItem="IAq-YD-SZg" secondAttribute="bottom" id="sdY-qM-g7K"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="F45-Re-upx"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="z6D-Pq-WIK" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1481" y="2008"/>
         </scene>
         <!--Register-->
         <scene sceneID="3mx-Bh-zoA">

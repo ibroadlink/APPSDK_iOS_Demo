@@ -43,8 +43,8 @@
 {
     [self initProgressHUD];
 
-    _progressHUD.labelText = message;
-    [_progressHUD show:YES];
+    _progressHUD.label.text = message;
+    [_progressHUD showAnimated:YES];
     
     _downCount = 240;
     _overTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(overTimer:) userInfo:nil repeats:YES];
@@ -61,7 +61,7 @@
     _overTimer = nil;
     [_progressHUDBackView removeFromSuperview];
     _progressHUDBackView = nil;
-    [_progressHUD hide:YES];
+    [_progressHUD hideAnimated:YES];
 }
 
 - (void)showTextOnly:(NSString *)text
