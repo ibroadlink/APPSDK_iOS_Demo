@@ -65,7 +65,7 @@
     [BLLet sharedLet].configParam.controllerLocalTimeout = 2000;
     [BLLet sharedLet].configParam.controllerRemoteTimeout = 4000;
     
-    self.let.configParam.controllerScriptDownloadVersion = 1;
+    self.let.configParam.controllerScriptDownloadVersion = 0;
     
     
     [self.let.controller startProbe:3000];                           // Start probe device

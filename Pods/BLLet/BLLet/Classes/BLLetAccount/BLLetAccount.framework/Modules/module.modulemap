@@ -1,0 +1,6 @@
+framework module BLLetAccount {
+  umbrella header "BLLetAccount.h"
+
+  export *
+  module * { export * }
+}

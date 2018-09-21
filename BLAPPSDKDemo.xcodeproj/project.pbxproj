@@ -105,6 +105,7 @@
 		02B89AD02047A53F004E0088 /* index.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
 		02B89AD92047DF20004E0088 /* OauthBindViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OauthBindViewController.h; sourceTree = "<group>"; };
 		02B89ADA2047DF20004E0088 /* OauthBindViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OauthBindViewController.m; sourceTree = "<group>"; };
+		3A3A75B22154F19200FDD1A6 /* BLAPPSDKDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BLAPPSDKDemo.entitlements; sourceTree = "<group>"; };
 		3A9B60DE2100377C0048540B /* JoinFamilyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoinFamilyViewController.h; sourceTree = "<group>"; };
 		3A9B60DF2100377D0048540B /* JoinFamilyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JoinFamilyViewController.m; sourceTree = "<group>"; };
 		3AAC2A2520EB24C600031DEC /* BLUserHeadImageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUserHeadImageCell.h; sourceTree = "<group>"; };
@@ -470,6 +471,7 @@
 		705B09531D4F1C5B00805109 /* BLAPPSDKDemo */ = {
 			isa = PBXGroup;
 			children = (
+				3A3A75B22154F19200FDD1A6 /* BLAPPSDKDemo.entitlements */,
 				70A3904B1D83B1FC002F2867 /* httpDemo.js */,
 				705B096B1D4F28DA00805109 /* Source */,
 				705B09541D4F1C5B00805109 /* Supporting Files */,
@@ -531,6 +533,7 @@
 				705B094E1D4F1C5B00805109 /* Frameworks */,
 				705B094F1D4F1C5B00805109 /* Resources */,
 				286DED45BEC942B8FFED64F7 /* [CP] Copy Pods Resources */,
+				33D4253038334F6A314774B3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -554,6 +557,11 @@
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 5YQ85Q9UV8;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.AccessWiFi = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -629,12 +637,25 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/BLExtension.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		33D4253038334F6A314774B3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -831,6 +852,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = BLAPPSDKDemo/BLAPPSDKDemo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -879,6 +901,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = BLAPPSDKDemo/BLAPPSDKDemo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;

@@ -2,7 +2,6 @@
 # platform :ios, '9.0'
 
 source 'https://github.com/ibroadlink/BLLibSpecs.git'
-#source 'http://gitlab.broadlink.com.cn/appsdk/BLLibSpecsSelf'
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'BLAPPSDKDemo' do
@@ -11,8 +10,8 @@ target 'BLAPPSDKDemo' do
 
   # Pods for BLAPPSDKDemo
 
-   pod 'BLLet'
-	
+   pod 'BLLet', '~> 2.7.2'
+
 	pod 'Cordova', '~> 4.4.0'
 	pod 'SSZipArchive', '~> 2.1.1'
 	pod 'MBProgressHUD', '~> 1.1.0'

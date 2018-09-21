@@ -1,0 +1,1 @@
+../../../../BLLet/BLLet/Classes/BLLetCore/BLLetCore.framework/Headers/BLQueryTaskResult.h

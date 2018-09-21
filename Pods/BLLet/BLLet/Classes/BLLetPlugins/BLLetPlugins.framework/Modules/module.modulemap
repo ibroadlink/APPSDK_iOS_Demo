@@ -1,0 +1,6 @@
+framework module BLLetPlugins {
+  umbrella header "BLLetPlugins.h"
+
+  export *
+  module * { export * }
+}

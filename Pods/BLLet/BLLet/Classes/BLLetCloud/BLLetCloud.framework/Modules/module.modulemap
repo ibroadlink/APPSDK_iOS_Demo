@@ -1,0 +1,6 @@
+framework module BLLetCloud {
+  umbrella header "BLLetCloud.h"
+
+  export *
+  module * { export * }
+}
