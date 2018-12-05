@@ -16,7 +16,6 @@
 		02AE62F3200713A700847CE5 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 02AE62F2200713A700847CE5 /* libsqlite3.0.tbd */; };
 		02AE9DAF2058BDD10054677B /* GeneralTimerControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 02AE9DAE2058BDD10054677B /* GeneralTimerControlView.m */; };
 		02B415FD2008603300329783 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 02B415FC2008603300329783 /* config.xml */; };
-		02B67D051FF5E10D009320C1 /* CloudTimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02B67D031FF5E10D009320C1 /* CloudTimerViewController.m */; };
 		02B89AD12047A540004E0088 /* exec.js in Resources */ = {isa = PBXBuildFile; fileRef = 02B89AC62047A53F004E0088 /* exec.js */; };
 		02B89AD22047A540004E0088 /* platform.js in Resources */ = {isa = PBXBuildFile; fileRef = 02B89AC72047A53F004E0088 /* platform.js */; };
 		02B89AD32047A540004E0088 /* cordova.js in Resources */ = {isa = PBXBuildFile; fileRef = 02B89AC82047A53F004E0088 /* cordova.js */; };
@@ -93,8 +92,6 @@
 		02AE9DAD2058BDD10054677B /* GeneralTimerControlView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneralTimerControlView.h; sourceTree = "<group>"; };
 		02AE9DAE2058BDD10054677B /* GeneralTimerControlView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GeneralTimerControlView.m; sourceTree = "<group>"; };
 		02B415FC2008603300329783 /* config.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
-		02B67D031FF5E10D009320C1 /* CloudTimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudTimerViewController.m; sourceTree = "<group>"; };
-		02B67D041FF5E10D009320C1 /* CloudTimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudTimerViewController.h; sourceTree = "<group>"; };
 		02B89AC62047A53F004E0088 /* exec.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = exec.js; sourceTree = "<group>"; };
 		02B89AC72047A53F004E0088 /* platform.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = platform.js; sourceTree = "<group>"; };
 		02B89AC82047A53F004E0088 /* cordova.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = cordova.js; sourceTree = "<group>"; };
@@ -105,7 +102,7 @@
 		02B89AD02047A53F004E0088 /* index.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
 		02B89AD92047DF20004E0088 /* OauthBindViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OauthBindViewController.h; sourceTree = "<group>"; };
 		02B89ADA2047DF20004E0088 /* OauthBindViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OauthBindViewController.m; sourceTree = "<group>"; };
-		3A3A75B22154F19200FDD1A6 /* BLAPPSDKDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BLAPPSDKDemo.entitlements; sourceTree = "<group>"; };
+		3A3D7EB72140FB7200BF9D3D /* BLAPPSDKDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BLAPPSDKDemo.entitlements; sourceTree = "<group>"; };
 		3A9B60DE2100377C0048540B /* JoinFamilyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoinFamilyViewController.h; sourceTree = "<group>"; };
 		3A9B60DF2100377D0048540B /* JoinFamilyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JoinFamilyViewController.m; sourceTree = "<group>"; };
 		3AAC2A2520EB24C600031DEC /* BLUserHeadImageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUserHeadImageCell.h; sourceTree = "<group>"; };
@@ -290,8 +287,6 @@
 				70503D6D1FDBE4D5002D3371 /* APConfigTableViewController.m */,
 				70503D631FDBE4D5002D3371 /* ConfigureViewController.h */,
 				70503D801FDBE4D5002D3371 /* ConfigureViewController.m */,
-				02B67D041FF5E10D009320C1 /* CloudTimerViewController.h */,
-				02B67D031FF5E10D009320C1 /* CloudTimerViewController.m */,
 				70503D731FDBE4D5002D3371 /* DataPassthoughViewController.h */,
 				70503D8F1FDBE4D5002D3371 /* DataPassthoughViewController.m */,
 				70503D901FDBE4D5002D3371 /* DeviceListViewController.h */,
@@ -471,7 +466,7 @@
 		705B09531D4F1C5B00805109 /* BLAPPSDKDemo */ = {
 			isa = PBXGroup;
 			children = (
-				3A3A75B22154F19200FDD1A6 /* BLAPPSDKDemo.entitlements */,
+				3A3D7EB72140FB7200BF9D3D /* BLAPPSDKDemo.entitlements */,
 				70A3904B1D83B1FC002F2867 /* httpDemo.js */,
 				705B096B1D4F28DA00805109 /* Source */,
 				705B09541D4F1C5B00805109 /* Supporting Files */,
@@ -533,7 +528,6 @@
 				705B094E1D4F1C5B00805109 /* Frameworks */,
 				705B094F1D4F1C5B00805109 /* Resources */,
 				286DED45BEC942B8FFED64F7 /* [CP] Copy Pods Resources */,
-				33D4253038334F6A314774B3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -560,6 +554,15 @@
 						SystemCapabilities = {
 							com.apple.AccessWiFi = {
 								enabled = 1;
+							};
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 0;
+							};
+							com.apple.SafariKeychain = {
+								enabled = 0;
+							};
+							com.apple.WAC = {
+								enabled = 0;
 							};
 						};
 					};
@@ -637,25 +640,12 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/BLExtension.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		33D4253038334F6A314774B3 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -691,7 +681,6 @@
 				3AFC6D7520EB6063003404E6 /* Tools.m in Sources */,
 				3ACDE3C120EC9CF00016461D /* ModifyPhoneViewController.m in Sources */,
 				70503DB81FDBE4D6002D3371 /* FamilyDetailViewController.m in Sources */,
-				02B67D051FF5E10D009320C1 /* CloudTimerViewController.m in Sources */,
 				025A168720E33CBC00D75DAB /* RestPasswordViewController.m in Sources */,
 				70503DA21FDBE4D5002D3371 /* CreateFamilyViewController.m in Sources */,
 				70503DA01FDBE4D5002D3371 /* LoginsTableViewController.m in Sources */,
@@ -881,10 +870,7 @@
 					"$(PROJECT_DIR)/BLAPPSDKDemo/Source/BroadLinkRFSwitch",
 				);
 				NEW_SETTING = "";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.com.broadlink.blappsdkdemo.baihk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -930,10 +916,7 @@
 					"$(PROJECT_DIR)/BLAPPSDKDemo/Source/BroadLinkRFSwitch",
 				);
 				NEW_SETTING = "";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.com.broadlink.blappsdkdemo.baihk;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -49,7 +49,7 @@
     [self queryFamilyAllInfoWithId:self.familyId];
     if (![_stateTimer isValid]) {
         __weak typeof(self) weakSelf = self;
-        _stateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
+        _stateTimer = [NSTimer scheduledTimerWithTimeInterval:3.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
             [weakSelf.moduleTable reloadData];
         }];
     }
@@ -76,6 +76,7 @@
     BLFamilyController *manager = delegate.familyController;
 
     [self showIndicatorOnWindow];
+    
     [manager queryFamilyInfoWithIds:idlist completionHandler:^(BLAllFamilyInfoResult * _Nonnull result) {
         
         if ([result succeed]) {
@@ -98,7 +99,7 @@
             
             NSArray *deviceBaseInfoList = self.familyAllInfo.deviceBaseInfo;
             [self addFamilyDevice:deviceBaseInfoList];
-            
+            [self modefileRoom];
             
         } else {
             NSLog(@"error:%ld msg:%@", (long)result.error, result.msg);
@@ -227,14 +228,15 @@
 }
 
 //修改房间名称
-//{"familyid":"8163addec29e56f79fc2cb4bfb65f0c8","roomid":"2903666308776082445","name":"次卧","type":2,"order":2}
+//{"familyid":"8163addec29e56f79fc2cb4bfb65f0c8","roomid":"2911048045114397478","name":"主卧","type":1,"order":1}
+
 - (void)modefileRoom {
     BLRoomInfo *roomInfo = [[BLRoomInfo alloc]init];
     roomInfo.familyId = self.familyId;
-    roomInfo.roomId = @"2903666308776082445";
-    roomInfo.name = @"茶水间";
-    roomInfo.type = 2;
-    roomInfo.order = 2;
+    roomInfo.roomId = @"2911048045114397478";
+    roomInfo.name = @"茶水间12312";
+    roomInfo.type = 1;
+    roomInfo.order = 1;
     roomInfo.action = @"modify";
     [[BLFamilyController sharedManager] manageRoomsWithFamilyId:self.familyId familyVersion:self.familyAllInfo.familyBaseInfo.familyVersion rooms:@[roomInfo] completionHandler:^(BLManageRoomsResult * _Nonnull result) {
         NSLog(@"familyVersion result:%@",result.familyVersion);

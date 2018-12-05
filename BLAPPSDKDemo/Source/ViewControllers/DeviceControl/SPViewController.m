@@ -98,7 +98,7 @@
     //单次定时
     UIAlertAction *tmrtskAction = [UIAlertAction actionWithTitle:@"单次定时" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         BLStdData *stdData = [[BLStdData alloc] init];
-        [stdData setParams:@[@"tmrtsk"] values:@[@[@{@"val":@"+0800@20170730-175226|1@null|0",@"idx":@(1)}]]];
+        [stdData setParams:@[@"tmrtsk"] values:@[@[@{@"val":@"+0800@20180911-151426|1@null|0",@"idx":@(1)}]]];
         BLStdControlResult *result = [self.blController dnaControl:[self.device getDid] stdData:stdData action:@"set"];
         if ([result succeed]) {
             BLStdControlResult *result = [self.blController dnaControl:[self.device getDid] stdData:stdData action:@"get"];

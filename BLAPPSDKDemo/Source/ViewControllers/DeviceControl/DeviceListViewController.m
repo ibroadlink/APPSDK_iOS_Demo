@@ -40,13 +40,23 @@
 - (void)storeDeviceIndex:(NSInteger)index {
     if (index < _showDevices.count) {
         BLDNADevice *device = _showDevices[index];
-        [_blController addDevice:device];
-        //add device info to local db
-        [[DeviceDB sharedOperateDB] insertSqlWithDevice:device];
+        //Pair Device,Get RemoteControl Id and Key
+        BLPairResult *result = [[BLLet sharedLet].controller pairWithDevice:device];
+        if ([result succeed]) {
+            device.controlId = result.getId;
+            device.controlKey = result.getKey;
+            [_blController addDevice:device];
+            //add device info to local db
+            [[DeviceDB sharedOperateDB] insertSqlWithDevice:device];
+            
+            [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Pair Success,%ld,%@",(long)result.getId,result.getKey]];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.deviceListTableView reloadData];
+            });
+        }else {
+            [BLStatusBar showTipMessageWithStatus:@"Pair Fail,Try again!!!"];
+        }
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.deviceListTableView reloadData];
-        });
     }
 }
 
@@ -91,8 +101,7 @@
     macLabel.text = [NSString stringWithFormat:@"MAC:%@", [device getMac]];
     
     UILabel *typeLabel = (UILabel *)[cell viewWithTag:103];
-//    typeLabel.text = [NSString stringWithFormat:@"Type:%ld", (long)[device getType]];
-    typeLabel.text = [NSString stringWithFormat:@"Key:%@", [device getControlKey]];
+    typeLabel.text = [NSString stringWithFormat:@"Type:%ld", (long)[device getType]];
     
     return cell;
 }

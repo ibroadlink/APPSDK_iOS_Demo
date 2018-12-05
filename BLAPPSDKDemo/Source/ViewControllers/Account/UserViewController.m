@@ -258,11 +258,14 @@
     BLAccount *account = delegate.account;
     if (userDefault.getUserId) {
         [account getUserInfo:@[userDefault.getUserId] completionHandler:^(BLGetUserInfoResult * _Nonnull result) {
-            BLUserInfo *info = result.info[0];
-            self.name = [info getNickname];
-            self.userid = [info getUserid];
-            self.iconUrl = [info getIconUrl];
-            [self getPhoneOrEmail];
+            if (![BLCommonTools isEmptyArray:result.info]) {
+                BLUserInfo *info = result.info[0];
+                self.name = [info getNickname];
+                self.userid = [info getUserid];
+                self.iconUrl = [info getIconUrl];
+                [self getPhoneOrEmail];
+            }
+            
         }];
         UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(logout)];
         [self.navigationItem setRightBarButtonItem:rightButton];

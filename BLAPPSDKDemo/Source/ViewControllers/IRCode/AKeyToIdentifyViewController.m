@@ -82,7 +82,7 @@
 - (IBAction)RMLearnBtn:(id)sender {
     NSArray *myDeviceList = [[DeviceDB sharedOperateDB] readAllDevicesFromSql];
     for (BLDNADevice *device in myDeviceList) {
-        //RM的pid
+        //RM的pid，这里需要替换你使用的RM设备的pid
         if ([device.pid isEqualToString:@"00000000000000000000000037270000"]) {
             BLStdData *stdStudyData = [[BLStdData alloc] init];
             [stdStudyData setValue:nil forParam:@"irdastudy"];

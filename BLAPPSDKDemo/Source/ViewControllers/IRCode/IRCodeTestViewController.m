@@ -53,7 +53,8 @@
     self.testList = @[@"Recognize IRCode",
                       @"AC IRCode",
                       @"TV IRCode",
-                      @"STB IRCode"];
+                      @"STB IRCode",
+                      @"RM SubDevice"];
     
     self.locateid = 27;
     self.providerid = 0;
@@ -115,6 +116,9 @@
         case 3:
             _devtype = BL_IRCODE_DEVICE_TV_BOX;
             [self selectSubAreaLocateid];
+            break;
+        case 4:
+            [self performSegueWithIdentifier:@"RMSubDevice" sender:nil];
             break;
         default:
             break;
@@ -185,8 +189,6 @@
     });
     
 }
-
-
 
 
 

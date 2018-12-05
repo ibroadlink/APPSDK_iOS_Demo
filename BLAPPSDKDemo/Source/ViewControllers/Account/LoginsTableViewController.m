@@ -43,6 +43,14 @@
 - (IBAction)accountInfo:(id)sender {
 }
 
+- (IBAction)oauthBtn:(id)sender {
+//    [_account thirdAuth:@"com.suning.smarthome" sdkLicense:SDK_LICENSE completionHandler:^(BLLoginResult * _Nonnull result) {
+//
+//    }];
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    BLOAuth *blOauth = delegate.blOauth;
+    [blOauth authorize:nil];
+}
 
 
 

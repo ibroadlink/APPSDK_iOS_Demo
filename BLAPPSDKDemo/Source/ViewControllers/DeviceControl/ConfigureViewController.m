@@ -27,9 +27,7 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    BLController *controller = delegate.let.controller;
-    
-    [controller deviceConfigCancel];
+    [delegate.let.controller deviceConfigCancel];
 }
 
 - (IBAction)startConfigureButtonClick:(id)sender {
@@ -46,7 +44,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSDate *date = [NSDate date];
         NSLog(@"====Start Config===");
-        BLDeviceConfigResult *result = [controller deviceConfig:ssidName password:password version:2 timeout:75];
+        BLDeviceConfigResult *result = [controller deviceConfig:ssidName password:password version:2 timeout:60];
         NSLog(@"====Config over! Spends(%fs)", [date timeIntervalSinceNow]);
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideIndicatorOnWindow];

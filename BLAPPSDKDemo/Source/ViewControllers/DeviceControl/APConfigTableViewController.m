@@ -19,18 +19,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     _controller = delegate.let.controller;
     self.apListArray = [NSArray array];
-    
-
-    
 }
 - (IBAction)refresh:(id)sender {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSLog(@"apconfigResult start");
-        BLGetAPListResult *apconfigResult = [_controller deviceAPList:7000];
+        BLGetAPListResult *apconfigResult = [self->_controller deviceAPList:7000];
         NSLog(@"easyconfigResult: %@", apconfigResult);
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -54,7 +51,6 @@
     return self.apListArray.count;
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString* cellIdentifier = @"DEVICE_LIST_CELL";
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -70,7 +66,6 @@
     
     return cell;
 }
-
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *title = @"APConfig";

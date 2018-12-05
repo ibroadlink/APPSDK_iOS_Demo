@@ -127,16 +127,14 @@
                 //下载子设备脚本
                 [[BLLet sharedLet].controller downloadScript:subDevice.pid completionHandler:^(BLDownloadResult * _Nonnull result) {NSLog(@"resultsavePath:%@",result.savePath);}];
                 NSDictionary *subDeviceInfo = @{@"did"      :   subDevice.did,
-                                                @"pid"      :   subDevice.pid,
-                                                @"name"     :   subDevice.name,
+                                                @"pid"      :   subDevice.pid ? subDevice.pid : @"",
+                                                @"name"     :   subDevice.name ? subDevice.name : @"",
                                                 @"icon"     :   @"http://www.broadlink.com.cn/images/homeFullpage/broadlink.png",
                                                 @"roomId"   :   @"2008450249062634829",
                                                 @"roomName" :   @"客厅"};
                 [subDeviceList addObject:subDeviceInfo];
             }
-            
         }
-        
     }
 
     NSDictionary *resultDic = @{@"status":@0,@"deviceList":[subDeviceList copy]};

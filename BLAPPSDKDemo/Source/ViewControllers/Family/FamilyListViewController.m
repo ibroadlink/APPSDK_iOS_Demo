@@ -18,6 +18,7 @@
 @property (nonatomic, strong)NSArray<BLFamilyInfoBase *> *familyIds;
 @property (nonatomic, strong)BLFamilyController *familyController;
 @property (nonatomic, strong)NSArray<BLUserInfo *> *infoArray;
+
 @end
 
 @implementation FamilyListViewController
@@ -27,7 +28,6 @@
     // Do any additional setup after loading the view.
     _infoArray = [NSArray array];
     _familyController = [BLFamilyController sharedManager];
-    
     self.familyListTableView.delegate = self;
     self.familyListTableView.dataSource = self;
     [self setExtraCellLineHidden:self.familyListTableView];
@@ -131,7 +131,6 @@
         if ([result succeed]) {
             self.familyIds = result.infoList;
             [self getUserInfo:self.familyIds];
-            
         } else {
             NSLog(@"error:%ld msg:%@", (long)result.error, result.msg);
             [BLStatusBar showTipMessageWithStatus:result.msg];
@@ -155,7 +154,9 @@
     NSMutableArray *useridList = [NSMutableArray arrayWithCapacity:0];
     for (BLFamilyInfoBase *infoBase in familyIds) {
         NSString *userid = infoBase.createUser;
-        [useridList addObject:userid];
+        if (![useridList containsObject:userid]) {
+            [useridList addObject:userid];
+        }
     }
     __weak typeof(self) weakSelf = self;
     [[BLAccount sharedAccount] getUserInfo:useridList completionHandler:^(BLGetUserInfoResult * _Nonnull result) {

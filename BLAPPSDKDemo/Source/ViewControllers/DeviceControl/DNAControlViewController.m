@@ -87,17 +87,22 @@
 }
 
 - (IBAction)buttonClick:(UIButton *)sender {
+    
     if (sender.tag == 101) {
         NSString *param = _paramInputTextField.text;
         NSString *action = @"get";
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            [self dnaControlWithAction:action param:param val:nil];
+        });
         
-        [self dnaControlWithAction:action param:param val:nil];
     } else if (sender.tag == 102) {
         NSString *val = _valInputTextField.text;
         NSString *param = _paramInputTextField.text;
         NSString *action = @"set";
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            [self dnaControlWithAction:action param:param val:val];
+        });
         
-        [self dnaControlWithAction:action param:param val:val];
     } else if (sender.tag == 103) {
         [self queryTaskList];
     } else if (sender.tag == 104) {
@@ -122,7 +127,7 @@
                               @"act": @"set",
                               @"params": @[@"pwr"]
                               };
-    //dev_taskdata
+//    dev_taskdata
 //    NSDictionary *dataDic = @{
 //                              @"type": @0,
 //                              @"index": @0,
@@ -156,33 +161,43 @@
 
 
 - (void)dnaControlWithAction:(NSString *)action param:(NSString *)param val:(NSString *)val {
+    NSInteger valint = [val intValue];
     BLStdData *stdData = [[BLStdData alloc] init];
-    [stdData setValue:val forParam:param];
-//    [stdData setValue:val forParam:@"ntlight"];
-    
+    [stdData setValue:@(valint) forParam:param];
+    [stdData setValue:val forParam:@"ntlight"];
     BLStdControlResult *result = [_blController dnaControl:[_device getDid] stdData:stdData action:action];
 //    NSDictionary *dataDic = @{
 //                              @"vals": @[
 //                                      @[@{
-//                                            @"val": @([_valInputTextField.text integerValue]),
+//                                            @"val": @(9),
 //                                            @"idx": @1
-//                                            }]
+//                                            }],
+//                                      @[@{
+//                                          @"val": @(5),
+//                                          @"idx": @1
+//                                          }]
 //                                      ],
-//                              @"did": @"0000000000000000000034ea34a7335b",
-//                              @"act": @"get",
-//                              @"params": @[@"ac_bind"]
+//                              @"did": @"00000000000000000000780f77757c81",
+//                              @"act": @"set",
+//                              @"params": @[@"curtain_ctrl",@"curtain_targetpos"],
 //                              };
 //    NSString *dataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dataDic options:0 error:nil] encoding:NSUTF8StringEncoding];
 //    NSString *stringResult = [_blController dnaControl:self.device.did subDevDid:nil dataStr:dataStr command:@"dev_ctrl" scriptPath:nil sendcount:1];
+//    _resultTextView.text = stringResult;
     
     if ([result succeed]) {
         NSDictionary *dic = [[result getData] toDictionary];
-        
+
         NSString *resultString = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dic options:0 error:nil] encoding:NSUTF8StringEncoding];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self->_resultTextView.text = resultString;
+        });
         
-        _resultTextView.text = resultString;
     } else {
-        _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self->_resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+        });
+        
     }
     
 }
@@ -211,36 +226,36 @@
 }
 
 - (void)setTask {
-    BLCycleOrRandomInfo *timerInfo = [[BLCycleOrRandomInfo alloc] init];
+    BLTimerOrDelayInfo *timerInfo = [[BLTimerOrDelayInfo alloc] init];
     [timerInfo setIndex:0];
     [timerInfo setEnable:YES];
-//    [timerInfo setYear:2017];
-//    [timerInfo setMonth:10];
-//    [timerInfo setDay:1];
-    [timerInfo setHour:10];
-    [timerInfo setMinute:10];
-    [timerInfo setSeconds:00];
-    [timerInfo setCmd1duration:1800];
-    [timerInfo setEndhour:12];
-    [timerInfo setEndminute:10];
-    [timerInfo setEndseconds:00];
-    [timerInfo setCmd2duration:1800];
-    [timerInfo setRepeat:@[@1,@2,@3,@4,@5,@6,@7]];
+    [timerInfo setYear:2018];
+    [timerInfo setMonth:9];
+    [timerInfo setDay:11];
+    [timerInfo setHour:16];
+    [timerInfo setMinute:56];
+    [timerInfo setSeconds:30];
+//    [timerInfo setCmd1duration:1800];
+//    [timerInfo setEndhour:12];
+//    [timerInfo setEndminute:10];
+//    [timerInfo setEndseconds:00];
+//    [timerInfo setCmd2duration:1800];
+//    [timerInfo setRepeat:@[@1,@2,@3,@4,@5,@6,@7]];
 
     
     BLStdData *stdData = [[BLStdData alloc] init];
-    NSString *val = @"0";
-    NSString *param = @"pwr1";
+    NSString *val = @"1";
+    NSString *param = @"pwr";
     [stdData setValue:val forParam:param];
     
-    BLStdData *stdData2 = [[BLStdData alloc] init];
-    NSString *val2 = @"0";
-    NSString *param2 = @"pwr";
-    [stdData2 setValue:val2 forParam:param2];
+//    BLStdData *stdData2 = [[BLStdData alloc] init];
+//    NSString *val2 = @"0";
+//    NSString *param2 = @"pwr";
+//    [stdData2 setValue:val2 forParam:param2];
     
-//    BLQueryTaskResult *result = [_blController updateTask:[_device getDid] sDid:nil taskType:BL_DELAY_TYPE_LIST isNew:YES timerInfo:timerInfo stdData:stdData];
+    BLQueryTaskResult *result = [_blController updateTask:[_device getDid] sDid:nil taskType:BL_TIMER_TYPE_LIST isNew:YES timerInfo:timerInfo stdData:stdData];
 //    BLQueryTaskResult *result = [_blController updateTask:[_device getDid] sDid:nil taskType:BL_CYCLE_TYPE_LIST isNew:YES cycleInfo:timerInfo stdData1:stdData stdData2:stdData2];
-    BLQueryTaskResult *result = [_blController delTask:[_device getDid] sDid:nil taskType:BL_CYCLE_TYPE_LIST index:0];
+//    BLQueryTaskResult *result = [_blController delTask:[_device getDid] sDid:nil taskType:BL_CYCLE_TYPE_LIST index:0];
     if ([result succeed]) {
         NSArray *timeTask = [result getTimer];
         NSArray *delayTask = [result getDelay];
@@ -262,7 +277,7 @@
     NSInteger taskType = [param integerValue];
 
     BLTaskDataResult *result = [_blController queryTaskData:_device.did sDid:nil taskType:taskType index:index];
-    
+
     if ([result succeed]) {
         _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
     } else {

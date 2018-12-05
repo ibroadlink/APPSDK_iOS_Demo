@@ -19,6 +19,10 @@
  */
 + (instancetype)sharedConfigParamWithLicense:(NSString *)license;
 
++ (instancetype)sharedConfigParam;
+
+- (void)resetLicense:(NSString *)license;
+
 /** Get License from BroadLink Co., Ltd. */
 @property (nonatomic, strong, readonly) NSString *sdkLicense;
 
@@ -58,6 +62,9 @@
 /** Picker Http request host base url */
 @property (nonatomic, strong, getter=getPickerHost) NSString *pickerHost;
 
+/** CloudTime Http request host base url */
+@property (nonatomic, strong, getter=getCloudHost) NSString *cloudHost;
+
 /** Oauth Http request host base url */
 @property (nonatomic, strong, getter=getOauthHost) NSString *oauthHost;
 /** APP Controler store script and ui path, default in ./Let/ */
@@ -87,4 +94,8 @@
 /** APP Download address whether to use the new platform , default 0 */
 @property (nonatomic, assign, getter=getControllerScriptDownloadVersion) NSUInteger controllerScriptDownloadVersion;
 
+/** APPService Enable , default 0 */
+@property (nonatomic, assign, getter=getAppServiceEnable) NSUInteger appServiceEnable;
+
+@property (nonatomic, strong, getter=getpackName) NSString *packName;
 @end

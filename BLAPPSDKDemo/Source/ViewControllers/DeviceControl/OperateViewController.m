@@ -26,7 +26,6 @@
 #import "RMViewController.h"
 #import "A1ViewController.h"
 #import "GateWayViewController.h"
-#import "CloudTimerViewController.h"
 #import "GeneralTimerControlView.h"
 
 @interface OperateViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -75,13 +74,11 @@
                             @"Firmware Version",
                             @"Script Version",
                             @"UI Version",
-                            @"Bind Server",
                             @"SP Control",
                             @"RM Control",
                             @"A1 Control",
                             @"GateWay Control",
                             @"query DeviceData",
-                            @"Cloud Timer",
                             @"General Timer",
                             @"Device Pair"];
 }
@@ -154,30 +151,24 @@
             [self getUIVersion];
             break;
         case 9:
-            [self bindDeviceToServer];
-            break;
-        case 10:
             [self SPControl];
             break;
-        case 11:
+        case 10:
             [self RMControl];
             break;
-        case 12:
+        case 11:
             [self A1Control];
             break;
-        case 13:
+        case 12:
             [self GateWayControl];
             break;
-        case 14:
+        case 13:
             [self queryDeviceData];
             break;
-        case 15:
-            [self cloudTimerControl];
-            break;
-        case 16:
+        case 14:
             [self generalTimerControl];
             break;
-        case 17:
+        case 15:
             [self devicePair];
             break;
         default:
@@ -233,7 +224,7 @@
 - (void)downloadScript {
     [self showIndicatorOnWindowWithMessage:@"Script Downloading..."];
     NSLog(@"Start downloadScript");
-    [_blController downloadScript:[self.device getPid] completionHandler:^(BLDownloadResult * _Nonnull result) {
+    [_blController downloadScript:[_device getPid] completionHandler:^(BLDownloadResult * _Nonnull result) {
         NSLog(@"End downloadScript");
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideIndicatorOnWindow];
@@ -385,16 +376,13 @@
     }
 }
 
-- (void)cloudTimerControl {
-    [self performSegueWithIdentifier:@"cloudTimerControlView" sender:nil];
-}
 
 - (void)generalTimerControl {
     [self performSegueWithIdentifier:@"generalTimerControlView" sender:nil];
 }
 
 - (void)devicePair {
-    BLPairResult *result = [_blController pair:_device.did];
+    BLPairResult *result = [_blController pairWithDevice:_device];
     _resultText.text = [NSString stringWithFormat:@"id:%ld,key:%@",(long)result.getId,result.getKey];
     //Update Device Info
     _device.controlId = result.getId;
@@ -445,12 +433,6 @@
         UIViewController *target = segue.destinationViewController;
         if ([target isKindOfClass:[GateWayViewController class]]) {
             GateWayViewController* vc = (GateWayViewController *)target;
-            vc.device = _device;
-        }
-    }else if ([segue.identifier isEqualToString:@"cloudTimerControlView"]) {
-        UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[CloudTimerViewController class]]) {
-            CloudTimerViewController* vc = (CloudTimerViewController *)target;
             vc.device = _device;
         }
     }else if ([segue.identifier isEqualToString:@"generalTimerControlView"]) {

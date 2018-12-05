@@ -30,6 +30,7 @@
 #import "BLAPConfigResult.h"
 #import "BLSubdevBaseResult.h"
 #import "BLQueryDeviceStatusResult.h"
+#import "BLSunriseResult.h"
 
 /**
  Device Controller Delegate. 
@@ -976,4 +977,25 @@
 - (BLIRCodeDataResult *_Nonnull)queryRMACIRCodeDataWithScript:(NSString *_Nonnull)script params:(BLQueryIRCodeParams *_Nonnull)params;
 
 
+/**
+ startDeviceRemoteHttpControl
+ */
+- (void)startDeviceRemoteHttpControl;
+
+
+/**
+ stopDeviceRemoteHttpControl
+ */
+- (void)stopDeviceRemoteHttpControl;
+
+
+/**
+ Calculate sunrise and sunset time
+
+ @param data Specify the date in the format of "2018-01-01"
+ @param longitude longitude
+ @param latitude latitude
+ @return Sunrise and sunset time
+ */
+- (BLSunriseResult *)calulateSunriseTimeWithData:(NSString *)data longitude:(double)longitude latitude:(double)latitude;
 @end

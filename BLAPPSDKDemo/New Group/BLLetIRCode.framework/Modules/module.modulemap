@@ -1,0 +1,6 @@
+framework module BLLetIRCode {
+  umbrella header "BLLetIRCode.h"
+
+  export *
+  module * { export * }
+}

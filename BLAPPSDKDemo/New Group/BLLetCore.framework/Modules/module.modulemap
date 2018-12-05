@@ -1,0 +1,6 @@
+framework module BLLetCore {
+  umbrella header "BLLetCore.h"
+
+  export *
+  module * { export * }
+}

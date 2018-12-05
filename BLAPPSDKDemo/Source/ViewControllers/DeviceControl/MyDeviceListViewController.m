@@ -38,7 +38,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     if (![_stateTimer isValid]) {
         __weak typeof(self) weakSelf = self;
-        _stateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
+        _stateTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
             for (int i = 0; i < weakSelf.devicearray.count; i ++) {
                 BLDNADevice *device = weakSelf.devicearray[i];
                 device.state = [weakSelf.blController queryDeviceState:[device getDid]];
@@ -56,7 +56,8 @@
 
 - (void)queryDeviceState:(NSArray<BLDNADevice *> *)tempArray {
     BLQueryDeviceStatusResult *result = [[BLLet sharedLet].controller queryDeviceOnServer:tempArray];
-    NSLog(@"array:%@",result.statusMaparray);
+    NSLog(@"statusMaparray array:%@",result.statusMaparray);
+    [[BLLet sharedLet].controller queryDeviceRemoteState:tempArray[0].did];
 }
 
 #pragma mark - Navigation

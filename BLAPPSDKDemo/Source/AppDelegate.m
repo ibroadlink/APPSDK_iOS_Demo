@@ -10,6 +10,7 @@
 #import "DeviceDB.h"
 #import "MainViewController.h"
 #import "BLUserDefaults.h"
+#import "UserViewController.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -57,22 +58,25 @@
 #pragma mark - private method
 - (void)loadAppSdk {
     //BLLetCore
-    self.let = [BLLet sharedLetWithLicense:SDK_LICENSE];        // Init APPSDK
+    self.let = [BLLet sharedLetWithLicense:baihk_SDK_LICENSE];        // Init APPSDK
     [self.let setDebugLog:BL_LEVEL_ALL];                           // Set APPSDK debug log level
     [self.let.controller setSDKRawDebugLevel:BL_LEVEL_ALL];        // Set DNASDK debug log level
-    self.let.configParam.controllerSendCount = 5;
     
-    [BLLet sharedLet].configParam.controllerLocalTimeout = 2000;
-    [BLLet sharedLet].configParam.controllerRemoteTimeout = 4000;
+    [BLConfigParam sharedConfigParam].controllerSendCount = 3;
+    [BLConfigParam sharedConfigParam].controllerLocalTimeout = 2000;
+    [BLConfigParam sharedConfigParam].controllerRemoteTimeout = 4000;
+    [BLConfigParam sharedConfigParam].controllerQueryCount = 8;
+    [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;
     
-    self.let.configParam.controllerScriptDownloadVersion = 0;
-    
+    [BLConfigParam sharedConfigParam].packName = @"com.wofeng.homecontrol";
+    [[BLConfigParam sharedConfigParam] resetLicense:SDK_LICENSE];
+    [BLConfigParam sharedConfigParam].appServiceEnable = 1;
     
     [self.let.controller startProbe:3000];                           // Start probe device
     self.let.controller.delegate = self;
     
-    NSString *licenseId = self.let.configParam.licenseId;
-    NSString *companyId = self.let.configParam.companyId;
+    NSString *licenseId = [BLConfigParam sharedConfigParam].licenseId;
+    NSString *companyId = [BLConfigParam sharedConfigParam].companyId;
     
     //BLLetAccount
     self.account = [BLAccount sharedAccountWithlicenseId:licenseId CompanyId:companyId];
@@ -84,16 +88,15 @@
     BLPicker *blPicker = [BLPicker sharedPickerWithLicenseId:licenseId License:self.let.configParam.sdkLicense];
     [blPicker startPick];
     NSString *cliendId = @"c39a135e4829daa4c307e60255699416";
-    NSString *redirectURI = @"http://www.broadlink.com/";
+    NSString *redirectURI = @"http://latiao.izanpin.com/";
     self.blOauth = [[BLOAuth alloc] initWithLicenseId:licenseId cliendId:cliendId redirectURI:redirectURI];
     
-    //BLLetCloud
-    self.blCloudTime = [BLCloudTime sharedManagerWithLicenseId:licenseId License:self.let.configParam.sdkLicense];
-    self.blCloudScene = [BLCloudScene sharedManagerWithLicenseId:licenseId License:self.let.configParam.sdkLicense];
-    self.blCloudLinkage = [BLCloudLinkage sharedManagerWithLicenseId:licenseId License:self.let.configParam.sdkLicense];
     
     //BLLetIRCode
-   [BLIRCode sharedIrdaCodeWithlicenseId:licenseId];
+    BLIRCode *ircode = [BLIRCode sharedIrdaCodeWithlicenseId:licenseId];
+    ircode.familyId = @"01b42ba809ad5d8382cf4f58543df396";
+    
+    
 
     //从数据库取出所有设备加入SDK管理
     NSArray *storeDevices = [[DeviceDB sharedOperateDB] readAllDevicesFromSql];
@@ -103,15 +106,14 @@
     //本地登录
     BLUserDefaults *userDefault = [BLUserDefaults shareUserDefaults];
     if ([userDefault getUserId] && [userDefault getSessionId]) {
+        NSLog(@"本地登录开始");
         [_account localLoginWithUsrid:[userDefault getUserId] session:[userDefault getSessionId] completionHandler:^(BLLoginResult * _Nonnull result) {
-            [NSThread sleepForTimeInterval:0.5];
-            NSLog(@"loginUserid:%@",[BLFamilyController sharedManager].loginUserid);
+            if ([result succeed]) {
+                NSLog(@"本地登录成功");
+                NSLog(@"loginUserid:%@",[BLFamilyController sharedManager].loginUserid);
+            }
         }];
     }
-//    _apiUrls = [BLApiUrls sharedApiUrl];
-//    NSString *checkApiResult = [self.apiUrls checkApiUrlHosts];
-//    NSLog(@"checkApiUrlHosts:%@",checkApiResult);
-    
 }
 
 - (BOOL)isDeviceHasBeenScaned:(BLDNADevice *)device {
@@ -125,7 +127,7 @@
 
 - (void)handleOpenFromOtherApp:(NSURL *)url {
     NSString *urlString = url.absoluteString;
-    NSLog(@"%@", urlString);
+    NSLog(@"urlString:%@", urlString);
     
     __weak typeof(self) weakSelf = self;
     
@@ -134,10 +136,9 @@
             
             [weakSelf.account loginWithIhcAccessToken:result.accessToken completionHandler:^(BLLoginResult * _Nonnull result) {
                 if ([result succeed]) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        MainViewController *vc = [MainViewController viewController];
-                        [((UINavigationController*)(weakSelf.window.rootViewController)) pushViewController:vc animated:YES];
-                    });
+                    BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
+                    [userDefault setUserId:[result getUserid]];
+                    [userDefault setSessionId:[result getLoginsession]];
                 }
             }];
         }else{
@@ -147,26 +148,29 @@
 }
 
 #pragma mark - BLControllerDelegate
-- (Boolean)shouldAdd:(BLDNADevice *)device {
-    return NO;
-}
+//- (Boolean)shouldAdd:(BLDNADevice *)device {
+//    return NO;
+//}
 
 - (void)onDeviceUpdate:(BLDNADevice *)device isNewDevice:(Boolean)isNewDevice {
     //Only device reset, newconfig=1
     //Not all device support this.
-//    NSLog(@"=====probe device pid(%@) newconfig(%hhu)====", device.pid, device.newConfig);
-    
+//    NSLog(@"=====probe device did(%@) newconfig(%hhu)====", device.did, device.newConfig);
+    if (![self isDeviceHasBeenScaned:device]) {
+        //[device setLastStateRefreshTime:[NSDate timeIntervalSinceReferenceDate]];
+        [self.scanDevices addObject:device];
+    }
     if (isNewDevice) { //Device did not add SDK
-        if (![self isDeviceHasBeenScaned:device]) {
-            //[device setLastStateRefreshTime:[NSDate timeIntervalSinceReferenceDate]];
-            [self.scanDevices addObject:device];
-        }
+        
     } else { //Device has been added SDK
-        
-        
         if (device.newConfig) {
             //Update Device Info
+            BLPairResult *result = [[BLLet sharedLet].controller pairWithDevice:device];
+            device.controlId = result.getId;
+            device.controlKey = result.getKey;
             [[DeviceDB sharedOperateDB] updateSqlWithDevice:device];
+            //addDevice
+            [[BLLet sharedLet].controller addDevice:device];
         }
     }
 }

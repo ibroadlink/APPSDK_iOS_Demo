@@ -1,7 +1,8 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+ platform :ios, '10.0'
 
-source 'https://github.com/ibroadlink/BLLibSpecs.git'
+ source 'https://github.com/ibroadlink/BLLibSpecs.git'
+#source 'git@gitlab.broadlink.com.cn:appsdk/BLLibSpecsSelf.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'BLAPPSDKDemo' do
@@ -10,8 +11,13 @@ target 'BLAPPSDKDemo' do
 
   # Pods for BLAPPSDKDemo
 
-   pod 'BLLet', '~> 2.7.2'
-
+  pod 'BLLet/BLLetBase', '~> 2.8.7'
+  pod 'BLLet/BLLetCore', '~> 2.8.7'
+  pod 'BLLet/BLLetPlugins', '~> 2.8.7'
+  pod 'BLLet/BLLetAccount', '~> 2.8.7'
+  pod 'BLLet/BLLetFamily', '~> 2.8.7'
+  pod 'BLLet/BLLetIRCode', '~> 2.8.7'
+	
 	pod 'Cordova', '~> 4.4.0'
 	pod 'SSZipArchive', '~> 2.1.1'
 	pod 'MBProgressHUD', '~> 1.1.0'

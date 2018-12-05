@@ -10,7 +10,6 @@
 #import <BLLetBase/BLLetBase.h>
 #import <BLLetCore/BLLetCore.h>
 #import <BLLetPlugins/BLLetPlugins.h>
-#import <BLLetCloud/BLLetCloud.h>
 #import <BLLetAccount/BLLetAccount.h>
 #import <BLLetFamily/BLLetFamily.h>
 #import <BLLetIRCode/BLLetIRCode.h>
@@ -25,9 +24,6 @@
 @property (strong, nonatomic) BLAccount *account;
 @property (strong, nonatomic) BLFamilyController *familyController;
 @property (strong, nonatomic) NSMutableArray<BLDNADevice*> *scanDevices;
-@property (strong, nonatomic) BLCloudScene *blCloudScene;
-@property (strong, nonatomic) BLCloudTime *blCloudTime;
-@property (strong, nonatomic) BLCloudLinkage *blCloudLinkage;
 @property (strong, nonatomic) BLApiUrls *apiUrls;
 @end
 

@@ -36,6 +36,26 @@ int tag = 0;
     self.blircode = [BLIRCode sharedIrdaCode];
 }
 
+//    /*空调开关状态*/
+//    state
+//    0,       /*关闭*/
+//    1        /*开启*/
+//
+//    /*空调模式*/
+//    mode
+//    0,       /*自动*/
+//    1,       /*制冷*/
+//    2,       /*除湿*/
+//    3,       /*通风*/
+//    4        /*加热*/
+//
+//    /*空调风速*/
+//    speed
+//    0,        /*自动*/
+//    1,        /*低速*/
+//    2,        /*中速*/
+//    3         /*高速*/
+
 - (IBAction)queryACIRCodeData:(id)sender {
     [_tempTextField resignFirstResponder];
     [_windSpeedTextField resignFirstResponder];
@@ -56,8 +76,8 @@ int tag = 0;
         //发送红码
         NSArray *myDeviceList = [[DeviceDB sharedOperateDB] readAllDevicesFromSql];
         for (BLDNADevice *device in myDeviceList) {
-            //RM的pid
-            if ([device.pid isEqualToString:@"00000000000000000000000037270000"]) {
+            //RM的pid，这里需要替换你使用的RM设备的pid
+            if ([device.pid isEqualToString:@"00000000000000000000000037270000"] || [device.pid isEqualToString:@"000000000000000000000000d1270000"]) {
                 BLStdData *stdStudyData = [[BLStdData alloc] init];
                 [stdStudyData setValue:result.ircode forParam:@"irda"];
                 BLStdControlResult *studyResult = [self.blcontroller dnaControl:[device getDid] stdData:stdStudyData action:@"set"];

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <BLLetBase/BLLetBase.h>
+#import <BLLetCore/BLLetCore.h>
+
 
 @interface BLIRCode : NSObject
 
@@ -21,6 +23,9 @@
  */
 @property (nonatomic, strong) NSString *loginSession;
 
+/** Obtain familyId from BLFamilyInfoResult */
+@property (nonatomic, strong)NSString *familyId;
+
 /** Global Http timeout, default 30000ms */
 @property (nonatomic, assign, getter=getHttpTimeout) NSUInteger httpTimeout;
 
@@ -28,6 +33,8 @@
 + (instancetype _Nullable)sharedIrdaCodeWithlicenseId:(NSString *)licenseId;
 
 + (nullable instancetype)sharedIrdaCode;
+
+- (void)setFamilyId:(NSString *)familyId;
 /**
  Query all support ircode device types. Like AC, TV, STB ...
  
@@ -164,4 +171,45 @@
  @param completionHandler completionHandler
  */
 - (void)commonIRServiceRequestWith:(NSString *_Nonnull)urlPath head:(NSDictionary *_Nullable)head body:(NSDictionary *_Nullable)body completionHandler:(nullable void (^)(BLBaseBodyResult * _Nonnull result))completionHandler;
+
+
+/**
+ * 查询空调状态
+ */
+- (NSString *)queryAcStatus:(NSString *)param;
+
+/**
+ * 查询空调红外码
+ */
+- (NSString *)queryAcIRCode:(NSString *)param;
+
+/**
+ * 空调红外码绑定
+ */
+- (NSString *)bindAcIRCode:(NSString *)param;
+
+/**
+ * 获取电视/机顶盒红码列表
+ */
+- (NSString *)queryIRCodeList:(NSString *)param;
+
+/**
+ * 红外码function查询
+ */
+- (NSString *)queryIRCodeFunction:(NSString *)param;
+
+/**
+ * 创建红外码
+ */
+- (NSString *)createIRCodeList:(NSString *)param;
+
+/**
+ * 红外码function更新
+ */
+- (NSString *)updateIRCodeFunction:(NSString *)param;
+
+/**
+ * 删除红外码列表
+ */
+- (NSString *)delIRCodeList:(NSString *)param;
 @end
