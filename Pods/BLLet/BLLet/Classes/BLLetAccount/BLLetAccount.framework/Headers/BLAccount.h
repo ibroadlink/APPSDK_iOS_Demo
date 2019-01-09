@@ -18,11 +18,10 @@
 @interface BLAccount : NSObject
 
 /** Obtain loginUserid from Login result */
-@property (nonatomic, strong) NSString * _Nullable loginUserid;
+@property (nonatomic, copy) NSString * _Nullable loginUserid;
 /** Obtain loginSession from Login result */
-@property (nonatomic, strong) NSString * _Nullable loginSession;
-/** Account Http timeout, default 30000ms */
-@property (nonatomic, assign, getter=getAccountHttpTimeout) NSUInteger accountHttpTimeout;
+@property (nonatomic, copy) NSString * _Nullable loginSession;
+
 
 /**
  *  Get Account Instance Object With Config Param
@@ -31,12 +30,7 @@
  *  @return Account Instance Object
  */
 + (instancetype _Nullable)sharedAccount;
-/**
- *  Get Account Instance Object With Config Param
- *
- *  @return Account Instance Object
- */
-+ (instancetype _Nullable)sharedAccountWithlicenseId:(NSString *)licenseId CompanyId:(NSString *)companyId;
+
 /**
  *  Login with username and password
  *

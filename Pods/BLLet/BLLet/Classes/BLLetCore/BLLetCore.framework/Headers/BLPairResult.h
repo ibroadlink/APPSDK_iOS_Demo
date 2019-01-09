@@ -11,6 +11,16 @@
 @interface BLPairResult : BLBaseResult
 
 /**
+ *  控制ID
+ */
+@property (nonatomic, assign) NSInteger pairId;
+
+/**
+ *  控制私钥
+ */
+@property (nonatomic, strong) NSString *pairKey;
+
+/**
  Get device control id
 
  @return Device control id

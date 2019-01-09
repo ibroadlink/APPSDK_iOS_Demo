@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <BLLetBase/BLLetBase.h>
-#import <BLLetCore/BLLetCore.h>
 
 
 @interface BLIRCode : NSObject
@@ -23,18 +22,13 @@
  */
 @property (nonatomic, strong) NSString *loginSession;
 
-/** Obtain familyId from BLFamilyInfoResult */
+/**
+ Obtain familyId from BLFamilyInfoResult
+ */
 @property (nonatomic, strong)NSString *familyId;
-
-/** Global Http timeout, default 30000ms */
-@property (nonatomic, assign, getter=getHttpTimeout) NSUInteger httpTimeout;
-
-
-+ (instancetype _Nullable)sharedIrdaCodeWithlicenseId:(NSString *)licenseId;
 
 + (nullable instancetype)sharedIrdaCode;
 
-- (void)setFamilyId:(NSString *)familyId;
 /**
  Query all support ircode device types. Like AC, TV, STB ...
  

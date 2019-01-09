@@ -11,16 +11,6 @@
 @interface BLDNAControllerResult : BLBaseResult
 
 /**
- Device control send raw data
- */
-@property (nonatomic, strong) NSString *sendData;
-
-/**
- Device control receive raw data
- */
-@property (nonatomic, strong) NSString *recvData;
-
-/**
  Device control cookie
  */
 @property (nonatomic, strong, getter=getCookie) NSString *cookie;

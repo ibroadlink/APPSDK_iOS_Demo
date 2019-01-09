@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/BLAccount.h</key>
 		<data>
-		4U3BW7jVEgPUSfzMKO0buyf6XUc=
+		CXNLF7M0DLThQoMw4oDxlKZeDvQ=
 		</data>
 		<key>Headers/BLBindInfoResult.h</key>
 		<data>
@@ -74,7 +74,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		7VfM1x4LixCu8qlqUNZ+FJY8g/Y=
+		Be5ysq+45XxXVTimAjOiscAlssM=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -86,7 +86,7 @@
 		</data>
 		<key>PrivateHeaders/BLAccountImpl.h</key>
 		<data>
-		eKJTrMmRC8NOB/mdbR1Dtstt6xw=
+		h06lMADnAhcOhIl2E/RpAQUBgBI=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -95,11 +95,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			4U3BW7jVEgPUSfzMKO0buyf6XUc=
+			CXNLF7M0DLThQoMw4oDxlKZeDvQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			Mj8maMn8r+gOldAnhmx2q3XSLlztjbYQxxKRpDVsuP8=
+			se5PYWNzr6GFNFZhKW+ZlxQi6iKKe2IJswSXfsI+7JU=
 			</data>
 		</dict>
 		<key>Headers/BLBindInfoResult.h</key>
@@ -304,11 +304,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			eKJTrMmRC8NOB/mdbR1Dtstt6xw=
+			h06lMADnAhcOhIl2E/RpAQUBgBI=
 			</data>
 			<key>hash2</key>
 			<data>
-			8yGC+TYa964eWg7sCUpZ1Gi5A/rf9ebdScuznGIpCEY=
+			zO/iY5cxWmyMnrSU3z/qZFiKpvO+YuUK6m8eOXLNR6E=
 			</data>
 		</dict>
 	</dict>

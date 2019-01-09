@@ -11,12 +11,12 @@ target 'BLAPPSDKDemo' do
 
   # Pods for BLAPPSDKDemo
 
-  pod 'BLLet/BLLetBase', '~> 2.8.7'
-  pod 'BLLet/BLLetCore', '~> 2.8.7'
-  pod 'BLLet/BLLetPlugins', '~> 2.8.7'
-  pod 'BLLet/BLLetAccount', '~> 2.8.7'
-  pod 'BLLet/BLLetFamily', '~> 2.8.7'
-  pod 'BLLet/BLLetIRCode', '~> 2.8.7'
+  pod 'BLLet/BLLetBase', '~> 2.9.2'
+  pod 'BLLet/BLLetCore', '~> 2.9.2'
+  pod 'BLLet/BLLetPlugins', '~> 2.9.2'
+  pod 'BLLet/BLLetAccount', '~> 2.9.2'
+  pod 'BLLet/BLLetFamily', '~> 2.9.2'
+  pod 'BLLet/BLLetIRCode', '~> 2.9.2'
 	
 	pod 'Cordova', '~> 4.4.0'
 	pod 'SSZipArchive', '~> 2.1.1'

@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <BLLetBase/BLLetBase.h>
-
-#import "BLConfigParam.h"
 #import "BLController.h"
 
 /**
@@ -34,8 +32,6 @@
 /** Device Instance object */
 @property (nonatomic, strong) BLController *controller;
 
-
-
 /**
  *  Get APPSDK Instance object with License.
  *  You must call this method first, if you want to use appsdk.
@@ -53,6 +49,13 @@
  *  @return APPSDK Instance object
  */
 + (instancetype)sharedLet;
+
+/**
+ Reset APPSDK License
+
+ @param license License from BroadLink Co., Ltd.
+ */
+- (void)resetSdkLicense:(NSString *)license;
 
 /**
  *  Get APPSDK Version

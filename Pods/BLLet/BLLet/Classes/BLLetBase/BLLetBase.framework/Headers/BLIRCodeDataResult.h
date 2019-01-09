@@ -18,6 +18,6 @@
 /**
  Ircode send hex string
  */
-@property(nonatomic, strong)NSString *ircode;
+@property(nonatomic, copy)NSString *ircode;
 
 @end

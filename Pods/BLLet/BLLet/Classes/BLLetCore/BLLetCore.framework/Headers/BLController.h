@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <BLLetBase/BLLetBase.h>
-#import "BLConfigParam.h"
 #import "BLDNADevice.h"
 
 #import "BLDeviceConfigResult.h"
@@ -40,22 +39,6 @@
 
 @optional
 /**
- Filter device when find new device.
-
- @param device      Filter device info
- @return            YES / NO.  Default is NO.
- */
-- (Boolean)filterDevice:(BLDNADevice * _Nonnull)device;
-
-/**
- Add device to sdk when find new device.
-
- @param device      Add device info
- @return            YES / NO.  Default is NO.
- */
-- (Boolean)shouldAdd:(BLDNADevice * _Nonnull)device;
-
-/**
  Update device info when find new device or device info change.
 
  @param device      Update device info
@@ -73,24 +56,29 @@
 
 @end
 
-
 /**
  Device Controller Class
  */
 @interface BLController : NSObject
 
 /**
+ SDK License
+ */
+@property (nonatomic, copy) NSString *sdkLicense;
+/**
  Account loginUserid
  */
-@property (nonatomic, strong) NSString *loginUserid;
+@property (nonatomic, copy) NSString *loginUserid;
 
 /**
  Account loginSession
  */
-@property (nonatomic, strong) NSString *loginSession;
+@property (nonatomic, copy) NSString *loginSession;
 
-/** Obtain familyId from BLFamilyInfoResult */
-@property (nonatomic, strong)NSString *currentFamilyId;
+/**
+ Obtain familyId from BLFamilyInfoResult
+ */
+@property (nonatomic, copy) NSString *currentFamilyId;
 
 /**
  Device Controller Delegate
@@ -98,12 +86,12 @@
 @property (nonatomic, weak) id <BLControllerDelegate> _Nullable delegate;
 
 /**
- Get BLController Instance Object With Config Param
+ Get BLController Instance Object With license
 
- @param configParam     Config Param
+ @param license         SDK license
  @return                BLController Instance
  */
-+ (instancetype _Nullable)sharedControllerWithConfigParam:(BLConfigParam *_Nonnull)configParam;
++ (instancetype _Nullable)sharedControllerWithLicense:(NSString *_Nonnull)license;
 
 /**
  * Set current family id
@@ -223,6 +211,7 @@
 - (NSString *_Nonnull)queryDeviceIp:(NSString *_Nonnull)did;
 
 /**
+ 
  Pair device to get control id and key.
  These id and key are used to control deivce in remote mode.
 
@@ -937,14 +926,6 @@
  @return                    Get result
  */
 - (BLGetAPListResult *_Nonnull)deviceAPList:(NSInteger)timeout;
-
-/**
- Query device dna control raw data
- 
- @param did                 Device did
- @return                    Raw data list
- */
-- (NSArray *_Nonnull)queryDnacontrolDataWithDid:(NSString *_Nonnull)did;
 
 /**
  Query device data reporting

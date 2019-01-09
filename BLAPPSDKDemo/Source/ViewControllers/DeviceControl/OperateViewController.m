@@ -32,6 +32,7 @@
 
 @property (nonatomic, weak)NSTimer *stateTimer;
 @property (nonatomic, strong)NSArray *operateButtonArray;
+@property (nonatomic, copy)NSArray *configArray;
 @property (weak, nonatomic) IBOutlet UITableView *operateTableView;
 @end
 
@@ -62,7 +63,7 @@
     netstateLabel.text = [netstateLabel.text stringByAppendingString:@"Getting..."];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-//        [self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_JS_FILE];
+        //        [self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_JS_FILE];
     });
     
     _operateButtonArray = @[@"Script Download",
@@ -80,7 +81,11 @@
                             @"GateWay Control",
                             @"query DeviceData",
                             @"General Timer",
-                            @"Device Pair"];
+                            @"Device Pair",
+                            @"Fastcon No Config",
+                            @"GetFastconStatus"];
+    
+    _configArray = [NSArray array];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -171,6 +176,11 @@
         case 15:
             [self devicePair];
             break;
+        case 16:
+            [self fastconNoConfig];
+            break;
+        case 17:
+            [self getFastconStatusWithDevList:_configArray];
         default:
             break;
     }
@@ -368,6 +378,7 @@
 }
 
 - (void)getServerTime {
+    [_blController updateDeviceInfo:self.device.did name:@"Fastcon-Device" lock:NO];
     BLDeviceTimeResult *result = [_blController queryDeviceTime:self.device.did];
     if ([result succeed]) {
         _resultText.text = [NSString stringWithFormat:@"Time:%@ diff:%ld", result.time, result.difftime];
@@ -384,12 +395,55 @@
 - (void)devicePair {
     BLPairResult *result = [_blController pairWithDevice:_device];
     _resultText.text = [NSString stringWithFormat:@"id:%ld,key:%@",(long)result.getId,result.getKey];
-    //Update Device Info
-    _device.controlId = result.getId;
-    _device.controlKey = result.getKey;
-    [[DeviceDB sharedOperateDB] updateSqlWithDevice:_device];
-    //addDevice again
-    [_blController addDevice:_device];
+    if ([result succeed]) {
+        //Update Device Info
+        _device.controlId = result.getId;
+        _device.controlKey = result.getKey;
+        [[DeviceDB sharedOperateDB] updateSqlWithDevice:_device];
+        //addDevice again
+        [_blController addDevice:_device];
+    }
+    
+}
+
+- (void)fastconNoConfig {
+    NSDictionary *waitConfigDataDic = @{
+                              @"did": @"0000000000000000000034ea3437fc5f",
+                              @"act":@0,
+                              @"count":@10,
+                              @"index":@0,
+                              
+                              };
+    NSString *waitConfigDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:waitConfigDataDic options:0 error:nil] encoding:NSUTF8StringEncoding];
+    NSString *waitConfigResult = [_blController dnaControl:_device.did subDevDid:nil dataStr:waitConfigDataStr command:@"fastcon_no_config" scriptPath:nil];
+    [BLStatusBar showTipMessageWithStatus:waitConfigResult];
+    _resultText.text = waitConfigResult;
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[waitConfigResult dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
+    if ([dic[@"status"]integerValue] == 0) {
+        NSArray *configList = dic[@"data"][@"devlist"];
+        NSDictionary *configDataDic = @{
+                                            @"did": @"0000000000000000000034ea3437fc5f",
+                                            @"act":@1,
+                                            @"devlist":configList
+                                            
+                                            };
+        NSString *configDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:configDataDic options:0 error:nil] encoding:NSUTF8StringEncoding];
+        [_blController dnaControl:_device.did subDevDid:nil dataStr:configDataStr command:@"fastcon_no_config" scriptPath:nil];
+        _configArray = [configList copy];
+    }
+}
+
+- (void)getFastconStatusWithDevList:(NSArray *)configList {
+    NSDictionary *dic = @{
+                                    @"did": @"0000000000000000000034ea3437fc5f",
+                                    @"act":@2,
+                                    @"devlist":configList
+                                    
+                                    };
+    NSString *str = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dic options:0 error:nil] encoding:NSUTF8StringEncoding];
+    NSString *result = [_blController dnaControl:_device.did subDevDid:nil dataStr:str command:@"fastcon_no_config" scriptPath:nil];
+    _resultText.text = result;
+    NSLog(@"fastcon_no_config_result:%@",result);
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

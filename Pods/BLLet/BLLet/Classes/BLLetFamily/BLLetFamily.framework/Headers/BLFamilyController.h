@@ -30,22 +30,12 @@
 
 @interface BLFamilyController : NSObject
 
-/** Global Http timeout, default 30000ms */
-@property (nonatomic, assign, getter=getHttpTimeout) NSUInteger httpTimeout;
 /** Obtain loginUserid from Login result */
-@property (nonatomic, strong)NSString *loginUserid;
+@property (nonatomic, copy)NSString *loginUserid;
 /** Obtain loginSession from Login result */
-@property (nonatomic, strong)NSString *loginSession;
+@property (nonatomic, copy)NSString *loginSession;
 /** Obtain familyId from BLFamilyInfoResult */
-@property (nonatomic, strong)NSString *currentFamilyId;
-
-/**
- Get family controller with global config
- 
- @param licenseId           licenseId
- @return                    Family controller Object
- */
-+ (nullable instancetype)sharedManagerWithlicenseId:(NSString *)licenseId;
+@property (nonatomic, copy)NSString *currentFamilyId;
 
 /**
  *  Get family controller with global config

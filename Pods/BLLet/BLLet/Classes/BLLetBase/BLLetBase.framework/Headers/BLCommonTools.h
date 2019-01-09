@@ -16,7 +16,7 @@
  *
  *  @return 当前手机时间
  */
-+(NSString*)getCurrentTimes;
++ (NSString*)getCurrentTimes;
 
 /**
  *  获取当前系统语言

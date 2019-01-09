@@ -31,7 +31,7 @@
     [self setExtraCellLineHidden:_MyDeviceTable];
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     self.blController = delegate.let.controller;
-    [self queryDeviceState:_devicearray];
+//    [self queryDeviceState:_devicearray];
     
 }
 
@@ -103,6 +103,7 @@
     UILabel *netstateLabel = (UILabel *)[cell viewWithTag:104];
 
     netstateLabel.text = [NSString stringWithFormat:@"NetState:%@", [self getstate:[device getState]]];
+//    NSLog(@"------Mac:%@,state:%ld",[device getMac],(long)[device getState]);
     return cell;
 }
 

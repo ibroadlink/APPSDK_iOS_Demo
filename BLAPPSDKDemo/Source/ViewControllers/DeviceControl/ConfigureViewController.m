@@ -44,7 +44,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSDate *date = [NSDate date];
         NSLog(@"====Start Config===");
-        BLDeviceConfigResult *result = [controller deviceConfig:ssidName password:password version:2 timeout:60];
+        BLDeviceConfigResult *result = [controller deviceConfig:ssidName password:password version:3 timeout:100];
         NSLog(@"====Config over! Spends(%fs)", [date timeIntervalSinceNow]);
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideIndicatorOnWindow];

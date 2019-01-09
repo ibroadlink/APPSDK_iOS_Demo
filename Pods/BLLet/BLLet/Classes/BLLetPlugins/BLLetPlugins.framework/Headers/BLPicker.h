@@ -12,10 +12,6 @@
 
 @property (nonatomic, strong) NSString *userId;
 
-@property (nonatomic, strong) NSString *license;
-
-+ (instancetype)sharedPickerWithLicenseId:(NSString *)licenseId License:(NSString *)license;
-
 + (instancetype _Nullable)sharedPicker;
 /**
  开启数据统计上报模块

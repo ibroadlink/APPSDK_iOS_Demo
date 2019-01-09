@@ -164,7 +164,7 @@
     NSInteger valint = [val intValue];
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setValue:@(valint) forParam:param];
-    [stdData setValue:val forParam:@"ntlight"];
+//    [stdData setValue:val forParam:@"ntlight"];
     BLStdControlResult *result = [_blController dnaControl:[_device getDid] stdData:stdData action:action];
 //    NSDictionary *dataDic = @{
 //                              @"vals": @[

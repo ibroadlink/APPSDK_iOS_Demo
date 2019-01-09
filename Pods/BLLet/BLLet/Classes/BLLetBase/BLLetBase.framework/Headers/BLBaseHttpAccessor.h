@@ -10,7 +10,6 @@
 
 @interface BLBaseHttpAccessor : NSObject
 
-
 /**
  *  HTTP的同步GET操作
  *

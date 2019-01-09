@@ -13,6 +13,6 @@
 /**
  Ircode script infomation
  */
-@property(nonatomic, strong)NSString *infomation;
+@property(nonatomic, copy)NSString *infomation;
 
 @end

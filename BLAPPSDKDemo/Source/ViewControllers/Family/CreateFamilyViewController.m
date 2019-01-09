@@ -40,22 +40,22 @@
     
     BLFamilyInfo *info = [[BLFamilyInfo alloc]init];
     info.familyName = self.familyNameField.text;
-    [manager createNewFamilyWithInfo:info iconImage:nil completionHandler:^(BLFamilyInfoResult * _Nonnull result) {
-        NSLog(@"result:%@",result);
-    }];
-    
-//    [manager createDefaultFamilyWithInfo:self.familyNameField.text country:@"China" province:@"ZheJiang" city:@"HangZhou" completionHandler:^(BLFamilyInfoResult * _Nonnull result) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            if ([result succeed]) {
-//                NSLog(@"familyID:%@ version:%@ Name:%@ Description:%@", result.familyInfo.familyId, result.familyInfo.familyVersion, result.familyInfo.familyName, result.familyInfo.familyDescription);
-//                [BLStatusBar showTipMessageWithStatus:@"Create Family success!"];
-//                [self performSelector:@selector(goBack) withObject:nil afterDelay:2.0f];
-//            } else {
-//                NSLog(@"ERROR :%@", result.msg);
-//                [BLStatusBar showTipMessageWithStatus:[@"Create Family failed! " stringByAppendingString:result.msg]];
-//            }
-//        });
+//    [manager createNewFamilyWithInfo:info iconImage:nil completionHandler:^(BLFamilyInfoResult * _Nonnull result) {
+//        NSLog(@"result:%@",result);
 //    }];
+    
+    [manager createDefaultFamilyWithInfo:self.familyNameField.text country:@"China" province:@"ZheJiang" city:@"HangZhou" completionHandler:^(BLFamilyInfoResult * _Nonnull result) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([result succeed]) {
+                NSLog(@"familyID:%@ version:%@ Name:%@ Description:%@", result.familyInfo.familyId, result.familyInfo.familyVersion, result.familyInfo.familyName, result.familyInfo.familyDescription);
+                [BLStatusBar showTipMessageWithStatus:@"Create Family success!"];
+                [self performSelector:@selector(goBack) withObject:nil afterDelay:2.0f];
+            } else {
+                NSLog(@"ERROR :%@", result.msg);
+                [BLStatusBar showTipMessageWithStatus:[@"Create Family failed! " stringByAppendingString:result.msg]];
+            }
+        });
+    }];
 }
 
 #pragma mark - delegate

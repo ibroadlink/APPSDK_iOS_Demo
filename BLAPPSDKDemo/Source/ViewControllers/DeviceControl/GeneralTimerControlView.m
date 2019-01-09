@@ -48,7 +48,7 @@
     UIAlertAction *commTimerAction = [UIAlertAction actionWithTitle:@"Comm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Comm" message:nil preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"0_1_01_*_*_0,1,2,3,4,5_*";
+            textField.text = @"U- 0_30_0_*_*_0,1,3,5_*";
             textField.placeholder = @"time";
         }];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
@@ -66,7 +66,7 @@
     UIAlertAction *delayTimerAction = [UIAlertAction actionWithTitle:@"delay" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"delay" message:nil preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"0_1_01_*_*_0,1,2,3,4,5_*";
+            textField.text = @"U- 0_30_0_*_*_0,1,3,5_*";
             textField.placeholder = @"time";
         }];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
@@ -84,7 +84,7 @@
     UIAlertAction *periodTimerAction = [UIAlertAction actionWithTitle:@"period" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"period" message:nil preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"0_1_01_*_*_0,1,2,3,4,5_*";
+            textField.text = @"U- 0_30_0_*_*_0,1,3,5_*";
             textField.placeholder = @"time";
         }];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
@@ -102,11 +102,11 @@
     UIAlertAction *cycleTimerAction = [UIAlertAction actionWithTitle:@"cycle" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"cycle" message:nil preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"0_1_01_*_*_0,1,2,3,4,5_*";
+            textField.text = @"U- 0_30_0_*_*_0,1,3,5_*";
             textField.placeholder = @"stime";
         }];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"0_1_22_*_*_0,1,2,3,4,5_*";
+            textField.text = @"U- 0_30_0_*_*_0,1,3,5_*";
             textField.placeholder = @"etime";
         }];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
@@ -130,11 +130,11 @@
     UIAlertAction *randTimerAction = [UIAlertAction actionWithTitle:@"rand" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"rand" message:nil preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"0_1_01_*_*_0,1,2,3,4,5_*";
+            textField.text = @"U- 0_30_0_*_*_0,1,3,5_*";
             textField.placeholder = @"stime";
         }];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"0_1_22_*_*_0,1,2,3,4,5_*";
+            textField.text = @"U- 0_30_0_*_*_0,1,3,5_*";
             textField.placeholder = @"etime";
         }];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {

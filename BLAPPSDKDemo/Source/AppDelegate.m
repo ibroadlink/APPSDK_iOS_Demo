@@ -59,8 +59,8 @@
 - (void)loadAppSdk {
     //BLLetCore
     self.let = [BLLet sharedLetWithLicense:baihk_SDK_LICENSE];        // Init APPSDK
-    [self.let setDebugLog:BL_LEVEL_ALL];                           // Set APPSDK debug log level
-    [self.let.controller setSDKRawDebugLevel:BL_LEVEL_ALL];        // Set DNASDK debug log level
+    [[BLLet sharedLet] setDebugLog:BL_LEVEL_ALL];                           // Set APPSDK debug log level
+    [[BLLet sharedLet].controller setSDKRawDebugLevel:BL_LEVEL_ALL];        // Set DNASDK debug log level
     
     [BLConfigParam sharedConfigParam].controllerSendCount = 3;
     [BLConfigParam sharedConfigParam].controllerLocalTimeout = 2000;
@@ -68,32 +68,36 @@
     [BLConfigParam sharedConfigParam].controllerQueryCount = 8;
     [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;
     
-    [BLConfigParam sharedConfigParam].packName = @"com.wofeng.homecontrol";
-    [[BLConfigParam sharedConfigParam] resetLicense:SDK_LICENSE];
+    [BLConfigParam sharedConfigParam].packName = @"cn.com.broadlink.econtrol.plus";         //Reset package name
+    
+    //Reset License
+    [BLLet sharedLetWithLicense:SDK_LICENSE];
+    
+    //使用appService集群
     [BLConfigParam sharedConfigParam].appServiceEnable = 1;
     
-    [self.let.controller startProbe:3000];                           // Start probe device
-    self.let.controller.delegate = self;
+    [[BLLet sharedLet].controller startProbe:3000];                           // Start probe device
+    [BLLet sharedLet].controller.delegate = self;
     
     NSString *licenseId = [BLConfigParam sharedConfigParam].licenseId;
     NSString *companyId = [BLConfigParam sharedConfigParam].companyId;
     
     //BLLetAccount
-    self.account = [BLAccount sharedAccountWithlicenseId:licenseId CompanyId:companyId];
+    self.account = [BLAccount sharedAccount];
     
     //BLLetFamily
-    self.familyController = [BLFamilyController sharedManagerWithlicenseId:licenseId];
+    self.familyController = [BLFamilyController sharedManager];
     
     //BLLetPlugins
-    BLPicker *blPicker = [BLPicker sharedPickerWithLicenseId:licenseId License:self.let.configParam.sdkLicense];
+    BLPicker *blPicker = [BLPicker sharedPicker];
     [blPicker startPick];
     NSString *cliendId = @"c39a135e4829daa4c307e60255699416";
     NSString *redirectURI = @"http://latiao.izanpin.com/";
-    self.blOauth = [[BLOAuth alloc] initWithLicenseId:licenseId cliendId:cliendId redirectURI:redirectURI];
+    self.blOauth = [[BLOAuth alloc] initWithCliendId:cliendId redirectURI:redirectURI];
     
     
     //BLLetIRCode
-    BLIRCode *ircode = [BLIRCode sharedIrdaCodeWithlicenseId:licenseId];
+    BLIRCode *ircode = [BLIRCode sharedIrdaCode];
     ircode.familyId = @"01b42ba809ad5d8382cf4f58543df396";
     
     
@@ -111,6 +115,7 @@
             if ([result succeed]) {
                 NSLog(@"本地登录成功");
                 NSLog(@"loginUserid:%@",[BLFamilyController sharedManager].loginUserid);
+                
             }
         }];
     }
@@ -166,11 +171,14 @@
         if (device.newConfig) {
             //Update Device Info
             BLPairResult *result = [[BLLet sharedLet].controller pairWithDevice:device];
-            device.controlId = result.getId;
-            device.controlKey = result.getKey;
-            [[DeviceDB sharedOperateDB] updateSqlWithDevice:device];
-            //addDevice
-            [[BLLet sharedLet].controller addDevice:device];
+            if ([result succeed]) {
+                device.controlId = result.getId;
+                device.controlKey = result.getKey;
+                [[DeviceDB sharedOperateDB] updateSqlWithDevice:device];
+                //addDevice
+                [[BLLet sharedLet].controller addDevice:device];
+            }
+            
         }
     }
 }

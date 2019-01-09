@@ -13,6 +13,6 @@
 /**
  Download file store path
  */
-@property (nonatomic, strong, getter=getSavePath) NSString *savePath;
+@property (nonatomic, copy, getter=getSavePath) NSString *savePath;
 
 @end

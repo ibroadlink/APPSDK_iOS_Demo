@@ -13,12 +13,16 @@
 /**
  Result status. 0--success, others--failed.
  */
+@property (nonatomic, assign) NSInteger status;
+/**
+ Result status. 0--success, others--failed.
+ */
 @property (nonatomic, assign, getter=getError) NSInteger error;
 
 /**
  Result Message.
  */
-@property (nonatomic, strong, getter=getMsg) NSString *msg;
+@property (nonatomic, copy, getter=getMsg) NSString *msg;
 
 
 /**

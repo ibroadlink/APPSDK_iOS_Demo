@@ -29,7 +29,7 @@ typedef void(^BLOAuthBlock)(BOOL status, BLOAuthBlockResult *result);
  * param redirectURI 第三方应用在互联开放平台申请所填的URL，必须一致
  * return 初始化后的授权登录对象
  */
-- (id)initWithLicenseId:(NSString *)licenseId cliendId:(NSString *)clientId redirectURI:(NSString *)redirectURI;
+- (id)initWithCliendId:(NSString *)clientId redirectURI:(NSString *)redirectURI;
 
 /**
  * 登录授权
