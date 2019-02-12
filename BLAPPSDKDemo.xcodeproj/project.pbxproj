@@ -219,6 +219,7 @@
 		02B42DA320B2A14B00700177 /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				3AAC2A2E20EB597C00031DEC /* UserCell */,
 				70503D851FDBE4D5002D3371 /* CodeLoginViewController.h */,
 				70503D6B1FDBE4D5002D3371 /* CodeLoginViewController.m */,
 				70503D7A1FDBE4D5002D3371 /* LoginByOauthViewController.h */,
@@ -235,7 +236,6 @@
 				025A168620E33CBC00D75DAB /* RestPasswordViewController.m */,
 				0244948920AEC26D0056FB10 /* UserViewController.h */,
 				0244948A20AEC26D0056FB10 /* UserViewController.m */,
-				3AAC2A2E20EB597C00031DEC /* UserCell */,
 				3ACDE3BF20EC9CF00016461D /* ModifyPhoneViewController.h */,
 				3ACDE3C020EC9CF00016461D /* ModifyPhoneViewController.m */,
 			);

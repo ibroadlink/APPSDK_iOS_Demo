@@ -7,9 +7,8 @@
 //
 
 #import "LoginsTableViewController.h"
-#import "AppDelegate.h"
 #import "BLUserDefaults.h"
-#import "BLStatusBar.h"
+#import <BLLetAccount/BLLetAccount.h>
 #import <WebKit/WebKit.h>
 @interface LoginsTableViewController ()
 @property (strong,nonatomic)BLAccount *account;
@@ -42,18 +41,6 @@
 
 - (IBAction)accountInfo:(id)sender {
 }
-
-- (IBAction)oauthBtn:(id)sender {
-//    [_account thirdAuth:@"com.suning.smarthome" sdkLicense:SDK_LICENSE completionHandler:^(BLLoginResult * _Nonnull result) {
-//
-//    }];
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    BLOAuth *blOauth = delegate.blOauth;
-    [blOauth authorize:nil];
-}
-
-
-
 
 
 @end

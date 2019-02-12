@@ -970,12 +970,4 @@
  */
 - (NSString *)deleteTriggerURL;
 
-
-/**
- 数据上报
-
- @return URL地址
- */
-- (NSString *)pickUpdateDataURL;
-
 @end

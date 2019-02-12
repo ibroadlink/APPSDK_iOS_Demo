@@ -8,8 +8,8 @@
 
 
 #import "ProductModelsTableViewController.h"
-#import "AppDelegate.h"
 #import "RecoginzeIRCodeViewController.h"
+#import <BLLetIRCode/BLLetIRCode.h>
 
 @interface Brand ()
 @property(nonatomic, readwrite, assign) NSInteger cateGoryId;
@@ -69,8 +69,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _modelsArray = [NSArray array];
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    self.blcontroller = delegate.let.controller;
+    self.blcontroller = [BLLet sharedLet].controller;
     self.blircode = [BLIRCode sharedIrdaCode];
     if (_devtype == BL_IRCODE_DEVICE_AC) {
         [self queryDeviceVersionWithTypeId:_devtype brandId:_cateGory.brandid];

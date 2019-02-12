@@ -7,9 +7,12 @@
 //
 
 #import "RestPasswordViewController.h"
+#import <BLLetAccount/BLLetAccount.h>
+
+#import "BLStatusBar.h"
 #import "BLLoadingButton.h"
-#import "AppDelegate.h"
 #import "LoginViewController.h"
+
 @interface RestPasswordViewController () <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *VCodeTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;

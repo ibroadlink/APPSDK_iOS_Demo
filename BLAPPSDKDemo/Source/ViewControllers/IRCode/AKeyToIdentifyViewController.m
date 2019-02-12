@@ -7,7 +7,8 @@
 //
 
 #import "AKeyToIdentifyViewController.h"
-#import "AppDelegate.h"
+#import <BLLetIRCode/BLLetIRCode.h>
+
 #import "ControlViewController.h"
 #import "BLStatusBar.h"
 #import "DeviceDB.h"
@@ -24,8 +25,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    self.blcontroller = delegate.let.controller;
+    self.blcontroller = [BLLet sharedLet].controller;
     self.blircode = [BLIRCode sharedIrdaCode];
 }
 

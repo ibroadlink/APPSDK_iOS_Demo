@@ -10,6 +10,8 @@
 #import "AppDelegate.h"
 #import "BLUserDefaults.h"
 #import "BLStatusBar.h"
+#import <BLLetAccount/BLLetAccount.h>
+
 
 @interface CodeLoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *phoneNumtxt;
@@ -27,9 +29,7 @@
     BLUserDefaults *userDefault = [BLUserDefaults shareUserDefaults];
     self.phoneNumtxt.text = [userDefault getUserName];
     
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    _account = delegate.account;
-    
+    self.account = [BLAccount sharedAccount];
 }
 
 - (void)didReceiveMemoryWarning {

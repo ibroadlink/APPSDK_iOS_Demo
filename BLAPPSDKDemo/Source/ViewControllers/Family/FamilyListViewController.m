@@ -9,7 +9,8 @@
 #import "FamilyListViewController.h"
 #import "FamilyDetailViewController.h"
 #import "BLStatusBar.h"
-#import "AppDelegate.h"
+#import <BLLetFamily/BLLetFamily.h>
+#import <BLLetAccount/BLLetAccount.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "DropDownList.h"
 

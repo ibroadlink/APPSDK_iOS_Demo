@@ -7,8 +7,10 @@
 //
 
 #import "RetrievePasswordViewController.h"
+#import <BLLetAccount/BLLetAccount.h>
+
+#import "BLStatusBar.h"
 #import "BLLoadingButton.h"
-#import "AppDelegate.h"
 #import "RestPasswordViewController.h"
 
 @interface RetrievePasswordViewController () <UITextFieldDelegate>

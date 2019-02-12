@@ -93,4 +93,7 @@
 /** APPService Enable , default 0 */
 @property (nonatomic, assign, getter=getAppServiceEnable) NSUInteger appServiceEnable;
 
+/* APP Controler remote resend , default 1 **/
+@property (nonatomic, assign) NSUInteger controllerResendMode;
+
 @end

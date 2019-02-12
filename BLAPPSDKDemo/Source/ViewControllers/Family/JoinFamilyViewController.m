@@ -7,7 +7,8 @@
 //
 
 #import "JoinFamilyViewController.h"
-#import "AppDelegate.h"
+#import <BLLetFamily/BLLetFamily.h>
+#import "BLStatusBar.h"
 
 @interface JoinFamilyViewController () <UITextFieldDelegate>
 

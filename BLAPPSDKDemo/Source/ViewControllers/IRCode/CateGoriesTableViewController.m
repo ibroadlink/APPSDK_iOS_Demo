@@ -9,6 +9,8 @@
 #import "CateGoriesTableViewController.h"
 #import "AppDelegate.h"
 #import "ProductModelsTableViewController.h"
+#import <BLLetIRCode/BLLetIRCode.h>
+
 
 @implementation Provider
 - (instancetype)initWithDic: (NSDictionary *)dic {

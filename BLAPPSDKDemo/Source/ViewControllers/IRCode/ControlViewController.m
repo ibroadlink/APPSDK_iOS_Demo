@@ -9,6 +9,8 @@
 #import "ControlViewController.h"
 #import "AppDelegate.h"
 #import "DeviceDB.h"
+#import <BLLetIRCode/BLLetIRCode.h>
+
 
 @interface ControlViewController ()<UITextFieldDelegate>
 @property (nonatomic, strong) BLController *blcontroller;

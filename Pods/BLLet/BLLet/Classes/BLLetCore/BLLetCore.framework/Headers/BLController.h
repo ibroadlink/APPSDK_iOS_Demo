@@ -245,6 +245,16 @@
  */
 - (void)addDevice:(BLDNADevice *_Nonnull)device;
 
+
+
+/**
+ Add device did to sdk whiteList.
+ Can probe for locked devices
+
+ @param dids device did
+ */
+- (void)addWhiteList:(NSArray *)dids;
+
 /**
  Query device is in sdk
 

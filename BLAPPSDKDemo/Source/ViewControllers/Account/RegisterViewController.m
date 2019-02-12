@@ -7,7 +7,8 @@
 //
 
 #import "RegisterViewController.h"
-#import "AppDelegate.h"
+#import <BLLetAccount/BLLetAccount.h>
+
 #import "BLStatusBar.h"
 
 @interface RegisterViewController () <UITextFieldDelegate>
@@ -26,9 +27,7 @@
     self.verificationCodeField.delegate = self;
     self.passwordField.delegate = self;
     self.nickNameField.delegate = self;
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    _account = delegate.account;
-    
+    self.account = [BLAccount sharedAccount];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -42,7 +41,7 @@
     NSString *phoneHead = self.phoneHeadField.text;
     NSString *phoneBody = self.phoneBodyField.text;
     
-    [_account sendRegVCode:phoneBody countryCode:phoneHead completionHandler:^(BLBaseResult * _Nonnull result) {
+    [self.account sendRegVCode:phoneBody countryCode:phoneHead completionHandler:^(BLBaseResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([result succeed]) {
                 [BLStatusBar showTipMessageWithStatus:@"Verification code has been sent"];
@@ -62,7 +61,7 @@
     NSString *password = self.passwordField.text;
     NSString *nickName = self.nickNameField.text;
     
-    [_account regist:phoneBody password:password nickname:nickName vcode:vCode sex:BL_ACCOUNT_MALE birthday:nil countryCode:phoneHead iconPath:nil
+    [self.account regist:phoneBody password:password nickname:nickName vcode:vCode sex:BL_ACCOUNT_MALE birthday:nil countryCode:phoneHead iconPath:nil
 completionHandler:^(BLLoginResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([result succeed]) {

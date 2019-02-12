@@ -7,8 +7,9 @@
 //
 
 #import "IRCodeTestViewController.h"
+#import <BLLetIRCode/BLLetIRCode.h>
+
 #import "BLStatusBar.h"
-#import "AppDelegate.h"
 #import "CateGoriesTableViewController.h"
 
 @implementation SubAreaInfo
@@ -65,8 +66,7 @@
     self.testTableView.delegate = self;
     self.testTableView.dataSource = self;
     
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    self.blcontroller = delegate.let.controller;
+    self.blcontroller = [BLLet sharedLet].controller;
     self.blircode = [BLIRCode sharedIrdaCode];
     [self.blircode requestIRCodeDeviceTypesCompletionHandler:^(BLBaseBodyResult * _Nonnull result) {
         NSLog(@"result:%@",result.msg);

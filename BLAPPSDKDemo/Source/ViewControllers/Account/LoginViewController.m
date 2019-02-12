@@ -10,7 +10,7 @@
 
 #import "BLUserDefaults.h"
 #import "BLStatusBar.h"
-#import "AppDelegate.h"
+#import <BLLetAccount/BLLetAccount.h>
 
 #import "BLLoadingButton.h"
 #import <YYCategories/UIColor+YYAdd.h>

@@ -9,6 +9,7 @@
 #import "CreateFamilyViewController.h"
 #import "BLStatusBar.h"
 #import "AppDelegate.h"
+#import <BLLetFamily/BLLetFamily.h>
 
 @interface CreateFamilyViewController () <UITextFieldDelegate>
 
@@ -35,8 +36,7 @@
     NSLog(@"create family");
     [self.familyNameField resignFirstResponder];
     
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    BLFamilyController *manager = delegate.familyController;
+    BLFamilyController *manager = [BLFamilyController sharedManager];
     
     BLFamilyInfo *info = [[BLFamilyInfo alloc]init];
     info.familyName = self.familyNameField.text;

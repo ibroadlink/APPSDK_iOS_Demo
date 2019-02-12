@@ -7,6 +7,7 @@
 //
 
 #import "A1ViewController.h"
+#import <BLLetPlugins/BLLetPlugins.h>
 #import "AppDelegate.h"
 #import "BLStatusBar.h"
 

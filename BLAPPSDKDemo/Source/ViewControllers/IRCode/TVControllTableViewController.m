@@ -7,6 +7,8 @@
 //
 
 #import "TVControllTableViewController.h"
+#import <BLLetIRCode/BLLetIRCode.h>
+
 #import "AppDelegate.h"
 #import "BLStatusBar.h"
 @interface TVControllTableViewController ()
@@ -19,8 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"%@",self.tvList);
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    self.blcontroller = delegate.let.controller;
+    self.blcontroller = [BLLet sharedLet].controller;
     self.blircode = [BLIRCode sharedIrdaCode];
 }
 

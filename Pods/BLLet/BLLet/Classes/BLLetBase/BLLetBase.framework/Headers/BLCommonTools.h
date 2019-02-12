@@ -165,7 +165,9 @@
 //是否为空字典
 + (BOOL)isEmptyDic:(NSDictionary *)dic;
 
+//图片裁剪，限制大小
 + (NSData *)convertToDataWithimage:(UIImage *)image MaxLimit:(NSNumber *)maxLimitDataSize;
 
+// 带block的NSTimer
 + (NSTimer *)bl_socheduledTimerWithTimeInterval:(NSTimeInterval)interval block:(void(^)(void))block repeats:(BOOL)repeats;
 @end

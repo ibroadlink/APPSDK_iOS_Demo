@@ -11,6 +11,8 @@
 #import "AppDelegate.h"
 #import "DeviceDB.h"
 #import "OperateViewController.h"
+#import <BLLetFamily/BLLetFamily.h>
+#import <BLLetIRCode/BLLetIRCode.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "ControlViewController.h"
 
@@ -73,7 +75,7 @@
 - (void)queryFamilyAllInfoWithId:(NSString *)queryId {
     NSArray *idlist = @[queryId];
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    BLFamilyController *manager = delegate.familyController;
+    BLFamilyController *manager = [BLFamilyController sharedManager];
 
     [self showIndicatorOnWindow];
     
@@ -344,7 +346,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        BLFamilyController *familyController = delegate.familyController;
+        BLFamilyController *familyController = [BLFamilyController sharedManager];
         BLModuleInfo *blmoduleInfo = self.deviceGroupArray[indexPath.section][indexPath.row];
 
         [familyController delModuleWithId:blmoduleInfo.moduleId fromFamilyId:self.familyId familyVersion:self.familyAllInfo.familyBaseInfo.familyVersion completionHandler:^(BLModuleControlResult * _Nonnull result) {

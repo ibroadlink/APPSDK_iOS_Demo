@@ -7,7 +7,8 @@
 //
 
 #import "RecoginzeIRCodeViewController.h"
-#import "AppDelegate.h"
+#import <BLLetIRCode/BLLetIRCode.h>
+
 #import "ControlViewController.h"
 #import "TVControllTableViewController.h"
 
@@ -22,8 +23,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    self.blcontroller = delegate.let.controller;
+    self.blcontroller = [BLLet sharedLet].controller;
     self.blircode = [BLIRCode sharedIrdaCode];
     self.tvList = [NSArray array];
 }

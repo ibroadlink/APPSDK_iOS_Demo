@@ -8,8 +8,9 @@
 
 #import "UserViewController.h"
 #import "BLUserDefaults.h"
-#import "AppDelegate.h"
+#import <BLLetAccount/BLLetAccount.h>
 #import <SDWebImage/UIImageView+WebCache.h>
+
 #import "BLUserHeadImageCell.h"
 #import "BLUserSaftyInfoCell.h"
 #import "BLUserLogoutCell.h"
@@ -254,8 +255,7 @@
 
 - (void)getUserInfo {
     BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    BLAccount *account = delegate.account;
+    BLAccount *account = [BLAccount sharedAccount];
     if (userDefault.getUserId) {
         [account getUserInfo:@[userDefault.getUserId] completionHandler:^(BLGetUserInfoResult * _Nonnull result) {
             if (![BLCommonTools isEmptyArray:result.info]) {

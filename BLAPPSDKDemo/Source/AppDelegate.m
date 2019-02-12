@@ -11,6 +11,8 @@
 #import "MainViewController.h"
 #import "BLUserDefaults.h"
 #import "UserViewController.h"
+#import <BLLetAccount/BLLetAccount.h>
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -41,67 +43,40 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
-    
-    [self handleOpenFromOtherApp:url];
-    return YES;
-}
-
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
-{
-    
-    [self handleOpenFromOtherApp:url];
-    return YES;
-}
+//- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+//    [self handleOpenFromOtherApp:url];
+//    return YES;
+//}
+//
+//- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+//    [self handleOpenFromOtherApp:url];
+//    return YES;
+//}
 
 #pragma mark - private method
 - (void)loadAppSdk {
     //BLLetCore
-    self.let = [BLLet sharedLetWithLicense:baihk_SDK_LICENSE];        // Init APPSDK
-    [[BLLet sharedLet] setDebugLog:BL_LEVEL_ALL];                           // Set APPSDK debug log level
-    [[BLLet sharedLet].controller setSDKRawDebugLevel:BL_LEVEL_ALL];        // Set DNASDK debug log level
+    self.let = [BLLet sharedLetWithLicense:baihk_SDK_LICENSE];                      // Init APPSDK
+    [self.let setDebugLog:BL_LEVEL_ALL];                                            // Set APPSDK debug log level
+    [self.let.controller setSDKRawDebugLevel:BL_LEVEL_ALL];                         // Set DNASDK debug log level
     
-    [BLConfigParam sharedConfigParam].controllerSendCount = 3;
-    [BLConfigParam sharedConfigParam].controllerLocalTimeout = 2000;
-    [BLConfigParam sharedConfigParam].controllerRemoteTimeout = 4000;
-    [BLConfigParam sharedConfigParam].controllerQueryCount = 8;
-    [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;
+    [BLConfigParam sharedConfigParam].controllerLocalTimeout = 2000;                // 局域网控制超时时间
+    [BLConfigParam sharedConfigParam].controllerRemoteTimeout = 4000;               // 远程控制超时时间
+    [BLConfigParam sharedConfigParam].controllerSendCount = 3;                      // 控制重试次数
+    [BLConfigParam sharedConfigParam].controllerQueryCount = 8;                     // 设备批量查询设备个数
+    [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;          // 脚本下载平台
+    [BLConfigParam sharedConfigParam].appServiceEnable = 1;                         // 使用appService集群
+    [BLConfigParam sharedConfigParam].controllerResendMode = 0;                     // 本地控制失败，远程尝试控制
     
-    [BLConfigParam sharedConfigParam].packName = @"cn.com.broadlink.econtrol.plus";         //Reset package name
+    [BLConfigParam sharedConfigParam].packName = @"cn.com.broadlink.econtrol.plus"; //Reset package name
+    [BLLet sharedLetWithLicense:SDK_LICENSE];                                       //Reset License
     
-    //Reset License
-    [BLLet sharedLetWithLicense:SDK_LICENSE];
+    [self.let.controller startProbe:3000];                                          // Start probe device
+    self.let.controller.delegate = self;
     
-    //使用appService集群
-    [BLConfigParam sharedConfigParam].appServiceEnable = 1;
+    //获取账号管理对象
+    BLAccount *account = [BLAccount sharedAccount];
     
-    [[BLLet sharedLet].controller startProbe:3000];                           // Start probe device
-    [BLLet sharedLet].controller.delegate = self;
-    
-    NSString *licenseId = [BLConfigParam sharedConfigParam].licenseId;
-    NSString *companyId = [BLConfigParam sharedConfigParam].companyId;
-    
-    //BLLetAccount
-    self.account = [BLAccount sharedAccount];
-    
-    //BLLetFamily
-    self.familyController = [BLFamilyController sharedManager];
-    
-    //BLLetPlugins
-    BLPicker *blPicker = [BLPicker sharedPicker];
-    [blPicker startPick];
-    NSString *cliendId = @"c39a135e4829daa4c307e60255699416";
-    NSString *redirectURI = @"http://latiao.izanpin.com/";
-    self.blOauth = [[BLOAuth alloc] initWithCliendId:cliendId redirectURI:redirectURI];
-    
-    
-    //BLLetIRCode
-    BLIRCode *ircode = [BLIRCode sharedIrdaCode];
-    ircode.familyId = @"01b42ba809ad5d8382cf4f58543df396";
-    
-    
-
     //从数据库取出所有设备加入SDK管理
     NSArray *storeDevices = [[DeviceDB sharedOperateDB] readAllDevicesFromSql];
     if (storeDevices && storeDevices.count > 0) {
@@ -111,11 +86,9 @@
     BLUserDefaults *userDefault = [BLUserDefaults shareUserDefaults];
     if ([userDefault getUserId] && [userDefault getSessionId]) {
         NSLog(@"本地登录开始");
-        [_account localLoginWithUsrid:[userDefault getUserId] session:[userDefault getSessionId] completionHandler:^(BLLoginResult * _Nonnull result) {
+        [account localLoginWithUsrid:[userDefault getUserId] session:[userDefault getSessionId] completionHandler:^(BLLoginResult * _Nonnull result) {
             if ([result succeed]) {
                 NSLog(@"本地登录成功");
-                NSLog(@"loginUserid:%@",[BLFamilyController sharedManager].loginUserid);
-                
             }
         }];
     }
@@ -130,33 +103,29 @@
     return NO;
 }
 
-- (void)handleOpenFromOtherApp:(NSURL *)url {
-    NSString *urlString = url.absoluteString;
-    NSLog(@"urlString:%@", urlString);
-    
-    __weak typeof(self) weakSelf = self;
-    
-    [self.blOauth HandleOpenURL:url completionHandler:^(BOOL status, BLOAuthBlockResult *result) {
-        if ([result succeed]) {
-            
-            [weakSelf.account loginWithIhcAccessToken:result.accessToken completionHandler:^(BLLoginResult * _Nonnull result) {
-                if ([result succeed]) {
-                    BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
-                    [userDefault setUserId:[result getUserid]];
-                    [userDefault setSessionId:[result getLoginsession]];
-                }
-            }];
-        }else{
-            NSLog(@"error=%ld msg=%@", (long)result.error, result.msg);
-        }
-    }];
-}
-
-#pragma mark - BLControllerDelegate
-//- (Boolean)shouldAdd:(BLDNADevice *)device {
-//    return NO;
+//- (void)handleOpenFromOtherApp:(NSURL *)url {
+//    NSString *urlString = url.absoluteString;
+//    NSLog(@"urlString:%@", urlString);
+//
+//    __weak typeof(self) weakSelf = self;
+//
+//    [self.blOauth HandleOpenURL:url completionHandler:^(BOOL status, BLOAuthBlockResult *result) {
+//        if ([result succeed]) {
+//
+//            [weakSelf.account loginWithIhcAccessToken:result.accessToken completionHandler:^(BLLoginResult * _Nonnull result) {
+//                if ([result succeed]) {
+//                    BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
+//                    [userDefault setUserId:[result getUserid]];
+//                    [userDefault setSessionId:[result getLoginsession]];
+//                }
+//            }];
+//        }else{
+//            NSLog(@"error=%ld msg=%@", (long)result.error, result.msg);
+//        }
+//    }];
 //}
 
+#pragma mark - BLControllerDelegate
 - (void)onDeviceUpdate:(BLDNADevice *)device isNewDevice:(Boolean)isNewDevice {
     //Only device reset, newconfig=1
     //Not all device support this.

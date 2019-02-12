@@ -9,7 +9,7 @@
 #import "ModifyPhoneViewController.h"
 #import "BLUserDefaults.h"
 #import "BLStatusBar.h"
-#import "AppDelegate.h"
+#import <BLLetAccount/BLLetAccount.h>
 
 @interface ModifyPhoneViewController () <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *countryField;
