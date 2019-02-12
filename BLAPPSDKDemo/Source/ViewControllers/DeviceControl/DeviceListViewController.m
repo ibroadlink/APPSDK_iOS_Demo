@@ -66,24 +66,26 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    _showDevices = [NSMutableArray arrayWithCapacity:0];
-    NSArray *tmpScanDevices = self.scanDevices;
+    self.showDevices = [NSMutableArray arrayWithCapacity:0];
     NSArray *tmpMyDevices = self.myDevices;
-    for (BLDNADevice *device in tmpScanDevices) {
+
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    NSDictionary *scanDevice = [delegate.scanDevices copy];
+    [scanDevice enumerateKeysAndObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(NSString *  _Nonnull key, BLDNADevice *  _Nonnull device, BOOL * _Nonnull stop) {
         BOOL isAdded = NO;
         for (BLDNADevice *myDevice in tmpMyDevices) {
-            if ([device.did isEqualToString:myDevice.did]) {
+            if ([key isEqualToString:myDevice.did]) {
                 isAdded = YES;
                 break;
             }
         }
         
         if (!isAdded) {
-            [_showDevices addObject:device];
+            [self.showDevices addObject:device];
         }
-    }
+    }];
     
-    return _showDevices.count;
+    return self.showDevices.count;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -121,11 +123,6 @@
 
 - (NSArray *)myDevices {
     return [[DeviceDB sharedOperateDB] readAllDevicesFromSql];
-}
-
-- (NSArray *)scanDevices {
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    return [delegate.scanDevices copy];
 }
 
 @end

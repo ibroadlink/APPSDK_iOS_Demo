@@ -28,7 +28,4 @@
 - (void) setSessionId: (NSString *)sessionId;
 - (NSString *) getSessionId;
 
-- (void) setIconUrl: (NSString *)iconUrl;
--(NSString *) getIconUrl;
-
 @end

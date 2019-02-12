@@ -17,6 +17,6 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) BLLet *let;
-@property (strong, nonatomic) NSMutableArray<BLDNADevice*> *scanDevices;
+@property (copy, nonatomic) NSMutableDictionary *scanDevices;
 @end
 

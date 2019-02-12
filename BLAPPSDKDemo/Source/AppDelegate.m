@@ -52,57 +52,7 @@
 //    [self handleOpenFromOtherApp:url];
 //    return YES;
 //}
-
-#pragma mark - private method
-- (void)loadAppSdk {
-    //BLLetCore
-    self.let = [BLLet sharedLetWithLicense:baihk_SDK_LICENSE];                      // Init APPSDK
-    [self.let setDebugLog:BL_LEVEL_ALL];                                            // Set APPSDK debug log level
-    [self.let.controller setSDKRawDebugLevel:BL_LEVEL_ALL];                         // Set DNASDK debug log level
-    
-    [BLConfigParam sharedConfigParam].controllerLocalTimeout = 2000;                // 局域网控制超时时间
-    [BLConfigParam sharedConfigParam].controllerRemoteTimeout = 4000;               // 远程控制超时时间
-    [BLConfigParam sharedConfigParam].controllerSendCount = 3;                      // 控制重试次数
-    [BLConfigParam sharedConfigParam].controllerQueryCount = 8;                     // 设备批量查询设备个数
-    [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;          // 脚本下载平台
-    [BLConfigParam sharedConfigParam].appServiceEnable = 1;                         // 使用appService集群
-    [BLConfigParam sharedConfigParam].controllerResendMode = 0;                     // 本地控制失败，远程尝试控制
-    
-    [BLConfigParam sharedConfigParam].packName = @"cn.com.broadlink.econtrol.plus"; //Reset package name
-    [BLLet sharedLetWithLicense:SDK_LICENSE];                                       //Reset License
-    
-    [self.let.controller startProbe:3000];                                          // Start probe device
-    self.let.controller.delegate = self;
-    
-    //获取账号管理对象
-    BLAccount *account = [BLAccount sharedAccount];
-    
-    //从数据库取出所有设备加入SDK管理
-    NSArray *storeDevices = [[DeviceDB sharedOperateDB] readAllDevicesFromSql];
-    if (storeDevices && storeDevices.count > 0) {
-        [self.let.controller addDeviceArray:storeDevices];
-    }
-    //本地登录
-    BLUserDefaults *userDefault = [BLUserDefaults shareUserDefaults];
-    if ([userDefault getUserId] && [userDefault getSessionId]) {
-        NSLog(@"本地登录开始");
-        [account localLoginWithUsrid:[userDefault getUserId] session:[userDefault getSessionId] completionHandler:^(BLLoginResult * _Nonnull result) {
-            if ([result succeed]) {
-                NSLog(@"本地登录成功");
-            }
-        }];
-    }
-}
-
-- (BOOL)isDeviceHasBeenScaned:(BLDNADevice *)device {
-    for (BLDNADevice *dev in self.scanDevices) {
-        if ([dev.getDid isEqualToString:device.getDid]) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
+//
 //- (void)handleOpenFromOtherApp:(NSURL *)url {
 //    NSString *urlString = url.absoluteString;
 //    NSLog(@"urlString:%@", urlString);
@@ -125,31 +75,56 @@
 //    }];
 //}
 
+#pragma mark - private method
+- (void)loadAppSdk {
+    //BLLetCore
+    self.let = [BLLet sharedLetWithLicense:baihk_SDK_LICENSE];                      // Init APPSDK
+    [self.let setDebugLog:BL_LEVEL_ALL];                                            // Set APPSDK debug log level
+    [self.let.controller setSDKRawDebugLevel:BL_LEVEL_ALL];                         // Set DNASDK debug log level
+    
+    [BLConfigParam sharedConfigParam].controllerLocalTimeout = 2000;                // 局域网控制超时时间
+    [BLConfigParam sharedConfigParam].controllerRemoteTimeout = 4000;               // 远程控制超时时间
+    [BLConfigParam sharedConfigParam].controllerSendCount = 3;                      // 控制重试次数
+    [BLConfigParam sharedConfigParam].controllerQueryCount = 8;                     // 设备批量查询设备个数
+    [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;          // 脚本下载平台
+    [BLConfigParam sharedConfigParam].appServiceEnable = 1;                         // 使用appService集群
+    [BLConfigParam sharedConfigParam].controllerResendMode = 0;                     // 本地控制失败，远程尝试控制
+    
+    [BLConfigParam sharedConfigParam].packName = @"cn.com.broadlink.econtrol.plus"; //Reset package name
+    [BLLet sharedLetWithLicense:SDK_LICENSE];                                       //Reset License
+    
+    [self.let.controller startProbe:3000];                                          // Start probe device
+    self.let.controller.delegate = self;
+    
+    //从数据库取出所有设备加入SDK管理
+    NSArray *storeDevices = [[DeviceDB sharedOperateDB] readAllDevicesFromSql];
+    if (storeDevices && storeDevices.count > 0) {
+        [self.let.controller addDeviceArray:storeDevices];
+    }
+
+    //本地登录 获取账号管理对象
+    BLAccount *account = [BLAccount sharedAccount];
+    BLUserDefaults *userDefault = [BLUserDefaults shareUserDefaults];
+    if ([userDefault getUserId] && [userDefault getSessionId]) {
+        NSLog(@"本地登录开始");
+        [account localLoginWithUsrid:[userDefault getUserId] session:[userDefault getSessionId] completionHandler:^(BLLoginResult * _Nonnull result) {
+            if ([result succeed]) {
+                NSLog(@"本地登录成功");
+            }
+        }];
+    }
+}
+
 #pragma mark - BLControllerDelegate
 - (void)onDeviceUpdate:(BLDNADevice *)device isNewDevice:(Boolean)isNewDevice {
     //Only device reset, newconfig=1
     //Not all device support this.
-//    NSLog(@"=====probe device did(%@) newconfig(%hhu)====", device.did, device.newConfig);
-    if (![self isDeviceHasBeenScaned:device]) {
-        //[device setLastStateRefreshTime:[NSDate timeIntervalSinceReferenceDate]];
-        [self.scanDevices addObject:device];
+    //NSLog(@"=====probe device did(%@) newconfig(%hhu)====", device.did, device.newConfig);
+    
+    if (device.did) {
+        [self.scanDevices setObject:device forKey:device.did];
     }
-    if (isNewDevice) { //Device did not add SDK
-        
-    } else { //Device has been added SDK
-        if (device.newConfig) {
-            //Update Device Info
-            BLPairResult *result = [[BLLet sharedLet].controller pairWithDevice:device];
-            if ([result succeed]) {
-                device.controlId = result.getId;
-                device.controlKey = result.getKey;
-                [[DeviceDB sharedOperateDB] updateSqlWithDevice:device];
-                //addDevice
-                [[BLLet sharedLet].controller addDevice:device];
-            }
-            
-        }
-    }
+    
 }
 
 - (void)statusChanged:(BLDNADevice *)device status:(BLDeviceStatusEnum)status {
@@ -157,13 +132,12 @@
 }
 
 #pragma mark - property
-- (NSMutableArray *)scanDevices {
+- (NSMutableDictionary *)scanDevices {
     if (!_scanDevices) {
-        _scanDevices = [NSMutableArray arrayWithCapacity:0];
+        _scanDevices = [[NSMutableDictionary alloc] init];
     }
     
     return _scanDevices;
 }
-
 
 @end
