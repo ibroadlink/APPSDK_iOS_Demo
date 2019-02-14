@@ -9,6 +9,8 @@
 #import "DNAControlViewController.h"
 #import "AppDelegate.h"
 #import "DropDownList.h"
+#import "SSZipArchive.h"
+#import "DeviceWebControlViewController.h"
 
 @interface DNAControlViewController ()<UITextFieldDelegate>
 @property (nonatomic, weak)NSTimer *stateTimer;
@@ -102,15 +104,20 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             [self dnaControlWithAction:action param:param val:val];
         });
-        
     } else if (sender.tag == 103) {
-        [self queryTaskList];
+        [self getScriptVersion];
     } else if (sender.tag == 104) {
-        [self setTask];
+        [self downloadScript];
     } else if (sender.tag == 105) {
-        [self getDeviceProfile];
+        [self getUIVersion];
     } else if (sender.tag == 106) {
-        [self getDeviceTaskData];
+        [self downloadUI];
+    } else if (sender.tag == 107) {
+        [self getDeviceProfile];
+    } else if (sender.tag == 108) {
+        DeviceWebControlViewController* vc = [[DeviceWebControlViewController alloc]init];
+        vc.selectDevice = _device;
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -211,6 +218,92 @@
     }
 }
 
+
+
+- (void)getScriptVersion {
+    BLQueryResourceVersionResult *result = [_blController queryScriptVersion:[self.device getPid]];
+    if ([result succeed]) {
+        BLResourceVersion *version = [result.versions firstObject];
+        _resultTextView.text = [NSString stringWithFormat:@"Script Pid:%@\n Version:%@", version.pid, version.version];
+    } else {
+        _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+    }
+}
+
+- (void)getUIVersion {
+    BLQueryResourceVersionResult *result = [_blController queryUIVersion:[self.device getPid]];
+    if ([result succeed]) {
+        BLResourceVersion *version = [result.versions firstObject];
+        _resultTextView.text = [NSString stringWithFormat:@"UI Pid:%@\n Version:%@", version.pid, version.version];
+    } else {
+        _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+    }
+}
+
+- (void)downloadScript {
+    [self showIndicatorOnWindowWithMessage:@"Script Downloading..."];
+    NSLog(@"Start downloadScript");
+    [_blController downloadScript:[_device getPid] completionHandler:^(BLDownloadResult * _Nonnull result) {
+        NSLog(@"End downloadScript");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideIndicatorOnWindow];
+            if ([result succeed]) {
+                self->_resultTextView.text = [NSString stringWithFormat:@"ScriptPath:%@", [result getSavePath]];
+            } else {
+                self->_resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+            }
+        });
+    }];
+}
+
+- (void)downloadUI {
+    NSString *unzipPath = [_blController queryUIPath:[_device getPid]];
+    [self showIndicatorOnWindowWithMessage:@"UI Downloading..."];
+    NSLog(@"Start downloadUI");
+    [_blController downloadUI:[self.device getPid] completionHandler:^(BLDownloadResult * _Nonnull result) {
+        NSLog(@"End downloadUI");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideIndicatorOnWindow];
+        });
+        
+        if ([result succeed]) {
+            BOOL isUnzip = [SSZipArchive unzipFileAtPath:[result getSavePath] toDestination:unzipPath];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self->_resultTextView.text = [NSString stringWithFormat:@"isUnzip:%d \nDownload File:%@ \nUIPath:%@", isUnzip, [result getSavePath], unzipPath];
+            });
+        } else {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self->_resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+            });
+        }
+        NSLog(@"End downloadUI zip");
+    }];
+}
+
+- (void)getFirmwareVersion {
+    BLFirmwareVersionResult *result = [_blController queryFirmwareVersion:[_device getDid]];
+    if ([result succeed]) {
+        _resultTextView.text = [NSString stringWithFormat:@"Firmware Version:%@", [result getVersion]];
+    } else {
+        _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+    }
+}
+
+- (void)upgradeFirmVersion {
+    //Get URL From Servers
+}
+
+- (void)bindDeviceToServer {
+    BLBindDeviceResult *result = [_blController bindDeviceWithServer:_device];
+    if ([result succeed]) {
+        _resultTextView.text = [NSString stringWithFormat:@"BindMap : %@", [result getBindmap]];
+    } else {
+        _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+    }
+}
+
 - (void)queryTaskList {
     BLQueryTaskResult *result = [_blController queryTask:[_device getDid]];
     if ([result succeed]) {
@@ -235,27 +328,27 @@
     [timerInfo setHour:16];
     [timerInfo setMinute:56];
     [timerInfo setSeconds:30];
-//    [timerInfo setCmd1duration:1800];
-//    [timerInfo setEndhour:12];
-//    [timerInfo setEndminute:10];
-//    [timerInfo setEndseconds:00];
-//    [timerInfo setCmd2duration:1800];
-//    [timerInfo setRepeat:@[@1,@2,@3,@4,@5,@6,@7]];
-
+    //    [timerInfo setCmd1duration:1800];
+    //    [timerInfo setEndhour:12];
+    //    [timerInfo setEndminute:10];
+    //    [timerInfo setEndseconds:00];
+    //    [timerInfo setCmd2duration:1800];
+    //    [timerInfo setRepeat:@[@1,@2,@3,@4,@5,@6,@7]];
+    
     
     BLStdData *stdData = [[BLStdData alloc] init];
     NSString *val = @"1";
     NSString *param = @"pwr";
     [stdData setValue:val forParam:param];
     
-//    BLStdData *stdData2 = [[BLStdData alloc] init];
-//    NSString *val2 = @"0";
-//    NSString *param2 = @"pwr";
-//    [stdData2 setValue:val2 forParam:param2];
+    //    BLStdData *stdData2 = [[BLStdData alloc] init];
+    //    NSString *val2 = @"0";
+    //    NSString *param2 = @"pwr";
+    //    [stdData2 setValue:val2 forParam:param2];
     
     BLQueryTaskResult *result = [_blController updateTask:[_device getDid] sDid:nil taskType:BL_TIMER_TYPE_LIST isNew:YES timerInfo:timerInfo stdData:stdData];
-//    BLQueryTaskResult *result = [_blController updateTask:[_device getDid] sDid:nil taskType:BL_CYCLE_TYPE_LIST isNew:YES cycleInfo:timerInfo stdData1:stdData stdData2:stdData2];
-//    BLQueryTaskResult *result = [_blController delTask:[_device getDid] sDid:nil taskType:BL_CYCLE_TYPE_LIST index:0];
+    //    BLQueryTaskResult *result = [_blController updateTask:[_device getDid] sDid:nil taskType:BL_CYCLE_TYPE_LIST isNew:YES cycleInfo:timerInfo stdData1:stdData stdData2:stdData2];
+    //    BLQueryTaskResult *result = [_blController delTask:[_device getDid] sDid:nil taskType:BL_CYCLE_TYPE_LIST index:0];
     if ([result succeed]) {
         NSArray *timeTask = [result getTimer];
         NSArray *delayTask = [result getDelay];
@@ -269,15 +362,15 @@
 }
 
 - (void)getDeviceTaskData {
-//    BLQueryTaskResult *result = [_blController delTask:[_device getDid] sDid:nil taskType:BL_CYCLE_TYPE_LIST index:0];
+    //    BLQueryTaskResult *result = [_blController delTask:[_device getDid] sDid:nil taskType:BL_CYCLE_TYPE_LIST index:0];
     NSString *val = _valInputTextField.text;
     NSString *param = _paramInputTextField.text;
-
+    
     NSInteger index = [val integerValue];
     NSInteger taskType = [param integerValue];
-
+    
     BLTaskDataResult *result = [_blController queryTaskData:_device.did sDid:nil taskType:taskType index:index];
-
+    
     if ([result succeed]) {
         _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
     } else {

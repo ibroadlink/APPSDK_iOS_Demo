@@ -27,6 +27,7 @@
 #import "A1ViewController.h"
 #import "GateWayViewController.h"
 #import "GeneralTimerControlView.h"
+#import "FastconViewController.h"
 
 @interface OperateViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -66,26 +67,21 @@
         //        [self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_JS_FILE];
     });
     
-    _operateButtonArray = @[@"Script Download",
-                            @"DNA Control",
-                            @"UI Download",
-                            @"WebView Control",
+    _operateButtonArray = @[@"DNA Control",
                             @"Data Passthough",
-                            @"Server Time",
-                            @"Firmware Version",
-                            @"Script Version",
-                            @"UI Version",
-                            @"SP Control",
-                            @"RM Control",
-                            @"A1 Control",
-                            @"GateWay Control",
-                            @"query DeviceData",
                             @"General Timer",
-                            @"Device Pair",
+                            @"GateWay Control",
                             @"Fastcon No Config",
-                            @"GetFastconStatus"];
+                            @"Server Time",
+                            @"query DeviceData",
+                            @"Device Pair"
+                            ];
     
     _configArray = [NSArray array];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -129,58 +125,29 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.row) {
         case 0:
-            [self downloadScript];
-            break;
-        case 1:
             [self dnaControl];
             break;
+        case 1:
+            [self dataPassthough];
+            break;
         case 2:
-            [self downloadUI];
+            [self generalTimerControl];
             break;
         case 3:
-            [self webViewControl];
+            [self GateWayControl];
             break;
         case 4:
-            [self dataPassthough];
+            [self fastconNoConfig];
             break;
         case 5:
             [self getServerTime];
             break;
         case 6:
-            [self getFirmwareVersion];
-            break;
-        case 7:
-            [self getScriptVersion];
-            break;
-        case 8:
-            [self getUIVersion];
-            break;
-        case 9:
-            [self SPControl];
-            break;
-        case 10:
-            [self RMControl];
-            break;
-        case 11:
-            [self A1Control];
-            break;
-        case 12:
-            [self GateWayControl];
-            break;
-        case 13:
             [self queryDeviceData];
             break;
-        case 14:
-            [self generalTimerControl];
-            break;
-        case 15:
+        case 7:
             [self devicePair];
             break;
-        case 16:
-            [self fastconNoConfig];
-            break;
-        case 17:
-            [self getFastconStatusWithDevList:_configArray];
         default:
             break;
     }
@@ -211,89 +178,7 @@
     });
 }
 
-- (void)getScriptVersion {
-    BLQueryResourceVersionResult *result = [_blController queryScriptVersion:[self.device getPid]];
-    if ([result succeed]) {
-        BLResourceVersion *version = [result.versions firstObject];
-        _resultText.text = [NSString stringWithFormat:@"Script Pid:%@\n Version:%@", version.pid, version.version];
-    } else {
-        _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-    }
-}
 
-- (void)getUIVersion {
-    BLQueryResourceVersionResult *result = [_blController queryUIVersion:[self.device getPid]];
-    if ([result succeed]) {
-        BLResourceVersion *version = [result.versions firstObject];
-        _resultText.text = [NSString stringWithFormat:@"UI Pid:%@\n Version:%@", version.pid, version.version];
-    } else {
-        _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-    }
-}
-
-- (void)downloadScript {
-    [self showIndicatorOnWindowWithMessage:@"Script Downloading..."];
-    NSLog(@"Start downloadScript");
-    [_blController downloadScript:[_device getPid] completionHandler:^(BLDownloadResult * _Nonnull result) {
-        NSLog(@"End downloadScript");
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideIndicatorOnWindow];
-            if ([result succeed]) {
-                self.resultText.text = [NSString stringWithFormat:@"ScriptPath:%@", [result getSavePath]];
-            } else {
-                self.resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-            }
-        });
-    }];
-}
-
-- (void)downloadUI {
-    NSString *unzipPath = [_blController queryUIPath:[_device getPid]];
-    [self showIndicatorOnWindowWithMessage:@"UI Downloading..."];
-    NSLog(@"Start downloadUI");
-    [_blController downloadUI:[self.device getPid] completionHandler:^(BLDownloadResult * _Nonnull result) {
-        NSLog(@"End downloadUI");
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideIndicatorOnWindow];
-        });
-        
-        if ([result succeed]) {
-            BOOL isUnzip = [SSZipArchive unzipFileAtPath:[result getSavePath] toDestination:unzipPath];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.resultText.text = [NSString stringWithFormat:@"isUnzip:%d \nDownload File:%@ \nUIPath:%@", isUnzip, [result getSavePath], unzipPath];
-            });
-        } else {
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-            });
-        }
-        NSLog(@"End downloadUI zip");
-    }];
-}
-
-- (void)getFirmwareVersion {
-    BLFirmwareVersionResult *result = [_blController queryFirmwareVersion:[_device getDid]];
-    if ([result succeed]) {
-        _resultText.text = [NSString stringWithFormat:@"Firmware Version:%@", [result getVersion]];
-    } else {
-        _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-    }
-}
-
-- (void)upgradeFirmVersion {
-    //Get URL From Servers
-}
-
-- (void)bindDeviceToServer {
-    BLBindDeviceResult *result = [_blController bindDeviceWithServer:_device];
-    if ([result succeed]) {
-        _resultText.text = [NSString stringWithFormat:@"BindMap : %@", [result getBindmap]];
-    } else {
-        _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-    }
-}
 
 - (void)dataPassthough {
     [self performSegueWithIdentifier:@"DataPassthoughView" sender:nil];
@@ -407,43 +292,7 @@
 }
 
 - (void)fastconNoConfig {
-    NSDictionary *waitConfigDataDic = @{
-                              @"did": @"0000000000000000000034ea3437fc5f",
-                              @"act":@0,
-                              @"count":@10,
-                              @"index":@0,
-                              
-                              };
-    NSString *waitConfigDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:waitConfigDataDic options:0 error:nil] encoding:NSUTF8StringEncoding];
-    NSString *waitConfigResult = [_blController dnaControl:_device.did subDevDid:nil dataStr:waitConfigDataStr command:@"fastcon_no_config" scriptPath:nil];
-    [BLStatusBar showTipMessageWithStatus:waitConfigResult];
-    _resultText.text = waitConfigResult;
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[waitConfigResult dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-    if ([dic[@"status"]integerValue] == 0) {
-        NSArray *configList = dic[@"data"][@"devlist"];
-        NSDictionary *configDataDic = @{
-                                            @"did": @"0000000000000000000034ea3437fc5f",
-                                            @"act":@1,
-                                            @"devlist":configList
-                                            
-                                            };
-        NSString *configDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:configDataDic options:0 error:nil] encoding:NSUTF8StringEncoding];
-        [_blController dnaControl:_device.did subDevDid:nil dataStr:configDataStr command:@"fastcon_no_config" scriptPath:nil];
-        _configArray = [configList copy];
-    }
-}
-
-- (void)getFastconStatusWithDevList:(NSArray *)configList {
-    NSDictionary *dic = @{
-                                    @"did": @"0000000000000000000034ea3437fc5f",
-                                    @"act":@2,
-                                    @"devlist":configList
-                                    
-                                    };
-    NSString *str = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dic options:0 error:nil] encoding:NSUTF8StringEncoding];
-    NSString *result = [_blController dnaControl:_device.did subDevDid:nil dataStr:str command:@"fastcon_no_config" scriptPath:nil];
-    _resultText.text = result;
-    NSLog(@"fastcon_no_config_result:%@",result);
+    [self performSegueWithIdentifier:@"fastconControlView" sender:nil];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -493,6 +342,12 @@
         UIViewController *target = segue.destinationViewController;
         if ([target isKindOfClass:[GeneralTimerControlView class]]) {
             GeneralTimerControlView* vc = (GeneralTimerControlView *)target;
+            vc.device = _device;
+        }
+    }else if ([segue.identifier isEqualToString:@"fastconControlView"]) {
+        UIViewController *target = segue.destinationViewController;
+        if ([target isKindOfClass:[FastconViewController class]]) {
+            FastconViewController* vc = (FastconViewController *)target;
             vc.device = _device;
         }
     }

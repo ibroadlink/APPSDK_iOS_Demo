@@ -28,6 +28,7 @@
 		3A9B60E02100377D0048540B /* JoinFamilyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9B60DF2100377D0048540B /* JoinFamilyViewController.m */; };
 		3AAC2A2A20EB250D00031DEC /* BLUserSaftyInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC2A2920EB250D00031DEC /* BLUserSaftyInfoCell.m */; };
 		3AAC2A2D20EB252200031DEC /* BLUserLogoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC2A2C20EB252200031DEC /* BLUserLogoutCell.m */; };
+		3AB87FC822154DF200B97D38 /* FastconViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB87FC722154DF200B97D38 /* FastconViewController.m */; };
 		3ACDE3C120EC9CF00016461D /* ModifyPhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACDE3C020EC9CF00016461D /* ModifyPhoneViewController.m */; };
 		3AFC6D6F20EB59E5003404E6 /* BLUserHeadImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC6D6E20EB59E5003404E6 /* BLUserHeadImageCell.m */; };
 		3AFC6D7220EB5DDC003404E6 /* BLSystemImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC6D7020EB5DDB003404E6 /* BLSystemImage.m */; };
@@ -110,6 +111,8 @@
 		3AAC2A2920EB250D00031DEC /* BLUserSaftyInfoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLUserSaftyInfoCell.m; sourceTree = "<group>"; };
 		3AAC2A2B20EB252200031DEC /* BLUserLogoutCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUserLogoutCell.h; sourceTree = "<group>"; };
 		3AAC2A2C20EB252200031DEC /* BLUserLogoutCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLUserLogoutCell.m; sourceTree = "<group>"; };
+		3AB87FC622154DF200B97D38 /* FastconViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FastconViewController.h; sourceTree = "<group>"; };
+		3AB87FC722154DF200B97D38 /* FastconViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FastconViewController.m; sourceTree = "<group>"; };
 		3ACDE3BF20EC9CF00016461D /* ModifyPhoneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyPhoneViewController.h; sourceTree = "<group>"; };
 		3ACDE3C020EC9CF00016461D /* ModifyPhoneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModifyPhoneViewController.m; sourceTree = "<group>"; };
 		3AFC6D6E20EB59E5003404E6 /* BLUserHeadImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUserHeadImageCell.m; sourceTree = "<group>"; };
@@ -313,6 +316,8 @@
 				70503D5B1FDBE4D5002D3371 /* A1ViewController.m */,
 				02AE9DAD2058BDD10054677B /* GeneralTimerControlView.h */,
 				02AE9DAE2058BDD10054677B /* GeneralTimerControlView.m */,
+				3AB87FC622154DF200B97D38 /* FastconViewController.h */,
+				3AB87FC722154DF200B97D38 /* FastconViewController.m */,
 			);
 			path = DeviceControl;
 			sourceTree = "<group>";
@@ -670,6 +675,7 @@
 				70503DB01FDBE4D6002D3371 /* ConfigureViewController.m in Sources */,
 				3AAC2A2D20EB252200031DEC /* BLUserLogoutCell.m in Sources */,
 				70503DA51FDBE4D5002D3371 /* CodeLoginViewController.m in Sources */,
+				3AB87FC822154DF200B97D38 /* FastconViewController.m in Sources */,
 				02AE9DAF2058BDD10054677B /* GeneralTimerControlView.m in Sources */,
 				70503DB31FDBE4D6002D3371 /* IRCodeTestViewController.m in Sources */,
 				70503DAD1FDBE4D5002D3371 /* DNAControlViewController.m in Sources */,

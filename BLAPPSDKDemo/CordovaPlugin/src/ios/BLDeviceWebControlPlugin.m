@@ -89,6 +89,13 @@
     }];
 }
 
+- (void)closeWebView:(CDVInvokedUrlCommand *)command {
+    NSDictionary *dic = @{@"status":@0, @"msg":@"ok"};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[BLCommonTools serializeMessage:dic]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    [self.viewController.navigationController popViewControllerAnimated:YES];
+}
+
 /*Device authorization*/
 - (void)deviceAuth:(CDVInvokedUrlCommand *)command {
    
