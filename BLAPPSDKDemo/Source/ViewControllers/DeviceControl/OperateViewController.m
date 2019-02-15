@@ -263,7 +263,6 @@
 }
 
 - (void)getServerTime {
-    [_blController updateDeviceInfo:self.device.did name:@"Fastcon-Device" lock:NO];
     BLDeviceTimeResult *result = [_blController queryDeviceTime:self.device.did];
     if ([result succeed]) {
         _resultText.text = [NSString stringWithFormat:@"Time:%@ diff:%ld", result.time, result.difftime];

@@ -12,6 +12,5 @@
 
 + (instancetype)viewController;
 
-@property (weak, nonatomic) IBOutlet UITableView *mainTabel;
 
 @end

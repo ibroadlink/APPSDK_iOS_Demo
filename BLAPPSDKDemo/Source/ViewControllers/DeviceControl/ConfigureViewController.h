@@ -11,6 +11,7 @@
 @interface ConfigureViewController : BaseViewController <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *ssidNameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
+@property (weak, nonatomic) IBOutlet UITextView *resultText;
 
 - (IBAction)startConfigureButtonClick:(id)sender;
 @end

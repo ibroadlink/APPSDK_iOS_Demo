@@ -30,7 +30,7 @@
     [delegate.let.controller deviceConfigCancel];
 }
 
-- (IBAction)startConfigureButtonClick:(id)sender {
+- (IBAction)startConfigureButtonClick:(UIButton *)sender {
     [self.ssidNameField resignFirstResponder];
     [self.passwordField resignFirstResponder];
     
@@ -41,20 +41,40 @@
     BLController *controller = delegate.let.controller;
    
     [self showIndicatorOnWindowWithMessage:@"Configuring..."];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSDate *date = [NSDate date];
-        NSLog(@"====Start Config===");
-        BLDeviceConfigResult *result = [controller deviceConfig:ssidName password:password version:3 timeout:100];
-        NSLog(@"====Config over! Spends(%fs)", [date timeIntervalSinceNow]);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideIndicatorOnWindow];
-            if ([result succeed]) {
-                [BLStatusBar showTipMessageWithStatus:@"Configure Wi-Fi success"];
-            } else {
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
-            }
+    if (sender.tag == 101) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSDate *date = [NSDate date];
+            NSLog(@"====Start Config===");
+            BLDeviceConfigResult *result = [controller deviceConfig:ssidName password:password version:2 timeout:60];
+            NSLog(@"====Config over! Spends(%fs)", [date timeIntervalSinceNow]);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideIndicatorOnWindow];
+                if ([result succeed]) {
+                    [BLStatusBar showTipMessageWithStatus:@"Configure Wi-Fi success"];
+                } else {
+                    [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
+                }
+                self->_resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@) Did(%@) Devaddr(%@) Mac(%@)", (long)result.getError, result.getMsg, result.getDid, result.getDevaddr, result.getMac];
+            });
         });
-    });
+    }else if (sender.tag == 102) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSDate *date = [NSDate date];
+            NSLog(@"====Start Config===");
+            BLDeviceConfigResult *result = [controller deviceConfig:ssidName password:password version:3 timeout:60];
+            NSLog(@"====Config over! Spends(%fs)", [date timeIntervalSinceNow]);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideIndicatorOnWindow];
+                if ([result succeed]) {
+                    [BLStatusBar showTipMessageWithStatus:@"Configure Wi-Fi success"];
+                } else {
+                    [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
+                }
+                self->_resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@) Did(%@) Devaddr(%@) Mac(%@)", (long)result.getError, result.getMsg, result.getDid, result.getDevaddr, result.getMac];
+            });
+        });
+    }
+    
 }
 
 - (NSString *)getCurrentSSIDInfo {

@@ -12,6 +12,8 @@
 #import "BLUserDefaults.h"
 #import "UserViewController.h"
 #import <BLLetAccount/BLLetAccount.h>
+#import <BLLetFamily/BLLetFamily.h>
+#import <BLLetIRCode/BLLetIRCode.h>
 
 @implementation AppDelegate
 
@@ -101,6 +103,9 @@
     if (storeDevices && storeDevices.count > 0) {
         [self.let.controller addDeviceArray:storeDevices];
     }
+    
+    [BLFamilyController sharedManager];
+    [BLIRCode sharedIrdaCode];
 
     //本地登录 获取账号管理对象
     BLAccount *account = [BLAccount sharedAccount];

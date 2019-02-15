@@ -54,6 +54,7 @@
     if ([dic[@"status"]integerValue] == 0) {
         NSArray *configList = dic[@"data"][@"devlist"];
         _configArray = [configList copy];
+        [self.tableView reloadData];
     }
 }
 

@@ -12,7 +12,7 @@
 #import "DeviceDB.h"
 #import "BLUserDefaults.h"
 
-@interface MainViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface MainViewController ()
 
 @property (nonatomic, strong) NSArray *titles;
 
@@ -31,15 +31,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _titles = @[@"Probe Device In Lan", @"MyDevices", @"Config Devices"];
     _blController = [BLLet sharedLet].controller;
-    
-//    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(logout)];
-//    [self.navigationItem setLeftBarButtonItem:leftButton];
-    
-    _mainTabel.delegate = self;
-    _mainTabel.dataSource = self;
-    [self setExtraCellLineHidden:_mainTabel];
     
 //    BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
 //    BLAccount *account = [BLLet sharedLet].account;
@@ -57,14 +49,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-//- (void)logout {
-//    [self.navigationController popToRootViewControllerAnimated:YES];
-//    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
-//
-//    BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
-//    [userDefault setUserId:nil];
-//    [userDefault setSessionId:nil];
-//}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"MyDeviceListView"]) {
@@ -75,50 +59,17 @@
         }
     }
 }
-
-#pragma mark - tableView delegate
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+- (IBAction)configDevices:(id)sender {
+    [self performSegueWithIdentifier:@"ConfigureView" sender:nil];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _titles.count;
+- (IBAction)probeInLan:(id)sender {
+    [self performSegueWithIdentifier:@"DeviceListView" sender:nil];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString* cellIdentifier = @"MAIN_LIST_CELL";
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-    }
-    
-    cell.textLabel.text = _titles[indexPath.row];
-    
-    return cell;
+- (IBAction)myDeviceList:(id)sender {
+    [self performSegueWithIdentifier:@"MyDeviceListView" sender:nil];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    switch (indexPath.row) {
-        case 0: {
-            [self performSegueWithIdentifier:@"DeviceListView" sender:nil];
-        }
-            break;
-        case 1: {
-            [self performSegueWithIdentifier:@"MyDeviceListView" sender:nil];
-        }
-            break;
-        case 2: {
-            [self performSegueWithIdentifier:@"ConfigureView" sender:nil];
-        }
-            break;
-        case 3: {
-            [self performSegueWithIdentifier:@"OauthBind" sender:nil];
-        }
-        default:
-            break;
-    }
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
 
 @end
