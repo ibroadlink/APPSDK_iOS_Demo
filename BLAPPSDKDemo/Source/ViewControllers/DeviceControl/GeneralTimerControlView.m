@@ -184,6 +184,7 @@
     [actionSheetController addAction:cycleTimerAction];
     [actionSheetController addAction:randTimerAction];
     [actionSheetController addAction:sunriseAction];
+    [actionSheetController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:actionSheetController animated:YES completion:nil];
    
 }

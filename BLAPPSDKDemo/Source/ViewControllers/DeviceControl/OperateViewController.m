@@ -37,16 +37,12 @@
 @property (weak, nonatomic) IBOutlet UITableView *operateTableView;
 @end
 
-@implementation OperateViewController {
-    BLController *_blController;
-}
+@implementation OperateViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.operateTableView.delegate = self;
     self.operateTableView.dataSource = self;
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    _blController = delegate.let.controller;
     
     UILabel *nameLabel = (UILabel *)[self.view viewWithTag:101];
     nameLabel.text = [nameLabel.text stringByAppendingString:[_device getName]];
@@ -67,14 +63,14 @@
         //        [self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_JS_FILE];
     });
     
-    _operateButtonArray = @[@"DNA Control",
-                            @"Data Passthough",
-                            @"General Timer",
-                            @"GateWay Control",
-                            @"Fastcon No Config",
-                            @"Server Time",
-                            @"query DeviceData",
-                            @"Device Pair"
+    _operateButtonArray = @[@"设备标准控制",
+                            @"设备透传",
+                            @"定时任务相关功能",
+                            @"网关子设备相关功能",
+                            @"Fastcon 相关功能",
+                            @"设备状态查询",
+                            @"设备固件查询",
+                            @"设备固件升级"
                             ];
     
     _configArray = [NSArray array];
@@ -140,13 +136,13 @@
             [self fastconNoConfig];
             break;
         case 5:
-            [self getServerTime];
+            [self getState];
             break;
         case 6:
-            [self queryDeviceData];
+            [self getFirmwareVersion];
             break;
         case 7:
-            [self devicePair];
+            [self upgradeFirmVersion];
             break;
         default:
             break;
@@ -156,7 +152,7 @@
 
 #pragma mark - private method
 - (void)networkState {
-    BLDeviceStatusEnum state = [_blController queryDeviceState:[_device getDid]];
+    BLDeviceStatusEnum state = [[BLLet sharedLet].controller queryDeviceState:[_device getDid]];
     NSString *stateString = @"State UnKown";
     switch (state) {
         case BL_DEVICE_STATE_LAN:
@@ -178,7 +174,38 @@
     });
 }
 
+- (void)getState {
+    BLDeviceStatusEnum state = [[BLLet sharedLet].controller queryDeviceState:[_device getDid]];
+    _resultText.text = [NSString stringWithFormat:@"state:%ld",(long)state];
+}
 
+- (void)getFirmwareVersion {
+    BLFirmwareVersionResult *result = [[BLLet sharedLet].controller queryFirmwareVersion:[_device getDid]];
+    if ([result succeed]) {
+        _resultText.text = [NSString stringWithFormat:@"Firmware Version:%@", [result getVersion]];
+    } else {
+        _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+    }
+}
+
+- (void)upgradeFirmVersion {
+    //Get URL From Servers
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"upgradeFirmware" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.text = @"";
+        textField.placeholder = @"upgrade Firmware Url";
+    }];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *upgradeFirmwareUrl = alertController.textFields.firstObject.text;
+        BLBaseResult *result = [[BLLet sharedLet].controller upgradeFirmware:[self.device getDid] url:upgradeFirmwareUrl];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+        });
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+}
 
 - (void)dataPassthough {
     [self performSegueWithIdentifier:@"DataPassthoughView" sender:nil];
@@ -226,7 +253,7 @@
 }
 
 - (void)queryDeviceData {
-    BLBaseBodyResult *result = [_blController queryDeviceDataWithDid:[_device getDid] familyId:@"" startTime:@"2018-03-26_17:00:00" endTime:@"2018-03-27_22:00:00" type:@"fw_spminielec_v1"];
+    BLBaseBodyResult *result = [[BLLet sharedLet].controller queryDeviceDataWithDid:[_device getDid] familyId:@"" startTime:@"2018-03-26_17:00:00" endTime:@"2018-03-27_22:00:00" type:@"fw_spminielec_v1"];
     if ([result succeed]) {
         _resultText.text = [NSString stringWithFormat:@"responseBody : %@", result.responseBody];
     } else {
@@ -236,7 +263,7 @@
 }
 
 - (NSString *)getDeviceProfile {
-    BLProfileStringResult *result = [_blController queryProfile:[_device getDid]];
+    BLProfileStringResult *result = [[BLLet sharedLet].controller queryProfile:[_device getDid]];
     static NSString *ProfileStr;
     if ([result succeed]) {
         NSString *ProfileStr = [result getProfile];
@@ -249,7 +276,7 @@
 }
 
 - (void)isDownloadScript {
-    NSString *profileFile = [_blController queryScriptFileName:[self.device getPid]];
+    NSString *profileFile = [[BLLet sharedLet].controller queryScriptFileName:[self.device getPid]];
     if (![[NSFileManager defaultManager] fileExistsAtPath:profileFile]) {
         [BLStatusBar showTipMessageWithStatus:@"Please download script first!"];
         return;
@@ -263,7 +290,7 @@
 }
 
 - (void)getServerTime {
-    BLDeviceTimeResult *result = [_blController queryDeviceTime:self.device.did];
+    BLDeviceTimeResult *result = [[BLLet sharedLet].controller queryDeviceTime:self.device.did];
     if ([result succeed]) {
         _resultText.text = [NSString stringWithFormat:@"Time:%@ diff:%ld", result.time, result.difftime];
     } else {
@@ -277,7 +304,7 @@
 }
 
 - (void)devicePair {
-    BLPairResult *result = [_blController pairWithDevice:_device];
+    BLPairResult *result = [[BLLet sharedLet].controller pairWithDevice:_device];
     _resultText.text = [NSString stringWithFormat:@"id:%ld,key:%@",(long)result.getId,result.getKey];
     if ([result succeed]) {
         //Update Device Info
@@ -285,7 +312,7 @@
         _device.controlKey = result.getKey;
         [[DeviceDB sharedOperateDB] updateSqlWithDevice:_device];
         //addDevice again
-        [_blController addDevice:_device];
+        [[BLLet sharedLet].controller addDevice:_device];
     }
     
 }
@@ -353,7 +380,7 @@
 }
 
 - (BOOL)copyCordovaJsToUIPathWithFileName:(NSString*)fileName {
-    NSString *uiPath = [[_blController queryUIPath:[_device getPid]] stringByDeletingLastPathComponent];  //  ../Let/ui/
+    NSString *uiPath = [[[BLLet sharedLet].controller queryUIPath:[_device getPid]] stringByDeletingLastPathComponent];  //  ../Let/ui/
     NSString *fullPathFileName = [uiPath stringByAppendingPathComponent:fileName];  // ../Let/ui/fileName
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:fullPathFileName] == NO) {

@@ -282,18 +282,7 @@
     }];
 }
 
-- (void)getFirmwareVersion {
-    BLFirmwareVersionResult *result = [_blController queryFirmwareVersion:[_device getDid]];
-    if ([result succeed]) {
-        _resultTextView.text = [NSString stringWithFormat:@"Firmware Version:%@", [result getVersion]];
-    } else {
-        _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-    }
-}
 
-- (void)upgradeFirmVersion {
-    //Get URL From Servers
-}
 
 - (void)bindDeviceToServer {
     BLBindDeviceResult *result = [_blController bindDeviceWithServer:_device];

@@ -13,40 +13,31 @@
 #import "SSZipArchive.h"
 @interface GateWayViewController ()<UITableViewDelegate,UITableViewDataSource>
 
-@property (nonatomic, strong) BLController *blController;
-
 @property (nonatomic, strong) BLDNADevice *subDevice;
 
 @property (nonatomic, strong) NSMutableDictionary *privateDataCache;
 
-@property (nonatomic, strong) UITableView *tableView;
-
 @property (nonatomic, copy) NSArray<BLDNADevice *>* subDevicelist;
+
+@property (nonatomic, assign) BOOL isAdd;
 @end
 
 @implementation GateWayViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.blController = [BLLet sharedLet].controller;
-    _blController.currentFamilyId = @"00bc30ade0f4a2da1abbb47bc0cc17b2";
-    _subDevicelist = [NSArray array];
+    [BLLet sharedLet].controller.currentFamilyId = @"00bc30ade0f4a2da1abbb47bc0cc17b2";
+    self.subDevicelist = [NSArray array];
     self.privateDataCache = [NSMutableDictionary dictionaryWithCapacity:0];
     
-    self.tableView = [[UITableView alloc]initWithFrame:self.view.frame style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.view = self.tableView;
     
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(AddSubDevice)];
-    [self.navigationItem setRightBarButtonItem:rightButton];
-    
-    [self QuerySubDevList];
     [self write];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _subDevicelist.count;
+    return self.subDevicelist.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -55,7 +46,7 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
-    BLDNADevice *subDevice = _subDevicelist[indexPath.row];
+    BLDNADevice *subDevice = self.subDevicelist[indexPath.row];
     cell.textLabel.text = subDevice.did;
     cell.detailTextLabel.text = subDevice.pid;
     return cell;
@@ -63,103 +54,102 @@
 
 //点击控制
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    BLDNADevice *subDevice = _subDevicelist[indexPath.row];
-    NSString *unzipPath = [_blController queryUIPath:[subDevice getPid]];
-    
-    [_blController addDevice:subDevice];
-    //下载子设备脚本
-    [_blController downloadScript:subDevice.pid completionHandler:^(BLDownloadResult * _Nonnull result) {NSLog(@"resultsavePath:%@",result.savePath);}];
-    [_blController downloadUI:subDevice.pid completionHandler:^(BLDownloadResult * _Nonnull result) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [SSZipArchive unzipFileAtPath:[result getSavePath] toDestination:unzipPath];
-            if ([self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_JS_FILE] ) {
-                self.device.pDid = subDevice.did;
-                self.device.pid = subDevice.pid;
-                [self performSegueWithIdentifier:@"DeviceWebControlView" sender:self.device];
-            }
-        });
+    BLDNADevice *subDevice = self.subDevicelist[indexPath.row];
+    if (self.isAdd) {
+        [self addSubDev:subDevice];
+    } else {
+        NSString *unzipPath = [[BLLet sharedLet].controller queryUIPath:[subDevice getPid]];
         
-    }];
+        [[BLLet sharedLet].controller addDevice:subDevice];
+        //下载子设备脚本
+        [[BLLet sharedLet].controller downloadScript:subDevice.pid completionHandler:^(BLDownloadResult * _Nonnull result) {NSLog(@"resultsavePath:%@",result.savePath);}];
+        [[BLLet sharedLet].controller downloadUI:subDevice.pid completionHandler:^(BLDownloadResult * _Nonnull result) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [SSZipArchive unzipFileAtPath:[result getSavePath] toDestination:unzipPath];
+                if ([self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_JS_FILE] ) {
+                    self.device.pDid = subDevice.did;
+                    self.device.pid = subDevice.pid;
+                    [self performSegueWithIdentifier:@"DeviceWebControlView" sender:self.device];
+                }
+            });
+            
+        }];
+    }
+    
     
     
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        BLDNADevice *subDevice = _subDevicelist[indexPath.row];
-        [self DeleteSubDev:subDevice];
+        BLDNADevice *subDevice = self.subDevicelist[indexPath.row];
+        [self deleteSubDev:subDevice];
     }
 }
 
-- (void)AddSubDevice {
+- (IBAction)subDevStart:(id)sender {
     [self subDevStart];
 }
 
+- (IBAction)subDevStop:(id)sender {
+    [self subDevStop];
+}
+
+- (IBAction)getNewSubDevList:(id)sender {
+    [self getNewSubDevList];
+}
+
+- (IBAction)querySubDevList:(id)sender {
+    [self querySubDevList];
+}
+
+
+
 //开始扫描
 - (void)subDevStart {
-    BLBaseResult *result = [self.blController subDevScanStartWithDid:[self.device getDid] subPid:@"000000000000000000000000d0010100"];
-    if ([result succeed]) {
-        //获取新的子设备列表
-        [self GetNewSubDevList];
-    } else {
-        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
-    }
+    BLBaseResult *result = [[BLLet sharedLet].controller subDevScanStartWithDid:[self.device getDid] subPid:nil];
+    [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
     
 }
 
-- (void)GetNewSubDevList {
-    BLSubDevListResult *result = [_blController subDevNewListQueryWithDid:[_device getDid] index:0 count:0 subPid:@"000000000000000000000000d0010100"];
+- (void)subDevStop {
+    BLBaseResult *result = [[BLLet sharedLet].controller subDevScanStopWithDid:[self.device getDid]];
+    [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
+}
+
+- (void)getNewSubDevList {
+    self.isAdd = YES;
+    BLSubDevListResult *result = [[BLLet sharedLet].controller subDevNewListQueryWithDid:[_device getDid] index:0 count:0 subPid:@"000000000000000000000000d0010100"];
     if ([result succeed]) {
-        if (result.list && ![result.list isKindOfClass:[NSNull class]] && result.list.count > 0) {
-            _subDevice = result.list[0];
-            //添加子设备
-            [self AddSubDev:_subDevice];
-            NSLog(@"SubDevList:——————————————————-——%@",result.list);
-        }
+        self.subDevicelist = result.list;
+        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"list(%ld)", result.list.count]];
     } else {
         [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
     }
+    [self.tableView reloadData];
 }
 
-- (void)AddSubDev:(BLDNADevice *)subDevice {
-    BLBaseResult *result = [_blController subDevAddWithDid:[_device getDid] subDevInfo:subDevice];
-    if ([result succeed]) {
-        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"AddSubDev:%@ success",subDevice.getDid]];
-    } else {
-        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
-    }
-    [self QuerySubDevList];
-}
 
-- (void)DeleteSubDev:(BLDNADevice *)subDevice {
-    BLBaseResult *result = [_blController subDevDelWithDid:[_device getDid] subDevDid:subDevice.getDid];
-    if ([result succeed]) {
-        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"DeleteSubDev:%@ success",subDevice.getDid]];
-    } else {
-        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
-    }
-    [self QuerySubDevList];
-}
 
-- (void)QuerySubDevList {
-    _subDevicelist = nil;
-    BLSubDevListResult *result = [_blController subDevListQueryWithDid:[_device getDid] index:0 count:10];
-    [_blController addDevice:_subDevice];
+- (void)querySubDevList {
+    self.subDevicelist = nil;
+    self.isAdd = NO;
+    BLSubDevListResult *result = [[BLLet sharedLet].controller subDevListQueryWithDid:[_device getDid] index:0 count:10];
     if ([result succeed]) {
+        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"list(%ld)", result.list.count]];
         NSLog(@"result:%@",result);
         if (result.list && ![result.list isKindOfClass:[NSNull class]] && result.list.count > 0) {
             NSLog(@"result.list:+++++++++=%@",result.list);
             
-            _subDevicelist = result.list;
-            for (_subDevice in _subDevicelist) {
-                [_blController addDevice:_subDevice];
+            self.subDevicelist = result.list;
+            for (_subDevice in self.subDevicelist) {
+                [[BLLet sharedLet].controller addDevice:_subDevice];
                 //下载子设备脚本
-                [_blController downloadScript:_subDevice.pid completionHandler:^(BLDownloadResult * _Nonnull result) {NSLog(@"resultsavePath:%@",result.savePath);}];
+                [[BLLet sharedLet].controller downloadScript:_subDevice.pid completionHandler:^(BLDownloadResult * _Nonnull result) {NSLog(@"resultsavePath:%@",result.savePath);}];
                 NSLog(@"SubDevList:%@",[_subDevice getDid]);
-                BLProfileStringResult *ProfileResult = [_blController queryProfile:[_subDevice getDid]];
+                BLProfileStringResult *ProfileResult = [[BLLet sharedLet].controller queryProfile:[_subDevice getDid]];
                 NSLog(@"ProfileResult:%@",ProfileResult.profile);
             }
-            
         }
         
     } else {
@@ -169,41 +159,61 @@
 
 }
 
+- (void)addSubDev:(BLDNADevice *)subDevice {
+    BLBaseResult *result = [[BLLet sharedLet].controller subDevAddWithDid:[_device getDid] subDevInfo:subDevice];
+    if ([result succeed]) {
+        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"AddSubDev:%@ success",subDevice.getDid]];
+    } else {
+        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
+    }
+    [self querySubDevList];
+}
+
+- (void)deleteSubDev:(BLDNADevice *)subDevice {
+    BLBaseResult *result = [[BLLet sharedLet].controller subDevDelWithDid:[_device getDid] subDevDid:subDevice.getDid];
+    if ([result succeed]) {
+        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"DeleteSubDev:%@ success",subDevice.getDid]];
+    } else {
+        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
+    }
+    [self querySubDevList];
+}
+
 //{"prop":"stdctrl","srv":"1.10.1","did":"01A703A5D85021ED3AA6B056DF16E2FF","params":["switch_pair_status"],"vals":[[{"val":1,"idx":0}]],"act":"get","password":"ab0d4322"}
 //{"vals":[[{"val":1,"idx":1}]],"did":"00000000000000000000b4430d96b549","password":"ab0d4322","act":"set","prop":"stdctrl","params":["switch_pair"]}
-- (void)SwitchPairStatus:(BLDNADevice *)subDevice {
+- (void)switchPairStatus:(BLDNADevice *)subDevice {
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setValue:@1 forParam:@"rmpanel_pairstatus"];
-    BLStdControlResult *result = [_blController dnaControl:[_device getDid] subDevDid:[subDevice getDid] stdData:stdData action:@"set"];
+    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[_device getDid] subDevDid:[subDevice getDid] stdData:stdData action:@"set"];
     NSDictionary *subdic = [[result getData] toDictionary];
     NSLog(@"subDic:%@",subdic);
     [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
 }
 
-- (void)SwitchPair:(BLDNADevice *)subDevice {
+- (void)switchPair:(BLDNADevice *)subDevice {
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setValue:@1 forParam:@"rmpanel_pair"];
-    BLStdControlResult *result = [_blController dnaControl:[_device getDid] subDevDid:[subDevice getDid] stdData:stdData action:@"set"];
+    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[_device getDid] subDevDid:[subDevice getDid] stdData:stdData action:@"set"];
     NSDictionary *subdic = [[result getData] toDictionary];
     NSLog(@"subDic:%@",subdic);
     [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
 }
 
-- (void)TCController:(BLDNADevice *)subDevice {
+- (void)tCController:(BLDNADevice *)subDevice {
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setValue:@1 forParam:@"pwr"];
-    BLStdControlResult *result = [_blController dnaControl:[_device getDid] subDevDid:[subDevice getDid] stdData:stdData action:@"set"];
+    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[_device getDid] subDevDid:[subDevice getDid] stdData:stdData action:@"set"];
     NSDictionary *subdic = [[result getData] toDictionary];
     NSLog(@"subDic:%@",subdic);
     [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
 }
 
 
-- (void)OtherButton:(BLDNADevice *)subDevice {
+- (void)otherButton:(BLDNADevice *)subDevice {
     //控制
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setValue:@0 forParam:@"rmpanel_fanoperation"];
-    BLStdControlResult *result = [_blController dnaControl:[_device getDid] subDevDid:[subDevice getDid] stdData:stdData action:@"set"];
+    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[_device getDid] subDevDid:[subDevice getDid] stdData:stdData action:@"set"];
     NSDictionary *subdic = [[result getData] toDictionary];
     NSLog(@"subDic:%@",subdic);
     [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
@@ -212,7 +222,7 @@
 - (void)write{
     
     __weak typeof(self) weakSelf = self;
-    [_blController setSDKRawWithReadBlock:^unsigned char * _Nullable(int sync, unsigned char * _Nullable key) {
+    [[BLLet sharedLet].controller setSDKRawWithReadBlock:^unsigned char * _Nullable(int sync, unsigned char * _Nullable key) {
         NSLog(@"%d,%s",sync,key);
         NSString *pKey = [NSString stringWithUTF8String:(const char *)key];
         NSString *pData = [weakSelf.privateDataCache objectForKey:pKey];
@@ -233,7 +243,7 @@
 }
 
 - (BOOL)copyCordovaJsToUIPathWithFileName:(NSString*)fileName {
-    NSString *uiPath = [[_blController queryUIPath:[_device getPid]] stringByDeletingLastPathComponent];  //  ../Let/ui/
+    NSString *uiPath = [[[BLLet sharedLet].controller queryUIPath:[_device getPid]] stringByDeletingLastPathComponent];  //  ../Let/ui/
     NSString *fullPathFileName = [uiPath stringByAppendingPathComponent:fileName];  // ../Let/ui/fileName
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:fullPathFileName] == NO) {

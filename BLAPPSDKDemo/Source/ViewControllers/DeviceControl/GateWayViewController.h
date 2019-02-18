@@ -11,4 +11,5 @@
 
 @interface GateWayViewController : BaseViewController
 @property (strong, nonatomic) BLDNADevice *device;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @end
