@@ -115,9 +115,8 @@
     } else if (sender.tag == 107) {
         [self getDeviceProfile];
     } else if (sender.tag == 108) {
-        DeviceWebControlViewController* vc = [[DeviceWebControlViewController alloc]init];
-        vc.selectDevice = _device;
-        [self.navigationController pushViewController:vc animated:YES];
+        [self webViewControl];
+        
     }
 }
 
@@ -282,6 +281,14 @@
     }];
 }
 
+- (void)webViewControl {
+    if ([self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_JS_FILE] ) {
+        DeviceWebControlViewController* vc = [[DeviceWebControlViewController alloc]init];
+        vc.selectDevice = _device;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
 
 
 - (void)bindDeviceToServer {
@@ -365,6 +372,26 @@
     } else {
         _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
     }
+}
+
+- (BOOL)copyCordovaJsToUIPathWithFileName:(NSString*)fileName {
+    NSString *uiPath = [[_blController queryUIPath:[_device getPid]] stringByDeletingLastPathComponent];  //  ../Let/ui/
+    NSString *fullPathFileName = [uiPath stringByAppendingPathComponent:fileName];  // ../Let/ui/fileName
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:fullPathFileName] == NO) {
+        NSString *path = [[NSBundle mainBundle] pathForResource:fileName ofType:nil];
+        NSError *error;
+        BOOL success = [fileManager copyItemAtPath:path toPath:fullPathFileName error:&error];
+        if (success) {
+            NSLog(@"%@ copy success",fileName);
+            return YES;
+        } else {
+            NSLog(@"%@ copy failed",fileName);
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 #pragma mark - UITextFieldDelegate
