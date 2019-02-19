@@ -12,7 +12,6 @@
 #import "BLStatusBar.h"
 
 @interface A1ViewController (){
-    BLController *_blController;
     BLeAirNetWorkDataParser *_a1DataParser;
     NSTimer *timer;
 }
@@ -29,8 +28,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    _blController = delegate.let.controller;
     _a1DataParser = [BLeAirNetWorkDataParser sharedInstace];
     //获取A1的数据
     timer = [NSTimer scheduledTimerWithTimeInterval:2.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
@@ -50,11 +47,11 @@
 
 - (void)getA1RefreshInfo {
     NSData *data = [_a1DataParser a1RefreshByts];
-    BLPassthroughResult *passThroughResult = [_blController dnaPassthrough:[_device getDid] passthroughData:data];
+    BLPassthroughResult *passThroughResult = [[BLLet sharedLet].controller dnaPassthrough:[_device getDid] passthroughData:data];
     BLeAirStatusInfo *a1StatusInfo = [_a1DataParser parseA1RefreshResult:passThroughResult.data];
     
-    NSString *temperature = [NSString stringWithFormat:@"温度：%ld.%ld℃",a1StatusInfo.temperature.integer , a1StatusInfo.temperature.decimal ];
-    NSString *humidity = [NSString stringWithFormat:@"湿度：%ld.%ld%%",a1StatusInfo.humidity.integer , a1StatusInfo.humidity.decimal];
+    NSString *temperature = [NSString stringWithFormat:@"温度：%ld.%ld℃",(long)a1StatusInfo.temperature.integer , a1StatusInfo.temperature.decimal ];
+    NSString *humidity = [NSString stringWithFormat:@"湿度：%ld.%ld%%",(long)a1StatusInfo.humidity.integer , a1StatusInfo.humidity.decimal];
     //0:暗 1:昏暗 2:正常  3:亮
     NSString *light = [NSString stringWithFormat:@"光照：%ld",(long)a1StatusInfo.light.integer];
     //0:优 1:良 2:正常  3:差
@@ -76,7 +73,7 @@
 //结合智慧星APP设置联动，再来获取结果作参考
 - (void)getIFTTT {
     NSData *data = [_a1DataParser getIFTTT];
-    BLPassthroughResult *passThroughResult = [_blController dnaPassthrough:[_device getDid] passthroughData:data];
+    BLPassthroughResult *passThroughResult = [[BLLet sharedLet].controller dnaPassthrough:[_device getDid] passthroughData:data];
     BLeAirIFTTTList *a1IFTTTInfo = [_a1DataParser parseIFTTTList:passThroughResult.data];
     NSArray *list = a1IFTTTInfo.list;
     if (![list isKindOfClass:[NSNull class]] && list != nil && list.count != 0) {
@@ -98,9 +95,9 @@
         // 0: temperature 1: humidity 2: light 3: air quality 4: noisy
         static NSString *triggerValueText;
         if (trigger.type == 0) {
-            triggerValueText = [NSString stringWithFormat:@"温度：%ld.%ld℃",trigger.value.integer , trigger.value.decimal];
+            triggerValueText = [NSString stringWithFormat:@"温度：%ld.%ld℃",(long)trigger.value.integer , trigger.value.decimal];
         }else if (trigger.type == 1){
-            triggerValueText = [NSString stringWithFormat:@"湿度：%ld.%ld%%",trigger.value.integer , trigger.value.decimal];
+            triggerValueText = [NSString stringWithFormat:@"湿度：%ld.%ld%%",(long)trigger.value.integer , trigger.value.decimal];
         }else if (trigger.type == 2){
             //0:暗 1:昏暗 2:正常  3:亮
             triggerValueText = [NSString stringWithFormat:@"光照：%ld",(long)trigger.value.integer];

@@ -18,14 +18,11 @@
 
 @end
 
-@implementation DeviceListViewController {
-    BLController *_blController;
-}
+@implementation DeviceListViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view
-    _blController = [BLLet sharedLet].controller;
     
     self.deviceListTableView.delegate = self;
     self.deviceListTableView.dataSource = self;
@@ -45,7 +42,7 @@
         if ([result succeed]) {
             device.controlId = result.getId;
             device.controlKey = result.getKey;
-            [_blController addDevice:device];
+            [[BLLet sharedLet].controller addDevice:device];
             //add device info to local db
             [[DeviceDB sharedOperateDB] insertSqlWithDevice:device];
             

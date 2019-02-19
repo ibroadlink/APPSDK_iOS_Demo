@@ -12,15 +12,11 @@
 #import "AppDelegate.h"
 #import "AppMacro.h"
 
-@implementation DeviceWebControlViewController {
-    BLController *_blController;
-}
+@implementation DeviceWebControlViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    _blController = delegate.let.controller;
     [self loadContents];
 }
 
@@ -49,14 +45,14 @@
 
 - (void)loadContents {
     //h5文件的相对路径
-    NSString *uiPath = [[_blController queryUIPath:[_selectDevice getPid]] stringByAppendingPathComponent:[self getPreferredLanguage]]; //  ../Let/ui/pid/zh-cn/
+    NSString *uiPath = [[[BLLet sharedLet].controller queryUIPath:[_selectDevice getPid]] stringByAppendingPathComponent:[self getPreferredLanguage]]; //  ../Let/ui/pid/zh-cn/
     BOOL isDir = FALSE;
     if ([[NSFileManager defaultManager] fileExistsAtPath:uiPath isDirectory:&isDir]) {
         if (isDir) {
             BLUserDefaults *userDefault = [BLUserDefaults shareUserDefaults];
             BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
             deviceService.selectDevice = _selectDevice;
-            deviceService.blController = _blController;
+            deviceService.blController = [BLLet sharedLet].controller;
             deviceService.accountName = [userDefault getUserName];
             
             NSString *appHtml = [uiPath stringByAppendingPathComponent:DNAKIT_DEFAULTH5PAGE_NAME]; //  ../Let/ui/pid/zh-cn/app.html

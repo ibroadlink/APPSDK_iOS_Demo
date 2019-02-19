@@ -15,12 +15,9 @@
 @interface MyDeviceListViewController ()
 
 @property (nonatomic, weak)NSTimer *stateTimer;
-@property (nonatomic, strong)BLController *blController;
 @end
 
-@implementation MyDeviceListViewController{
-    BLController *_blController;
-}
+@implementation MyDeviceListViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -29,8 +26,6 @@
     _MyDeviceTable.dataSource = self;
     _devicearray =  [NSMutableArray arrayWithArray: _myDevices];
     [self setExtraCellLineHidden:_MyDeviceTable];
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    self.blController = delegate.let.controller;
 //    [self queryDeviceState:_devicearray];
     
 }
@@ -41,7 +36,7 @@
         _stateTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
             for (int i = 0; i < weakSelf.devicearray.count; i ++) {
                 BLDNADevice *device = weakSelf.devicearray[i];
-                device.state = [weakSelf.blController queryDeviceState:[device getDid]];
+                device.state = [[BLLet sharedLet].controller queryDeviceState:[device getDid]];
                 [weakSelf.devicearray replaceObjectAtIndex:i withObject:device];
             }
             [weakSelf.MyDeviceTable reloadData];
@@ -57,7 +52,6 @@
 - (void)queryDeviceState:(NSArray<BLDNADevice *> *)tempArray {
     BLQueryDeviceStatusResult *result = [[BLLet sharedLet].controller queryDeviceOnServer:tempArray];
     NSLog(@"statusMaparray array:%@",result.statusMaparray);
-    [[BLLet sharedLet].controller queryDeviceRemoteState:tempArray[0].did];
 }
 
 #pragma mark - Navigation
@@ -134,7 +128,7 @@
     BLDNADevice *device = _devicearray[indexPath.row];
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        [_blController removeDevice:device];
+        [[BLLet sharedLet].controller removeDevice:device];
         [_devicearray removeObjectAtIndex:indexPath.row];
         [[DeviceDB sharedOperateDB] deleteWithinfo:device];
         [_MyDeviceTable deleteRowsAtIndexPaths:@[indexPath]  withRowAnimation:UITableViewRowAnimationNone];

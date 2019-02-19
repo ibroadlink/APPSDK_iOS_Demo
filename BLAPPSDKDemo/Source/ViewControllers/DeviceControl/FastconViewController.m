@@ -9,9 +9,7 @@
 #import "FastconViewController.h"
 #import "BLStatusBar.h"
 #import "AppDelegate.h"
-@interface FastconViewController (){
-    BLController *_blController;
-}
+@interface FastconViewController ()
 @property (nonatomic, copy)NSArray *configArray;
 @end
 
@@ -22,7 +20,6 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     // Do any additional setup after loading the view.
-    _blController = [BLLet sharedLet].controller;
     _configArray = [NSArray array];
 }
 - (IBAction)getFastconList:(id)sender {
@@ -47,7 +44,7 @@
                                         
                                         };
     NSString *waitConfigDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:waitConfigDataDic options:0 error:nil] encoding:NSUTF8StringEncoding];
-    NSString *waitConfigResult = [_blController dnaControl:_device.did subDevDid:nil dataStr:waitConfigDataStr command:@"fastcon_no_config" scriptPath:nil];
+    NSString *waitConfigResult = [[BLLet sharedLet].controller dnaControl:_device.did subDevDid:nil dataStr:waitConfigDataStr command:@"fastcon_no_config" scriptPath:nil];
     [BLStatusBar showTipMessageWithStatus:waitConfigResult];
     _resultView.text = waitConfigResult;
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[waitConfigResult dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
@@ -67,7 +64,7 @@
                                     
                                     };
     NSString *configDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:configDataDic options:0 error:nil] encoding:NSUTF8StringEncoding];
-    NSString *configResult = [_blController dnaControl:_device.did subDevDid:nil dataStr:configDataStr command:@"fastcon_no_config" scriptPath:nil];
+    NSString *configResult = [[BLLet sharedLet].controller dnaControl:_device.did subDevDid:nil dataStr:configDataStr command:@"fastcon_no_config" scriptPath:nil];
     _resultView.text = configResult;
 }
 
@@ -80,7 +77,7 @@
                           
                           };
     NSString *str = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dic options:0 error:nil] encoding:NSUTF8StringEncoding];
-    NSString *result = [_blController dnaControl:_device.did subDevDid:nil dataStr:str command:@"fastcon_no_config" scriptPath:nil];
+    NSString *result = [[BLLet sharedLet].controller dnaControl:_device.did subDevDid:nil dataStr:str command:@"fastcon_no_config" scriptPath:nil];
     _resultView.text = result;
     NSLog(@"fastcon_no_config_result:%@",result);
 }

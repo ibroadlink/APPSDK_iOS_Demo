@@ -292,7 +292,7 @@
 - (void)getServerTime {
     BLDeviceTimeResult *result = [[BLLet sharedLet].controller queryDeviceTime:self.device.did];
     if ([result succeed]) {
-        _resultText.text = [NSString stringWithFormat:@"Time:%@ diff:%ld", result.time, result.difftime];
+        _resultText.text = [NSString stringWithFormat:@"Time:%@ diff:%ld", result.time, (long)result.difftime];
     } else {
         _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
     }

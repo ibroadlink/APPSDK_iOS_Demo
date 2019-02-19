@@ -17,15 +17,12 @@
 @end
 
 @implementation DNAControlViewController {
-    BLController *_blController;
     NSArray *_keyList;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.    
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    _blController = delegate.let.controller;
+    // Do any additional setup after loading the view.
     
     _valInputTextField.delegate = self;
     _paramInputTextField.delegate = self;
@@ -56,7 +53,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    BLProfileStringResult *result = [_blController queryProfile:self.device.did];
+    BLProfileStringResult *result = [[BLLet sharedLet].controller queryProfile:self.device.did];
     NSString *profileStr = [result getProfile];
     NSData *data = [profileStr dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *profileDic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
@@ -158,7 +155,7 @@
 //                              @"time": @"2018-07-18 11:31:00"
 //                              };
     NSString *dataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dataDic options:0 error:nil] encoding:NSUTF8StringEncoding];
-    NSString *result = [_blController dnaControl:self.device.did subDevDid:nil dataStr:dataStr command:@"dev_ctrl" scriptPath:nil sendcount:5];
+    NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.did subDevDid:nil dataStr:dataStr command:@"dev_ctrl" scriptPath:nil sendcount:5];
     
     
     _resultTextView.text = result;
@@ -171,7 +168,7 @@
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setValue:@(valint) forParam:param];
 //    [stdData setValue:val forParam:@"ntlight"];
-    BLStdControlResult *result = [_blController dnaControl:[_device getDid] stdData:stdData action:action];
+    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[_device getDid] stdData:stdData action:action];
 //    NSDictionary *dataDic = @{
 //                              @"vals": @[
 //                                      @[@{
@@ -209,7 +206,7 @@
 }
 
 - (void)getDeviceProfile {
-    BLProfileStringResult *result = [_blController queryProfileByPid:[_device getPid]];
+    BLProfileStringResult *result = [[BLLet sharedLet].controller queryProfileByPid:[_device getPid]];
     if ([result succeed]) {
         _resultTextView.text = [result getProfile];
     } else {
@@ -220,7 +217,7 @@
 
 
 - (void)getScriptVersion {
-    BLQueryResourceVersionResult *result = [_blController queryScriptVersion:[self.device getPid]];
+    BLQueryResourceVersionResult *result = [[BLLet sharedLet].controller queryScriptVersion:[self.device getPid]];
     if ([result succeed]) {
         BLResourceVersion *version = [result.versions firstObject];
         _resultTextView.text = [NSString stringWithFormat:@"Script Pid:%@\n Version:%@", version.pid, version.version];
@@ -230,7 +227,7 @@
 }
 
 - (void)getUIVersion {
-    BLQueryResourceVersionResult *result = [_blController queryUIVersion:[self.device getPid]];
+    BLQueryResourceVersionResult *result = [[BLLet sharedLet].controller queryUIVersion:[self.device getPid]];
     if ([result succeed]) {
         BLResourceVersion *version = [result.versions firstObject];
         _resultTextView.text = [NSString stringWithFormat:@"UI Pid:%@\n Version:%@", version.pid, version.version];
@@ -242,7 +239,7 @@
 - (void)downloadScript {
     [self showIndicatorOnWindowWithMessage:@"Script Downloading..."];
     NSLog(@"Start downloadScript");
-    [_blController downloadScript:[_device getPid] completionHandler:^(BLDownloadResult * _Nonnull result) {
+    [[BLLet sharedLet].controller downloadScript:[_device getPid] completionHandler:^(BLDownloadResult * _Nonnull result) {
         NSLog(@"End downloadScript");
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideIndicatorOnWindow];
@@ -256,10 +253,10 @@
 }
 
 - (void)downloadUI {
-    NSString *unzipPath = [_blController queryUIPath:[_device getPid]];
+    NSString *unzipPath = [[BLLet sharedLet].controller queryUIPath:[_device getPid]];
     [self showIndicatorOnWindowWithMessage:@"UI Downloading..."];
     NSLog(@"Start downloadUI");
-    [_blController downloadUI:[self.device getPid] completionHandler:^(BLDownloadResult * _Nonnull result) {
+    [[BLLet sharedLet].controller downloadUI:[self.device getPid] completionHandler:^(BLDownloadResult * _Nonnull result) {
         NSLog(@"End downloadUI");
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideIndicatorOnWindow];
@@ -292,7 +289,7 @@
 
 
 - (void)bindDeviceToServer {
-    BLBindDeviceResult *result = [_blController bindDeviceWithServer:_device];
+    BLBindDeviceResult *result = [[BLLet sharedLet].controller bindDeviceWithServer:_device];
     if ([result succeed]) {
         _resultTextView.text = [NSString stringWithFormat:@"BindMap : %@", [result getBindmap]];
     } else {
@@ -301,7 +298,7 @@
 }
 
 - (void)queryTaskList {
-    BLQueryTaskResult *result = [_blController queryTask:[_device getDid]];
+    BLQueryTaskResult *result = [[BLLet sharedLet].controller queryTask:[_device getDid]];
     if ([result succeed]) {
         NSArray *timeTask = [result getTimer];
         NSArray *delayTask = [result getDelay];
@@ -342,7 +339,7 @@
     //    NSString *param2 = @"pwr";
     //    [stdData2 setValue:val2 forParam:param2];
     
-    BLQueryTaskResult *result = [_blController updateTask:[_device getDid] sDid:nil taskType:BL_TIMER_TYPE_LIST isNew:YES timerInfo:timerInfo stdData:stdData];
+    BLQueryTaskResult *result = [[BLLet sharedLet].controller updateTask:[_device getDid] sDid:nil taskType:BL_TIMER_TYPE_LIST isNew:YES timerInfo:timerInfo stdData:stdData];
     //    BLQueryTaskResult *result = [_blController updateTask:[_device getDid] sDid:nil taskType:BL_CYCLE_TYPE_LIST isNew:YES cycleInfo:timerInfo stdData1:stdData stdData2:stdData2];
     //    BLQueryTaskResult *result = [_blController delTask:[_device getDid] sDid:nil taskType:BL_CYCLE_TYPE_LIST index:0];
     if ([result succeed]) {
@@ -365,7 +362,7 @@
     NSInteger index = [val integerValue];
     NSInteger taskType = [param integerValue];
     
-    BLTaskDataResult *result = [_blController queryTaskData:_device.did sDid:nil taskType:taskType index:index];
+    BLTaskDataResult *result = [[BLLet sharedLet].controller queryTaskData:_device.did sDid:nil taskType:taskType index:index];
     
     if ([result succeed]) {
         _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
@@ -375,7 +372,7 @@
 }
 
 - (BOOL)copyCordovaJsToUIPathWithFileName:(NSString*)fileName {
-    NSString *uiPath = [[_blController queryUIPath:[_device getPid]] stringByDeletingLastPathComponent];  //  ../Let/ui/
+    NSString *uiPath = [[[BLLet sharedLet].controller queryUIPath:[_device getPid]] stringByDeletingLastPathComponent];  //  ../Let/ui/
     NSString *fullPathFileName = [uiPath stringByAppendingPathComponent:fileName];  // ../Let/ui/fileName
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:fullPathFileName] == NO) {

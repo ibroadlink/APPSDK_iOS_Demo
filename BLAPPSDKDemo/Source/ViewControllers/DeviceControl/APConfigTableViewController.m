@@ -19,15 +19,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    _controller = delegate.let.controller;
     self.apListArray = [NSArray array];
 }
 - (IBAction)refresh:(id)sender {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSLog(@"apconfigResult start");
-        BLGetAPListResult *apconfigResult = [self->_controller deviceAPList:7000];
+        BLGetAPListResult *apconfigResult = [[BLLet sharedLet].controller deviceAPList:7000];
         NSLog(@"easyconfigResult: %@", apconfigResult);
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -88,10 +85,11 @@
 
         NSLog(@"apconfigResult start");
 
-        BLAPConfigResult *apconfigResult = [_controller deviceAPConfig:ssidtxt.text password:passwordtxt.text type:APinfo.type];
+        BLAPConfigResult *apconfigResult = [[BLLet sharedLet].controller deviceAPConfig:ssidtxt.text password:passwordtxt.text type:APinfo.type];
         
         if ([apconfigResult succeed]) {
             NSLog(@"apconfig success:did--%@,pid--%@,ssid--%@,devkey--%@",apconfigResult.did,apconfigResult.pid,apconfigResult.ssid,apconfigResult.devkey);
+            [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"apconfig success:did--%@,pid--%@,ssid--%@,devkey--%@",apconfigResult.did,apconfigResult.pid,apconfigResult.ssid,apconfigResult.devkey]];
         }
     }]];
     

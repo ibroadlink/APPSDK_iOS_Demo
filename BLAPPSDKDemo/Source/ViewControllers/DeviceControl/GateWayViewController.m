@@ -122,7 +122,7 @@
     BLSubDevListResult *result = [[BLLet sharedLet].controller subDevNewListQueryWithDid:[_device getDid] index:0 count:0 subPid:@"000000000000000000000000d0010100"];
     if ([result succeed]) {
         self.subDevicelist = result.list;
-        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"list(%ld)", result.list.count]];
+        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"list(%lu)", (unsigned long)result.list.count]];
     } else {
         [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
     }
@@ -136,7 +136,7 @@
     self.isAdd = NO;
     BLSubDevListResult *result = [[BLLet sharedLet].controller subDevListQueryWithDid:[_device getDid] index:0 count:10];
     if ([result succeed]) {
-        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"list(%ld)", result.list.count]];
+        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"list(%lu)", (unsigned long)result.list.count]];
         NSLog(@"result:%@",result);
         if (result.list && ![result.list isKindOfClass:[NSNull class]] && result.list.count > 0) {
             NSLog(@"result.list:+++++++++=%@",result.list);

@@ -13,16 +13,12 @@
 
 @end
 
-@implementation DataPassthoughViewController{
-    BLController *_blController;
-}
+@implementation DataPassthoughViewController
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    _blController = delegate.let.controller;
     
     _dataInputTextView.delegate = self;
     _dataShowTextView.delegate = self;
@@ -38,7 +34,7 @@
     NSData *srcData = [self hexString2Bytes:srcString];
     
     [self showIndicatorOnWindowWithMessage:@"Data Passthough..."];
-    BLPassthroughResult *result = [_blController dnaPassthrough:[_device getDid] passthroughData:srcData];
+    BLPassthroughResult *result = [[BLLet sharedLet].controller dnaPassthrough:[_device getDid] passthroughData:srcData];
     [self hideIndicatorOnWindow];
     if ([result succeed]) {
         NSString *resStr = [self data2hexString:[result getData]];

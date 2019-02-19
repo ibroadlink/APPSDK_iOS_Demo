@@ -18,9 +18,7 @@
 
 @end
 
-@implementation MainViewController {
-    BLController *_blController;
-}
+@implementation MainViewController
 
 + (instancetype)viewController {
     MainViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
@@ -31,7 +29,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _blController = [BLLet sharedLet].controller;
     
 //    BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
 //    BLAccount *account = [BLLet sharedLet].account;
