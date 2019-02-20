@@ -75,22 +75,24 @@ int tag = 0;
     if ([result succeed]) {
         NSLog(@"data:%@", result.ircode);
         _resultText.text = result.ircode;
-        //发送红码
-        NSArray *myDeviceList = [[DeviceDB sharedOperateDB] readAllDevicesFromSql];
-        for (BLDNADevice *device in myDeviceList) {
-            //RM的pid，这里需要替换你使用的RM设备的pid
-            if ([device.pid isEqualToString:@"00000000000000000000000037270000"] || [device.pid isEqualToString:@"000000000000000000000000d1270000"]) {
-                BLStdData *stdStudyData = [[BLStdData alloc] init];
-                [stdStudyData setValue:result.ircode forParam:@"irda"];
-                BLStdControlResult *studyResult = [self.blcontroller dnaControl:[device getDid] stdData:stdStudyData action:@"set"];
-                if ([studyResult succeed]) {
-                    [BLStatusBar showTipMessageWithStatus:@"发送成功"];
-                }else{
-                    [BLStatusBar showTipMessageWithStatus:studyResult.msg];
-                }
+    }
+}
+
+- (IBAction)sendACIRCodeData:(id)sender {
+    //发送红码
+    NSArray *myDeviceList = [[DeviceDB sharedOperateDB] readAllDevicesFromSql];
+    for (BLDNADevice *device in myDeviceList) {
+        //RM的pid，这里需要替换你使用的RM设备的pid
+        if ([device.pid isEqualToString:@"00000000000000000000000037270000"] || [device.pid isEqualToString:@"000000000000000000000000d1270000"]) {
+            BLStdData *stdStudyData = [[BLStdData alloc] init];
+            [stdStudyData setValue:_resultText.text forParam:@"irda"];
+            BLStdControlResult *studyResult = [self.blcontroller dnaControl:[device getDid] stdData:stdStudyData action:@"set"];
+            if ([studyResult succeed]) {
+                [BLStatusBar showTipMessageWithStatus:@"发送成功"];
+            }else{
+                [BLStatusBar showTipMessageWithStatus:studyResult.msg];
             }
         }
-        
     }
 }
 
@@ -102,5 +104,57 @@ int tag = 0;
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [textField resignFirstResponder];
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    if (textField.tag == 100) {
+        [textField resignFirstResponder];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"模式" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"自动" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            self.modeTextField.text = @"0";
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"制冷" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            self.modeTextField.text = @"1";
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"除湿" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            self.modeTextField.text = @"2";
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"通风" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            self.modeTextField.text = @"3";
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"加热" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            self.modeTextField.text = @"4";
+        }]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }else if (textField.tag == 101) {
+        [textField resignFirstResponder];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"风速" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"自动" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            self.windSpeedTextField.text = @"0";
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"低速" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            self.windSpeedTextField.text = @"1";
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"中速" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            self.windSpeedTextField.text = @"2";
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"高速" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            self.windSpeedTextField.text = @"3";
+        }]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }else if (textField.tag == 102) {
+        [textField resignFirstResponder];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"风向" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"自动" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            self.directionTextField.text = @"0";
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"固定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            self.directionTextField.text = @"1";
+        }]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }else if (textField.tag == 103) {
+        
+    }
+
 }
 @end

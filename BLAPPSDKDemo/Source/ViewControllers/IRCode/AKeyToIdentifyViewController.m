@@ -14,8 +14,8 @@
 #import "DeviceDB.h"
 
 @interface AKeyToIdentifyViewController ()
-@property (weak, nonatomic) IBOutlet UILabel *RecoginzeTxt;
-@property (weak, nonatomic) IBOutlet UILabel *resultTxt;
+@property (weak, nonatomic) IBOutlet UITextView *RecoginzeTxt;
+@property (weak, nonatomic) IBOutlet UITextView *resultTxt;
 @property (nonatomic, strong) BLController *blcontroller;
 @property (nonatomic, strong) BLIRCode *blircode;
 @property (nonatomic, weak)NSTimer *stateTimer;
@@ -27,6 +27,7 @@
     [super viewDidLoad];
     self.blcontroller = [BLLet sharedLet].controller;
     self.blircode = [BLIRCode sharedIrdaCode];
+    self.RecoginzeTxt.text = @"2600ca008d950c3b0f1410380e3a0d160e160d3b0d150e150e3910150d160d3a0f36101411380d150f3a0e390d3910370f150f38103a0d3a0e1211140f1411121038101310150f3710380e390e150f160d160e1410140f131113101310380e3b0f351137123611ad8e9210370f1511370e390f140f1410380f1311130f39101211130f390f380f150f390f1310380f3810380f380f141038103710380f1411121014101310380f14101310380f3810381013101311121014101211131014101310370f3910361138103710000d05";
 }
 
 - (void)dealloc {
