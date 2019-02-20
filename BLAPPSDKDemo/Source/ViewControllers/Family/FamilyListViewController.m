@@ -83,10 +83,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     BLSFamilyInfo *familyInfo = self.familyInfos[indexPath.section];
-    NSString *familyId = familyInfo.familyid;
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self performSegueWithIdentifier:@"FamilyDetailView" sender:familyId];
+        [self performSegueWithIdentifier:@"FamilyDetailView" sender:familyInfo];
     });
 }
 
@@ -163,8 +162,10 @@
     if ([segue.identifier isEqualToString:@"FamilyDetailView"]) {
         UIViewController *target = segue.destinationViewController;
         if ([target isKindOfClass:[FamilyDetailViewController class]]) {
+            [BLNewFamilyManager sharedFamily].familyid = ((BLSFamilyInfo *)sender).familyid;
+
             FamilyDetailViewController* vc = (FamilyDetailViewController *)target;
-            vc.familyId = (NSString *)sender;
+            vc.familyInfo = (BLSFamilyInfo *)sender;
         }
     }
 }

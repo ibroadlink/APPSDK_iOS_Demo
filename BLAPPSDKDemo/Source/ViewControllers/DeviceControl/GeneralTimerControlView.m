@@ -299,6 +299,7 @@
         [BLStatusBar showTipMessageWithStatus:result];
 
     }]];
+    [timerTypeController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:timerTypeController animated:YES completion:nil];
     [self gettimerDnaControl];
 }

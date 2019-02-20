@@ -7,10 +7,10 @@
 //
 
 #import "BaseViewController.h"
-#import "AppDelegate.h"
+#import "BLSFamilyInfo.h"
 
 @interface FamilyDetailViewController : BaseViewController
 
-@property (nonatomic, strong) NSString *familyId;
+@property (nonatomic, strong)BLSFamilyInfo *familyInfo;
 
 @end
