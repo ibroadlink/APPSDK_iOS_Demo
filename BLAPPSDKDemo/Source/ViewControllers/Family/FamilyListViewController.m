@@ -9,16 +9,14 @@
 #import "FamilyListViewController.h"
 #import "FamilyDetailViewController.h"
 #import "BLStatusBar.h"
-#import <BLLetFamily/BLLetFamily.h>
-#import <BLLetAccount/BLLetAccount.h>
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "DropDownList.h"
+#import "BLNewFamilyManager.h"
+
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface FamilyListViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong)NSArray<BLFamilyInfoBase *> *familyIds;
-@property (nonatomic, strong)BLFamilyController *familyController;
-@property (nonatomic, strong)NSArray<BLUserInfo *> *infoArray;
+@property (nonatomic, strong)NSArray<BLSFamilyInfo *> *familyInfos;
 
 @end
 
@@ -27,8 +25,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _infoArray = [NSArray array];
-    _familyController = [BLFamilyController sharedManager];
     self.familyListTableView.delegate = self;
     self.familyListTableView.dataSource = self;
     [self setExtraCellLineHidden:self.familyListTableView];
@@ -41,12 +37,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self queryFamilyIdListInAccount];
+    [self queryFamilyBaseList];
 }
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.familyIds.count;
+    return self.familyInfos.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -59,25 +55,15 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
-    BLFamilyInfo *familyInfo = self.familyIds[indexPath.section].familyInfo;
+    BLSFamilyInfo *familyInfo = self.familyInfos[indexPath.section];
     UIImageView *headImageView = (UIImageView *)[cell viewWithTag:100];
-    [headImageView sd_setImageWithURL:[NSURL URLWithString:familyInfo.familyIconPath] placeholderImage:[UIImage imageNamed:@"default_family"]];
+    [headImageView sd_setImageWithURL:[NSURL URLWithString:familyInfo.iconpath] placeholderImage:[UIImage imageNamed:@"default_family"]];
     
     UILabel *familyNameLabel = (UILabel *)[cell viewWithTag:101];
-    familyNameLabel.text = familyInfo.familyName;
+    familyNameLabel.text = familyInfo.name;
     
-    UILabel *nicknameLabel = (UILabel *)[cell viewWithTag:102];
-    if (_infoArray && [_infoArray isKindOfClass:[NSArray class]] && [_infoArray count] > 0) {
-        NSString *userid = self.familyIds[indexPath.section].createUser;
-        for (BLUserInfo *userinfo in self.infoArray) {
-            if ([userid isEqualToString:userinfo.userid]) {
-                nicknameLabel.text = [NSString stringWithFormat:@"创建者：%@",userinfo.nickname];
-            }
-        }
-        
-    }
-    
-    
+    UILabel *familyIdLabel = (UILabel *)[cell viewWithTag:102];
+    familyIdLabel.text = familyInfo.familyid;
     
     return cell;
 }
@@ -96,26 +82,28 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    BLFamilyInfo *familyInfo = self.familyIds[indexPath.section].familyInfo;
-    NSString *familyId = familyInfo.familyId;
+    BLSFamilyInfo *familyInfo = self.familyInfos[indexPath.section];
+    NSString *familyId = familyInfo.familyid;
 
     dispatch_async(dispatch_get_main_queue(), ^{
         [self performSegueWithIdentifier:@"FamilyDetailView" sender:familyId];
     });
-    
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        BLFamilyInfo *familyInfo = self.familyIds[indexPath.row].familyInfo;
-        NSString *delId = familyInfo.familyId;
-        NSString *delVersion = familyInfo.familyVersion;
+        BLSFamilyInfo *familyInfo = self.familyInfos[indexPath.row];
+        BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+        [self showIndicatorOnWindow];
         
-        [_familyController delFamilyWithFamilyId:delId familyVersion:delVersion completionHandler:^(BLBaseResult * _Nonnull result) {
+        [manager delFamilyWithFamilyid:familyInfo.familyid completionHandler:^(BLBaseResult * _Nonnull result) {
+            
             dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideIndicatorOnWindow];
+
                 if ([result succeed]) {
                     [BLStatusBar showTipMessageWithStatus:@"Delete Family success!"];
-                    [self queryFamilyIdListInAccount];
+                    [self queryFamilyBaseList];
                 } else {
                     NSLog(@"ERROR :%@", result.msg);
                     [BLStatusBar showTipMessageWithStatus:[@"Delete Family failed! " stringByAppendingString:result.msg]];
@@ -126,46 +114,24 @@
 }
 
 #pragma mark - private method
-- (void)queryFamilyIdListInAccount {
-    NSLog(@"userid:%@------loginSession:%@",_familyController.loginUserid,_familyController.loginSession);
-    [_familyController queryLoginUserFamilyBaseInfoListWithCompletionHandler:^(BLFamilyBaseInfoListResult * _Nonnull result) {
+- (void)queryFamilyBaseList {
+    
+    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    
+    [self showIndicatorOnWindow];
+    [manager queryFamilyBaseInfoListWithCompletionHandler:^(BLSFamilyListResult * _Nonnull result) {
+        
         if ([result succeed]) {
-            self.familyIds = result.infoList;
-            [self getUserInfo:self.familyIds];
+            self.familyInfos = result.familyList;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideIndicatorOnWindow];
+                [self.familyListTableView reloadData];
+            });
         } else {
             NSLog(@"error:%ld msg:%@", (long)result.error, result.msg);
-            [BLStatusBar showTipMessageWithStatus:result.msg];
-        }
-    }];
-    
-//    [_familyController queryLoginUserFamilyIdListWithCompletionHandler:^(BLFamilyIdListGetResult * _Nonnull result) {
-//        if ([result succeed]) {
-//            self.familyIds = result.idList;
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [self.familyListTableView reloadData];
-//            });
-//        } else {
-//            NSLog(@"error:%ld msg:%@", (long)result.error, result.msg);
-//            [BLStatusBar showTipMessageWithStatus:result.msg];
-//        }
-//    }];
-}
-
-- (void)getUserInfo:(NSArray *)familyIds {
-    NSMutableArray *useridList = [NSMutableArray arrayWithCapacity:0];
-    for (BLFamilyInfoBase *infoBase in familyIds) {
-        NSString *userid = infoBase.createUser;
-        if (![useridList containsObject:userid]) {
-            [useridList addObject:userid];
-        }
-    }
-    __weak typeof(self) weakSelf = self;
-    [[BLAccount sharedAccount] getUserInfo:useridList completionHandler:^(BLGetUserInfoResult * _Nonnull result) {
-        NSArray<BLUserInfo *> *infoList = result.info;
-        if (infoList && [infoList isKindOfClass:[NSArray class]] && [infoList count] > 0) {
-            weakSelf.infoArray = infoList;
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.familyListTableView reloadData];
+                [self hideIndicatorOnWindow];
+                [BLStatusBar showTipMessageWithStatus:result.msg];
             });
         }
     }];

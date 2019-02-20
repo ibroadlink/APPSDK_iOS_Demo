@@ -10,6 +10,7 @@
 #import "DeviceDB.h"
 #import "MainViewController.h"
 #import "BLUserDefaults.h"
+#import "BLNewFamilyManager.h"
 #import "UserViewController.h"
 #import <BLLetAccount/BLLetAccount.h>
 #import <BLLetFamily/BLLetFamily.h>
@@ -79,11 +80,6 @@
 
 #pragma mark - private method
 - (void)loadAppSdk {
-    //BLLetCore
-    self.let = [BLLet sharedLetWithLicense:baihk_SDK_LICENSE];                      // Init APPSDK
-    [self.let setDebugLog:BL_LEVEL_ALL];                                            // Set APPSDK debug log level
-    [self.let.controller setSDKRawDebugLevel:BL_LEVEL_ALL];                         // Set DNASDK debug log level
-    
     [BLConfigParam sharedConfigParam].controllerLocalTimeout = 2000;                // 局域网控制超时时间
     [BLConfigParam sharedConfigParam].controllerRemoteTimeout = 4000;               // 远程控制超时时间
     [BLConfigParam sharedConfigParam].controllerSendCount = 3;                      // 控制重试次数
@@ -92,8 +88,11 @@
     [BLConfigParam sharedConfigParam].appServiceEnable = 1;                         // 使用appService集群
     [BLConfigParam sharedConfigParam].controllerResendMode = 0;                     // 本地控制失败，远程尝试控制
     
-    [BLConfigParam sharedConfigParam].packName = @"cn.com.broadlink.econtrol.plus"; //Reset package name
-    [BLLet sharedLetWithLicense:SDK_LICENSE];                                       //Reset License
+    [BLConfigParam sharedConfigParam].packName = @"cn.com.broadlink.econtrol.plus"; // set package name
+    //BLLetCore
+    self.let = [BLLet sharedLetWithLicense:SDK_LICENSE];                            // Init APPSDK
+    [self.let setDebugLog:BL_LEVEL_DEBUG];                                            // Set APPSDK debug log level
+    [self.let.controller setSDKRawDebugLevel:BL_LEVEL_DEBUG];                         // Set DNASDK debug log level
     
     [self.let.controller startProbe:3000];                                          // Start probe device
     self.let.controller.delegate = self;
@@ -106,12 +105,15 @@
     
     [BLFamilyController sharedManager];
     [BLIRCode sharedIrdaCode];
-
+    [BLNewFamilyManager sharedFamily].licenseid = [BLConfigParam sharedConfigParam].licenseId;
+    
     //本地登录 获取账号管理对象
     BLAccount *account = [BLAccount sharedAccount];
     BLUserDefaults *userDefault = [BLUserDefaults shareUserDefaults];
     if ([userDefault getUserId] && [userDefault getSessionId]) {
         NSLog(@"本地登录开始");
+        [BLNewFamilyManager sharedFamily].userid = [userDefault getUserId];
+        [BLNewFamilyManager sharedFamily].loginsession = [userDefault getSessionId];
         [account localLoginWithUsrid:[userDefault getUserId] session:[userDefault getSessionId] completionHandler:^(BLLoginResult * _Nonnull result) {
             if ([result succeed]) {
                 NSLog(@"本地登录成功");

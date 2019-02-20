@@ -9,7 +9,7 @@
 #import "CreateFamilyViewController.h"
 #import "BLStatusBar.h"
 #import "AppDelegate.h"
-#import <BLLetFamily/BLLetFamily.h>
+#import "BLNewFamilyManager.h"
 
 @interface CreateFamilyViewController () <UITextFieldDelegate>
 
@@ -36,25 +36,30 @@
     NSLog(@"create family");
     [self.familyNameField resignFirstResponder];
     
-    BLFamilyController *manager = [BLFamilyController sharedManager];
+    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
     
-    BLFamilyInfo *info = [[BLFamilyInfo alloc]init];
-    info.familyName = self.familyNameField.text;
-//    [manager createNewFamilyWithInfo:info iconImage:nil completionHandler:^(BLFamilyInfoResult * _Nonnull result) {
-//        NSLog(@"result:%@",result);
-//    }];
-    
-    [manager createDefaultFamilyWithInfo:self.familyNameField.text country:@"China" province:@"ZheJiang" city:@"HangZhou" completionHandler:^(BLFamilyInfoResult * _Nonnull result) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if ([result succeed]) {
-                NSLog(@"familyID:%@ version:%@ Name:%@ Description:%@", result.familyInfo.familyId, result.familyInfo.familyVersion, result.familyInfo.familyName, result.familyInfo.familyDescription);
+    [self showIndicatorOnWindow];
+    [manager createDefaultFamilyWithInfo:self.familyNameField.text country:@"China" province:@"ZheJiang" city:@"HangZhou" completionHandler:^(BLSFamilyCreateResult * _Nonnull result) {
+        
+        if ([result succeed]) {
+            BLSFamilyInfo *familyInfo = result.data;
+            NSLog(@"familyID:%@ Name:%@ Description:%@", familyInfo.familyid, familyInfo.name, familyInfo.desc);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideIndicatorOnWindow];
                 [BLStatusBar showTipMessageWithStatus:@"Create Family success!"];
                 [self performSelector:@selector(goBack) withObject:nil afterDelay:2.0f];
-            } else {
-                NSLog(@"ERROR :%@", result.msg);
+            });
+            
+        } else {
+            NSLog(@"ERROR :%@", result.msg);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideIndicatorOnWindow];
                 [BLStatusBar showTipMessageWithStatus:[@"Create Family failed! " stringByAppendingString:result.msg]];
-            }
-        });
+            });
+            
+        }
     }];
 }
 
