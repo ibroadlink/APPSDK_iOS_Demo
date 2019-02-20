@@ -22,7 +22,6 @@
     self.familyCodeField.delegate = self;
 }
 
-
 - (IBAction)joinBtn:(id)sender {
     [self.familyCodeField resignFirstResponder];
     [[BLFamilyController sharedManager] joinFamilyWithQrcode:self.familyCodeField.text completionHandler:^(BLBaseResult * _Nonnull result) {
