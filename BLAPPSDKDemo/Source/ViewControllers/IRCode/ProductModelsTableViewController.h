@@ -36,7 +36,9 @@
 
 @class CateGory;
 @class Provider;
+@class BLDNADevice;
 @interface ProductModelsTableViewController : UITableViewController
+@property (strong, nonatomic) BLDNADevice *device;
 @property(nonatomic, strong) Model *model;
 @property(nonatomic, strong) downloadInfo *downloadinfo;
 @property(nonatomic, strong) CateGory *cateGory;

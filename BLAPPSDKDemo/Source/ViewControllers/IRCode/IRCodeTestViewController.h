@@ -15,6 +15,7 @@
 @property(nonatomic, strong) NSString *name;
 @end
 
+@class BLDNADevice;
 @interface IRCodeTestViewController : BaseViewController
-
+@property (strong, nonatomic) BLDNADevice *device;
 @end

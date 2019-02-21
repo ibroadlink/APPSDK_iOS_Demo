@@ -169,8 +169,10 @@
         if ([target isKindOfClass:[ProductModelsTableViewController class]]) {
             ProductModelsTableViewController* opVC = (ProductModelsTableViewController *)target;
             if (_devtype == BL_IRCODE_DEVICE_AC || _devtype == BL_IRCODE_DEVICE_TV) {
+                opVC.device = self.device;
                 opVC.cateGory = (CateGory *)sender;
             }else if(_devtype == BL_IRCODE_DEVICE_TV_BOX){
+                opVC.device = self.device;
                 opVC.provider = (Provider *)sender;
             }
             

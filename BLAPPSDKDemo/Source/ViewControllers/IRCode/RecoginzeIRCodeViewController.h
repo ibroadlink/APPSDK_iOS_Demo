@@ -10,7 +10,9 @@
 #import "ProductModelsTableViewController.h"
 
 @class Model;
+@class BLDNADevice;
 @interface RecoginzeIRCodeViewController : UIViewController
+@property (strong, nonatomic) BLDNADevice *device;
 @property (nonatomic, strong) NSString *downloadUrl;
 @property (nonatomic, strong) NSString *randkey;
 @property (nonatomic, strong) NSString *savePath;

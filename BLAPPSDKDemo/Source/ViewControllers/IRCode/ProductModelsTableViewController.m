@@ -190,7 +190,7 @@
         if ([target isKindOfClass:[RecoginzeIRCodeViewController class]]) {
             RecoginzeIRCodeViewController* opVC = (RecoginzeIRCodeViewController *)target;
             opVC.downloadinfo = (downloadInfo *)sender;
-            
+            opVC.device = self.device;
         }
     }
 }

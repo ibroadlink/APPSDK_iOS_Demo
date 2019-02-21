@@ -113,12 +113,14 @@
         if ([target isKindOfClass:[ControlViewController class]]) {
             ControlViewController* opVC = (ControlViewController *)target;
             opVC.savePath = (NSString *)sender;
+            opVC.device = self.device;
         }
     }else if ([segue.identifier isEqualToString:@"TVcontrollerView"]){
         UIViewController *target = segue.destinationViewController;
         if ([target isKindOfClass:[TVControllTableViewController class]]) {
             TVControllTableViewController* opVC = (TVControllTableViewController *)target;
             opVC.savePath = (NSString *)sender;
+            opVC.device = self.device;
             opVC.tvList = self.tvList;
             opVC.devtype = _downloadinfo.devtype;
         }

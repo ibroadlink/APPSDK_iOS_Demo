@@ -13,7 +13,7 @@
 #import "BLStatusBar.h"
 #import "DeviceDB.h"
 
-@interface AKeyToIdentifyViewController ()
+@interface AKeyToIdentifyViewController ()<UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextView *RecoginzeTxt;
 @property (weak, nonatomic) IBOutlet UITextView *resultTxt;
 @property (nonatomic, strong) BLController *blcontroller;
@@ -27,6 +27,7 @@
     [super viewDidLoad];
     self.blcontroller = [BLLet sharedLet].controller;
     self.blircode = [BLIRCode sharedIrdaCode];
+    self.RecoginzeTxt.delegate = self;
     self.RecoginzeTxt.text = @"2600ca008d950c3b0f1410380e3a0d160e160d3b0d150e150e3910150d160d3a0f36101411380d150f3a0e390d3910370f150f38103a0d3a0e1211140f1411121038101310150f3710380e390e150f160d160e1410140f131113101310380e3b0f351137123611ad8e9210370f1511370e390f140f1410380f1311130f39101211130f390f380f150f390f1310380f3810380f380f141038103710380f1411121014101310380f14101310380f3810381013101311121014101211131014101310370f3910361138103710000d05";
 }
 
@@ -39,6 +40,7 @@
 }
 
 - (IBAction)identifyTheIRCode:(id)sender {
+    [_RecoginzeTxt resignFirstResponder];
     [self.blircode recognizeIRCodeWithHexString:_RecoginzeTxt.text completionHandler:^(BLBaseBodyResult * _Nonnull result) {
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
@@ -66,13 +68,16 @@
     }];
 }
 - (IBAction)downLoadIRCodeScript:(id)sender {
+    [_RecoginzeTxt resignFirstResponder];
     [self downloadIRCodeScript:self.downloadUrl savePath:self.savePath randkey:self.randkey];
 }
 
 - (IBAction)getIRCodeBaseInfo:(id)sender {
+    [_RecoginzeTxt resignFirstResponder];
     [self queryIRCodeScriptInfoSavePath:self.savePath randkey:nil deviceType:BL_IRCODE_DEVICE_AC];
 }
 - (IBAction)getIRCodeData:(id)sender {
+    [_RecoginzeTxt resignFirstResponder];
     if (self.savePath == nil) {
         [BLStatusBar showTipMessageWithStatus:@"identifyTheIRCode first!"];
         return;
@@ -81,31 +86,26 @@
 }
 
 - (IBAction)RMLearnBtn:(id)sender {
-    NSArray *myDeviceList = [[DeviceDB sharedOperateDB] readAllDevicesFromSql];
-    for (BLDNADevice *device in myDeviceList) {
-        //RM的pid，这里需要替换你使用的RM设备的pid
-        if ([device.pid isEqualToString:@"00000000000000000000000037270000"]) {
-            BLStdData *stdStudyData = [[BLStdData alloc] init];
-            [stdStudyData setValue:nil forParam:@"irdastudy"];
-            //进入学习模式
-            BLStdControlResult *studyResult = [self.blcontroller dnaControl:[device getDid] stdData:stdStudyData action:@"get"];
-            if ([studyResult succeed]) {
-                 if (![_stateTimer isValid]) {
-                     _stateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
-                         BLStdData *stdData = [[BLStdData alloc] init];
-                         [stdData setValue:nil forParam:@"irda"];
-                         //获取学习的红码
-                         BLStdControlResult *irdaResult = [self.blcontroller dnaControl:[device getDid] stdData:stdData action:@"get"];
-                         NSDictionary *dic = [[irdaResult getData] toDictionary];
-                         if ([dic[@"vals"] count] != 0) {
-                             self.RecoginzeTxt.text = dic[@"vals"][0][0][@"val"];
-                             [self.stateTimer invalidate];
-                         }else{
-                             self.RecoginzeTxt.text = @"未学习红码";
-                         }
-                     }];
-                 }
-            }
+    [_RecoginzeTxt resignFirstResponder];
+    BLStdData *stdStudyData = [[BLStdData alloc] init];
+    [stdStudyData setValue:nil forParam:@"irdastudy"];
+    //进入学习模式
+    BLStdControlResult *studyResult = [self.blcontroller dnaControl:[self.device getDid] stdData:stdStudyData action:@"get"];
+    if ([studyResult succeed]) {
+        if (![_stateTimer isValid]) {
+            _stateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
+                BLStdData *stdData = [[BLStdData alloc] init];
+                [stdData setValue:nil forParam:@"irda"];
+                //获取学习的红码
+                BLStdControlResult *irdaResult = [self.blcontroller dnaControl:[self.device getDid] stdData:stdData action:@"get"];
+                NSDictionary *dic = [[irdaResult getData] toDictionary];
+                if ([dic[@"vals"] count] != 0) {
+                    self.RecoginzeTxt.text = dic[@"vals"][0][0][@"val"];
+                    [self.stateTimer invalidate];
+                }else{
+                    self.RecoginzeTxt.text = @"未学习红码";
+                }
+            }];
         }
     }
     
@@ -155,8 +155,13 @@
         UIViewController *target = segue.destinationViewController;
         if ([target isKindOfClass:[ControlViewController class]]) {
             ControlViewController* opVC = (ControlViewController *)target;
+            opVC.device = self.device;
             opVC.savePath = (NSString *)sender;
         }
     }
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    [textView resignFirstResponder];
 }
 @end

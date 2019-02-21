@@ -80,19 +80,13 @@ int tag = 0;
 
 - (IBAction)sendACIRCodeData:(id)sender {
     //发送红码
-    NSArray *myDeviceList = [[DeviceDB sharedOperateDB] readAllDevicesFromSql];
-    for (BLDNADevice *device in myDeviceList) {
-        //RM的pid，这里需要替换你使用的RM设备的pid
-        if ([device.pid isEqualToString:@"00000000000000000000000037270000"] || [device.pid isEqualToString:@"000000000000000000000000d1270000"]) {
-            BLStdData *stdStudyData = [[BLStdData alloc] init];
-            [stdStudyData setValue:_resultText.text forParam:@"irda"];
-            BLStdControlResult *studyResult = [self.blcontroller dnaControl:[device getDid] stdData:stdStudyData action:@"set"];
-            if ([studyResult succeed]) {
-                [BLStatusBar showTipMessageWithStatus:@"发送成功"];
-            }else{
-                [BLStatusBar showTipMessageWithStatus:studyResult.msg];
-            }
-        }
+    BLStdData *stdStudyData = [[BLStdData alloc] init];
+    [stdStudyData setValue:_resultText.text forParam:@"irda"];
+    BLStdControlResult *studyResult = [self.blcontroller dnaControl:[self.device getDid] stdData:stdStudyData action:@"set"];
+    if ([studyResult succeed]) {
+        [BLStatusBar showTipMessageWithStatus:@"发送成功"];
+    }else{
+        [BLStatusBar showTipMessageWithStatus:studyResult.msg];
     }
 }
 
@@ -157,4 +151,5 @@ int tag = 0;
     }
 
 }
+
 @end

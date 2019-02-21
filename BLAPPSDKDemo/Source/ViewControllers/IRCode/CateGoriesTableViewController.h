@@ -20,7 +20,9 @@
 @end
 
 @class SubAreaInfo;
+@class BLDNADevice;
 @interface CateGoriesTableViewController : UITableViewController
+@property (strong, nonatomic) BLDNADevice *device;
 @property(nonatomic, assign) NSInteger devtype;
 @property(nonatomic, strong) SubAreaInfo *subAreainfo;
 @end

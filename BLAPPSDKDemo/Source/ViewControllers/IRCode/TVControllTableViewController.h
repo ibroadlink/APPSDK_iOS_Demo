@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class BLDNADevice;
 @interface TVControllTableViewController : UITableViewController
+@property (strong, nonatomic) BLDNADevice *device;
 @property (nonatomic, strong) NSString *savePath;
 @property (nonatomic, strong) NSArray *tvList;
 @property(nonatomic, assign) NSInteger devtype;

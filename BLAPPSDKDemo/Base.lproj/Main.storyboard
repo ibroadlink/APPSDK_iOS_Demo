@@ -822,6 +822,7 @@
                         <segue destination="QlA-Dv-FFj" kind="push" identifier="cloudTimerControlView" id="GLu-rj-Zjs"/>
                         <segue destination="P0c-LM-2jf" kind="push" identifier="generalTimerControlView" id="sbR-Gh-uHk"/>
                         <segue destination="7kN-Fi-hyy" kind="push" identifier="fastconControlView" id="Hxw-ze-eEW"/>
+                        <segue destination="Beq-bO-hbe" kind="push" identifier="rmDeviceController" id="9HU-k1-akq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yOb-U6-6J3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3672,54 +3673,64 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vd0-B3-vvZ">
+                                <rect key="frame" x="16" y="72" width="342" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x1T-db-YSN">
-                                <rect key="frame" x="78" y="199" width="218" height="30"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Download IRCode script"/>
+                                <rect key="frame" x="16" y="100.5" width="343" height="44"/>
+                                <color key="backgroundColor" red="0.91764705879999997" green="0.72941176470000002" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="q20-po-Wq4"/>
+                                </constraints>
+                                <state key="normal" title="Download IRCode script">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <action selector="downLoadIRCodeScript:" destination="ZEv-H3-SwH" eventType="touchUpInside" id="eLE-a9-Sbu"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qsc-Xc-MBc">
-                                <rect key="frame" x="78" y="272" width="218" height="30"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Get IRCode Base Info"/>
+                                <rect key="frame" x="16" y="164.5" width="343" height="44"/>
+                                <color key="backgroundColor" red="0.91764705879999997" green="0.72941176470000002" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <state key="normal" title="Get IRCode Base Info">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <action selector="getIRCodeBaseInfo:" destination="ZEv-H3-SwH" eventType="touchUpInside" id="7p0-c0-tcX"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UBz-VQ-RxA">
-                                <rect key="frame" x="78" y="345" width="218" height="30"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Get IRCode Data"/>
+                                <rect key="frame" x="16" y="228.5" width="343" height="44"/>
+                                <color key="backgroundColor" red="0.91764705879999997" green="0.72941176470000002" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <state key="normal" title="Get IRCode Data">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <action selector="getIRCodeData:" destination="ZEv-H3-SwH" eventType="touchUpInside" id="4Rm-Rt-x30"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vd0-B3-vvZ">
-                                <rect key="frame" x="16" y="72" width="342" height="119"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="119" id="x3r-gO-Zds"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="vd0-B3-vvZ" firstAttribute="centerX" secondItem="x1T-db-YSN" secondAttribute="centerX" id="4jM-dY-L3l"/>
-                            <constraint firstItem="x1T-db-YSN" firstAttribute="leading" secondItem="VG3-gs-n3C" secondAttribute="leadingMargin" constant="62" id="59C-Te-lkF"/>
-                            <constraint firstItem="qsc-Xc-MBc" firstAttribute="leading" secondItem="VG3-gs-n3C" secondAttribute="leadingMargin" constant="62" id="CFx-cU-qnw"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="UBz-VQ-RxA" secondAttribute="trailing" constant="63" id="Cjo-8h-nK8"/>
-                            <constraint firstItem="qsc-Xc-MBc" firstAttribute="top" secondItem="x1T-db-YSN" secondAttribute="bottom" constant="43" id="ECz-BL-224"/>
-                            <constraint firstItem="vd0-B3-vvZ" firstAttribute="leading" secondItem="VG3-gs-n3C" secondAttribute="leadingMargin" id="bcs-V4-382"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="x1T-db-YSN" secondAttribute="trailing" constant="63" id="fZZ-l8-NFA"/>
-                            <constraint firstItem="AlR-wM-H3S" firstAttribute="top" secondItem="UBz-VQ-RxA" secondAttribute="bottom" constant="292" id="gBe-BF-38r"/>
-                            <constraint firstItem="UBz-VQ-RxA" firstAttribute="top" secondItem="qsc-Xc-MBc" secondAttribute="bottom" constant="43" id="jOk-m5-DKi"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="qsc-Xc-MBc" secondAttribute="trailing" constant="63" id="pQj-Nn-odh"/>
-                            <constraint firstItem="vd0-B3-vvZ" firstAttribute="top" secondItem="XQl-Cu-CkN" secondAttribute="bottom" constant="8" symbolic="YES" id="ueL-Jt-5hY"/>
-                            <constraint firstItem="UBz-VQ-RxA" firstAttribute="leading" secondItem="VG3-gs-n3C" secondAttribute="leadingMargin" constant="62" id="zpa-7W-ZFh"/>
+                            <constraint firstItem="qsc-Xc-MBc" firstAttribute="leading" secondItem="x1T-db-YSN" secondAttribute="leading" id="46s-VU-vYg"/>
+                            <constraint firstItem="qsc-Xc-MBc" firstAttribute="width" secondItem="x1T-db-YSN" secondAttribute="width" id="6jG-Qb-WSa"/>
+                            <constraint firstItem="vd0-B3-vvZ" firstAttribute="leading" secondItem="VG3-gs-n3C" secondAttribute="leadingMargin" id="762-1F-qbu"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="x1T-db-YSN" secondAttribute="trailing" id="BqP-EN-8Wm"/>
+                            <constraint firstItem="UBz-VQ-RxA" firstAttribute="width" secondItem="x1T-db-YSN" secondAttribute="width" id="Ct5-Ng-RRy"/>
+                            <constraint firstItem="x1T-db-YSN" firstAttribute="top" secondItem="vd0-B3-vvZ" secondAttribute="bottom" constant="8" id="DwP-D8-Ew0"/>
+                            <constraint firstItem="vd0-B3-vvZ" firstAttribute="top" secondItem="XQl-Cu-CkN" secondAttribute="bottom" constant="8" id="EAg-RU-4AE"/>
+                            <constraint firstItem="UBz-VQ-RxA" firstAttribute="top" secondItem="qsc-Xc-MBc" secondAttribute="bottom" constant="20" id="LhZ-Le-tQh"/>
+                            <constraint firstItem="x1T-db-YSN" firstAttribute="leading" secondItem="VG3-gs-n3C" secondAttribute="leadingMargin" id="R9H-zT-gww"/>
+                            <constraint firstItem="qsc-Xc-MBc" firstAttribute="top" secondItem="x1T-db-YSN" secondAttribute="bottom" constant="20" id="cAw-WX-SxG"/>
+                            <constraint firstItem="qsc-Xc-MBc" firstAttribute="height" secondItem="x1T-db-YSN" secondAttribute="height" id="gV1-12-JRX"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="vd0-B3-vvZ" secondAttribute="trailing" constant="1" id="hPY-bk-eLR"/>
+                            <constraint firstItem="qsc-Xc-MBc" firstAttribute="trailing" secondItem="x1T-db-YSN" secondAttribute="trailing" id="k5D-FO-ea2"/>
+                            <constraint firstItem="UBz-VQ-RxA" firstAttribute="trailing" secondItem="x1T-db-YSN" secondAttribute="trailing" id="qLx-fO-frU"/>
+                            <constraint firstItem="UBz-VQ-RxA" firstAttribute="leading" secondItem="x1T-db-YSN" secondAttribute="leading" id="unq-yq-A5A"/>
+                            <constraint firstItem="UBz-VQ-RxA" firstAttribute="height" secondItem="x1T-db-YSN" secondAttribute="height" id="yca-Vm-PEa"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Recoginze IRCode View" id="IWh-dH-a6t"/>
@@ -3950,7 +3961,8 @@
         <image name="login_banner1_CH" width="750" height="400"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="WM4-gc-yx5"/>
+        <segue reference="g4G-6j-sfv"/>
+        <segue reference="9HU-k1-akq"/>
         <segue reference="JdS-Wy-Cgc"/>
         <segue reference="SRK-6U-AZG"/>
     </inferredMetricsTieBreakers>

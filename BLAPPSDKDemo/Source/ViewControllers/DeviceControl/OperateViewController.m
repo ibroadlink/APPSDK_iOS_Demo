@@ -28,6 +28,7 @@
 #import "GateWayViewController.h"
 #import "GeneralTimerControlView.h"
 #import "FastconViewController.h"
+#import "IRCodeTestViewController.h"
 
 @interface OperateViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -70,7 +71,8 @@
                             @"Fastcon 相关功能",
                             @"设备状态查询",
                             @"设备固件查询",
-                            @"设备固件升级"
+                            @"设备固件升级",
+                            @"RM设备管理"
                             ];
     
     _configArray = [NSArray array];
@@ -143,6 +145,9 @@
             break;
         case 7:
             [self upgradeFirmVersion];
+            break;
+        case 8:
+            [self rmDeviceController];
             break;
         default:
             break;
@@ -321,6 +326,10 @@
     [self performSegueWithIdentifier:@"fastconControlView" sender:nil];
 }
 
+- (void)rmDeviceController {
+    [self performSegueWithIdentifier:@"rmDeviceController" sender:nil];
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"DataPassthoughView"]) {
         UIViewController *target = segue.destinationViewController;
@@ -374,6 +383,12 @@
         UIViewController *target = segue.destinationViewController;
         if ([target isKindOfClass:[FastconViewController class]]) {
             FastconViewController* vc = (FastconViewController *)target;
+            vc.device = _device;
+        }
+    }else if ([segue.identifier isEqualToString:@"rmDeviceController"]) {
+        UIViewController *target = segue.destinationViewController;
+        if ([target isKindOfClass:[IRCodeTestViewController class]]) {
+            IRCodeTestViewController* vc = (IRCodeTestViewController *)target;
             vc.device = _device;
         }
     }
