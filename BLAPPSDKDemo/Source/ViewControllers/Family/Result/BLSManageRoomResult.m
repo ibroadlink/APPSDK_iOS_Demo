@@ -20,7 +20,7 @@
 + (NSDictionary *)BLS_modelCustomPropertyMapper {
     
     return @{
-             @"roomInfos": @[@"data.manageinfo", @"data.addroom"]
+             @"roomInfos": @[@"data.roomList", @"data.addroom"]
              };
 }
 

@@ -74,6 +74,10 @@
 		70A3904C1D83B1FC002F2867 /* httpDemo.js in Resources */ = {isa = PBXBuildFile; fileRef = 70A3904B1D83B1FC002F2867 /* httpDemo.js */; };
 		70DDAEF51DC73D4A005E4278 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 70DDAEE91DC73D4A005E4278 /* AppDelegate.m */; };
 		70DDAEF91DC73D4A005E4278 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 70DDAEF01DC73D4A005E4278 /* main.m */; };
+		842C960E221E3D0500B3A1A6 /* MemberListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C960D221E3D0500B3A1A6 /* MemberListViewController.m */; };
+		842C9611221E7AAC00B3A1A6 /* RoomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C9610221E7AAC00B3A1A6 /* RoomListViewController.m */; };
+		842C9614221E850300B3A1A6 /* EndpointListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C9613221E850300B3A1A6 /* EndpointListViewController.m */; };
+		842C9617221E964B00B3A1A6 /* EndpointAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C9616221E964B00B3A1A6 /* EndpointAddViewController.m */; };
 		84449FC9221B98ED006D2A10 /* BLNewFamilyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84449FC8221B98ED006D2A10 /* BLNewFamilyManager.m */; };
 		84449FCD221BA5CC006D2A10 /* BLSFamilyInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84449FCC221BA5CC006D2A10 /* BLSFamilyInfo.m */; };
 		84449FD1221BB176006D2A10 /* BLSFamilyInfoResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84449FD0221BB176006D2A10 /* BLSFamilyInfoResult.m */; };
@@ -217,6 +221,14 @@
 		70DDAEE91DC73D4A005E4278 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Source/AppDelegate.m; sourceTree = "<group>"; };
 		70DDAEF01DC73D4A005E4278 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Source/main.m; sourceTree = "<group>"; };
 		72367507CB38F6AA480979FA /* Pods-BLAPPSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLAPPSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		842C960C221E3D0500B3A1A6 /* MemberListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemberListViewController.h; sourceTree = "<group>"; };
+		842C960D221E3D0500B3A1A6 /* MemberListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MemberListViewController.m; sourceTree = "<group>"; };
+		842C960F221E7AAC00B3A1A6 /* RoomListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomListViewController.h; sourceTree = "<group>"; };
+		842C9610221E7AAC00B3A1A6 /* RoomListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoomListViewController.m; sourceTree = "<group>"; };
+		842C9612221E850300B3A1A6 /* EndpointListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EndpointListViewController.h; sourceTree = "<group>"; };
+		842C9613221E850300B3A1A6 /* EndpointListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EndpointListViewController.m; sourceTree = "<group>"; };
+		842C9615221E964B00B3A1A6 /* EndpointAddViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EndpointAddViewController.h; sourceTree = "<group>"; };
+		842C9616221E964B00B3A1A6 /* EndpointAddViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EndpointAddViewController.m; sourceTree = "<group>"; };
 		84449FC7221B98ED006D2A10 /* BLNewFamilyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLNewFamilyManager.h; sourceTree = "<group>"; };
 		84449FC8221B98ED006D2A10 /* BLNewFamilyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLNewFamilyManager.m; sourceTree = "<group>"; };
 		84449FCA221B9C5B006D2A10 /* BLNewFamilyUrls.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLNewFamilyUrls.h; sourceTree = "<group>"; };
@@ -303,6 +315,14 @@
 				70503D931FDBE4D5002D3371 /* FamilyDetailViewController.m */,
 				70503D791FDBE4D5002D3371 /* FamilyListViewController.h */,
 				70503D5E1FDBE4D5002D3371 /* FamilyListViewController.m */,
+				842C960C221E3D0500B3A1A6 /* MemberListViewController.h */,
+				842C960D221E3D0500B3A1A6 /* MemberListViewController.m */,
+				842C960F221E7AAC00B3A1A6 /* RoomListViewController.h */,
+				842C9610221E7AAC00B3A1A6 /* RoomListViewController.m */,
+				842C9612221E850300B3A1A6 /* EndpointListViewController.h */,
+				842C9613221E850300B3A1A6 /* EndpointListViewController.m */,
+				842C9615221E964B00B3A1A6 /* EndpointAddViewController.h */,
+				842C9616221E964B00B3A1A6 /* EndpointAddViewController.m */,
 				84449FCA221B9C5B006D2A10 /* BLNewFamilyUrls.h */,
 				84449FC7221B98ED006D2A10 /* BLNewFamilyManager.h */,
 				84449FC8221B98ED006D2A10 /* BLNewFamilyManager.m */,
@@ -773,6 +793,7 @@
 				70503DB91FDBE4D6002D3371 /* DeviceWebControlViewController.m in Sources */,
 				84EE08EA221D33730088EDE8 /* BLSEndpointInfo.m in Sources */,
 				3AFC6D7820EB7278003404E6 /* UIImage+BDL.m in Sources */,
+				842C9611221E7AAC00B3A1A6 /* RoomListViewController.m in Sources */,
 				70503DAB1FDBE4D5002D3371 /* MainViewController.m in Sources */,
 				3A9B60E02100377D0048540B /* JoinFamilyViewController.m in Sources */,
 				3AFC6D7520EB6063003404E6 /* Tools.m in Sources */,
@@ -793,6 +814,7 @@
 				84449FCD221BA5CC006D2A10 /* BLSFamilyInfo.m in Sources */,
 				84EE08E1221D042B0088EDE8 /* BLSFamilyMembersResult.m in Sources */,
 				70503DB71FDBE4D6002D3371 /* SPViewController.m in Sources */,
+				842C9614221E850300B3A1A6 /* EndpointListViewController.m in Sources */,
 				70503DBB1FDBE4D6002D3371 /* DeviceDB.m in Sources */,
 				70503DB41FDBE4D6002D3371 /* TVControllTableViewController.m in Sources */,
 				70503DAF1FDBE4D5002D3371 /* RecoginzeIRCodeViewController.m in Sources */,
@@ -801,6 +823,8 @@
 				022D7AFD20BBDBFB00689F93 /* DropDownList.m in Sources */,
 				70503DA41FDBE4D5002D3371 /* LoginViewController.m in Sources */,
 				70503D561FDBE37A002D3371 /* BLDeviceService.m in Sources */,
+				842C960E221E3D0500B3A1A6 /* MemberListViewController.m in Sources */,
+				842C9617221E964B00B3A1A6 /* EndpointAddViewController.m in Sources */,
 				70DDAEF51DC73D4A005E4278 /* AppDelegate.m in Sources */,
 				70503DAC1FDBE4D5002D3371 /* ProductModelsTableViewController.m in Sources */,
 				70503DAE1FDBE4D5002D3371 /* RMViewController.m in Sources */,

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <BLLetCore/BLLetCore.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy)NSString *irData;
 @property (nonatomic, copy)NSString *vGroup;
 @property (nonatomic, copy)NSString *extend;
+
+- (instancetype)initWithBLDevice:(BLDNADevice *)device;
 
 @end
 

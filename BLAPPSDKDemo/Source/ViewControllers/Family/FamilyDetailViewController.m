@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *familyMasterLabel;
 
 - (IBAction)buttonClick:(UIButton *)sender;
+- (IBAction)barButtonClick:(UIBarButtonItem *)sender;
 
 @end
 
@@ -126,6 +127,10 @@
             ControlViewController* opVC = (ControlViewController *)target;
             opVC.savePath = (NSString *)sender;
         }
+    }else if ([segue.identifier isEqualToString:@"controllerView"]) {
+        
+    }else if ([segue.identifier isEqualToString:@"RoomListView"]) {
+        
     }
 }
 
@@ -135,11 +140,22 @@
         case 100:
             [self modifyFamilyInfo];
             break;
-            
+        case 101:
+            [self showMemberListView];
+            break;
+        case 102:
+            [self showRoomListView];
+            break;
+        case 103:
+            [self showEndpointListView];
+            break;
         default:
             break;
     }
     
+}
+
+- (IBAction)barButtonClick:(UIBarButtonItem *)sender {
 }
 
 - (void)modifyFamilyInfo {
@@ -170,6 +186,18 @@
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)showMemberListView {
+    [self performSegueWithIdentifier:@"MemberListView" sender:nil];
+}
+
+- (void)showRoomListView {
+    [self performSegueWithIdentifier:@"RoomListView" sender:nil];
+}
+
+- (void)showEndpointListView {
+    [self performSegueWithIdentifier:@"EndpointListView" sender:nil];
 }
 
 @end

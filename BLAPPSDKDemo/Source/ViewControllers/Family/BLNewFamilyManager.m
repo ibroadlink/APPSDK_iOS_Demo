@@ -472,6 +472,7 @@
     }
     NSDictionary *body = @{@"endpoints":manageinfos};
     
+    NSLog(@"addEndpoints: %@", body);
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *path = [kFamilyDeviceManage stringByAppendingString:@"?operation=add"];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:path];

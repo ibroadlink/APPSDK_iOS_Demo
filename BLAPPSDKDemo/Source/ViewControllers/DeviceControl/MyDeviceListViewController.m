@@ -12,7 +12,7 @@
 #import "DeviceDB.h"
 
 
-@interface MyDeviceListViewController ()
+@interface MyDeviceListViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, weak)NSTimer *stateTimer;
 @end
