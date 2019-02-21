@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "ProductModelsTableViewController.h"
 @class Model;
+@class BLDNADevice;
 @interface ControlViewController : UIViewController
+@property (strong, nonatomic) BLDNADevice *device;
 @property (nonatomic, strong) NSString *randkey;
 @property (nonatomic, strong) NSString *savePath;
 @end

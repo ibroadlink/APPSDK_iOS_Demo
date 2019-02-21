@@ -11,6 +11,7 @@
 
 #import "BLStatusBar.h"
 #import "CateGoriesTableViewController.h"
+#import "AKeyToIdentifyViewController.h"
 
 @implementation SubAreaInfo
 - (instancetype)initWithDic: (NSDictionary *)dic {
@@ -99,10 +100,17 @@
         UIViewController *target = segue.destinationViewController;
         if ([target isKindOfClass:[CateGoriesTableViewController class]]) {
             CateGoriesTableViewController* opVC = (CateGoriesTableViewController *)target;
+            opVC.device = self.device;
             opVC.devtype = _devtype;
             if (_devtype == BL_IRCODE_DEVICE_TV_BOX) {
                 opVC.subAreainfo = (SubAreaInfo *)sender;
             }
+        }
+    }else if ([segue.identifier isEqualToString:@"aKeyToIdentify"]) {
+        UIViewController *target = segue.destinationViewController;
+        if ([target isKindOfClass:[AKeyToIdentifyViewController class]]) {
+            AKeyToIdentifyViewController* opVC = (AKeyToIdentifyViewController *)target;
+            opVC.device = self.device;
         }
     }
 }

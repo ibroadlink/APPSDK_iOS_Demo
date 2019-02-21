@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
+@class BLDNADevice;
 @interface AKeyToIdentifyViewController : BaseViewController
+@property (strong, nonatomic) BLDNADevice *device;
 @property (nonatomic, strong) NSString *downloadUrl;
 @property (nonatomic, strong) NSString *randkey;
 @property (nonatomic, strong) NSString *savePath;
