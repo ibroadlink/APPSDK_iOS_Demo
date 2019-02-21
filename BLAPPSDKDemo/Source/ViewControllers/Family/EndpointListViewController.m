@@ -7,6 +7,7 @@
 //
 
 #import "EndpointListViewController.h"
+#import "OperateViewController.h"
 #import "BLNewFamilyManager.h"
 
 #import "BLStatusBar.h"
@@ -132,6 +133,26 @@
         
         [self deleteEndpoint:endpointId];
     }
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString:@"OperateView"]) {
+        UIViewController *target = segue.destinationViewController;
+        if ([target isKindOfClass:[OperateViewController class]]) {
+            OperateViewController* opVC = (OperateViewController *)target;
+            opVC.device = (BLDNADevice *)sender;
+        }
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    BLSEndpointInfo *info = self.endpointList[indexPath.row];
+    BLDNADevice *device = [info toDNADevice];
+    [[BLLet sharedLet].controller addDevice:device];
+    
+    [self performSegueWithIdentifier:@"OperateView" sender:device];
 }
 
 - (IBAction)barButtonClick:(UIBarButtonItem *)sender {

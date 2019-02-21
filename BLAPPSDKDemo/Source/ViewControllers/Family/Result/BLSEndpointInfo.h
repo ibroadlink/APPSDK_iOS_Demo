@@ -29,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithBLDevice:(BLDNADevice *)device;
 
+- (BLDNADevice *)toDNADevice;
+
 @end
 
 NS_ASSUME_NONNULL_END

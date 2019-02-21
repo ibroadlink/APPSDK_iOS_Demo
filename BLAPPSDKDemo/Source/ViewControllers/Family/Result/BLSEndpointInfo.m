@@ -39,4 +39,31 @@
     return self;
 }
 
+
+- (BLDNADevice *)toDNADevice {
+    
+    BLDNADevice *device = [[BLDNADevice alloc] init];
+    
+    device.did = self.endpointId;
+    device.pid = self.productId;
+    device.mac = self.mac;
+    device.pDid = self.gatewayId;
+    
+    NSData *data = [[NSData alloc]initWithBase64EncodedString:self.cookie options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    if (data) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        device.password = [dic[@"password"] unsignedIntegerValue];
+        device.type = [dic[@"devtype"] unsignedIntegerValue];
+        device.name = dic[@"devname"];
+        device.lock = [dic[@"lock"] boolValue];
+        device.controlKey = dic[@"aeskey"];
+        device.controlId = [dic[@"terminalid"] unsignedIntegerValue];
+        NSString *extend = dic[@"extend"];
+        if (extend && extend.length > 0) {
+            device.extendInfo = [BLCommonTools deserializeMessageJSON:extend];
+        }
+    }
+    return device;
+}
+
 @end

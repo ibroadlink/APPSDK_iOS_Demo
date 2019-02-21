@@ -827,7 +827,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yOb-U6-6J3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3256.8000000000002" y="649.92503748125944"/>
+            <point key="canvasLocation" x="3257" y="650"/>
         </scene>
         <!--Web Control-->
         <scene sceneID="Lqd-sM-uOP">
@@ -2155,6 +2155,7 @@
                     <connections>
                         <outlet property="endpointListTable" destination="SiU-xv-N9e" id="uah-Gr-zS7"/>
                         <segue destination="Tyg-yY-47k" kind="push" identifier="EndpointAddView" id="uI2-n7-F1S"/>
+                        <segue destination="H7l-Gz-m11" kind="push" identifier="OperateView" id="mq0-0j-cjw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FMt-Er-n7h" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3961,9 +3962,10 @@
         <image name="login_banner1_CH" width="750" height="400"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="g4G-6j-sfv"/>
+        <segue reference="WM4-gc-yx5"/>
         <segue reference="9HU-k1-akq"/>
         <segue reference="JdS-Wy-Cgc"/>
+        <segue reference="QGS-Lq-5qG"/>
         <segue reference="SRK-6U-AZG"/>
     </inferredMetricsTieBreakers>
 </document>
