@@ -32,6 +32,10 @@
 #define DNAKIT_CORVODA_JS_FILE                      @"cordova.js"                   //cordova默认ios的js文件
 #define DNAKIT_CORVODA_PLUGIN_JS_FILE               @"cordova_plugins.js"           //cordova plugin默认js文件
 
+#define BL_SDK_H5_NAVI                              @"h5Navi"                       //navi from js
+#define BL_SDK_H5_PARAM                             @"h5Param"                      //param from h5
+#define BL_SDK_H5_PARAM_BACK                        @"h5ParamBack"                  //param to h5
+
 #define SPmini3 @"0000000000000000000000003e750000"
 #define SPmini  @"00000000000000000000000028270000"
 #define RMmini3 @"0000000000000000000000008f270000"

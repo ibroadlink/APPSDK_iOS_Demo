@@ -64,52 +64,6 @@
     
 }
 
-
-//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if (editingStyle == UITableViewCellEditingStyleDelete) {
-//        AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-//        BLFamilyController *familyController = [BLFamilyController sharedManager];
-//        BLModuleInfo *blmoduleInfo = self.deviceGroupArray[indexPath.section][indexPath.row];
-//
-//        [familyController delModuleWithId:blmoduleInfo.moduleId fromFamilyId:self.familyId familyVersion:self.familyAllInfo.familyBaseInfo.familyVersion completionHandler:^(BLModuleControlResult * _Nonnull result) {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                if ([result succeed]) {
-//                    NSLog(@"Del module success:%ld Msg:%@", (long)result.error, result.msg);
-//                    [BLStatusBar showTipMessageWithStatus:@"Del Module Success"];
-//                    [self queryFamilyAllInfoWithId:self.familyId];
-//                } else {
-//                    NSLog(@"Del module error:%ld Msg:%@", (long)result.error, result.msg);
-//                    [BLStatusBar showTipMessageWithStatus:[@"Del Module Failed! " stringByAppendingString:result.msg]];
-//                }
-//            });
-//        }];
-//    }
-//}
-//
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//
-//    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-//    BLModuleInfo *blmoduleInfo = self.deviceGroupArray[indexPath.section][indexPath.row];
-//    if (blmoduleInfo.moduleDevs.count > 0) {
-//        BLModuleIncludeDev *moduleDevice = blmoduleInfo.moduleDevs[0];
-//        BLDNADevice *device = [delegate.let.controller getDevice:moduleDevice.did];
-//
-//        if (blmoduleInfo.moduleType == BLSDKModuleType_RM_AC) {
-//            NSString *extend = blmoduleInfo.extend;
-//            NSData *jsonData = [extend dataUsingEncoding:NSUTF8StringEncoding];
-//            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
-//            NSString *codeUrl = dic[@"codeUrl"];
-//            NSString *savePath = [delegate.let.controller.queryIRCodeScriptPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.gz",blmoduleInfo.moduleId]];
-//            NSMutableDictionary *paramDic = [BLCommonTools getURLParameters:codeUrl];
-//            [[BLIRCode sharedIrdaCode] downloadIRCodeScriptWithUrl:codeUrl savePath:savePath randkey:paramDic[@"mkey"] completionHandler:^(BLDownloadResult * _Nonnull result) {}];
-//            [self performSegueWithIdentifier:@"controllerView" sender:savePath];
-//        } else {
-//            [self performSegueWithIdentifier:@"OperateView" sender:device];
-//        }
-//    }
-//
-//}
-
 #pragma mark - Navigation
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -156,6 +110,8 @@
 }
 
 - (IBAction)barButtonClick:(UIBarButtonItem *)sender {
+    
+    
 }
 
 - (void)modifyFamilyInfo {
@@ -198,6 +154,11 @@
 
 - (void)showEndpointListView {
     [self performSegueWithIdentifier:@"EndpointListView" sender:nil];
+}
+
+- (void)setFamilyInfo:(BLSFamilyInfo *)familyInfo {
+    _familyInfo = familyInfo;
+    [BLNewFamilyManager sharedFamily].currentFamilyInfo = familyInfo;
 }
 
 @end

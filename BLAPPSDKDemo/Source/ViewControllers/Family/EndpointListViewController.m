@@ -55,7 +55,7 @@
             });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Get Family Endpoints Failed. Code:%ld MSG:%@", result.status, result.msg]];
+                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Get Family Endpoints Failed. Code:%d MSG:%@", result.status, result.msg]];
             });
         }
     }];
@@ -77,7 +77,7 @@
             });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Delete Endpoints Failed. Code:%ld MSG:%@", result.status, result.msg]];
+                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Delete Endpoints Failed. Code:%d MSG:%@", result.status, result.msg]];
             });
         }
     }];
