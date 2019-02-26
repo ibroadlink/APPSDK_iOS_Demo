@@ -12,6 +12,8 @@
 #import "BLUserDefaults.h"
 #import "AppDelegate.h"
 
+#import "EndpointAddViewController.h"
+
 #import <BLLetAccount/BLLetAccount.h>
 #import <BLLetCore/BLLetCore.h>
 
@@ -19,7 +21,7 @@
 
 - (id)init {
     if (self = [super init]) {
-
+        
     }
     return self;
 }
@@ -35,7 +37,8 @@
     
     NSDictionary *currentFamilyInfoIDic = @{};
     if (familyInfo) {
-        currentFamilyInfoIDic = @{@"familyId"       :   familyInfo.familyid ?: @"",
+        currentFamilyInfoIDic = @{
+                                  @"familyId"       :   familyInfo.familyid ?: @"",
                                   @"familyName"     :   familyInfo.name ?: @"",
                                   @"familyIcon"     :   familyInfo.iconpath ?: @"",
                                   @"countryCode"    :   familyInfo.countryCode ?: @"",
@@ -53,8 +56,16 @@
 - (void)getDeviceProfile:(CDVInvokedUrlCommand *)command {
     NSDictionary *dic = [self parseArguments:command.arguments.firstObject];
     NSString *pid = dic[@"pid"];;
-    NSString *profile = [NSString stringWithFormat:@"{\"profile\":%@}", [[[BLLet sharedLet].controller queryProfileByPid:pid] getProfile]];
-    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:profile];
+    BLProfileStringResult *result = [[BLLet sharedLet].controller queryProfileByPid:pid];
+    
+    NSString *profile = @"";
+    if ([result succeed]) {
+        profile = result.getProfile;
+    }
+    
+    NSDictionary *resultDic = @{@"profile":profile};
+
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:resultDic]];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
@@ -66,7 +77,26 @@
         BLDNADevice *selectDevice = deviceService.selectDevice;
         NSString *accountName = deviceService.accountName;
         
-        NSString *deviceinfoJsonString = [NSString stringWithFormat:@"{\"deviceID\":\"%@\",\"subDeviceID\":\"%@\",\"deviceName\":\"%@\", \"deviceStatus\":%ld,\"networkStatus\":{\"status\":\"available\"},\"user\":{\"name\":\"%@\"}}", [selectDevice getDid],[selectDevice getPDid], [selectDevice getName], (long)[selectControl queryDeviceState:[selectDevice getDid]], accountName];
+        NSString *deviceinfoJsonString = nil;
+        if ([BLCommonTools isEmpty:selectDevice.pDid]) {
+            //Wi-Fi设备
+            deviceinfoJsonString = [NSString stringWithFormat:@"{\"productID\":\"%@\", \"deviceMac\":\"%@\", \"deviceID\":\"%@\", \"deviceName\":\"%@\",\"deviceStatus\":%ld,\"networkStatus\":{\"status\":\"available\"},\"user\":{\"name\":\"%@\"}}",
+                                    [selectDevice getPid],
+                                    [selectDevice getMac],
+                                    [selectDevice getDid],
+                                    [selectDevice getName],
+                                    (long)[selectControl queryDeviceState:[selectDevice getDid]],
+                                    accountName];
+        } else {
+            //子设备
+            deviceinfoJsonString = [NSString stringWithFormat:@"{\"productID\":\"%@\", \"deviceID\":\"%@\",\"subDeviceID\":\"%@\",\"deviceName\":\"%@\",\"deviceStatus\":%ld,\"networkStatus\":{\"status\":\"available\"},\"user\":{\"name\":\"%@\"}}",
+                                    [selectDevice getPid],
+                                    [selectDevice getPDid],
+                                    [selectDevice getDid],
+                                    [selectDevice getName],
+                                    (long)[selectControl queryDeviceState:[selectDevice getPDid]],
+                                    accountName];
+        }
         
         NSLog(@"H5deviceinfoJsonString:%@", deviceinfoJsonString);
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:deviceinfoJsonString];
@@ -92,7 +122,6 @@
 - (void)actWithControlParam:(NSArray *)info andBlock:(void(^)(BOOL ret, NSDictionary *dic))mainBlock {
     BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
     BLController *selectControl = deviceService.blController;
-    BLDNADevice *selectDevice = deviceService.selectDevice;
     
     NSMutableDictionary *dataDic = [NSMutableDictionary dictionaryWithCapacity:0];
     [dataDic setDictionary:[info objectAtIndex:2]];
@@ -140,7 +169,7 @@
         NSString *echo = [self p_toJsonString:dic];
         
         CDVPluginResult* pluginResult;
-        if (echo && [echo length] > 0) {
+        if (![BLCommonTools isEmpty:echo]) {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
         }
         else {
@@ -159,6 +188,65 @@
     }
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT messageAsString:@"error"];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+//请求云端服务
+- (void)cloudServices:(CDVInvokedUrlCommand *)command {
+    __block CDVPluginResult* pluginResult = nil;
+    NSDictionary *param = [self parseArguments:command.arguments.firstObject];
+    NSString *interface = param[@"interfaceName"];
+    NSString *httpBody = param[@"httpBody"];
+    NSString *serviceName = param[@"serviceName"];
+    
+    if ([interface isEqualToString:@"URL_HOST_NAME"] || [interface isEqualToString:@"URL_HOST_IP"]) {
+        [self getDomainOrIpWithServiceName:serviceName infName:interface command:command];
+        return;
+    }
+    
+    if (![interface hasPrefix:@"/"]) {
+        interface = [NSString stringWithFormat:@"/%@", interface];
+    }
+    NSDictionary *head = [[BLNewFamilyManager sharedFamily] generateHttpHead];
+    NSString *myUrlString = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:interface];
+    
+    BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
+    
+    if ([[param[@"method"] lowercaseString] isEqualToString:@"post"]) {
+        NSLog(@"cloudServices body: %@", httpBody);
+        NSData *postData = [httpBody dataUsingEncoding:NSUTF8StringEncoding];
+        
+        [httpAccessor post:myUrlString head:head data:postData timeout:10*1000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+            NSString *jsonString;
+            if (error) {
+                NSDictionary *dic = @{
+                                      @"error": [error localizedDescription]
+                                      };
+                jsonString = [self p_toJsonString:dic];
+            } else {
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                jsonString = [self p_toJsonString:dic];
+            }
+            
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:jsonString];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }];
+    } else {
+        [httpAccessor get:myUrlString head:head timeout:10*1000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+            NSString *jsonString;
+            if (error) {
+                NSDictionary *dic = @{
+                                      @"error": [error localizedDescription]
+                                      };
+                jsonString = [self p_toJsonString:dic];
+            } else {
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                jsonString = [self p_toJsonString:dic];
+            }
+            
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:jsonString];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }];
+    }
 }
 
 //http request
@@ -225,6 +313,15 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+//获取家庭下设备列表
+- (void)getDeviceList:(CDVInvokedUrlCommand *)command {
+    NSArray *deviceArray = [[NSArray alloc] init];
+    
+    NSDictionary *resultDic = @{@"deviceList":[deviceArray copy]};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:resultDic]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 //获取网关子设备列表
 - (void)getGetwaySubDeviceList:(CDVInvokedUrlCommand *)command {
     NSMutableArray *subDeviceList = [NSMutableArray arrayWithCapacity:0];
@@ -244,30 +341,27 @@
         if (result.list && ![result.list isKindOfClass:[NSNull class]] && result.list.count > 0) {
             
             NSArray *resultlist = result.list;
-            NSMutableArray *subDeviceList = [NSMutableArray arrayWithCapacity:0];
             for (BLDNADevice *subDevice in resultlist) {
                 [[BLLet sharedLet].controller addDevice:subDevice];
                 //下载子设备脚本
-                [[BLLet sharedLet].controller downloadScript:subDevice.pid completionHandler:^(BLDownloadResult * _Nonnull result) {NSLog(@"resultsavePath:%@",result.savePath);}];
+                //[[BLLet sharedLet].controller downloadScript:subDevice.pid completionHandler:^(BLDownloadResult * _Nonnull result) {NSLog(@"resultsavePath:%@",result.savePath);}];
                 NSDictionary *subDeviceInfo = @{@"did"      :   subDevice.did,
                                                 @"pid"      :   subDevice.pid ? subDevice.pid : @"",
                                                 @"name"     :   subDevice.name ? subDevice.name : @"",
-                                                @"icon"     :   @"http://www.broadlink.com.cn/images/homeFullpage/broadlink.png",
-                                                @"roomId"   :   @"2008450249062634829",
-                                                @"roomName" :   @"客厅"};
+                                                };
                 [subDeviceList addObject:subDeviceInfo];
             }
         }
     }
 
-    NSDictionary *resultDic = @{@"status":@0,@"deviceList":[subDeviceList copy]};
+    NSDictionary *resultDic = @{@"status":@(0),@"deviceList":[subDeviceList copy]};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:resultDic]];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 //关闭页面
 - (void)closeWebView:(CDVInvokedUrlCommand *)command {
-    NSDictionary *dic = @{@"status":@0, @"msg":@"ok"};
+    NSDictionary *dic = @{@"status":@(0), @"msg":@"ok"};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     [self.viewController.navigationController popViewControllerAnimated:YES];
@@ -299,7 +393,7 @@
     NSDictionary *param = [self parseArguments:command.arguments.firstObject];
     NSString *platform = param[@"platform"];
     NSString *url = param[@"url"];
-    NSDictionary *dic = @{@"status":@0, @"msg":@"ok"};
+    NSDictionary *dic = @{@"status":@(0), @"msg":@"ok"};
     if ([platform isEqualToString:@"app"]) {
         NSString *locationJs = [NSString stringWithFormat:@"window.document.location = '%@';", url];
         [self.webViewEngine evaluateJavaScript:locationJs completionHandler:nil];
@@ -312,18 +406,63 @@
     }
 }
 
-//添加设备到SDK
-- (void)addDeviceToNetworkInit:(CDVInvokedUrlCommand *)command {
-    NSDictionary *param = [self parseArguments:command.arguments.firstObject];
-    BLDNADevice *device = [[BLDNADevice alloc] initWithDeviceInfoDic:param];
-    
-    device.controlKey = param[@"key"];
-    if (param[@"id"]) {
-        device.controlId = [param[@"id"] unsignedIntegerValue];
+//添加设备到家庭
+- (void)addDeviceToFamily:(CDVInvokedUrlCommand *)command {
+    NSDictionary *deviceParam = [self parseArguments:command.arguments.firstObject];
+    NSDictionary *produceParam = [self parseArguments:command.arguments[1]];
+    NSDictionary *h5Param = command.arguments.count==3 ? [self parseArguments:command.arguments[2]] : nil;
+
+    BLDNADevice *deviceInfo = [[BLDNADevice alloc] init];
+    deviceInfo.did = deviceParam[@"did"];
+    deviceInfo.pid = deviceParam[@"pid"];
+    deviceInfo.mac = deviceParam[@"mac"];
+    deviceInfo.name = deviceParam[@"name"];
+    deviceInfo.pDid = deviceParam[@"pDid"];
+    deviceInfo.controlKey = deviceParam[@"key"];
+    if (deviceParam[@"id"]) {
+        deviceInfo.controlId = [deviceParam[@"id"] unsignedIntegerValue];
+    }
+    if (deviceParam[@"type"]) {
+        deviceInfo.type = [deviceParam[@"type"] unsignedIntegerValue];
+    } else if (deviceInfo.pid) {
+        NSData *pidData = [BLCommonTools hexString2Bytes:deviceInfo.pid];
+        Byte *pidByte = (Byte *)[pidData bytes];
+        deviceInfo.type = pidByte[12] + (pidByte[13] << 8);
     }
     
-    [[BLLet sharedLet].controller addDevice:device];
-    NSDictionary *dic = @{@"status":@0, @"msg":@"ok"};
+    EndpointAddViewController *vc = [EndpointAddViewController viewController];
+    vc.selectDevice = deviceInfo;
+    [self.viewController.navigationController pushViewController:vc animated:YES];
+
+    NSDictionary *dic = @{@"status":@(0), @"msg":@"ok"};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+//添加设备到SDK
+- (void)addDeviceToNetworkInit:(CDVInvokedUrlCommand *)command {
+    NSDictionary *deviceParam = [self parseArguments:command.arguments.firstObject];
+    
+    BLDNADevice *deviceInfo = [[BLDNADevice alloc] init];
+    deviceInfo.did = deviceParam[@"did"];
+    deviceInfo.pid = deviceParam[@"pid"];
+    deviceInfo.mac = deviceParam[@"mac"];
+    deviceInfo.name = deviceParam[@"name"];
+    deviceInfo.pDid = deviceParam[@"pDid"];
+    deviceInfo.controlKey = deviceParam[@"key"];
+    if (deviceParam[@"id"]) {
+        deviceInfo.controlId = [deviceParam[@"id"] unsignedIntegerValue];
+    }
+    if (deviceParam[@"type"]) {
+        deviceInfo.type = [deviceParam[@"type"] unsignedIntegerValue];
+    } else if (deviceInfo.pid) {
+        NSData *pidData = [BLCommonTools hexString2Bytes:deviceInfo.pid];
+        Byte *pidByte = (Byte *)[pidData bytes];
+        deviceInfo.type = pidByte[12] + (pidByte[13] << 8);
+    }
+    
+    [[BLLet sharedLet].controller addDevice:deviceInfo];
+    NSDictionary *dic = @{@"status":@(0), @"msg":@"ok"};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
@@ -358,6 +497,36 @@
     return [data copy];
 }
 
+- (void)getDomainOrIpWithServiceName:(NSString *)serviceName infName:(NSString *)interfaceName command:(CDVInvokedUrlCommand *)command {
+    NSString *url = nil;
+    if ([serviceName isEqualToString:@"irservice"]) {
+        url = [NSString stringWithFormat:@"%@rccode.ibroadlink.com", [BLConfigParam sharedConfigParam].licenseId];
+    } else if ([serviceName isEqualToString:@"feedbackservice"]) {
+        url = [NSString stringWithFormat:@"%@bizfeedback.ibroadlink.com", [BLConfigParam sharedConfigParam].licenseId];
+    } else {
+        url = [NSString stringWithFormat:@"%@appservice.ibroadlink.com", [BLConfigParam sharedConfigParam].licenseId];
+    }
+    NSString *retStr = [self getDomainOrIpWithUrl:url infName:interfaceName];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:retStr];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (NSString *)getDomainOrIpWithUrl:(NSString *)url infName:(NSString *)interfaceName {
+    NSDictionary *retDic = nil;
+    if ([interfaceName isEqualToString:@"URL_HOST_NAME"]) {
+        retDic = @{@"hostName" : url,
+                   @"protocol" : @"https"
+                   };
+        return [self p_toJsonString:retDic];
+    } else if ([interfaceName isEqualToString:@"URL_HOST_IP"]) {
+        NSString *ipAddress = [BLNetworkImp getIpAddrFromHost:url];
+        retDic = @{@"hostIP" : ipAddress,
+                   @"protocol" : @"https"
+                   };
+        return [self p_toJsonString:retDic];
+    }
+    return nil;
+}
 
 - (NSString *)p_toJsonString:(NSDictionary *)dic {
     NSError *error;

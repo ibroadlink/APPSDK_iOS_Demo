@@ -9,6 +9,8 @@
 #import "BLNewFamilyManager.h"
 #import "BLNewFamilyUrls.h"
 #import <BLLetBase/BLLetBase.h>
+#import <BLLetCore/BLLetCore.h>
+#import <BLLetIRCode/BLLetIRCode.h>
 
 #define UPDATA_ICON_MAXLIMIT            (2014 * 512)
 
@@ -22,6 +24,12 @@
     });
     
     return manager;
+}
+
+- (void)setFamilyid:(NSString *)familyid {
+    _familyid = familyid;
+    [[BLLet sharedLet].controller setCurrentFamilyId:familyid];
+    [BLIRCode sharedIrdaCode].familyId = familyid;
 }
 
 - (NSDictionary *)generateHttpHead {

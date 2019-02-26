@@ -279,8 +279,8 @@
 }
 
 - (void)webViewControl {
-    if ([self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_JS_FILE] ) {
-        DeviceWebControlViewController* vc = [[DeviceWebControlViewController alloc]init];
+    if ([self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_JS_FILE] && [self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_PLUGIN_JS_FILE]) {
+        DeviceWebControlViewController* vc = [[DeviceWebControlViewController alloc] init];
         vc.selectDevice = _device;
         [self.navigationController pushViewController:vc animated:YES];
     }

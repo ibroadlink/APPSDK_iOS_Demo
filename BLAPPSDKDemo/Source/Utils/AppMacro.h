@@ -12,8 +12,13 @@
 #define baihk_SDK_LICENSE             @"CceFpDt7d+r4pZ8KP74tbpNSf9Ug9pP+ytpIXApsCYpvvDEid0s8SdJtKgQMc5QmUsWWVwAAAACvEX37zpG5Wgi/Mlnda1pd2B9J96AQz9N0vO6WstfgR9yEgbkpFXFyJbsnfyHXt8pOdkTVo81rQrPhkOnhmpQBsEkbxXTfoUSQjDzWcfVjcAAAAAA="
 //cn.com.broadlink.blappsdkdemo.baihk
 
-#define SDK_LICENSE             @"0PlPqgTGPZt7CwNNz4lWVm7qQZqm8AdPyooafIrN9QX5UING6RYrag2V2nFqWRIQrFDxVgAAAADoWWz5UyBiHvQQIPyIUhi4XFSykPGAqniglnoIUWhvuHCgxWxDEyF0yb0xHzyz6V5BLR6D0KoiI6QqjWxRKs8JsEkbxXTfoUSQjDzWcfVjcA4AAADzeX7wfU+3ndxs2/3yXOnJrFAlYyFEltcuD9SloQA7kInW0ynCvel2PMHSm6RgRp/xNYhi5LPROx4fnr746yHD"
+//#define SDK_LICENSE             @"0PlPqgTGPZt7CwNNz4lWVm7qQZqm8AdPyooafIrN9QX5UING6RYrag2V2nFqWRIQrFDxVgAAAADoWWz5UyBiHvQQIPyIUhi4XFSykPGAqniglnoIUWhvuHCgxWxDEyF0yb0xHzyz6V5BLR6D0KoiI6QqjWxRKs8JsEkbxXTfoUSQjDzWcfVjcA4AAADzeX7wfU+3ndxs2/3yXOnJrFAlYyFEltcuD9SloQA7kInW0ynCvel2PMHSm6RgRp/xNYhi5LPROx4fnr746yHD"
 //cn.com.broadlink.econtrol.plus
+
+
+#define SDK_LICENSE             @"z3pn54M4x0Ad6uuWSI9G++DMebHcudBcmuQc0EzgH2MYC8m3+LcREcvQ/ihQzqUOeVcgXAAAAADjur2NVArwxwkCXFCflaFAvKQ+Zl0lPyrU2admH4eowk/FnWbIxL62RhRPseZ+Prnck2eU+xOGEEUW14Lo14gMsEkbxXTfoUSQjDzWcfVjcAAAAAA="
+//cn.com.broadlink.econtrol.international
+
 
 //#define SDK_LICENSE             @"pra5MQBRWxxg91exeGOqTCEpUzngyVUPM1IeaVHZtAQl/lK4yvO2G7ZmPTtvoqYDfST2WwAAAAC1smlzDedNIVDl25XaRpQ7ghMIw3HLioGZZPUtNWg059nHa5lKTFzY/QlRrFtoNMZhf4wKBidoQP2AcjGih+YLYb98k4xGMruMVY66ED1+wwAAAAA="
 //com.kaite.magichomecontrol

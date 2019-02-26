@@ -96,4 +96,6 @@
 /* APP Controler remote resend , default 1 **/
 @property (nonatomic, assign) NSUInteger controllerResendMode;
 
+/* BLPicker Data report count, default 20 **/
+@property (nonatomic, assign) NSUInteger dataReportCount;
 @end

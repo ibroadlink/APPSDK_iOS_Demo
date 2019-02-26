@@ -2165,7 +2165,7 @@
         <!--Endpoint Add View Controller-->
         <scene sceneID="HAr-ir-hOK">
             <objects>
-                <viewController id="Tyg-yY-47k" customClass="EndpointAddViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EndpointAddViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Tyg-yY-47k" customClass="EndpointAddViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6eV-Uq-bZg"/>
                         <viewControllerLayoutGuide type="bottom" id="MO5-o2-0An"/>
@@ -3963,7 +3963,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="WM4-gc-yx5"/>
-        <segue reference="9HU-k1-akq"/>
+        <segue reference="yQt-uG-KDV"/>
         <segue reference="JdS-Wy-Cgc"/>
         <segue reference="QGS-Lq-5qG"/>
         <segue reference="SRK-6U-AZG"/>
