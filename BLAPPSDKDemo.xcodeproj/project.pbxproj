@@ -25,11 +25,19 @@
 		02B89AD72047A540004E0088 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 02B89ACE2047A53F004E0088 /* index.html */; };
 		02B89AD82047A540004E0088 /* index.js in Resources */ = {isa = PBXBuildFile; fileRef = 02B89AD02047A53F004E0088 /* index.js */; };
 		02B89ADB2047DF20004E0088 /* OauthBindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02B89ADA2047DF20004E0088 /* OauthBindViewController.m */; };
+		3A44F4AE2223F03800936AFF /* ProductListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4AD2223F03800936AFF /* ProductListViewController.m */; };
+		3A44F4B12224ECA800936AFF /* BLProductCategoryList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4B02224ECA800936AFF /* BLProductCategoryList.m */; };
+		3A44F4B42225146300936AFF /* BLProductCategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4B32225146300936AFF /* BLProductCategoryModel.m */; };
 		3A9B60E02100377D0048540B /* JoinFamilyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9B60DF2100377D0048540B /* JoinFamilyViewController.m */; };
 		3AAC2A2A20EB250D00031DEC /* BLUserSaftyInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC2A2920EB250D00031DEC /* BLUserSaftyInfoCell.m */; };
 		3AAC2A2D20EB252200031DEC /* BLUserLogoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC2A2C20EB252200031DEC /* BLUserLogoutCell.m */; };
 		3AB87FC822154DF200B97D38 /* FastconViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB87FC722154DF200B97D38 /* FastconViewController.m */; };
 		3ACDE3C120EC9CF00016461D /* ModifyPhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACDE3C020EC9CF00016461D /* ModifyPhoneViewController.m */; };
+		3AEF737022253B2C00F2376A /* BLDeviceConfigureInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF736F22253B2C00F2376A /* BLDeviceConfigureInfo.m */; };
+		3AEF737322253BDE00F2376A /* BLDeviceConfigIntroduction.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF737222253BDE00F2376A /* BLDeviceConfigIntroduction.m */; };
+		3AEF73762226325A00F2376A /* BLConfigureStartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF73752226325A00F2376A /* BLConfigureStartViewController.m */; };
+		3AEF73792226645500F2376A /* BLDeviceResetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF73782226645500F2376A /* BLDeviceResetViewController.m */; };
+		3AEF737C222670BD00F2376A /* BLAddDeviceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF737B222670BD00F2376A /* BLAddDeviceListViewController.m */; };
 		3AFC6D6F20EB59E5003404E6 /* BLUserHeadImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC6D6E20EB59E5003404E6 /* BLUserHeadImageCell.m */; };
 		3AFC6D7220EB5DDC003404E6 /* BLSystemImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC6D7020EB5DDB003404E6 /* BLSystemImage.m */; };
 		3AFC6D7520EB6063003404E6 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC6D7420EB6063003404E6 /* Tools.m */; };
@@ -123,6 +131,12 @@
 		02B89AD92047DF20004E0088 /* OauthBindViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OauthBindViewController.h; sourceTree = "<group>"; };
 		02B89ADA2047DF20004E0088 /* OauthBindViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OauthBindViewController.m; sourceTree = "<group>"; };
 		3A3D7EB72140FB7200BF9D3D /* BLAPPSDKDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BLAPPSDKDemo.entitlements; sourceTree = "<group>"; };
+		3A44F4AC2223F03800936AFF /* ProductListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProductListViewController.h; sourceTree = "<group>"; };
+		3A44F4AD2223F03800936AFF /* ProductListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProductListViewController.m; sourceTree = "<group>"; };
+		3A44F4AF2224ECA800936AFF /* BLProductCategoryList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLProductCategoryList.h; sourceTree = "<group>"; };
+		3A44F4B02224ECA800936AFF /* BLProductCategoryList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLProductCategoryList.m; sourceTree = "<group>"; };
+		3A44F4B22225146300936AFF /* BLProductCategoryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLProductCategoryModel.h; sourceTree = "<group>"; };
+		3A44F4B32225146300936AFF /* BLProductCategoryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLProductCategoryModel.m; sourceTree = "<group>"; };
 		3A9B60DE2100377C0048540B /* JoinFamilyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoinFamilyViewController.h; sourceTree = "<group>"; };
 		3A9B60DF2100377D0048540B /* JoinFamilyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JoinFamilyViewController.m; sourceTree = "<group>"; };
 		3AAC2A2520EB24C600031DEC /* BLUserHeadImageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUserHeadImageCell.h; sourceTree = "<group>"; };
@@ -134,6 +148,16 @@
 		3AB87FC722154DF200B97D38 /* FastconViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FastconViewController.m; sourceTree = "<group>"; };
 		3ACDE3BF20EC9CF00016461D /* ModifyPhoneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyPhoneViewController.h; sourceTree = "<group>"; };
 		3ACDE3C020EC9CF00016461D /* ModifyPhoneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModifyPhoneViewController.m; sourceTree = "<group>"; };
+		3AEF736E22253B2C00F2376A /* BLDeviceConfigureInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLDeviceConfigureInfo.h; sourceTree = "<group>"; };
+		3AEF736F22253B2C00F2376A /* BLDeviceConfigureInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLDeviceConfigureInfo.m; sourceTree = "<group>"; };
+		3AEF737122253BDE00F2376A /* BLDeviceConfigIntroduction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLDeviceConfigIntroduction.h; sourceTree = "<group>"; };
+		3AEF737222253BDE00F2376A /* BLDeviceConfigIntroduction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLDeviceConfigIntroduction.m; sourceTree = "<group>"; };
+		3AEF73742226325A00F2376A /* BLConfigureStartViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLConfigureStartViewController.h; sourceTree = "<group>"; };
+		3AEF73752226325A00F2376A /* BLConfigureStartViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLConfigureStartViewController.m; sourceTree = "<group>"; };
+		3AEF73772226645500F2376A /* BLDeviceResetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLDeviceResetViewController.h; sourceTree = "<group>"; };
+		3AEF73782226645500F2376A /* BLDeviceResetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLDeviceResetViewController.m; sourceTree = "<group>"; };
+		3AEF737A222670BD00F2376A /* BLAddDeviceListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLAddDeviceListViewController.h; sourceTree = "<group>"; };
+		3AEF737B222670BD00F2376A /* BLAddDeviceListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLAddDeviceListViewController.m; sourceTree = "<group>"; };
 		3AFC6D6E20EB59E5003404E6 /* BLUserHeadImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUserHeadImageCell.m; sourceTree = "<group>"; };
 		3AFC6D7020EB5DDB003404E6 /* BLSystemImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLSystemImage.m; sourceTree = "<group>"; };
 		3AFC6D7120EB5DDC003404E6 /* BLSystemImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLSystemImage.h; sourceTree = "<group>"; };
@@ -439,6 +463,29 @@
 			path = js;
 			sourceTree = "<group>";
 		};
+		3A44F4AB2223E1D400936AFF /* Product */ = {
+			isa = PBXGroup;
+			children = (
+				3A44F4AC2223F03800936AFF /* ProductListViewController.h */,
+				3A44F4AD2223F03800936AFF /* ProductListViewController.m */,
+				3A44F4AF2224ECA800936AFF /* BLProductCategoryList.h */,
+				3A44F4B02224ECA800936AFF /* BLProductCategoryList.m */,
+				3A44F4B22225146300936AFF /* BLProductCategoryModel.h */,
+				3A44F4B32225146300936AFF /* BLProductCategoryModel.m */,
+				3AEF736E22253B2C00F2376A /* BLDeviceConfigureInfo.h */,
+				3AEF736F22253B2C00F2376A /* BLDeviceConfigureInfo.m */,
+				3AEF737122253BDE00F2376A /* BLDeviceConfigIntroduction.h */,
+				3AEF737222253BDE00F2376A /* BLDeviceConfigIntroduction.m */,
+				3AEF73742226325A00F2376A /* BLConfigureStartViewController.h */,
+				3AEF73752226325A00F2376A /* BLConfigureStartViewController.m */,
+				3AEF73772226645500F2376A /* BLDeviceResetViewController.h */,
+				3AEF73782226645500F2376A /* BLDeviceResetViewController.m */,
+				3AEF737A222670BD00F2376A /* BLAddDeviceListViewController.h */,
+				3AEF737B222670BD00F2376A /* BLAddDeviceListViewController.m */,
+			);
+			path = Product;
+			sourceTree = "<group>";
+		};
 		3AAC2A2E20EB597C00031DEC /* UserCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -483,6 +530,7 @@
 		70503D5A1FDBE4D5002D3371 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				3A44F4AB2223E1D400936AFF /* Product */,
 				02B42DA320B2A14B00700177 /* Account */,
 				02B42DA620B2A16D00700177 /* DeviceControl */,
 				02B42DA520B2A15F00700177 /* IRCode */,
@@ -770,6 +818,8 @@
 				3AFC6D7220EB5DDC003404E6 /* BLSystemImage.m in Sources */,
 				70503DB61FDBE4D6002D3371 /* DataPassthoughViewController.m in Sources */,
 				70503DAA1FDBE4D5002D3371 /* MyDeviceListViewController.m in Sources */,
+				3AEF737322253BDE00F2376A /* BLDeviceConfigIntroduction.m in Sources */,
+				3A44F4B42225146300936AFF /* BLProductCategoryModel.m in Sources */,
 				3AFC6D6F20EB59E5003404E6 /* BLUserHeadImageCell.m in Sources */,
 				70503DBA1FDBE4D6002D3371 /* BLUserDefaults.m in Sources */,
 				02B89ADB2047DF20004E0088 /* OauthBindViewController.m in Sources */,
@@ -804,17 +854,21 @@
 				70503DA01FDBE4D5002D3371 /* LoginsTableViewController.m in Sources */,
 				0261054220E21AE400883EFC /* BLLoadingButton.m in Sources */,
 				70503DA81FDBE4D5002D3371 /* RegisterViewController.m in Sources */,
+				3AEF737022253B2C00F2376A /* BLDeviceConfigureInfo.m in Sources */,
 				0244948B20AEC26D0056FB10 /* UserViewController.m in Sources */,
 				84EE08F3221D414F0088EDE8 /* BLSAddSceneResult.m in Sources */,
 				84EE08DB221CFB0C0088EDE8 /* BLSFamilyIconResult.m in Sources */,
+				3A44F4AE2223F03800936AFF /* ProductListViewController.m in Sources */,
 				84EE08F0221D3CED0088EDE8 /* BLSSceneInfo.m in Sources */,
 				70503DA61FDBE4D5002D3371 /* APConfigTableViewController.m in Sources */,
 				70503D9F1FDBE4D5002D3371 /* LoginByOauthViewController.m in Sources */,
 				70503D9D1FDBE4D5002D3371 /* A1ViewController.m in Sources */,
+				3A44F4B12224ECA800936AFF /* BLProductCategoryList.m in Sources */,
 				84449FCD221BA5CC006D2A10 /* BLSFamilyInfo.m in Sources */,
 				84EE08E1221D042B0088EDE8 /* BLSFamilyMembersResult.m in Sources */,
 				70503DB71FDBE4D6002D3371 /* SPViewController.m in Sources */,
 				842C9614221E850300B3A1A6 /* EndpointListViewController.m in Sources */,
+				3AEF73762226325A00F2376A /* BLConfigureStartViewController.m in Sources */,
 				70503DBB1FDBE4D6002D3371 /* DeviceDB.m in Sources */,
 				70503DB41FDBE4D6002D3371 /* TVControllTableViewController.m in Sources */,
 				70503DAF1FDBE4D5002D3371 /* RecoginzeIRCodeViewController.m in Sources */,
@@ -823,6 +877,7 @@
 				022D7AFD20BBDBFB00689F93 /* DropDownList.m in Sources */,
 				70503DA41FDBE4D5002D3371 /* LoginViewController.m in Sources */,
 				70503D561FDBE37A002D3371 /* BLDeviceService.m in Sources */,
+				3AEF73792226645500F2376A /* BLDeviceResetViewController.m in Sources */,
 				842C960E221E3D0500B3A1A6 /* MemberListViewController.m in Sources */,
 				842C9617221E964B00B3A1A6 /* EndpointAddViewController.m in Sources */,
 				70DDAEF51DC73D4A005E4278 /* AppDelegate.m in Sources */,
@@ -830,6 +885,7 @@
 				70503DAE1FDBE4D5002D3371 /* RMViewController.m in Sources */,
 				84449FD1221BB176006D2A10 /* BLSFamilyInfoResult.m in Sources */,
 				84EE08ED221D3CD60088EDE8 /* BLSQueryScenesResult.m in Sources */,
+				3AEF737C222670BD00F2376A /* BLAddDeviceListViewController.m in Sources */,
 				70503DA91FDBE4D5002D3371 /* DeviceListViewController.m in Sources */,
 				84449FDA221BD243006D2A10 /* BLSRoomInfo.m in Sources */,
 				70503DB11FDBE4D6002D3371 /* GateWayViewController.m in Sources */,

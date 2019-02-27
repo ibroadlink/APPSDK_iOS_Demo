@@ -1,15 +1,15 @@
 PODS:
   - BLExtension (0.0.1)
-  - BLLet/BLLetAccount (2.9.6):
+  - BLLet/BLLetAccount (2.9.7):
     - BLLet/BLLetBase
-  - BLLet/BLLetBase (2.9.6)
-  - BLLet/BLLetCore (2.9.6):
+  - BLLet/BLLetBase (2.9.7)
+  - BLLet/BLLetCore (2.9.7):
     - BLLet/BLLetBase
-  - BLLet/BLLetFamily (2.9.6):
+  - BLLet/BLLetFamily (2.9.7):
     - BLLet/BLLetBase
-  - BLLet/BLLetIRCode (2.9.6):
+  - BLLet/BLLetIRCode (2.9.7):
     - BLLet/BLLetBase
-  - BLLet/BLLetPlugins (2.9.6):
+  - BLLet/BLLetPlugins (2.9.7):
     - BLLet/BLLetBase
   - Cordova (4.4.0)
   - Masonry (0.6.4)
@@ -54,7 +54,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   BLExtension: 397cb05b32940fe0ce3467821ce56817c7f8bba8
-  BLLet: 02b8eca5e3932b0584d336d4d11b26e1b3b64be1
+  BLLet: 3d7f99412f0bbf7b695150187c5086c3a1edb138
   Cordova: 561576155c420c54441d99b855de12c6e7b51088
   Masonry: 281802d04d787ea2973179ee8bcb50500579ede2
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
@@ -63,6 +63,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
 
-PODFILE CHECKSUM: b0b4a798375cff1dc8cfb3e031a77cb4568b48b3
+PODFILE CHECKSUM: 767db6481d414475ee104151943e714cb11eb757
 
 COCOAPODS: 1.5.3
