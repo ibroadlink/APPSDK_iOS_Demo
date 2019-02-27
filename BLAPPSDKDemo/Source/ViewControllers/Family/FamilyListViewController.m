@@ -25,6 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.familyInfos = [[NSArray alloc] init];
     self.familyListTableView.delegate = self;
     self.familyListTableView.dataSource = self;
     [self setExtraCellLineHidden:self.familyListTableView];
@@ -119,20 +120,17 @@
     
     [self showIndicatorOnWindow];
     [manager queryFamilyBaseInfoListWithCompletionHandler:^(BLSFamilyListResult * _Nonnull result) {
-        
-        if ([result succeed]) {
-            self.familyInfos = result.familyList;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self hideIndicatorOnWindow];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideIndicatorOnWindow];
+
+            if ([result succeed]) {
+                self.familyInfos = result.familyList;
                 [self.familyListTableView reloadData];
-            });
-        } else {
-            NSLog(@"error:%ld msg:%@", (long)result.error, result.msg);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self hideIndicatorOnWindow];
+            } else {
+                NSLog(@"error:%ld msg:%@", (long)result.error, result.msg);
                 [BLStatusBar showTipMessageWithStatus:result.msg];
-            });
-        }
+            }
+        });
     }];
 }
 

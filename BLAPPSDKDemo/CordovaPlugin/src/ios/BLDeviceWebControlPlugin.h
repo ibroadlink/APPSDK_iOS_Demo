@@ -21,10 +21,14 @@
 - (void)notification:(CDVInvokedUrlCommand*)command;
 //自定义导航栏
 - (void)custom:(CDVInvokedUrlCommand *)command;
+//请求云端服务
+- (void)cloudServices:(CDVInvokedUrlCommand *)command;
 //http request
 - (void)httpRequest:(CDVInvokedUrlCommand *)command;
 //获取用户信息
 - (void)getUserInfo:(CDVInvokedUrlCommand *)command;
+//获取家庭下设备列表
+- (void)getDeviceList:(CDVInvokedUrlCommand *)command;
 //获取网关子设备列表
 - (void)getGetwaySubDeviceList:(CDVInvokedUrlCommand *)command;
 //关闭页面
@@ -37,5 +41,7 @@
 - (void)openUrl:(CDVInvokedUrlCommand *)command;
 //添加设备到SDK
 - (void)addDeviceToNetworkInit:(CDVInvokedUrlCommand *)command;
+//添加设备到家庭
+- (void)addDeviceToFamily:(CDVInvokedUrlCommand *)command;
 
 @end

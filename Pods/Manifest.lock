@@ -25,12 +25,12 @@ PODS:
 
 DEPENDENCIES:
   - BLExtension
-  - BLLet/BLLetAccount (~> 2.9.2)
-  - BLLet/BLLetBase (~> 2.9.2)
-  - BLLet/BLLetCore (~> 2.9.2)
-  - BLLet/BLLetFamily (~> 2.9.2)
-  - BLLet/BLLetIRCode (~> 2.9.2)
-  - BLLet/BLLetPlugins (~> 2.9.2)
+  - BLLet/BLLetAccount (~> 2.9.7)
+  - BLLet/BLLetBase (~> 2.9.7)
+  - BLLet/BLLetCore (~> 2.9.7)
+  - BLLet/BLLetFamily (~> 2.9.7)
+  - BLLet/BLLetIRCode (~> 2.9.7)
+  - BLLet/BLLetPlugins (~> 2.9.7)
   - Cordova (~> 4.4.0)
   - Masonry (~> 0.6.2)
   - MBProgressHUD (~> 1.1.0)
@@ -63,6 +63,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
 
-PODFILE CHECKSUM: 767db6481d414475ee104151943e714cb11eb757
+PODFILE CHECKSUM: 8a27ae96eb288c200256a156f70e753782e59552
 
 COCOAPODS: 1.5.3

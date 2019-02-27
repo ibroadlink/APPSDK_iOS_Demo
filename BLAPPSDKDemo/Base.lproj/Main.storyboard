@@ -2395,7 +2395,7 @@
         <!--Endpoint Add View Controller-->
         <scene sceneID="HAr-ir-hOK">
             <objects>
-                <viewController id="Tyg-yY-47k" customClass="EndpointAddViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EndpointAddViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Tyg-yY-47k" customClass="EndpointAddViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6eV-Uq-bZg"/>
                         <viewControllerLayoutGuide type="bottom" id="MO5-o2-0An"/>

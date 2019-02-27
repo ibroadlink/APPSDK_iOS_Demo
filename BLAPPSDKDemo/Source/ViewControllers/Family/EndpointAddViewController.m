@@ -17,7 +17,6 @@
 @interface EndpointAddViewController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
 @property (nonatomic, copy) NSArray *myDevices;
-@property (nonatomic, strong) BLDNADevice *selectDevice;
 
 @property (weak, nonatomic) IBOutlet UITableView *MyDeviceTable;
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
@@ -28,6 +27,11 @@
 @end
 
 @implementation EndpointAddViewController
+
++ (EndpointAddViewController *)viewController {
+    EndpointAddViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"EndpointAddViewController"];
+    return vc;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

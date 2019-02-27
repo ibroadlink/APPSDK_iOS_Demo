@@ -15,9 +15,17 @@
         <param name="ios-package" value="CDVGestureHandler" />
         <param name="onload" value="true" />
     </feature>
-    <feature name="BLNativeBridge">
-        <param name="ios-package" value="BLDeviceWebControlPlugin" />
-    </feature>
+    <plugins>
+        <feature name="BLNativeBridge">
+            <param name="ios-package" value="BLDeviceWebControlPlugin" />
+        </feature>
+        
+        <feature name="Navbar">
+            <param name="ios-package" value="BLDeviceWebControlPlugin" />
+        </feature>
+        
+    </plugins>
+    
     <name>BLAPPSDKDemo</name>
     <description>
         A sample broadlink web control application.

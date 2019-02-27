@@ -26,11 +26,11 @@
         NSDictionary *dic = @{
                               @"password":@(device.password),
                               @"devtype":@(device.type),
-                              @"devname":device.name,
+                              @"devname":device.name ?: @"",
                               @"lock": [NSNumber numberWithBool:device.lock], // bool
-                              @"aeskey":device.controlKey,
+                              @"aeskey":device.controlKey ?: @"",
                               @"terminalid":@(device.controlId),
-                              @"extend":device.extendInfo ? [BLCommonTools serializeMessage:self.extend] : @""
+                              @"extend":device.extendInfo ?: @""
                               };
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:0 error:nil];
         self.cookie = [[NSString alloc] initWithData:[jsonData base64EncodedDataWithOptions:0] encoding:NSUTF8StringEncoding];
@@ -59,7 +59,7 @@
         device.controlKey = dic[@"aeskey"];
         device.controlId = [dic[@"terminalid"] unsignedIntegerValue];
         NSString *extend = dic[@"extend"];
-        if (extend && extend.length > 0) {
+        if (![BLCommonTools isEmpty:extend]) {
             device.extendInfo = [BLCommonTools deserializeMessageJSON:extend];
         }
     }
