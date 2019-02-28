@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface EndpointAddViewController : BaseViewController
 
 @property (nonatomic, strong) BLDNADevice *selectDevice;
+@property (nonatomic, copy) NSDictionary *h5param;
 
 + (EndpointAddViewController *)viewController;
 

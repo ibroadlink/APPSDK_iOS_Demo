@@ -9,6 +9,7 @@
 #import "EndpointAddViewController.h"
 #import "BLNewFamilyManager.h"
 
+#import "AppMacro.h"
 #import "DeviceDB.h"
 #import <BLLetCore/BLLetCore.h>
 
@@ -21,6 +22,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *MyDeviceTable;
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
 @property (weak, nonatomic) IBOutlet UITextField *roomIdField;
+@property (weak, nonatomic) IBOutlet UILabel *showDevice;
+
 
 - (IBAction)buttonClick:(UIButton *)sender;
 
@@ -44,11 +47,28 @@
     self.nameField.delegate = self;
     self.roomIdField.delegate = self;
     
+    self.showDevice.numberOfLines = 0;
+    self.showDevice.font = [UIFont systemFontOfSize:15.0];
+    self.showDevice.hidden = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self getFamilyRooms];
+    
+    if (self.selectDevice) {
+        self.MyDeviceTable.hidden = YES;
+        self.showDevice.hidden = NO;
+        self.showDevice.text = [self.selectDevice BLS_modelToJSONString];
+        self.nameField.text = [NSString stringWithFormat:@"%@", self.selectDevice.name];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    if (self.h5param) {
+         [[NSNotificationCenter defaultCenter] postNotificationName:BL_SDK_H5_PARAM_BACK object:nil userInfo:self.h5param]; //如果是H5调用的，将h5传递的参数再传递回去
+    }
 }
 
 - (IBAction)buttonClick:(UIButton *)sender {
@@ -65,6 +85,7 @@
     [self addEndpointToFamily:info];
 }
 
+
 - (void)getFamilyRooms {
     BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
     [self showIndicatorOnWindow];
@@ -76,7 +97,6 @@
                 if (result.roomInfos && result.roomInfos.count > 0) {
                     BLSRoomInfo *info = result.roomInfos.firstObject;
                     self.roomIdField.text = info.roomid;
-                    self.nameField.text = [NSString stringWithFormat:@"%@的测试设备", info.name];
                 }
             } else {
                 [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Delete Room Failed. Code:%ld MSG:%@", result.status, result.msg]];
@@ -98,7 +118,7 @@
         
         if ([result succeed]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.navigationController popViewControllerAnimated:NO];
+                [self.navigationController popToRootViewControllerAnimated:YES];
             });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -133,6 +153,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     self.selectDevice = self.myDevices[indexPath.row];
+    
+    if (self.selectDevice) {
+        self.MyDeviceTable.hidden = YES;
+        self.showDevice.hidden = NO;
+        self.showDevice.text = [self.selectDevice BLS_modelToJSONString];
+        self.nameField.text = [NSString stringWithFormat:@"%@", self.selectDevice.name];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

@@ -2245,9 +2245,16 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ahe-hl-lxb">
+                                <rect key="frame" x="15" y="79" width="345" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="Ahe-hl-lxb" firstAttribute="top" secondItem="6eV-Uq-bZg" secondAttribute="bottom" constant="15" id="1DB-Wc-FtJ"/>
                             <constraint firstItem="xUP-fS-Gus" firstAttribute="leading" secondItem="5Yf-mA-0uB" secondAttribute="leading" id="4Ud-zw-BeG"/>
                             <constraint firstItem="5Yf-mA-0uB" firstAttribute="centerY" secondItem="L0m-iX-tUj" secondAttribute="centerY" id="6BA-nr-5Fo"/>
                             <constraint firstItem="enb-vc-eK7" firstAttribute="top" secondItem="L0m-iX-tUj" secondAttribute="bottom" constant="15" id="73E-vm-a9Q"/>
@@ -2261,6 +2268,8 @@
                             <constraint firstAttribute="trailing" secondItem="5Yf-mA-0uB" secondAttribute="trailing" constant="15" id="llo-Kj-wJe"/>
                             <constraint firstItem="5Yf-mA-0uB" firstAttribute="leading" secondItem="L0m-iX-tUj" secondAttribute="trailing" constant="14" id="nS9-1V-SKT"/>
                             <constraint firstItem="MO5-o2-0An" firstAttribute="top" secondItem="pbV-Sr-3OO" secondAttribute="bottom" constant="15" id="rFu-Hd-xVf"/>
+                            <constraint firstItem="Ahe-hl-lxb" firstAttribute="leading" secondItem="eoW-4z-3RH" secondAttribute="leading" constant="15" id="tch-pO-40a"/>
+                            <constraint firstAttribute="trailing" secondItem="Ahe-hl-lxb" secondAttribute="trailing" constant="15" id="udE-bQ-tio"/>
                             <constraint firstAttribute="trailing" secondItem="3Hl-xh-FJg" secondAttribute="trailing" id="w7d-ou-kHY"/>
                             <constraint firstItem="L0m-iX-tUj" firstAttribute="top" secondItem="3Hl-xh-FJg" secondAttribute="bottom" constant="20" id="yCe-jN-WY9"/>
                             <constraint firstItem="L0m-iX-tUj" firstAttribute="leading" secondItem="eoW-4z-3RH" secondAttribute="leading" constant="20" id="ysu-QJ-lQ5"/>
@@ -2271,6 +2280,7 @@
                         <outlet property="MyDeviceTable" destination="3Hl-xh-FJg" id="R6M-6F-e7N"/>
                         <outlet property="nameField" destination="5Yf-mA-0uB" id="3lS-fD-110"/>
                         <outlet property="roomIdField" destination="xUP-fS-Gus" id="MIP-iY-xf1"/>
+                        <outlet property="showDevice" destination="Ahe-hl-lxb" id="PnO-Qy-nvp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="muw-cr-cy4" userLabel="First Responder" sceneMemberID="firstResponder"/>

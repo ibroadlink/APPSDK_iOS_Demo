@@ -11,6 +11,10 @@
 @interface BLDeviceWebControlPlugin : CDVPlugin
 //获取当前家庭信息
 - (void)getFamilyInfo:(CDVInvokedUrlCommand *)command;
+//获取当前家庭场景列表
+- (void)getFamilySceneList:(CDVInvokedUrlCommand *)command;
+//获取设备所在的房间
+- (void)getDeviceRoom:(CDVInvokedUrlCommand *)command;
 //获取设备的Profile
 - (void)getDeviceProfile:(CDVInvokedUrlCommand *)command;
 //获取设备信息
@@ -35,6 +39,8 @@
 - (void)closeWebView:(CDVInvokedUrlCommand *)command;
 //获取Wi-Fi信息
 - (void)wifiInfo:(CDVInvokedUrlCommand *)command;
+/*gpsLocation*/
+- (void)gpsLocation:(CDVInvokedUrlCommand *)command;
 //发送验证码
 - (void)accountSendVCode:(CDVInvokedUrlCommand *)command;
 //打开指定页面
@@ -43,5 +49,8 @@
 - (void)addDeviceToNetworkInit:(CDVInvokedUrlCommand *)command;
 //添加设备到家庭
 - (void)addDeviceToFamily:(CDVInvokedUrlCommand *)command;
-
+//从家庭里面删除
+- (void)deleteFamilyDeviceList:(CDVInvokedUrlCommand *)command;
+//打开设备属性页，跳转到 Native 页面
+- (void)openDevicePropertyPage:(CDVInvokedUrlCommand *)command;
 @end

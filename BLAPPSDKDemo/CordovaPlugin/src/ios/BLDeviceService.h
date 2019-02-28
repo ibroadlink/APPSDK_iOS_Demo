@@ -16,5 +16,6 @@
 @property (nonatomic, strong) BLDNADevice *selectDevice;
 @property (nonatomic, strong) BLController *blController;
 @property (nonatomic, copy) NSString *accountName;
+@property (nonatomic, copy) NSString *h5Data;   //存储H5调用接口的时候传递的data数据（当前地产项目使用到改数据）
 
 @end

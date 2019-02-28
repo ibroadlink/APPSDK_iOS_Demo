@@ -397,6 +397,9 @@
             completionHandler(result);
         } else {
             BLSManageRoomResult *result = [BLSManageRoomResult BLS_modelWithJSON:data];
+            if ([result succeed]) {
+                self.roomList = result.roomInfos;
+            }
             completionHandler(result);
         }
     }];
@@ -457,6 +460,9 @@
             completionHandler(result);
         } else {
             BLSQueryEndpointsResult *result = [BLSQueryEndpointsResult BLS_modelWithJSON:data];
+            if ([result succeed]) {
+                self.endpointList = result.endpoints;
+            }
             completionHandler(result);
         }
     }];

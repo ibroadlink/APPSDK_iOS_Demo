@@ -26,7 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy)NSString *loginsession;
 @property (nonatomic, copy)NSString *licenseid;
 @property (nonatomic, copy)NSString *familyid;
+
 @property (nonatomic, strong)BLSFamilyInfo *currentFamilyInfo;
+@property (nonatomic, strong)BLSEndpointInfo *currentEndpointInfo;
+@property (nonatomic, copy)NSArray *endpointList;
+@property (nonatomic, copy)NSArray *roomList;
 
 + (instancetype)sharedFamily;
 

@@ -18,6 +18,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self loadContents];
+    //获取通知中心单例对象
+    NSNotificationCenter * center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(notice:) name:BL_SDK_H5_NAVI object:nil];
+    [center addObserver:self selector:@selector(h5Param:) name:BL_SDK_H5_PARAM_BACK object:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -65,6 +70,16 @@
             NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:appHtml]];
             [self.webViewEngine loadRequest:request];
         }
+    }
+}
+
+- (void)notice:(NSNotification *)notification {
+    //设置页面当前标题栏
+}
+
+- (void)h5Param:(NSNotification *)notification {
+    if (notification.userInfo) {
+        [self.webViewEngine evaluateJavaScript:notification.userInfo[@"cancelHandler"] completionHandler:nil];
     }
 }
 
