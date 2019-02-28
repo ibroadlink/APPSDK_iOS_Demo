@@ -22,8 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *iconUrlString;
 @property (nonatomic, strong) NSString *shortCutIconUrlString;
 //@property (nonatomic, strong) ModuleProfile *moduleProfile;
-@property (nonatomic, readonly, strong) NSArray *iconsArray;
-@property (nonatomic, readonly, strong) NSArray<BLDeviceConfigIntroduction *> *introductions;
+@property (nonatomic, strong) NSArray *ads;
+@property (nonatomic, strong) NSArray<BLDeviceConfigIntroduction *> *introduction;
 @property (nonatomic, strong) NSString *resetPic;
 @property (nonatomic, strong) NSString *resetText;
 @property (nonatomic, strong) NSString *configText;

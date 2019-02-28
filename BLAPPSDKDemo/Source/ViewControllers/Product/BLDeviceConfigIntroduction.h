@@ -12,8 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BLDeviceConfigIntroduction : NSObject
 
-@property(nonatomic, strong) NSString *introductionHtml;
-@property(nonatomic, strong) NSString *introductionTitle;
+@property(nonatomic, strong) NSString *url;
+@property(nonatomic, strong) NSString *name;
+@property(nonatomic, strong) NSString *icon;
 
 @end
 

@@ -1651,15 +1651,15 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="XeJ-1z-fZx">
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ibm-fg-KIK">
                                     <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="50" height="50"/>
-                                    <size key="footerReferenceSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="deviceCell" id="H34-tW-Lrg">
-                                        <rect key="frame" x="0.0" y="50" width="100" height="100"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
@@ -1690,7 +1690,7 @@
                                         <size key="customSize" width="100" height="100"/>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="categoryCell" id="Rg3-K5-C4v">
-                                        <rect key="frame" x="137.5" y="50" width="100" height="100"/>
+                                        <rect key="frame" x="137.5" y="0.0" width="100" height="100"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
@@ -1721,14 +1721,6 @@
                                         <size key="customSize" width="100" height="100"/>
                                     </collectionViewCell>
                                 </cells>
-                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="wWh-s0-giC">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </collectionReusableView>
-                                <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="7MP-E5-ewV">
-                                    <rect key="frame" x="0.0" y="150" width="375" height="50"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </collectionReusableView>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1826,7 +1818,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6YS-zc-bxi">
-                                <rect key="frame" x="66" y="617" width="243" height="30"/>
+                                <rect key="frame" x="66" y="421" width="243" height="30"/>
                                 <state key="normal" title="指示灯出于其他状态">
                                     <color key="titleColor" red="0.88835614919999994" green="0.73670929669999996" blue="0.43523040410000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
@@ -1840,18 +1832,51 @@
                                     <constraint firstAttribute="width" secondItem="P20-QM-HH2" secondAttribute="height" multiplier="58:32" id="QXo-68-aib"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LIn-kA-amE">
+                                <rect key="frame" x="141.5" y="535" width="92" height="30"/>
+                                <state key="normal" title="配网失败说明">
+                                    <color key="titleColor" red="0.88835614919999994" green="0.73670929669999996" blue="0.43523040410000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <connections>
+                                    <action selector="cfgfailedurl:" destination="AEt-k4-8yt" eventType="touchUpInside" id="Cmq-H9-5Vl"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k16-mo-9bl">
+                                <rect key="frame" x="156.5" y="573" width="62" height="30"/>
+                                <state key="normal" title="产品手册">
+                                    <color key="titleColor" red="0.88835614919999994" green="0.73670929669999996" blue="0.43523040410000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <connections>
+                                    <action selector="introduction:" destination="AEt-k4-8yt" eventType="touchUpInside" id="ylm-hM-jXv"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0R0-qt-ndA">
+                                <rect key="frame" x="149" y="497" width="77" height="30"/>
+                                <state key="normal" title="配网前说明">
+                                    <color key="titleColor" red="0.88835614919999994" green="0.73670929669999996" blue="0.43523040410000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <connections>
+                                    <action selector="beforecfgpurl:" destination="AEt-k4-8yt" eventType="touchUpInside" id="fEz-Az-h72"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="6YS-zc-bxi" secondAttribute="trailing" constant="50" id="5Av-s1-538"/>
                             <constraint firstItem="bJq-Oe-T6C" firstAttribute="top" secondItem="P20-QM-HH2" secondAttribute="bottom" constant="10" id="5K3-WI-Evc"/>
                             <constraint firstAttribute="trailing" secondItem="P20-QM-HH2" secondAttribute="trailing" id="5gn-5j-iaW"/>
+                            <constraint firstItem="k16-mo-9bl" firstAttribute="top" secondItem="LIn-kA-amE" secondAttribute="bottom" constant="8" symbolic="YES" id="An2-zf-27R"/>
                             <constraint firstAttribute="trailingMargin" secondItem="bJq-Oe-T6C" secondAttribute="trailing" constant="22" id="DUd-os-LJI"/>
-                            <constraint firstItem="6YS-zc-bxi" firstAttribute="leading" secondItem="635-4l-ef1" secondAttribute="leadingMargin" constant="50" id="HIM-vY-f0M"/>
+                            <constraint firstAttribute="bottom" secondItem="6YS-zc-bxi" secondAttribute="bottom" constant="216" id="HqP-dX-bjM"/>
                             <constraint firstItem="P20-QM-HH2" firstAttribute="leading" secondItem="635-4l-ef1" secondAttribute="leading" id="JK8-d5-AZ2"/>
                             <constraint firstItem="bJq-Oe-T6C" firstAttribute="leading" secondItem="635-4l-ef1" secondAttribute="leadingMargin" constant="22" id="JQb-51-JZK"/>
-                            <constraint firstItem="Jfj-n9-EFw" firstAttribute="top" secondItem="6YS-zc-bxi" secondAttribute="bottom" constant="20" id="RTx-Wk-ata"/>
+                            <constraint firstItem="0R0-qt-ndA" firstAttribute="centerX" secondItem="k16-mo-9bl" secondAttribute="centerX" id="d9W-8e-7HL"/>
+                            <constraint firstItem="6YS-zc-bxi" firstAttribute="leading" secondItem="635-4l-ef1" secondAttribute="leadingMargin" constant="50" id="hXD-fc-y6E"/>
+                            <constraint firstItem="0R0-qt-ndA" firstAttribute="centerX" secondItem="6YS-zc-bxi" secondAttribute="centerX" id="nJp-w1-VUJ"/>
+                            <constraint firstItem="LIn-kA-amE" firstAttribute="top" secondItem="0R0-qt-ndA" secondAttribute="bottom" constant="8" symbolic="YES" id="t8r-GB-hTc"/>
+                            <constraint firstItem="6YS-zc-bxi" firstAttribute="centerX" secondItem="bJq-Oe-T6C" secondAttribute="centerX" id="vUj-hH-jJh"/>
                             <constraint firstItem="P20-QM-HH2" firstAttribute="top" secondItem="xkz-WK-KIo" secondAttribute="bottom" id="vfD-CM-du1"/>
+                            <constraint firstItem="0R0-qt-ndA" firstAttribute="top" secondItem="6YS-zc-bxi" secondAttribute="bottom" constant="46" id="zdf-da-eoa"/>
+                            <constraint firstItem="0R0-qt-ndA" firstAttribute="centerX" secondItem="LIn-kA-amE" secondAttribute="centerX" id="zuu-kZ-d1j"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="wim-12-2Nf"/>
@@ -4254,7 +4279,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="WM4-gc-yx5"/>
-        <segue reference="B3Y-Hw-nwy"/>
+        <segue reference="2sW-XN-sZD"/>
         <segue reference="yQt-uG-KDV"/>
         <segue reference="JdS-Wy-Cgc"/>
         <segue reference="QGS-Lq-5qG"/>

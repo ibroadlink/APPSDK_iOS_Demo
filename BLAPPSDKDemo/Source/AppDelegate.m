@@ -88,7 +88,7 @@
     [BLConfigParam sharedConfigParam].appServiceEnable = 1;                         // 使用appService集群
     [BLConfigParam sharedConfigParam].controllerResendMode = 0;                     // 本地控制失败，远程尝试控制
     
-    [BLConfigParam sharedConfigParam].packName = @"cn.com.broadlink.econtrol.international"; // set package name
+    [BLConfigParam sharedConfigParam].packName = @"cn.com.broadlink.econtrol.plus"; // set package name
     //BLLetCore
     self.let = [BLLet sharedLetWithLicense:SDK_LICENSE];                            // Init APPSDK
     [self.let setDebugLog:BL_LEVEL_DEBUG];                                            // Set APPSDK debug log level

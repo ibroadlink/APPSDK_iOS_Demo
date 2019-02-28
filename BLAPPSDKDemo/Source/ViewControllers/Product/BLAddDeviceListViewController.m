@@ -77,7 +77,7 @@
     UILabel *moduleName = (UILabel *)[cell viewWithTag:101];
     moduleName.text = model.moduleName;
     UILabel *deviceName = (UILabel *)[cell viewWithTag:102];
-    deviceName.text = model.deviceName;
+    deviceName.text = [NSString stringWithFormat:@"%@ %@",model.brand,model.deviceName] ;
     return cell;
 }
 

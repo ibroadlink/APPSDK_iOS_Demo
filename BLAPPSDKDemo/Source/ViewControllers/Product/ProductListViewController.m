@@ -27,12 +27,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self viewInit];
     [self getProductCategoryList];
-    self.collectionView.delegate = self;
-    self.collectionView.dataSource = self;
-    
 }
 
+- (void)viewInit {
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    CGSize size = self.view.bounds.size;
+    flowLayout.itemSize = CGSizeMake(size.width - 30, 65);
+    flowLayout.minimumInteritemSpacing = 7;
+    flowLayout.sectionInset = UIEdgeInsetsMake(15, 15, 15, 15);
+    self.collectionView.collectionViewLayout = flowLayout;
+}
+
+//获取产品分类列表
 - (void)getProductCategoryList {
     BLAccount *account = [BLAccount sharedAccount];
     NSDictionary *headers = @{
