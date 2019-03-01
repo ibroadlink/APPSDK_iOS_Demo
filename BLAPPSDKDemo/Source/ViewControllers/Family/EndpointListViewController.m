@@ -7,7 +7,7 @@
 //
 
 #import "EndpointListViewController.h"
-#import "OperateViewController.h"
+#import "EndpointDetailController.h"
 #import "BLNewFamilyManager.h"
 
 #import "BLStatusBar.h"
@@ -46,44 +46,16 @@
     [manager getEndpointsWithCompletionHandler:^(BLSQueryEndpointsResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideIndicatorOnWindow];
-        });
-        
-        if ([result succeed]) {
-            self.endpointList = result.endpoints;
-            dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if ([result succeed]) {
+                self.endpointList = result.endpoints;
                 [self.endpointListTable reloadData];
-            });
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Get Family Endpoints Failed. Code:%d MSG:%@", result.status, result.msg]];
-            });
-        }
-    }];
-}
-
-- (void)deleteEndpoint:(NSString *)endpointId {
-    
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
-    [self showIndicatorOnWindow];
-    
-    [manager delEndpoint:endpointId completionHandler:^(BLBaseResult * _Nonnull result) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideIndicatorOnWindow];
+            } else {
+                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Get Family Endpoints Failed. Code:%ld MSG:%@", (long)result.status, result.msg]];
+            }
         });
-        
-        if ([result succeed]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self getFamilyEndpoints];
-            });
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Delete Endpoints Failed. Code:%d MSG:%@", result.status, result.msg]];
-            });
-        }
     }];
-    
 }
-
 
 #pragma mark - delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -126,33 +98,20 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        BLSEndpointInfo *info = self.endpointList[indexPath.row];
-        NSString *endpointId = info.endpointId;
-        
-        [self deleteEndpoint:endpointId];
-    }
-}
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    if ([segue.identifier isEqualToString:@"OperateView"]) {
+    if ([segue.identifier isEqualToString:@"EndpointDetail"]) {
         UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[OperateViewController class]]) {
-            OperateViewController* opVC = (OperateViewController *)target;
-            opVC.device = (BLDNADevice *)sender;
+        if ([target isKindOfClass:[EndpointDetailController class]]) {
+            EndpointDetailController* vc = (EndpointDetailController *)target;
+            vc.isNeedDeviceControl = YES;
+            vc.endpoint = (BLSEndpointInfo *)sender;
         }
     }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     BLSEndpointInfo *info = self.endpointList[indexPath.row];
-    BLDNADevice *device = [info toDNADevice];
-    [[BLLet sharedLet].controller addDevice:device];
-    
-    [self performSegueWithIdentifier:@"OperateView" sender:device];
+    [self performSegueWithIdentifier:@"EndpointDetail" sender:info];
 }
 
 - (IBAction)barButtonClick:(UIBarButtonItem *)sender {

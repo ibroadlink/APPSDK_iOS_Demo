@@ -35,7 +35,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self initSubViews];
-
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -62,6 +61,8 @@
         self.familyMasterLabel.text = [@"FamilyMaster:" stringByAppendingString:self.familyInfo.master];
     }
     
+    //获取房间列表
+    [self queryRoomList];
 }
 
 #pragma mark - Navigation
@@ -142,6 +143,12 @@
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)queryRoomList {
+    [[BLNewFamilyManager sharedFamily] getFamilyRoomsWithCompletionHandler:^(BLSManageRoomResult * _Nonnull result) {
+        NSLog(@"Query Rooms Msg: %@", result.msg);
+    }];
 }
 
 - (void)showMemberListView {

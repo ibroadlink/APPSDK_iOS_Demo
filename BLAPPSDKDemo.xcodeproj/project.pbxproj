@@ -87,6 +87,7 @@
 		842C9611221E7AAC00B3A1A6 /* RoomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C9610221E7AAC00B3A1A6 /* RoomListViewController.m */; };
 		842C9614221E850300B3A1A6 /* EndpointListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C9613221E850300B3A1A6 /* EndpointListViewController.m */; };
 		842C9617221E964B00B3A1A6 /* EndpointAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C9616221E964B00B3A1A6 /* EndpointAddViewController.m */; };
+		8430DCC32228CDB10048DCA7 /* EndpointDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8430DCC22228CDB10048DCA7 /* EndpointDetailController.m */; };
 		84449FC9221B98ED006D2A10 /* BLNewFamilyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84449FC8221B98ED006D2A10 /* BLNewFamilyManager.m */; };
 		84449FCD221BA5CC006D2A10 /* BLSFamilyInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84449FCC221BA5CC006D2A10 /* BLSFamilyInfo.m */; };
 		84449FD1221BB176006D2A10 /* BLSFamilyInfoResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84449FD0221BB176006D2A10 /* BLSFamilyInfoResult.m */; };
@@ -256,6 +257,8 @@
 		842C9613221E850300B3A1A6 /* EndpointListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EndpointListViewController.m; sourceTree = "<group>"; };
 		842C9615221E964B00B3A1A6 /* EndpointAddViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EndpointAddViewController.h; sourceTree = "<group>"; };
 		842C9616221E964B00B3A1A6 /* EndpointAddViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EndpointAddViewController.m; sourceTree = "<group>"; };
+		8430DCC12228CDB10048DCA7 /* EndpointDetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EndpointDetailController.h; sourceTree = "<group>"; };
+		8430DCC22228CDB10048DCA7 /* EndpointDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EndpointDetailController.m; sourceTree = "<group>"; };
 		84449FC7221B98ED006D2A10 /* BLNewFamilyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLNewFamilyManager.h; sourceTree = "<group>"; };
 		84449FC8221B98ED006D2A10 /* BLNewFamilyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLNewFamilyManager.m; sourceTree = "<group>"; };
 		84449FCA221B9C5B006D2A10 /* BLNewFamilyUrls.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLNewFamilyUrls.h; sourceTree = "<group>"; };
@@ -348,6 +351,8 @@
 				842C9610221E7AAC00B3A1A6 /* RoomListViewController.m */,
 				842C9612221E850300B3A1A6 /* EndpointListViewController.h */,
 				842C9613221E850300B3A1A6 /* EndpointListViewController.m */,
+				8430DCC12228CDB10048DCA7 /* EndpointDetailController.h */,
+				8430DCC22228CDB10048DCA7 /* EndpointDetailController.m */,
 				842C9615221E964B00B3A1A6 /* EndpointAddViewController.h */,
 				842C9616221E964B00B3A1A6 /* EndpointAddViewController.m */,
 				84449FCA221B9C5B006D2A10 /* BLNewFamilyUrls.h */,
@@ -835,6 +840,7 @@
 				70503DA31FDBE4D5002D3371 /* AKeyToIdentifyViewController.m in Sources */,
 				3AAC2A2A20EB250D00031DEC /* BLUserSaftyInfoCell.m in Sources */,
 				70503DA11FDBE4D5002D3371 /* BaseViewController.m in Sources */,
+				8430DCC32228CDB10048DCA7 /* EndpointDetailController.m in Sources */,
 				70503DB01FDBE4D6002D3371 /* ConfigureViewController.m in Sources */,
 				3AAC2A2D20EB252200031DEC /* BLUserLogoutCell.m in Sources */,
 				70503DA51FDBE4D5002D3371 /* CodeLoginViewController.m in Sources */,

@@ -21,7 +21,6 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *MyDeviceTable;
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
-@property (weak, nonatomic) IBOutlet UITextField *roomIdField;
 @property (weak, nonatomic) IBOutlet UILabel *showDevice;
 
 
@@ -45,7 +44,6 @@
     self.MyDeviceTable.dataSource = self;
     
     self.nameField.delegate = self;
-    self.roomIdField.delegate = self;
     
     self.showDevice.numberOfLines = 0;
     self.showDevice.font = [UIFont systemFontOfSize:15.0];
@@ -54,7 +52,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self getFamilyRooms];
     
     if (self.selectDevice) {
         self.MyDeviceTable.hidden = YES;
@@ -77,32 +74,25 @@
         [BLStatusBar showTipMessageWithStatus:@"Please select device first!!!"];
         return;
     }
-    
+    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
     BLSEndpointInfo *info = [[BLSEndpointInfo alloc] initWithBLDevice:self.selectDevice];
     info.friendlyName = self.nameField.text;
-    info.roomId = self.roomIdField.text;
-    
-    [self addEndpointToFamily:info];
-}
 
-
-- (void)getFamilyRooms {
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
-    [self showIndicatorOnWindow];
-    
-    [manager getFamilyRoomsWithCompletionHandler:^(BLSManageRoomResult * _Nonnull result) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideIndicatorOnWindow];
-            if ([result succeed]) {
-                if (result.roomInfos && result.roomInfos.count > 0) {
-                    BLSRoomInfo *info = result.roomInfos.firstObject;
-                    self.roomIdField.text = info.roomid;
-                }
-            } else {
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Delete Room Failed. Code:%ld MSG:%@", result.status, result.msg]];
-            }
-        });
-    }];
+    if (![BLCommonTools isEmptyArray:manager.roomList]) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"选择房间" message:@"请选择要添加的房间" preferredStyle:UIAlertControllerStyleActionSheet];
+        for (BLSRoomInfo *room in manager.roomList) {
+            UIAlertAction *action = [UIAlertAction actionWithTitle:room.name style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                info.roomId = room.roomid;
+                [self addEndpointToFamily:info];
+            }];
+            [alert addAction:action];
+        }
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}];
+        [alert addAction:cancelAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    } else {
+        [self addEndpointToFamily:info];
+    }
 }
 
 - (void)addEndpointToFamily:(BLSEndpointInfo *)info {
@@ -137,11 +127,15 @@
     return self.myDevices.count;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 50;
+}
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString* cellIdentifier = @"MY_DEVICE_LIST_CELL";
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     
     BLDNADevice *device = self.myDevices[indexPath.row];

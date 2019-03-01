@@ -63,18 +63,14 @@
     [manager getFamilyRoomsWithCompletionHandler:^(BLSManageRoomResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideIndicatorOnWindow];
-        });
-        
-        if ([result succeed]) {
-            self.roomList = result.roomInfos;
-            dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if ([result succeed]) {
+                self.roomList = result.roomInfos;
                 [self.roomListTable reloadData];
-            });
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            } else {
                 [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Delete Room Failed. Code:%ld MSG:%@", result.status, result.msg]];
-            });
-        }
+            }
+        });
     }];
 }
 
@@ -87,20 +83,15 @@
     [manager manageRooms:infos completionHandler:^(BLSManageRoomResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideIndicatorOnWindow];
-        });
-        
-        if ([result succeed]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if ([result succeed]) {
                 [self getFamilyRooms];
-            });
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            } else {
                 [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Manage Room Failed. Code:%ld MSG:%@", result.status, result.msg]];
-            });
-        }
-        
+            }
+            
+        });
     }];
-    
 }
 
 #pragma mark - delegate

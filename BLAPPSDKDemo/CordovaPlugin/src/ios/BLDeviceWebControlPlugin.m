@@ -13,6 +13,7 @@
 #import "AppDelegate.h"
 
 #import "EndpointAddViewController.h"
+#import "EndpointDetailController.h"
 #import "DeviceWebControlViewController.h"
 #import "DNAControlViewController.h"
 
@@ -747,23 +748,30 @@
 - (void)openDevicePropertyPage:(CDVInvokedUrlCommand *)command {
     NSDictionary *param = [self parseArguments:command.arguments.firstObject];
     NSLog(@"BLDeviceWebControlPlugin method: %@, param: %@", command.methodName, param);
-    
+    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+
     NSString *did = param[@"did"];
     
     if ([BLCommonTools isEmpty:did]) {
-        [self.viewController.navigationController popViewControllerAnimated:YES];
+        EndpointDetailController* vc = [EndpointDetailController viewController];
+        vc.isNeedDeviceControl = NO;
+        vc.endpoint = manager.currentEndpointInfo;
+        
+        [self.viewController.navigationController pushViewController:vc animated:YES];
+        
     } else {
-        BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
         NSArray *endpointList = manager.endpointList;
         
         for (BLSEndpointInfo *info in endpointList) {
             if ([info.endpointId isEqualToString:did]) {
                 manager.currentEndpointInfo = info;
+
                 BLDNADevice *device = [info toDNADevice];
                 [[BLLet sharedLet].controller addDevice:device];
                 
-                DNAControlViewController* vc = [[DNAControlViewController alloc] init];
-                vc.device = device;
+                EndpointDetailController* vc = [EndpointDetailController viewController];
+                vc.isNeedDeviceControl = NO;
+                vc.endpoint = info;
                 
                 [self.viewController.navigationController pushViewController:vc animated:YES];
                 break;
