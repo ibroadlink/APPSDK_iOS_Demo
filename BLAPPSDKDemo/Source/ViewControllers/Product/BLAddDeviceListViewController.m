@@ -13,6 +13,7 @@
 #import "BLConfigureStartViewController.h"
 #import <BLLetAccount/BLLetAccount.h>
 #import <SDWebImage/UIImageView+WebCache.h>
+
 @interface BLAddDeviceListViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) NSArray *productCategoryList;
 @end
@@ -35,6 +36,7 @@
                                   @"categoryid":categoryid
                                   };
     NSString *url = [NSString stringWithFormat:@"https://%@bizappmanage.ibroadlink.com/ec4/v1/system/resource/productlist",[BLConfigParam sharedConfigParam].licenseId];
+    
     [self generatePost:url head:headers data:parameters timeout:[BLConfigParam sharedConfigParam].httpTimeout completionHandler:^(NSData *data, NSError *error) {
         if (data) {
             BLProductCategoryList *productCategoryList = [BLProductCategoryList BLS_modelWithJSON:data];

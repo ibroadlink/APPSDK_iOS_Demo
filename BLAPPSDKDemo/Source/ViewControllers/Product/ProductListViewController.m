@@ -51,6 +51,8 @@
     NSDictionary *parameters = @{ @"brandid": @"",
                                   @"protocols": @[]};
     NSString *url = [NSString stringWithFormat:@"https://%@bizappmanage.ibroadlink.com/ec4/v1/system/resource/categorylist",[BLConfigParam sharedConfigParam].licenseId];
+    
+    [self showIndicatorOnWindow];
     [self generatePost:url head:headers data:parameters timeout:[BLConfigParam sharedConfigParam].httpTimeout completionHandler:^(NSData *data, NSError *error) {
         if (data) {
             BLProductCategoryList *productCategoryList = [BLProductCategoryList BLS_modelWithJSON:data];
@@ -59,6 +61,7 @@
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView reloadData];
+            [self hideIndicatorOnWindow];
         });
         
     }];

@@ -6,11 +6,11 @@
 //  Copyright © 2019 BroadLink. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ProductListViewController : UIViewController
+@interface ProductListViewController : BaseViewController
 
 @end
 
