@@ -93,6 +93,7 @@ EOM
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "${PODS_ROOT}/BLExtension/BLExtension/BLExtension/Extensions/BLExtension.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/DoraemonKit/DoraemonKit.bundle"
   install_resource "${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then

@@ -15,11 +15,16 @@
 #import <BLLetAccount/BLLetAccount.h>
 #import <BLLetFamily/BLLetFamily.h>
 #import <BLLetIRCode/BLLetIRCode.h>
+#import <DoraemonKit.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+#ifdef DEBUG
+    [[DoraemonManager shareInstance] install];
+#endif
+    
     [self loadAppSdk];
     return YES;
 }
@@ -88,7 +93,7 @@
     [BLConfigParam sharedConfigParam].appServiceEnable = 1;                         // 使用appService集群
     [BLConfigParam sharedConfigParam].controllerResendMode = 0;                     // 本地控制失败，远程尝试控制
     
-    [BLConfigParam sharedConfigParam].packName = @"cn.com.broadlink.econtrol.plus"; // set package name
+    [BLConfigParam sharedConfigParam].packName = SDK_PACKAGE_ID; // set package name
     //BLLetCore
     self.let = [BLLet sharedLetWithLicense:SDK_LICENSE];                            // Init APPSDK
     [self.let setDebugLog:BL_LEVEL_DEBUG];                                            // Set APPSDK debug log level

@@ -26,4 +26,7 @@ target 'BLAPPSDKDemo' do
     pod 'Masonry', '~> 0.6.2'
     pod 'BLExtension'
     pod 'SVProgressHUD'
+    
+    pod 'DoraemonKit/Core', '~> 1.1.6', :configurations => ['Debug']
+    pod 'DoraemonKit/WithLogger', '~> 1.1.6', :configurations => ['Debug']
 end

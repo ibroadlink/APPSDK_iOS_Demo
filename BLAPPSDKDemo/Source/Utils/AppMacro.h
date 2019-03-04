@@ -9,6 +9,8 @@
 #ifndef AppMacro_h
 #define AppMacro_h
 
+#define SDK_PACKAGE_ID  @"cn.com.broadlink.econtrol.plus"
+
 #define baihk_SDK_LICENSE             @"CceFpDt7d+r4pZ8KP74tbpNSf9Ug9pP+ytpIXApsCYpvvDEid0s8SdJtKgQMc5QmUsWWVwAAAACvEX37zpG5Wgi/Mlnda1pd2B9J96AQz9N0vO6WstfgR9yEgbkpFXFyJbsnfyHXt8pOdkTVo81rQrPhkOnhmpQBsEkbxXTfoUSQjDzWcfVjcAAAAAA="
 //cn.com.broadlink.blappsdkdemo.baihk
 

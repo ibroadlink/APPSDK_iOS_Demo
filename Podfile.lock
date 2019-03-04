@@ -11,14 +11,35 @@ PODS:
     - BLLet/BLLetBase
   - BLLet/BLLetPlugins (2.9.7):
     - BLLet/BLLetBase
+  - BSBacktraceLogger (0.0.1)
+  - CocoaLumberjack (3.5.1):
+    - CocoaLumberjack/Core (= 3.5.1)
+  - CocoaLumberjack/Core (3.5.1)
   - Cordova (4.4.0)
+  - DoraemonKit/Core (1.1.6):
+    - BSBacktraceLogger
+    - fishhook
+    - PNChart
+    - "UITextView+Placeholder"
+  - DoraemonKit/WithLogger (1.1.6):
+    - BSBacktraceLogger
+    - CocoaLumberjack
+    - DoraemonKit/Core
+    - fishhook
+    - PNChart
+    - "UITextView+Placeholder"
+  - fishhook (0.2)
   - Masonry (0.6.4)
   - MBProgressHUD (1.1.0)
-  - SDWebImage (4.4.5):
-    - SDWebImage/Core (= 4.4.5)
-  - SDWebImage/Core (4.4.5)
+  - PNChart (0.8.9):
+    - UICountingLabel (~> 1.2.0)
+  - SDWebImage (4.4.6):
+    - SDWebImage/Core (= 4.4.6)
+  - SDWebImage/Core (4.4.6)
   - SSZipArchive (2.1.4)
   - SVProgressHUD (2.2.5)
+  - UICountingLabel (1.2.0)
+  - "UITextView+Placeholder (1.2.1)"
   - YYCategories (1.0.4):
     - YYCategories/no-arc (= 1.0.4)
   - YYCategories/no-arc (1.0.4)
@@ -32,6 +53,8 @@ DEPENDENCIES:
   - BLLet/BLLetIRCode (~> 2.9.7)
   - BLLet/BLLetPlugins (~> 2.9.7)
   - Cordova (~> 4.4.0)
+  - DoraemonKit/Core (~> 1.1.6)
+  - DoraemonKit/WithLogger (~> 1.1.6)
   - Masonry (~> 0.6.2)
   - MBProgressHUD (~> 1.1.0)
   - SDWebImage
@@ -42,12 +65,19 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - BLExtension
+    - BSBacktraceLogger
+    - CocoaLumberjack
     - Cordova
+    - DoraemonKit
+    - fishhook
     - Masonry
     - MBProgressHUD
+    - PNChart
     - SDWebImage
     - SSZipArchive
     - SVProgressHUD
+    - UICountingLabel
+    - "UITextView+Placeholder"
     - YYCategories
   https://github.com/ibroadlink/BLLibSpecs.git:
     - BLLet
@@ -55,14 +85,21 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   BLExtension: 397cb05b32940fe0ce3467821ce56817c7f8bba8
   BLLet: 3d7f99412f0bbf7b695150187c5086c3a1edb138
+  BSBacktraceLogger: 06b983ee93a9f87d957960e9c73d660d5966b447
+  CocoaLumberjack: 2101f8a5508197a305e737d16c5c2e9e2157628c
   Cordova: 561576155c420c54441d99b855de12c6e7b51088
+  DoraemonKit: 309c42d828dffb8149942afcfa2af84d8f44bad1
+  fishhook: ea19933abfe8f2f52c55fd8b6e2718467d3ebc89
   Masonry: 281802d04d787ea2973179ee8bcb50500579ede2
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
-  SDWebImage: ecc03494e973b93b80213649d32175f8d2d17d4d
+  PNChart: 84774d225c2126ded6c93d4dbe6ae98c3a73c2d2
+  SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  UICountingLabel: 1db4e7d023e1762171eb226d6dff47a7a84f27aa
+  "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
 
-PODFILE CHECKSUM: 8a27ae96eb288c200256a156f70e753782e59552
+PODFILE CHECKSUM: 6b2cfb77890d8fc09ce3c81e38e81a13d0a33c48
 
 COCOAPODS: 1.5.3
