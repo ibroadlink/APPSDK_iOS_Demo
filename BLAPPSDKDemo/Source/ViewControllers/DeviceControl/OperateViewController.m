@@ -72,7 +72,8 @@
                             @"设备状态查询",
                             @"设备固件查询",
                             @"设备固件升级",
-                            @"RM设备管理"
+                            @"RM设备管理",
+                            @"设备复位"
                             ];
     
     _configArray = [NSArray array];
@@ -148,6 +149,9 @@
             break;
         case 8:
             [self rmDeviceController];
+            break;
+        case 9:
+            [self deviceReset];
             break;
         default:
             break;
@@ -328,6 +332,20 @@
 
 - (void)rmDeviceController {
     [self performSegueWithIdentifier:@"rmDeviceController" sender:nil];
+}
+
+- (void)deviceReset {
+    BLController *controller = [BLLet sharedLet].controller;
+    NSString *result = [controller dnaControl:self.device.did subDevDid:nil dataStr:@"{}" command:@"dev_reset" scriptPath:nil];
+    NSLog(@"result: %@", result);
+    
+    BLBaseResult *baseResult = [BLBaseResult BLS_modelWithJSON:result];
+    if ([baseResult succeed]) {
+        //复位成功
+        [controller removeDevice:self.device];
+        [[DeviceDB sharedOperateDB] deleteWithinfo:self.device];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
