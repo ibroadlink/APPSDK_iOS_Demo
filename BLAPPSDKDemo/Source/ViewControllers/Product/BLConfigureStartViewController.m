@@ -10,7 +10,6 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "BLDeviceResetViewController.h"
 #import "BLWebViewController.h"
-
 @interface BLConfigureStartViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *label;
@@ -21,7 +20,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     [self.imageView sd_setImageWithURL:[NSURL URLWithString:self.model.configPicUrlString]];
     self.label.text = self.model.configText;
 }
@@ -43,8 +41,6 @@
 }
 
 - (IBAction)introduction:(id)sender {
-    
-    UIAlertController *alertView = [UIAlertController alertControllerWithTitle:@"分类" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     NSArray *introductions = self.model.introduction;
     if (introductions.count == 1) {
         BLWebViewController *webViewVC = [[BLWebViewController alloc]init];
@@ -52,6 +48,7 @@
         webViewVC.url = introduction.url;
         [self.navigationController pushViewController:webViewVC animated:YES];
     }else {
+         UIAlertController *alertView = [UIAlertController alertControllerWithTitle:@"分类" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         for (BLDeviceConfigIntroduction *introduction in introductions) {
             UIAlertAction *action = [UIAlertAction actionWithTitle:introduction.name style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 BLWebViewController *webViewVC = [[BLWebViewController alloc]init];
@@ -64,9 +61,8 @@
         [alertView addAction:cancelAction];
         [self presentViewController:alertView animated:YES completion:nil];
     }
-    
-    
 }
+
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

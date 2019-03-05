@@ -131,7 +131,7 @@
     
     UILabel *nameLabel = (UILabel *)[cell viewWithTag:102];
     nameLabel.font = [UIFont systemFontOfSize:12];
-    nameLabel.text = [@"UserName:" stringByAppendingString:info.nickname];
+    nameLabel.text = [@"UserName:" stringByAppendingString:info.nickname ? info.nickname : @"name"];
     
     UILabel *roleLabel = (UILabel *)[cell viewWithTag:103];
     roleLabel.font = [UIFont systemFontOfSize:12];

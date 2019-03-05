@@ -28,4 +28,11 @@
 - (void) setSessionId: (NSString *)sessionId;
 - (NSString *) getSessionId;
 
+// Get/Set packName
+- (void) setPackName: (NSString *)packName;
+- (NSString *) getPackName;
+
+// Get/Set license
+- (void) setLicense: (NSString *)license;
+- (NSString *) getLicense;
 @end

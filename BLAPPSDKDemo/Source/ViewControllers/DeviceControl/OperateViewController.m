@@ -64,16 +64,16 @@
         //        [self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_JS_FILE];
     });
     
-    _operateButtonArray = @[@"设备标准控制",
-                            @"设备透传",
-                            @"定时任务相关功能",
-                            @"网关子设备相关功能",
-                            @"Fastcon 相关功能",
-                            @"设备状态查询",
-                            @"设备固件查询",
-                            @"设备固件升级",
-                            @"RM设备管理",
-                            @"设备复位"
+    _operateButtonArray = @[@"Device Standard Control",
+                         @"Device transparent transmission",
+                         @"Timed Task Related Functions",
+                         @"VLAN sub-device related functions",
+                         @"Fastcon related functions",
+                         @"Device Status Query",
+                         @"Device Firmware Query",
+                         @"Device Firmware Upgrade",
+                         @"RM Device Management",
+                         @"Device Reset"
                             ];
     
     _configArray = [NSArray array];

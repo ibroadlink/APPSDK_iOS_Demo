@@ -17,6 +17,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self viewInit];
+}
+
+- (void)viewInit {
     self.webView = [[WKWebView alloc]initWithFrame:self.view.frame];
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.url]]];
     self.webView.navigationDelegate = self;

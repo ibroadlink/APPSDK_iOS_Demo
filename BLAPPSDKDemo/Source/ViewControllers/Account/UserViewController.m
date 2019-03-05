@@ -62,36 +62,36 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section==0 && indexPath.row == 0) {
         BLUserHeadImageCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BLUserHeadImageCell"];
-        cell.titleLabel.text = @"头像";
+        cell.titleLabel.text = @"Avatar";
         [cell.IconUrlImageView sd_setImageWithURL:[NSURL URLWithString:self.iconUrl]];
         return cell;
     } else if (indexPath.section == 2) {
         BLUserLogoutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BLUserLogoutCell"];
-        cell.titleLabel.text = @"退出登录";
+        cell.titleLabel.text = @"Logout";
         return cell;
     } else {
         BLUserSaftyInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BLUserSaftyInfoCell"];
         switch (indexPath.section) {
             case 0: {
-                cell.titleLabel.text = @"昵称";
+                cell.titleLabel.text = @"NickName";
                 cell.rightTitleLabel.text = self.name;
                 break;
             }
             case 1: {
                 switch (indexPath.row) {
                     case 0: {
-                        cell.titleLabel.text = @"手机号";
+                        cell.titleLabel.text = @"Phone";
                         cell.rightTitleLabel.text = self.phone;
                         break;
                     }
                     case 1: {
-                        cell.titleLabel.text = @"邮箱地址";
+                        cell.titleLabel.text = @"Email";
                         cell.rightTitleLabel.text = self.email;
                         break;
                     }
                     case 2: {
-                        cell.titleLabel.text = @"修改密码";
-                        cell.rightTitleLabel.text = @"修改";
+                        cell.titleLabel.text = @"ResetPassword";
+                        cell.rightTitleLabel.text = @"Reset";
                         break;
                     }
                     case 3: {
@@ -152,7 +152,7 @@
         switch (indexPath.section) {
             case 0: {
                 //修改昵称
-                UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"请输入新的昵称"
+                UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Please enter a new nickname"
                                                                                message:nil
                                                                         preferredStyle:UIAlertControllerStyleAlert];
                 
@@ -187,20 +187,20 @@
                     }
                     case 2: {
                         //修改密码
-                        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"修改密码"
+                        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Reset Password"
                                                                                        message:nil
                                                                                 preferredStyle:UIAlertControllerStyleAlert];
                         
                         [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-                            textField.placeholder = @"原密码";
+                            textField.placeholder = @"Old Password";
                         }];
                         
                         [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-                            textField.placeholder = @"新密码";
+                            textField.placeholder = @"New Password";
                         }];
                         
                         [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-                            textField.placeholder = @"新密码";
+                            textField.placeholder = @"New Password Again";
                         }];
                         UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                                               handler:^(UIAlertAction * action) {
@@ -210,7 +210,7 @@
                                                                                   if ([newPassword isEqualToString:secondNewPassword]) {
                                                                                       [self modifyPassword:oldPassword newPassword:newPassword];
                                                                                   }else {
-                                                                                      [BLStatusBar showTipMessageWithStatus:@"新密码不一致!!"];
+                                                                                      [BLStatusBar showTipMessageWithStatus:@"Inconsistent password!!"];
                                                                                   }
                                                                               }];
                         
@@ -270,7 +270,7 @@
         UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(logout)];
         [self.navigationItem setRightBarButtonItem:rightButton];
     }else {
-        [BLStatusBar showTipMessageWithStatus:@"未登录!"];
+        [BLStatusBar showTipMessageWithStatus:@"Not Login!!"];
     }
 }
 
@@ -289,7 +289,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if (result.succeed ) {
                 [self getUserInfo];
-                [BLStatusBar showTipMessageWithStatus:@"头像修改成功"];
+                [BLStatusBar showTipMessageWithStatus:@"The avatar was successfully modified."];
             } else {
                 [BLStatusBar showTipMessageWithStatus:[result getMsg]?:@""];
             }
@@ -302,7 +302,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if (result.succeed ) {
                 [self getUserInfo];
-                [BLStatusBar showTipMessageWithStatus:@"昵称修改成功"];
+                [BLStatusBar showTipMessageWithStatus:@"Nickname modified successfully"];
             } else {
                 [BLStatusBar showTipMessageWithStatus:[result getMsg]?:@""];
             }
@@ -315,7 +315,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if (result.succeed ) {
                 [self getUserInfo];
-                [BLStatusBar showTipMessageWithStatus:@"密码修改成功"];
+                [BLStatusBar showTipMessageWithStatus:@"Password reset complete"];
             } else {
                 [BLStatusBar showTipMessageWithStatus:[result getMsg]?:@""];
             }

@@ -41,7 +41,6 @@
     [self.loginButton setBackgroundColor:self.view.backgroundColor];
     self.loginButton.layer.cornerRadius = 5;
     self.loginButton.layer.masksToBounds = YES;
-    [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
     self.userNameField.clearButtonMode = UITextFieldViewModeWhileEditing;
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];

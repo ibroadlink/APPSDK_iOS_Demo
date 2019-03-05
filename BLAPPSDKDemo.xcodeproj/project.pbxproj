@@ -24,6 +24,7 @@
 		02B89AD62047A540004E0088 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 02B89ACD2047A53F004E0088 /* logo.png */; };
 		02B89AD72047A540004E0088 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 02B89ACE2047A53F004E0088 /* index.html */; };
 		02B89AD82047A540004E0088 /* index.js in Resources */ = {isa = PBXBuildFile; fileRef = 02B89AD02047A53F004E0088 /* index.js */; };
+		3A3444BF222D2C1500356241 /* ResetSDKInitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3444BD222D2C1500356241 /* ResetSDKInitViewController.m */; };
 		3A44F4AE2223F03800936AFF /* ProductListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4AD2223F03800936AFF /* ProductListViewController.m */; };
 		3A44F4B12224ECA800936AFF /* BLProductCategoryList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4B02224ECA800936AFF /* BLProductCategoryList.m */; };
 		3A44F4B42225146300936AFF /* BLProductCategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4B32225146300936AFF /* BLProductCategoryModel.m */; };
@@ -129,6 +130,8 @@
 		02B89ACD2047A53F004E0088 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		02B89ACE2047A53F004E0088 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		02B89AD02047A53F004E0088 /* index.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
+		3A3444BD222D2C1500356241 /* ResetSDKInitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetSDKInitViewController.m; sourceTree = "<group>"; };
+		3A3444BE222D2C1500356241 /* ResetSDKInitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetSDKInitViewController.h; sourceTree = "<group>"; };
 		3A3D7EB72140FB7200BF9D3D /* BLAPPSDKDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BLAPPSDKDemo.entitlements; sourceTree = "<group>"; };
 		3A44F4AC2223F03800936AFF /* ProductListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProductListViewController.h; sourceTree = "<group>"; };
 		3A44F4AD2223F03800936AFF /* ProductListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProductListViewController.m; sourceTree = "<group>"; };
@@ -542,6 +545,8 @@
 				02B42DA420B2A15200700177 /* Family */,
 				70503D8B1FDBE4D5002D3371 /* BaseViewController.h */,
 				70503D661FDBE4D5002D3371 /* BaseViewController.m */,
+				3A3444BE222D2C1500356241 /* ResetSDKInitViewController.h */,
+				3A3444BD222D2C1500356241 /* ResetSDKInitViewController.m */,
 			);
 			name = ViewControllers;
 			path = Source/ViewControllers;
@@ -865,6 +870,7 @@
 				0244948B20AEC26D0056FB10 /* UserViewController.m in Sources */,
 				3A76A15022278AF7007DF83A /* BLWebViewController.m in Sources */,
 				84EE08F3221D414F0088EDE8 /* BLSAddSceneResult.m in Sources */,
+				3A3444BF222D2C1500356241 /* ResetSDKInitViewController.m in Sources */,
 				84EE08DB221CFB0C0088EDE8 /* BLSFamilyIconResult.m in Sources */,
 				3A44F4AE2223F03800936AFF /* ProductListViewController.m in Sources */,
 				84EE08F0221D3CED0088EDE8 /* BLSSceneInfo.m in Sources */,
