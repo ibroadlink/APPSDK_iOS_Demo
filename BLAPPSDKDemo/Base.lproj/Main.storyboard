@@ -3606,10 +3606,9 @@
                                 <rect key="frame" x="30" y="104" width="354" height="44"/>
                                 <color key="backgroundColor" red="0.91764705879999997" green="0.72941176470000002" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="0C7-nw-cnZ"/>
                                     <constraint firstAttribute="height" constant="44" id="fRU-aF-g87"/>
                                 </constraints>
-                                <state key="normal" title="开启子设备扫描">
+                                <state key="normal" title="SubDev Scanning Start">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -3622,7 +3621,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="vWb-IJ-wfi"/>
                                 </constraints>
-                                <state key="normal" title="关闭子设备扫描">
+                                <state key="normal" title="SubDev Scanning Stop">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -3635,7 +3634,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="BbU-TU-b6B"/>
                                 </constraints>
-                                <state key="normal" title="获取已经添加的子设备列表">
+                                <state key="normal" title="Query SubDev List">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -3652,7 +3651,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="ARY-1d-ROZ"/>
                                 </constraints>
-                                <state key="normal" title="获取扫描到的子设备列表">
+                                <state key="normal" title="Get NewSubDev List">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -3663,22 +3662,16 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="gTD-Iy-i0D" firstAttribute="trailing" secondItem="Cs5-lj-etD" secondAttribute="trailing" id="0Su-7p-WOG"/>
-                            <constraint firstItem="jgG-wb-MMW" firstAttribute="height" secondItem="Cs5-lj-etD" secondAttribute="height" id="3f8-BB-m0a"/>
                             <constraint firstItem="jgG-wb-MMW" firstAttribute="top" secondItem="gTD-Iy-i0D" secondAttribute="bottom" constant="13" id="5pM-Qt-seR"/>
                             <constraint firstItem="Cs5-lj-etD" firstAttribute="top" secondItem="T3q-ae-Je1" secondAttribute="bottom" constant="40" id="6iw-Dz-89g"/>
                             <constraint firstItem="MLI-sK-Oro" firstAttribute="trailing" secondItem="Cs5-lj-etD" secondAttribute="trailing" id="IP1-Bk-1HI"/>
                             <constraint firstItem="kuf-9n-vJO" firstAttribute="top" secondItem="Ooe-gq-fhv" secondAttribute="bottom" id="Irs-Sk-nfW"/>
-                            <constraint firstItem="MLI-sK-Oro" firstAttribute="width" secondItem="Cs5-lj-etD" secondAttribute="width" id="Nrl-9a-wUf"/>
                             <constraint firstItem="gTD-Iy-i0D" firstAttribute="top" secondItem="MLI-sK-Oro" secondAttribute="bottom" constant="13" id="QEb-Ye-V4O"/>
                             <constraint firstItem="Ooe-gq-fhv" firstAttribute="top" secondItem="jgG-wb-MMW" secondAttribute="bottom" constant="40" id="QEr-WA-ZwI"/>
-                            <constraint firstItem="MLI-sK-Oro" firstAttribute="height" secondItem="Cs5-lj-etD" secondAttribute="height" id="Sx7-PD-Knv"/>
-                            <constraint firstItem="gTD-Iy-i0D" firstAttribute="height" secondItem="Cs5-lj-etD" secondAttribute="height" id="UnO-HU-bU6"/>
                             <constraint firstItem="MLI-sK-Oro" firstAttribute="top" secondItem="Cs5-lj-etD" secondAttribute="bottom" constant="13" id="eqi-6g-sEK"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Cs5-lj-etD" secondAttribute="trailing" constant="10" id="gyf-6E-vXK"/>
                             <constraint firstItem="jgG-wb-MMW" firstAttribute="leading" secondItem="Cs5-lj-etD" secondAttribute="leading" id="hcT-bl-CBg"/>
-                            <constraint firstItem="jgG-wb-MMW" firstAttribute="width" secondItem="Cs5-lj-etD" secondAttribute="width" id="hoz-J0-yu1"/>
                             <constraint firstItem="jgG-wb-MMW" firstAttribute="trailing" secondItem="Cs5-lj-etD" secondAttribute="trailing" id="m5U-WH-6xQ"/>
-                            <constraint firstItem="gTD-Iy-i0D" firstAttribute="width" secondItem="Cs5-lj-etD" secondAttribute="width" id="oSd-lw-xq5"/>
                             <constraint firstItem="Ooe-gq-fhv" firstAttribute="leading" secondItem="LWw-0Z-Lfy" secondAttribute="leading" id="shu-gd-Y2E"/>
                             <constraint firstItem="MLI-sK-Oro" firstAttribute="leading" secondItem="Cs5-lj-etD" secondAttribute="leading" id="x0Z-uF-r8x"/>
                             <constraint firstItem="Cs5-lj-etD" firstAttribute="leading" secondItem="LWw-0Z-Lfy" secondAttribute="leadingMargin" constant="10" id="x5u-TO-AZi"/>
@@ -3906,7 +3899,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="C5L-jC-Ez4"/>
                                 </constraints>
-                                <state key="normal" title="获取待配网设备列表">
+                                <state key="normal" title="Get The WaitConfigDev List">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -3919,7 +3912,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="m9K-HZ-Oqq"/>
                                 </constraints>
-                                <state key="normal" title="Fastcon 配网">
+                                <state key="normal" title="Fastcon Config">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -3932,7 +3925,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="vAE-Q3-yXL"/>
                                 </constraints>
-                                <state key="normal" title="Fastcon 配网结果查询">
+                                <state key="normal" title="Fastcon Config Result">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>

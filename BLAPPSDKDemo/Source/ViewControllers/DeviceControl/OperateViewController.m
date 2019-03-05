@@ -73,7 +73,8 @@
                          @"Device Firmware Query",
                          @"Device Firmware Upgrade",
                          @"RM Device Management",
-                         @"Device Reset"
+                         @"Device Reset",
+                         @"Get Device SerInfo"
                             ];
     
     _configArray = [NSArray array];
@@ -152,6 +153,9 @@
             break;
         case 9:
             [self deviceReset];
+            break;
+        case 10:
+            [self getDeviceSerInfo];
             break;
         default:
             break;
@@ -345,7 +349,17 @@
         [controller removeDevice:self.device];
         [[DeviceDB sharedOperateDB] deleteWithinfo:self.device];
         [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)baseResult.getError, baseResult.getMsg];
     }
+}
+
+- (void)getDeviceSerInfo {
+    BLController *controller = [BLLet sharedLet].controller;
+    NSString *result = [controller dnaControl:self.device.did subDevDid:nil dataStr:@"{}" command:@"service_info_get" scriptPath:nil];
+    NSLog(@"result: %@", result);
+    
+    _resultText.text = [NSString stringWithFormat:@"%@", result];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
