@@ -72,15 +72,15 @@
 
 - (IBAction)button:(UIButton *)sender {
     if (sender.tag == 100) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"空调红外码选择" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
-        UIAlertAction *CateGories = [UIAlertAction actionWithTitle:@"品牌选择" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"AC Code selection" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *CateGories = [UIAlertAction actionWithTitle:@"Brand selection" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             self.devtype = BL_IRCODE_DEVICE_AC;
             [self performSegueWithIdentifier:@"CateGoriesTableView" sender:nil];
         }];
-        UIAlertAction *keyIdentify = [UIAlertAction actionWithTitle:@"红外码一键识别" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *keyIdentify = [UIAlertAction actionWithTitle:@"Code one key recognition" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             [self performSegueWithIdentifier:@"aKeyToIdentify" sender:nil];
         }];
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         [alertController addAction:cancelAction];
         [alertController addAction:CateGories];
         [alertController addAction:keyIdentify];
@@ -140,14 +140,14 @@
                         [array addObject: [[SubAreaInfo alloc] initWithDic:dic]];
                     }
                     self->_subAreainfo = array;
-                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"地区选择" message:@"选择国家或地区" preferredStyle:UIAlertControllerStyleActionSheet];
+                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Regional choice" message:@"Select country or region" preferredStyle:UIAlertControllerStyleActionSheet];
                     for (SubAreaInfo *subAreainfo in self->_subAreainfo) {
                         UIAlertAction *archiveAction = [UIAlertAction actionWithTitle:subAreainfo.name style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                             [self querySubAreaLocateid:subAreainfo];
                         }];
                         [alertController addAction:archiveAction];
                     }
-                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
                     [alertController addAction:cancelAction];
                     [self presentViewController:alertController animated:YES completion:nil];
                 }else{

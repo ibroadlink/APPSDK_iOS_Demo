@@ -93,9 +93,16 @@
     [BLConfigParam sharedConfigParam].appServiceEnable = 1;                         // 使用appService集群
     [BLConfigParam sharedConfigParam].controllerResendMode = 0;                     // 本地控制失败，远程尝试控制
     
-    [BLConfigParam sharedConfigParam].packName = SDK_PACKAGE_ID; // set package name
-    //BLLetCore
-    self.let = [BLLet sharedLetWithLicense:SDK_LICENSE];                            // Init APPSDK
+    BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
+    if ([userDefault getPackName] && [userDefault getLicense]) {
+        [BLConfigParam sharedConfigParam].packName = [userDefault getPackName];
+        self.let = [BLLet sharedLetWithLicense:[userDefault getLicense]];
+    }else {
+        [BLConfigParam sharedConfigParam].packName = SDK_PACKAGE_ID; // set package name
+        //BLLetCore
+        self.let = [BLLet sharedLetWithLicense:SDK_LICENSE];                            // Init APPSDK
+    }
+
     [self.let setDebugLog:BL_LEVEL_DEBUG];                                            // Set APPSDK debug log level
     [self.let.controller setSDKRawDebugLevel:BL_LEVEL_DEBUG];                         // Set DNASDK debug log level
     
@@ -114,7 +121,6 @@
     
     //本地登录 获取账号管理对象
     BLAccount *account = [BLAccount sharedAccount];
-    BLUserDefaults *userDefault = [BLUserDefaults shareUserDefaults];
     if ([userDefault getUserId] && [userDefault getSessionId]) {
         NSLog(@"本地登录开始");
         [BLNewFamilyManager sharedFamily].userid = [userDefault getUserId];

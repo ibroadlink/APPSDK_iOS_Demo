@@ -69,6 +69,22 @@
     return [userDefaults objectForKey:@"sessionId"];
 }
 
+// Get/Set packName
+- (void) setPackName: (NSString *)packName {
+    [userDefaults setObject:packName forKey:@"packName"];
+    [userDefaults synchronize];
+}
+- (NSString *) getPackName {
+    return [userDefaults objectForKey:@"packName"];
+}
 
+// Get/Set licenseId
+- (void) setLicense: (NSString *)license {
+    [userDefaults setObject:license forKey:@"license"];
+    [userDefaults synchronize];
+}
+- (NSString *) getLicense {
+    return [userDefaults objectForKey:@"license"];
+}
 
 @end

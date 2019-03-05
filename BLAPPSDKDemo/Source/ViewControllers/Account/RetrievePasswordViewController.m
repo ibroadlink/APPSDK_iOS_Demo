@@ -28,7 +28,6 @@
 
 - (void)viewInit {
     self.accountTextField.delegate = self;
-    [self.nextButton setTitle:@"发送验证码" forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning {
