@@ -103,8 +103,6 @@
     [BLConfigParam sharedConfigParam].controllerQueryCount = 8;                     // 设备批量查询设备个数
     [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;          // 脚本下载平台
     [BLConfigParam sharedConfigParam].appServiceEnable = 1;                         // 使用appService集群
-    [BLConfigParam sharedConfigParam].serInfo = @{@"http":@"device-heartbeat-[国家名称]-[集群编码].ibroadlink.com",
-                                                  @"tcp":@"device-gateway-[国家名称]-[集群编码].ibroadlink.com"};
 
     [self.let setDebugLog:BL_LEVEL_DEBUG];                                            // Set APPSDK debug log level
     [self.let.controller setSDKRawDebugLevel:BL_LEVEL_DEBUG];                         // Set DNASDK debug log level

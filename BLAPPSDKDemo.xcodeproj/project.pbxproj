@@ -1042,7 +1042,7 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BLAPPSDKDemo/BLAPPSDKDemo.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: yang zhongmian (J3VHTTY77F)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yang zhongmian (J3VHTTY77F)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 5YQ85Q9UV8;
@@ -1088,7 +1088,7 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BLAPPSDKDemo/BLAPPSDKDemo.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Broadlink Co.,Ltd";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Broadlink Co.,Ltd";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 5YQ85Q9UV8;

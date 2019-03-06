@@ -45,8 +45,7 @@
 //获取产品分类列表
 - (void)getProductCategoryList {
     BLAccount *account = [BLAccount sharedAccount];
-    NSDictionary *headers = @{
-                              @"countryCode": @"1",
+    NSDictionary *headers = @{@"countryCode": @"1",
                               @"userid": account.loginUserid};
     NSDictionary *parameters = @{ @"brandid": @"",
                                   @"protocols": @[]};

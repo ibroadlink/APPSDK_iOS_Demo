@@ -23,12 +23,25 @@
 @property (nonatomic, strong) NSString *loginSession;
 
 /**
- Obtain familyId from BLFamilyInfoResult
+ Family Id
  */
-@property (nonatomic, strong)NSString *familyId;
+@property (nonatomic, copy) NSString *familyId;
+/**
+ Get BLIRCode Object
 
+ @return Object
+ */
 + (nullable instancetype)sharedIrdaCode;
 
+/**
+ IRService common request
+ 
+ @param urlPath urlPath
+ @param head head
+ @param body body
+ @param completionHandler completionHandler
+ */
+- (void)commonIRServiceRequestWith:(NSString *_Nonnull)urlPath head:(NSDictionary *_Nullable)head body:(NSDictionary *_Nullable)body completionHandler:(nullable void (^)(BLBaseBodyResult * _Nonnull result))completionHandler;
 /**
  Query all support ircode device types. Like AC, TV, STB ...
  
@@ -155,55 +168,19 @@
  */
 - (BLIRCodeDataResult *_Nonnull)queryACIRCodeDataWithScript:(NSString *_Nonnull)script params:(BLQueryIRCodeParams *_Nonnull)params;
 
+/**
+ waveCode Change To UnitCode
+
+ @param waveCode waveCode
+ @return UnitCode
+ */
+- (NSString *_Nullable)waveCodeChangeToUnitCode:(NSString *)waveCode;
 
 /**
- IRService common request
-
- @param urlPath urlPath
- @param head head
- @param body body
- @param completionHandler completionHandler
+ unitCode Change To WaveCode
+ 
+ @param waveCode unitCode
+ @return WaveCode
  */
-- (void)commonIRServiceRequestWith:(NSString *_Nonnull)urlPath head:(NSDictionary *_Nullable)head body:(NSDictionary *_Nullable)body completionHandler:(nullable void (^)(BLBaseBodyResult * _Nonnull result))completionHandler;
-
-
-/**
- * 查询空调状态
- */
-- (NSString *)queryAcStatus:(NSString *)param;
-
-/**
- * 查询空调红外码
- */
-- (NSString *)queryAcIRCode:(NSString *)param;
-
-/**
- * 空调红外码绑定
- */
-- (NSString *)bindAcIRCode:(NSString *)param;
-
-/**
- * 获取电视/机顶盒红码列表
- */
-- (NSString *)queryIRCodeList:(NSString *)param;
-
-/**
- * 红外码function查询
- */
-- (NSString *)queryIRCodeFunction:(NSString *)param;
-
-/**
- * 创建红外码
- */
-- (NSString *)createIRCodeList:(NSString *)param;
-
-/**
- * 红外码function更新
- */
-- (NSString *)updateIRCodeFunction:(NSString *)param;
-
-/**
- * 删除红外码列表
- */
-- (NSString *)delIRCodeList:(NSString *)param;
+- (NSString *_Nullable)unitCodeChangeToWaveCode:(NSString *)unitCode;
 @end

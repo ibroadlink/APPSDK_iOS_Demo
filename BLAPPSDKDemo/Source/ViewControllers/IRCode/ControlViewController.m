@@ -78,6 +78,25 @@ int tag = 0;
     }
 }
 
+- (IBAction)changeToUnitCode:(UIButton *)sender {
+    
+    [_tempTextField resignFirstResponder];
+    [_windSpeedTextField resignFirstResponder];
+    [_modeTextField resignFirstResponder];
+    [_directionTextField resignFirstResponder];
+    
+    NSString *waveCode = _resultText.text;
+    NSString *unitCode = [self.blircode waveCodeChangeToUnitCode:waveCode];
+    
+    if (unitCode) {
+        NSLog(@"unitCode:%@", unitCode);
+        _resultText.text = unitCode;
+    } else {
+        _resultText.text = @"Change Wave Code To Unit Code Failed!";
+    }
+}
+
+
 - (IBAction)sendACIRCodeData:(id)sender {
     //发送红码
     BLStdData *stdStudyData = [[BLStdData alloc] init];
