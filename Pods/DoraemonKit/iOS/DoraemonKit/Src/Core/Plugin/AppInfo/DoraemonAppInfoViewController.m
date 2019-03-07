@@ -108,7 +108,7 @@
                                @"title":DoraemonLocalizedString(@"云端信息"),
                                @"array":@[@{
                                               @"title":DoraemonLocalizedString(@"集群名称"),
-                                              @"value":@"百度集群"
+                                              @"value":@"international 中国集群"
                                               },
                                           @{
                                               @"title":DoraemonLocalizedString(@"集群名称版本号"),
