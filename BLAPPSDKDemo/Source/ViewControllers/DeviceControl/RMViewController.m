@@ -7,12 +7,15 @@
 //
 
 #import "RMViewController.h"
+#import <BLLetIRCode/BLLetIRCode.h>
+
 #import "AppDelegate.h"
 #import "BLStatusBar.h"
 
 @interface RMViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) NSString *irdaCodeStr;
+@property (strong, nonatomic) NSString *irdaUnitCodeStr;
 @property (strong, nonatomic) NSMutableArray *timerInfos;
 @property (weak, nonatomic) IBOutlet UILabel *IrdaCode;
 @property (weak, nonatomic) IBOutlet UITableView *timerTableView;
@@ -75,6 +78,36 @@
         self.IrdaCode.text = @"Send ircode success!";
     } else {
         self.IrdaCode.text = [NSString stringWithFormat:@"Send ircode failed: (%ld)%@", (long)sendResult.status, sendResult.msg];
+    }
+}
+
+- (IBAction)waveCode2UnitCode:(UIButton *)sender {
+    BLIRCode *blircode = [BLIRCode sharedIrdaCode];
+    NSString *waveCode = self.irdaCodeStr;
+    NSString *unitCode = [blircode waveCodeChangeToUnitCode:waveCode];
+    
+    if (unitCode) {
+        NSLog(@"unitCode:%@", unitCode);
+        self.irdaUnitCodeStr = unitCode;
+        self.IrdaCode.text = unitCode;
+    } else {
+        self.IrdaCode.text = @"Change Wave Code To Unit Code Failed!";
+    }
+}
+
+- (IBAction)unitCode2WaveCode:(UIButton *)sender {
+    if (!self.irdaUnitCodeStr) {
+        [BLStatusBar showTipMessageWithStatus:@"Please get unit code first!"];
+        return;
+    }
+    BLIRCode *blircode = [BLIRCode sharedIrdaCode];
+    NSString *waveCode = [blircode unitCodeChangeToWaveCode:self.irdaUnitCodeStr];
+    
+    if (waveCode) {
+        NSLog(@"waveCode:%@", waveCode);
+        self.IrdaCode.text = [NSString stringWithFormat:@"%@\n\n%@", self.irdaCodeStr, waveCode];
+    } else {
+        self.IrdaCode.text = @"Change Unit Code To Wave Code Failed!";
     }
 }
 

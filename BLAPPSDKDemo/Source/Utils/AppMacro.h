@@ -18,11 +18,20 @@
 //#define SDK_PACKAGE_ID  @"com.broadlink.blappsdkdemo"
 //#define SDK_LICENSE             @"4oQxAHVFYnnY7HPuDlYnm0I6pGcRvFTh/Ct2Vv+/5qZDpJJiIweBn2RUUA6oE8InRDV+XAAAAABz4LOxmXdGndIQ0J762DN4lXimLcoYN1h90T3OlpYrQrNgvm0/7+Kdmrgfawtr+QWBY+UBaf8hxk19tobFrLsFsEkbxXTfoUSQjDzWcfVjcAAAAAA="
 
+#define DISABLE_PUSH_NOTIFICATIONS 1    //不使能推送功能
+
 #define PROBE_DEVICES_CHANGED   @"Probe_Devices_Changed"
 
 #define SMART_SP              @"4.1.50"
 #define SMART_RM              @"1.1.5"
 #define SMART_A1              @"188.1.224"
+
+#define IOSVersion                              [[[UIDevice currentDevice] systemVersion] floatValue]
+#define IsiOS7Later                             !(IOSVersion < 7.0)
+#define IsiOS8Later                             !(IOSVersion < 8.0)
+#define IsiOS9Later                             !(IOSVersion < 9.0)
+#define IsiOS10Later                            !(IOSVersion < 10.0)
+#define IsiOS11Later                            !(IOSVersion < 11.0)
 
 #define DNAKIT_DEFAULTH5PAGE_NAME                   @"app.html"                     //产品h5控制首页面名称
 #define DNAKIT_CORVODA_JS_FILE                      @"cordova.js"                   //cordova默认ios的js文件

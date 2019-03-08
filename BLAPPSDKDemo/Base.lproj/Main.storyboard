@@ -3491,6 +3491,11 @@
                                 <state key="normal" title="Learn Code">
                                     <color key="titleColor" red="0.96470588239999999" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="learnButton:" destination="AkC-q0-CLT" eventType="touchUpInside" id="x18-Xo-Ih3"/>
                                 </connections>
@@ -3501,6 +3506,11 @@
                                 <state key="normal" title="Get Learn Code">
                                     <color key="titleColor" red="0.96470588239999999" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="GetIrdaCode:" destination="AkC-q0-CLT" eventType="touchUpInside" id="Sqq-DQ-Mra"/>
                                 </connections>
@@ -3512,7 +3522,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6kV-dm-hmQ">
-                                <rect key="frame" x="15" y="179" width="182" height="44"/>
+                                <rect key="frame" x="15" y="235" width="182" height="44"/>
                                 <color key="backgroundColor" red="0.91764705882352937" green="0.72941176470588232" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="l98-GH-SIO"/>
@@ -3520,8 +3530,31 @@
                                 <state key="normal" title="Set Timer">
                                     <color key="titleColor" red="0.96470588239999999" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="TimerBtn:" destination="AkC-q0-CLT" eventType="touchUpInside" id="6L7-G3-AQe"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gH5-4r-pIF">
+                                <rect key="frame" x="15" y="173" width="182" height="44"/>
+                                <color key="backgroundColor" red="0.91764705879999997" green="0.72941176470000002" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="mfx-wL-F1G"/>
+                                </constraints>
+                                <state key="normal" title="WaveCode To UnitCode">
+                                    <color key="titleColor" red="0.96470588239999999" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="waveCode2UnitCode:" destination="AkC-q0-CLT" eventType="touchUpInside" id="ezE-0E-5eK"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q5I-5u-EMT">
@@ -3530,22 +3563,32 @@
                                 <state key="normal" title="Send Code">
                                     <color key="titleColor" red="0.96470588239999999" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="SendIrdaCode:" destination="AkC-q0-CLT" eventType="touchUpInside" id="ufb-bC-99b"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="amj-Vq-EhU">
-                                <rect key="frame" x="217" y="179" width="182" height="44"/>
+                                <rect key="frame" x="217" y="235" width="182" height="44"/>
                                 <color key="backgroundColor" red="0.91764705879999997" green="0.72941176470000002" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Query Timer">
                                     <color key="titleColor" red="0.96470588239999999" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="queryTimer:" destination="AkC-q0-CLT" eventType="touchUpInside" id="LiG-Fq-hUE"/>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="20z-yB-tjV">
-                                <rect key="frame" x="0.0" y="238" width="414" height="493"/>
+                                <rect key="frame" x="0.0" y="294" width="414" height="437"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RM_TIMER_CELL" id="3Ys-VF-s9g">
@@ -3558,20 +3601,42 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Efh-Fa-IxZ">
+                                <rect key="frame" x="217" y="173" width="182" height="44"/>
+                                <color key="backgroundColor" red="0.91764705879999997" green="0.72941176470000002" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="bj2-Wf-Drc"/>
+                                </constraints>
+                                <state key="normal" title="UnitCode To WaveCode">
+                                    <color key="titleColor" red="0.96470588239999999" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="unitCode2WaveCode:" destination="AkC-q0-CLT" eventType="touchUpInside" id="JQO-2L-h2W"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="6kV-dm-hmQ" firstAttribute="top" secondItem="mU7-ql-9Ij" secondAttribute="bottom" constant="24" id="0Yn-oL-WJ1"/>
                             <constraint firstItem="amj-Vq-EhU" firstAttribute="bottom" secondItem="6kV-dm-hmQ" secondAttribute="bottom" id="0eB-d9-Hm9"/>
+                            <constraint firstAttribute="trailing" secondItem="Efh-Fa-IxZ" secondAttribute="trailing" constant="15" id="1DU-k5-azj"/>
+                            <constraint firstItem="Efh-Fa-IxZ" firstAttribute="leading" secondItem="gH5-4r-pIF" secondAttribute="trailing" constant="20" id="6sw-zu-KW4"/>
                             <constraint firstItem="q5I-5u-EMT" firstAttribute="bottom" secondItem="mU7-ql-9Ij" secondAttribute="bottom" id="EOd-cQ-2R2"/>
                             <constraint firstItem="q5I-5u-EMT" firstAttribute="leading" secondItem="0Yy-w4-neT" secondAttribute="trailing" constant="20" id="FRs-vf-D6p"/>
+                            <constraint firstItem="Efh-Fa-IxZ" firstAttribute="top" secondItem="gH5-4r-pIF" secondAttribute="top" id="H6X-sT-3Q8"/>
                             <constraint firstItem="0Yy-w4-neT" firstAttribute="bottom" secondItem="mU7-ql-9Ij" secondAttribute="bottom" id="IjX-pX-iyI"/>
                             <constraint firstAttribute="trailing" secondItem="q5I-5u-EMT" secondAttribute="trailing" constant="15" id="Ikq-Z2-EfY"/>
                             <constraint firstItem="6kV-dm-hmQ" firstAttribute="leading" secondItem="gvU-VL-r11" secondAttribute="leading" constant="15" id="LiM-kw-jwC"/>
+                            <constraint firstItem="6kV-dm-hmQ" firstAttribute="top" secondItem="gH5-4r-pIF" secondAttribute="bottom" constant="18" id="MTY-hf-sUl"/>
                             <constraint firstAttribute="trailing" secondItem="cBR-tB-e5J" secondAttribute="trailing" constant="15" id="QsN-uD-6lU"/>
                             <constraint firstAttribute="trailing" secondItem="20z-yB-tjV" secondAttribute="trailing" id="TH4-Vs-GAX"/>
                             <constraint firstAttribute="trailing" secondItem="amj-Vq-EhU" secondAttribute="trailing" constant="15" id="Vld-n3-ilf"/>
                             <constraint firstItem="0Yy-w4-neT" firstAttribute="width" secondItem="mU7-ql-9Ij" secondAttribute="width" id="bmB-Kw-QJ3"/>
+                            <constraint firstItem="gH5-4r-pIF" firstAttribute="leading" secondItem="gvU-VL-r11" secondAttribute="leading" constant="15" id="c1J-da-kxz"/>
                             <constraint firstItem="q5I-5u-EMT" firstAttribute="width" secondItem="mU7-ql-9Ij" secondAttribute="width" id="dMe-GC-EfH"/>
                             <constraint firstItem="q5I-5u-EMT" firstAttribute="top" secondItem="mU7-ql-9Ij" secondAttribute="top" id="fj8-7d-IJH"/>
                             <constraint firstItem="0Yy-w4-neT" firstAttribute="leading" secondItem="mU7-ql-9Ij" secondAttribute="trailing" constant="20" id="fyz-XL-IgV"/>
@@ -3579,12 +3644,14 @@
                             <constraint firstItem="cBR-tB-e5J" firstAttribute="top" secondItem="Hdw-p1-F6F" secondAttribute="bottom" constant="15" id="hQn-tV-35c"/>
                             <constraint firstItem="0Yy-w4-neT" firstAttribute="top" secondItem="mU7-ql-9Ij" secondAttribute="top" id="j7d-Bv-MwA"/>
                             <constraint firstItem="amj-Vq-EhU" firstAttribute="width" secondItem="6kV-dm-hmQ" secondAttribute="width" id="kFD-d2-JqM"/>
+                            <constraint firstItem="gH5-4r-pIF" firstAttribute="top" secondItem="mU7-ql-9Ij" secondAttribute="bottom" constant="18" id="mai-dN-RwN"/>
                             <constraint firstItem="cBR-tB-e5J" firstAttribute="leading" secondItem="gvU-VL-r11" secondAttribute="leading" constant="15" id="mtX-xa-2BZ"/>
                             <constraint firstItem="mU7-ql-9Ij" firstAttribute="top" secondItem="cBR-tB-e5J" secondAttribute="bottom" constant="15" id="ohT-gQ-anM"/>
                             <constraint firstItem="amj-Vq-EhU" firstAttribute="leading" secondItem="6kV-dm-hmQ" secondAttribute="trailing" constant="20" id="q0U-F2-hsM"/>
                             <constraint firstItem="20z-yB-tjV" firstAttribute="top" secondItem="6kV-dm-hmQ" secondAttribute="bottom" constant="15" id="qpK-0s-Wz5"/>
                             <constraint firstItem="amj-Vq-EhU" firstAttribute="top" secondItem="6kV-dm-hmQ" secondAttribute="top" id="s6u-7A-B7a"/>
                             <constraint firstItem="20z-yB-tjV" firstAttribute="leading" secondItem="gvU-VL-r11" secondAttribute="leading" id="ta7-cR-fzC"/>
+                            <constraint firstItem="Efh-Fa-IxZ" firstAttribute="width" secondItem="gH5-4r-pIF" secondAttribute="width" id="ypA-Ey-gEc"/>
                             <constraint firstItem="US3-4M-PwU" firstAttribute="top" secondItem="20z-yB-tjV" secondAttribute="bottom" constant="5" id="yvJ-uw-scU"/>
                         </constraints>
                     </view>
