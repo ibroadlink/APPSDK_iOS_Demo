@@ -59,10 +59,12 @@ int tag = 0;
 //    3         /*高速*/
 
 - (IBAction)queryACIRCodeData:(id)sender {
+    
     [_tempTextField resignFirstResponder];
     [_windSpeedTextField resignFirstResponder];
     [_modeTextField resignFirstResponder];
     [_directionTextField resignFirstResponder];
+    
     BLQueryIRCodeParams *params = [[BLQueryIRCodeParams alloc] init];
     params.temperature = [_tempTextField.text integerValue];
     params.state = _powerSwitch.on;
@@ -98,6 +100,12 @@ int tag = 0;
 
 
 - (IBAction)sendACIRCodeData:(id)sender {
+    
+    [_tempTextField resignFirstResponder];
+    [_windSpeedTextField resignFirstResponder];
+    [_modeTextField resignFirstResponder];
+    [_directionTextField resignFirstResponder];
+    
     //发送红码
     BLStdData *stdStudyData = [[BLStdData alloc] init];
     [stdStudyData setValue:_resultText.text forParam:@"irda"];

@@ -231,38 +231,31 @@
 }
 
 - (void)SPControl {
-    [self isDownloadScript];
-    NSString *ProfileStr = [self getDeviceProfile];
-    if([ProfileStr isEqualToString:SMART_SP]){
-        [self performSegueWithIdentifier:@"SPminiControlView" sender:nil];
-    }else{
-        [BLStatusBar showTipMessageWithStatus:@"Not SP device"];
-    }
-}
-
-- (void)RMControl {
-    [self isDownloadScript];
-    NSString *ProfileStr = [self getDeviceProfile];
-    if([ProfileStr isEqualToString:SMART_RM]){
-        [self performSegueWithIdentifier:@"RMminiControlView" sender:nil];
-    }else{
-        [BLStatusBar showTipMessageWithStatus:@"Not RM device"];
+    if ([self isDownloadScript]) {
+        NSString *ProfileStr = [self getDeviceProfile];
+        if([ProfileStr isEqualToString:SMART_SP]){
+            [self performSegueWithIdentifier:@"SPminiControlView" sender:nil];
+        }else{
+            [BLStatusBar showTipMessageWithStatus:@"Not SP device"];
+        }
     }
 }
 
 - (void)A1Control {
-    [self isDownloadScript];
-    NSString *ProfileStr = [self getDeviceProfile];
-    if([ProfileStr isEqualToString:SMART_A1]){
-        [self performSegueWithIdentifier:@"A1ControlView" sender:nil];
-    }else{
-        [BLStatusBar showTipMessageWithStatus:@"Not A1 device"];
+    if ([self isDownloadScript]) {
+        NSString *ProfileStr = [self getDeviceProfile];
+        if([ProfileStr isEqualToString:SMART_A1]){
+            [self performSegueWithIdentifier:@"A1ControlView" sender:nil];
+        }else{
+            [BLStatusBar showTipMessageWithStatus:@"Not A1 device"];
+        }
     }
 }
 
 - (void)GateWayControl {
-    [self isDownloadScript];
-    [self performSegueWithIdentifier:@"GateWayControlView" sender:nil];
+    if ([self isDownloadScript]) {
+        [self performSegueWithIdentifier:@"GateWayControlView" sender:nil];
+    }
 }
 
 - (void)queryDeviceData {
@@ -276,24 +269,25 @@
 }
 
 - (NSString *)getDeviceProfile {
-    BLProfileStringResult *result = [[BLLet sharedLet].controller queryProfile:[_device getDid]];
-    static NSString *ProfileStr;
+    BLProfileStringResult *result = [[BLLet sharedLet].controller queryProfileByPid:self.device.pid];
     if ([result succeed]) {
-        NSString *ProfileStr = [result getProfile];
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[ProfileStr dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
+        NSString *profileStr = [result getProfile];
+        NSDictionary *dic = [BLCommonTools deserializeMessageJSON:profileStr];
         NSArray *srvStrArray = dic[@"srvs"];
-        ProfileStr = srvStrArray[0];
-        return ProfileStr;
+        if (![BLCommonTools isEmptyArray:srvStrArray]) {
+            return srvStrArray.firstObject;
+        }
     }
-    return ProfileStr;
+    return nil;
 }
 
-- (void)isDownloadScript {
+- (BOOL)isDownloadScript {
     NSString *profileFile = [[BLLet sharedLet].controller queryScriptFileName:[self.device getPid]];
     if (![[NSFileManager defaultManager] fileExistsAtPath:profileFile]) {
         [BLStatusBar showTipMessageWithStatus:@"Please download script first!"];
-        return;
+        return NO;
     }
+    return YES;
 }
 
 - (void)webViewControl {
@@ -335,7 +329,14 @@
 }
 
 - (void)rmDeviceController {
-    [self performSegueWithIdentifier:@"rmDeviceController" sender:nil];
+    if ([self isDownloadScript]) {
+        NSString *ProfileStr = [self getDeviceProfile];
+        if([ProfileStr isEqualToString:SMART_RM]){
+            [self performSegueWithIdentifier:@"RMminiControlView" sender:nil];
+        } else {
+            [BLStatusBar showTipMessageWithStatus:@"Not RM device"];
+        }
+    }
 }
 
 - (void)deviceReset {

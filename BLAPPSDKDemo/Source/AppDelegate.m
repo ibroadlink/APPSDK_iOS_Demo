@@ -92,9 +92,9 @@
         [BLConfigParam sharedConfigParam].packName = [userDefault getPackName];
         self.let = [BLLet sharedLetWithLicense:[userDefault getLicense]];
     }else {
-        [BLConfigParam sharedConfigParam].packName = SDK_PACKAGE_ID; // set package name
-        //BLLetCore
-        self.let = [BLLet sharedLetWithLicense:SDK_LICENSE];                            // Init APPSDK
+        [BLConfigParam sharedConfigParam].packName = SDK_PACKAGE_ID;                // Set Package ID
+        //BLLetCoreS
+        self.let = [BLLet sharedLetWithLicense:SDK_LICENSE];                        // Init APPSDK
     }
     
     [BLConfigParam sharedConfigParam].controllerLocalTimeout = 5000;                // 局域网控制超时时间
@@ -104,8 +104,8 @@
     [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;          // 脚本下载平台
     [BLConfigParam sharedConfigParam].appServiceEnable = 1;                         // 使用appService集群
 
-    [self.let setDebugLog:BL_LEVEL_DEBUG];                                            // Set APPSDK debug log level
-    [self.let.controller setSDKRawDebugLevel:BL_LEVEL_DEBUG];                         // Set DNASDK debug log level
+    [self.let setDebugLog:BL_LEVEL_DEBUG];                                          // Set APPSDK debug log level
+    [self.let.controller setSDKRawDebugLevel:BL_LEVEL_DEBUG];                       // Set DNASDK debug log level
     
     [self.let.controller startProbe:3000];                                          // Start probe device
     self.let.controller.delegate = self;
