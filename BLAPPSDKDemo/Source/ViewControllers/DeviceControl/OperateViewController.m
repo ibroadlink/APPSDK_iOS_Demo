@@ -64,11 +64,11 @@
         //        [self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_JS_FILE];
     });
     
-    _operateButtonArray = @[@"Device Standard Control",
-                         @"Device transparent transmission",
-                         @"Timed Task Related Functions",
-                         @"VLAN sub-device related functions",
-                         @"Fastcon related functions",
+    _operateButtonArray = @[@"Device Control",
+                         @"Device Passthough",
+                         @"Timed Task Functions",
+                         @"GateWay functions",
+                         @"Fastcon functions",
                          @"Device Status Query",
                          @"Device Firmware Query",
                          @"Device Firmware Upgrade",
@@ -356,10 +356,10 @@
 
 - (void)getDeviceSerInfo {
     BLController *controller = [BLLet sharedLet].controller;
-    NSString *result = [controller dnaControl:self.device.did subDevDid:nil dataStr:@"{}" command:@"service_info_get" scriptPath:nil];
-    NSLog(@"result: %@", result);
+    BLBaseResult *result = [controller queryDeviceConnectServerInfo:self.device.did];
+    NSLog(@"result: %ld", (long)result.status);
     
-    _resultText.text = [NSString stringWithFormat:@"%@", result];
+    _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

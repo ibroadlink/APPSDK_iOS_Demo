@@ -67,9 +67,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [SSZipArchive unzipFileAtPath:[result getSavePath] toDestination:unzipPath];
                 if ([self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_JS_FILE] ) {
-                    self.device.pDid = subDevice.did;
-                    self.device.pid = subDevice.pid;
-                    [self performSegueWithIdentifier:@"DeviceWebControlView" sender:self.device];
+                    [self performSegueWithIdentifier:@"DeviceWebControlView" sender:subDevice];
                 }
             });
             
@@ -107,7 +105,7 @@
 
 //开始扫描
 - (void)subDevStart {
-    BLBaseResult *result = [[BLLet sharedLet].controller subDevScanStartWithDid:[self.device getDid] subPid:nil];
+    BLBaseResult *result = [[BLLet sharedLet].controller subDevScanStartWithDid:[self.device getDid] subPid:@"0000000000000000000000002c000100"];
     [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
     
 }
@@ -119,7 +117,7 @@
 
 - (void)getNewSubDevList {
     self.isAdd = YES;
-    BLSubDevListResult *result = [[BLLet sharedLet].controller subDevNewListQueryWithDid:[_device getDid] index:0 count:0 subPid:@"000000000000000000000000d0010100"];
+    BLSubDevListResult *result = [[BLLet sharedLet].controller subDevNewListQueryWithDid:[_device getDid] index:0 count:10 subPid:@"0000000000000000000000002c000100"];
     if ([result succeed]) {
         self.subDevicelist = result.list;
         [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"list(%lu)", (unsigned long)result.list.count]];

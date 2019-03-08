@@ -932,6 +932,11 @@
                                 <state key="normal" title="Profile">
                                     <color key="titleColor" red="0.96470588239999999" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="buttonClick:" destination="Srr-kv-OGQ" eventType="touchUpInside" id="MB4-H2-Ig3"/>
                                 </connections>
@@ -945,6 +950,11 @@
                                 <state key="normal" title="Script Vesion">
                                     <color key="titleColor" red="0.96470588239999999" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="buttonClick:" destination="Srr-kv-OGQ" eventType="touchUpInside" id="oAs-a2-jwd"/>
                                 </connections>
@@ -958,6 +968,11 @@
                                 <state key="normal" title="Download Script">
                                     <color key="titleColor" red="0.96470588239999999" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="buttonClick:" destination="Srr-kv-OGQ" eventType="touchUpInside" id="awr-iu-xkm"/>
                                 </connections>
@@ -971,6 +986,11 @@
                                 <state key="normal" title="Download UI">
                                     <color key="titleColor" red="0.96470588239999999" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="buttonClick:" destination="Srr-kv-OGQ" eventType="touchUpInside" id="aGp-KR-xT1"/>
                                 </connections>
@@ -984,6 +1004,11 @@
                                 <state key="normal" title="UI Version">
                                     <color key="titleColor" red="0.96470588239999999" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="buttonClick:" destination="Srr-kv-OGQ" eventType="touchUpInside" id="1ep-4i-o09"/>
                                 </connections>
@@ -997,6 +1022,11 @@
                                 <state key="normal" title="UI Web Control">
                                     <color key="titleColor" red="0.96470588239999999" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="buttonClick:" destination="Srr-kv-OGQ" eventType="touchUpInside" id="gYf-B7-fwM"/>
                                 </connections>
@@ -1010,6 +1040,11 @@
                                 <state key="normal" title="Set">
                                     <color key="titleColor" red="0.96470588239999999" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="buttonClick:" destination="Srr-kv-OGQ" eventType="touchUpInside" id="GTt-mk-Sk1"/>
                                 </connections>
@@ -1023,6 +1058,11 @@
                                 <state key="normal" title="Get">
                                     <color key="titleColor" red="0.96470588239999999" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="buttonClick:" destination="Srr-kv-OGQ" eventType="touchUpInside" id="ruY-4o-bjY"/>
                                 </connections>
@@ -1122,6 +1162,11 @@
                                 <state key="normal" title="Send">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="buttonClick:" destination="cV9-Yd-mHt" eventType="touchUpInside" id="ijr-Wg-P5p"/>
                                 </connections>
@@ -3328,6 +3373,11 @@
                                         <state key="normal" title="Reset The License">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="resetTheLicense:" destination="aFo-KP-wem" eventType="touchUpInside" id="d8a-7Y-LIG"/>
                                         </connections>
@@ -3611,6 +3661,11 @@
                                 <state key="normal" title="SubDev Scanning Start">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="subDevStart:" destination="5bz-A8-Pu9" eventType="touchUpInside" id="piT-OF-UQo"/>
                                 </connections>
@@ -3624,6 +3679,11 @@
                                 <state key="normal" title="SubDev Scanning Stop">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="subDevStop:" destination="5bz-A8-Pu9" eventType="touchUpInside" id="KV9-ob-lnH"/>
                                 </connections>
@@ -3637,6 +3697,11 @@
                                 <state key="normal" title="Query SubDev List">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="querySubDevList:" destination="5bz-A8-Pu9" eventType="touchUpInside" id="BQ5-VZ-JV9"/>
                                 </connections>
@@ -3654,6 +3719,11 @@
                                 <state key="normal" title="Get NewSubDev List">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="getNewSubDevList:" destination="5bz-A8-Pu9" eventType="touchUpInside" id="01a-iU-NGQ"/>
                                 </connections>
@@ -3902,6 +3972,11 @@
                                 <state key="normal" title="Get The WaitConfigDev List">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="getFastconList:" destination="7kN-Fi-hyy" eventType="touchUpInside" id="wI3-Yy-2oV"/>
                                 </connections>
@@ -3915,6 +3990,11 @@
                                 <state key="normal" title="Fastcon Config">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="fastconConfig:" destination="7kN-Fi-hyy" eventType="touchUpInside" id="I5S-3s-0g5"/>
                                 </connections>
@@ -3928,6 +4008,11 @@
                                 <state key="normal" title="Fastcon Config Result">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="getFastconStatus:" destination="7kN-Fi-hyy" eventType="touchUpInside" id="SEo-U1-awD"/>
                                 </connections>
@@ -4637,6 +4722,6 @@
         <segue reference="yQt-uG-KDV"/>
         <segue reference="BPN-zN-W63"/>
         <segue reference="mHH-2Y-6o4"/>
-        <segue reference="i5S-J7-7nS"/>
+        <segue reference="lbb-sz-x5V"/>
     </inferredMetricsTieBreakers>
 </document>

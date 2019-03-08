@@ -53,4 +53,6 @@
 - (void)deleteFamilyDeviceList:(CDVInvokedUrlCommand *)command;
 //打开设备属性页，跳转到 Native 页面
 - (void)openDevicePropertyPage:(CDVInvokedUrlCommand *)command;
+//打开添加网关下子设备产品分类页面
+- (void)openGatewaySubProductCategoryListPage:(CDVInvokedUrlCommand *) command;
 @end
