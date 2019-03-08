@@ -26,6 +26,11 @@
 
 @implementation GateWayViewController
 
++ (GateWayViewController *)viewController {
+    GateWayViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"GateWayViewController"];
+    return vc;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [BLLet sharedLet].controller.currentFamilyId = @"00bc30ade0f4a2da1abbb47bc0cc17b2";

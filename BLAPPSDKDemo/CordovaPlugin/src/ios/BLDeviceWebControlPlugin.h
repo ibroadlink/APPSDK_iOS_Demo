@@ -55,4 +55,6 @@
 - (void)openDevicePropertyPage:(CDVInvokedUrlCommand *)command;
 //打开添加网关下子设备产品分类页面
 - (void)openGatewaySubProductCategoryListPage:(CDVInvokedUrlCommand *) command;
+//设备授权
+- (void)deviceAuth:(CDVInvokedUrlCommand *)command;
 @end

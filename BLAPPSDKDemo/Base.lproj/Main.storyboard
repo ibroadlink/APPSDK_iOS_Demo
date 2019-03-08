@@ -3718,7 +3718,7 @@
         <!--Gate Way View Controller-->
         <scene sceneID="mD5-Au-O2c">
             <objects>
-                <viewController id="5bz-A8-Pu9" customClass="GateWayViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GateWayViewController" id="5bz-A8-Pu9" customClass="GateWayViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="T3q-ae-Je1"/>
                         <viewControllerLayoutGuide type="bottom" id="kuf-9n-vJO"/>
@@ -4795,7 +4795,7 @@
         <segue reference="WM4-gc-yx5"/>
         <segue reference="B3Y-Hw-nwy"/>
         <segue reference="9HU-k1-akq"/>
-        <segue reference="JdS-Wy-Cgc"/>
+        <segue reference="BPN-zN-W63"/>
         <segue reference="mHH-2Y-6o4"/>
         <segue reference="lbb-sz-x5V"/>
     </inferredMetricsTieBreakers>
