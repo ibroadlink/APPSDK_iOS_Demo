@@ -20,6 +20,8 @@
 @property (nonatomic, copy) NSArray<BLDNADevice *>* subDevicelist;
 
 @property (nonatomic, assign) BOOL isAdd;
+
+@property (nonatomic, strong) NSString *spid;
 @end
 
 @implementation GateWayViewController
@@ -102,12 +104,20 @@
 }
 
 
-
 //开始扫描
 - (void)subDevStart {
-    BLBaseResult *result = [[BLLet sharedLet].controller subDevScanStartWithDid:[self.device getDid] subPid:@"0000000000000000000000002c000100"];
-    [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
-    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"set the subDevice pid" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.text = @"0000000000000000000000002c000100";
+        textField.placeholder = @"Please the subDevice pid";
+    }];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        self.spid = alertController.textFields.firstObject.text;
+        BLBaseResult *result = [[BLLet sharedLet].controller subDevScanStartWithDid:[self.device getDid] subPid:self.spid];
+        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)subDevStop {
@@ -117,7 +127,7 @@
 
 - (void)getNewSubDevList {
     self.isAdd = YES;
-    BLSubDevListResult *result = [[BLLet sharedLet].controller subDevNewListQueryWithDid:[_device getDid] index:0 count:10 subPid:@"0000000000000000000000002c000100"];
+    BLSubDevListResult *result = [[BLLet sharedLet].controller subDevNewListQueryWithDid:[_device getDid] index:0 count:10 subPid:self.spid];
     if ([result succeed]) {
         self.subDevicelist = result.list;
         [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"list(%lu)", (unsigned long)result.list.count]];

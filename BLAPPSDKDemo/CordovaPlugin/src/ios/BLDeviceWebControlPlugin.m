@@ -359,7 +359,38 @@
             
             return;
         } else if ([serviceName isEqualToString:@"productservice"]) { //产品中心服务
+            NSString *url = [NSString stringWithFormat: @"https://%@bizappmanage.ibroadlink.com/ec4/%@", [BLConfigParam sharedConfigParam].licenseId, interface];
             
+            BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
+            
+            NSData *postData;
+            NSDictionary *postDic = [self p_toDictory:httpBody];
+            if (postDic[@"locateid"]) {
+                if ([postDic[@"locateid"] isKindOfClass:[NSNull class]]) {
+                    NSMutableDictionary *modifyDic = [[NSMutableDictionary alloc] initWithDictionary:postDic];
+                    modifyDic[@"locateid"] = @(0);
+                    postData = [NSJSONSerialization dataWithJSONObject:modifyDic options:0 error:nil];
+                }
+            } else {
+                postData = [httpBody dataUsingEncoding:NSUTF8StringEncoding];
+            }
+            
+            [httpAccessor post:url head:head data:postData timeout:10*1000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+                NSString *jsonString;
+                if (error) {
+                    NSDictionary *dic = @{
+                                          @"error": [error localizedDescription]
+                                          };
+                    jsonString = [self p_toJsonString:dic];
+                } else {
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                    jsonString = [self p_toJsonString:dic];
+                }
+                
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:jsonString];
+                [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            }];
+                return;
         } else {
             interface = [self getInfUrlWithName:interface srvName:serviceName];
             
