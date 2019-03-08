@@ -784,6 +784,14 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)openGatewaySubProductCategoryListPage:(CDVInvokedUrlCommand *) command {
+    NSDictionary *param = [self parseArguments:command.arguments.firstObject];
+    NSLog(@"BLDeviceWebControlPlugin method: %@, param: %@", command.methodName, param);
+    NSDictionary *dic = @{@"status":@0, @"msg":@"ok"};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 
 #pragma mark - private
 - (NSDictionary *)parseArguments:(id)obj {
