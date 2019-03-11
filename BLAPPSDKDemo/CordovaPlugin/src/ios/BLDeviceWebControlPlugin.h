@@ -57,4 +57,14 @@
 - (void)openGatewaySubProductCategoryListPage:(CDVInvokedUrlCommand *) command;
 //设备授权
 - (void)deviceAuth:(CDVInvokedUrlCommand *)command;
+//设备授权检查
+- (void)checkDeviceAuth:(CDVInvokedUrlCommand *)command;
+//获取当前设备分组信息(负载信息)
+- (void)getDeviceVirtualGroups:(CDVInvokedUrlCommand *)command;
+//设备联动触发条件或者执行指令选择
+- (void)deviceLinkageParamsSet:(CDVInvokedUrlCommand *)command;
+//打开产品(设备)添加页面
+- (void)openProductAddPage:(CDVInvokedUrlCommand *)command;
+//设备参数选择
+- (void)saveSceneCmds:(CDVInvokedUrlCommand *)command;
 @end

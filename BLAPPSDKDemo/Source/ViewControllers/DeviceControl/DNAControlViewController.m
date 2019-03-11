@@ -167,26 +167,13 @@
     NSInteger valint = [val intValue];
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setValue:@(valint) forParam:param];
-//    [stdData setValue:val forParam:@"ntlight"];
-    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[_device getDid] stdData:stdData action:action];
-//    NSDictionary *dataDic = @{
-//                              @"vals": @[
-//                                      @[@{
-//                                            @"val": @(9),
-//                                            @"idx": @1
-//                                            }],
-//                                      @[@{
-//                                          @"val": @(5),
-//                                          @"idx": @1
-//                                          }]
-//                                      ],
-//                              @"did": @"00000000000000000000780f77757c81",
-//                              @"act": @"set",
-//                              @"params": @[@"curtain_ctrl",@"curtain_targetpos"],
-//                              };
-//    NSString *dataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dataDic options:0 error:nil] encoding:NSUTF8StringEncoding];
-//    NSString *stringResult = [_blController dnaControl:self.device.did subDevDid:nil dataStr:dataStr command:@"dev_ctrl" scriptPath:nil sendcount:1];
-//    _resultTextView.text = stringResult;
+    
+    BLStdControlResult *result = nil;
+    if (self.device.pDid == nil) {
+        result = [[BLLet sharedLet].controller dnaControl:[_device getDid] stdData:stdData action:action];
+    }else {
+        result = [[BLLet sharedLet].controller dnaControl:[_device getPDid] subDevDid:[_device getDid] stdData:stdData action:action];
+    }
     
     if ([result succeed]) {
         NSDictionary *dic = [[result getData] toDictionary];
