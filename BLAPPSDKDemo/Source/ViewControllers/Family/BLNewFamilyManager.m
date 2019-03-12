@@ -681,7 +681,7 @@
     }
     
     NSDictionary *dic = @{@"sceneId":sceneId};
-    NSDictionary *body = @{@"sceneInfo":@[dic]};
+    NSDictionary *body = @{@"sceneList":@[dic]};
     
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *path = [kFamilySceneManage stringByAppendingString:@"?operation=del"];
