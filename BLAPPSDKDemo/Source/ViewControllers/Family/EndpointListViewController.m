@@ -49,6 +49,10 @@
             
             if ([result succeed]) {
                 self.endpointList = result.endpoints;
+                for (BLSEndpointInfo *info in self.endpointList) {
+                    [[BLLet sharedLet].controller addDevice:[info toDNADevice]];
+                }
+                
                 [self.endpointListTable reloadData];
             } else {
                 [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Get Family Endpoints Failed. Code:%ld MSG:%@", (long)result.status, result.msg]];

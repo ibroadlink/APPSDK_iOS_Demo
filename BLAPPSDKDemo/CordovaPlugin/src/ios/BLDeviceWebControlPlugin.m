@@ -16,6 +16,7 @@
 #import "EndpointDetailController.h"
 #import "DeviceWebControlViewController.h"
 #import "DNAControlViewController.h"
+#import "GateWayViewController.h"
 
 #import <BLLetAccount/BLLetAccount.h>
 #import <BLLetCore/BLLetCore.h>
@@ -575,12 +576,40 @@
                     }];
                 }
                 
-                NSDictionary *subDeviceInfo = @{
-                                                @"did"      :   subDevice.did,
-                                                @"pid"      :   subDevice.pid ? subDevice.pid : @"",
-                                                @"name"     :   subDevice.name ? subDevice.name : @"",
-                                                };
-                [subDeviceList addObject:subDeviceInfo];
+                NSString *did = subDevice.did;
+                
+                BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+                
+                if (!manager.roomList) {
+                    //获取一次房间列表
+                    dispatch_semaphore_t sema = dispatch_semaphore_create(0);  //创建信号量
+                    [manager getFamilyRoomsWithCompletionHandler:^(BLSManageRoomResult * _Nonnull result) {
+                        dispatch_semaphore_signal(sema);  //在此发送信号量
+                    }];
+                    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);  //关键点，在此等待信号量
+                }
+                
+                for (BLSEndpointInfo *info in manager.endpointList) {
+                    if ([info.endpointId isEqualToString:did]) {
+                        
+                        for (BLSRoomInfo *room in manager.roomList) {
+                            if ([info.roomId isEqualToString:room.roomid]) {
+                                NSDictionary *subDeviceInfo = @{
+                                                                @"did"      :   subDevice.did,
+                                                                @"icon"     :   info.icon,
+                                                                @"name"     :   info.friendlyName ? info.friendlyName : @"",
+                                                                @"pid"      :   subDevice.pid ? subDevice.pid : @"",
+                                                                @"roomId"    :   room.roomid,
+                                                                @"roomName"  :   room.name
+                                                                
+                                                                };
+                                [subDeviceList addObject:subDeviceInfo];
+                            }
+                        }
+                    }
+                }
+                
+                
             }
         }
     }
@@ -770,8 +799,11 @@
     
     NSArray *dids = param[@"dids"];
     NSArray *sdids = param[@"sdids"];
-    
-    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:nil];
+    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    [manager delEndpoint:dids[0] completionHandler:nil];
+    [manager delEndpoint:sdids[0] completionHandler:nil];
+    NSDictionary *dic = @{@"status":@(0), @"msg":@"ok"};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
@@ -818,10 +850,80 @@
 - (void)openGatewaySubProductCategoryListPage:(CDVInvokedUrlCommand *) command {
     NSDictionary *param = [self parseArguments:command.arguments.firstObject];
     NSLog(@"BLDeviceWebControlPlugin method: %@, param: %@", command.methodName, param);
+    
+    GateWayViewController *gateWayVC = [GateWayViewController viewController];
+    gateWayVC.device = [[BLLet sharedLet].controller getDevice:param[@"did"]];
+    [self.viewController.navigationController pushViewController:gateWayVC animated:YES];
+    
     NSDictionary *dic = @{@"status":@0, @"msg":@"ok"};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
+
+- (void)deviceAuth:(CDVInvokedUrlCommand *)command {
+    NSDictionary *param = [self parseArguments:command.arguments.firstObject];
+    NSLog(@"BLDeviceWebControlPlugin method: %@, param: %@", command.methodName, param);
+    
+    BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
+    BLDNADevice *selectDevice = deviceService.selectDevice;
+    NSDictionary *dic = @{@"did":[selectDevice getDid], @"ticket":@""};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)checkDeviceAuth:(CDVInvokedUrlCommand *)command {
+    NSDictionary *param = [self parseArguments:command.arguments.firstObject];
+    NSLog(@"BLDeviceWebControlPlugin method: %@, param: %@", command.methodName, param);
+    
+    BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
+    BLDNADevice *selectDevice = deviceService.selectDevice;
+    NSDictionary *dic = @{@"did":[selectDevice getDid], @"ticket":@"", @"status":@0};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)getDeviceVirtualGroups:(CDVInvokedUrlCommand *)command {
+    NSDictionary *param = [self parseArguments:command.arguments.firstObject];
+    NSLog(@"BLDeviceWebControlPlugin method: %@, param: %@", command.methodName, param);
+    
+    NSDictionary *dic = @{@"vGroups": @[@{@"vDevice": @{@"category":@"LIGHT",@"name":@"" , @"showIcon":@"", @"itemIcon":@"", @"h5ShowIcon":@""},@"name":@"一路", @"predefinedcategory": @[@"*"], @"params": @[@"pwr1"],}]
+                          };
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)deviceLinkageParamsSet:(CDVInvokedUrlCommand *)command {
+    NSDictionary *param = [self parseArguments:command.arguments.firstObject];
+    NSLog(@"BLDeviceWebControlPlugin method: %@, param: %@", command.methodName, param);
+
+    NSDictionary *dic = @{@"status":@0, @"data":@{}};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)openProductAddPage:(CDVInvokedUrlCommand *)command {
+    NSDictionary *param = [self parseArguments:command.arguments.firstObject];
+    NSLog(@"BLDeviceWebControlPlugin method: %@, param: %@", command.methodName, param);
+    
+    NSString *gatewayDid = param[@"gatewayDid"];
+    NSString *pid = param[@"pid"];
+    
+    NSDictionary *dic = @{@"status":@0, @"pid":pid};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)saveSceneCmds:(CDVInvokedUrlCommand *)command {
+    NSDictionary *param = [self parseArguments:command.arguments.firstObject];
+    NSLog(@"BLDeviceWebControlPlugin method: %@, param: %@", command.methodName, param);
+    
+    NSString *gatewayDid = param[@"gatewayDid"];
+    
+    NSDictionary *dic = @{@"gatewayDid":gatewayDid};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 
 
 #pragma mark - private
