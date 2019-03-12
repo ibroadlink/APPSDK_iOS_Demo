@@ -95,6 +95,8 @@
 		84449FD4221BD0E8006D2A10 /* BLSFamilyCreateResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84449FD3221BD0E8006D2A10 /* BLSFamilyCreateResult.m */; };
 		84449FDA221BD243006D2A10 /* BLSRoomInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84449FD9221BD243006D2A10 /* BLSRoomInfo.m */; };
 		84449FDD221BD61C006D2A10 /* BLSFamilyListResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84449FDC221BD61C006D2A10 /* BLSFamilyListResult.m */; };
+		84BACDE02236476500C1E5DA /* SceneListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BACDDF2236476500C1E5DA /* SceneListController.m */; };
+		84BACDE32236555F00C1E5DA /* SceneAddController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BACDE22236555F00C1E5DA /* SceneAddController.m */; };
 		84EE08DB221CFB0C0088EDE8 /* BLSFamilyIconResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EE08DA221CFB0C0088EDE8 /* BLSFamilyIconResult.m */; };
 		84EE08DE221CFF140088EDE8 /* BLSInvitedQrcodeResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EE08DD221CFF140088EDE8 /* BLSInvitedQrcodeResult.m */; };
 		84EE08E1221D042B0088EDE8 /* BLSFamilyMembersResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EE08E0221D042B0088EDE8 /* BLSFamilyMembersResult.m */; };
@@ -275,6 +277,10 @@
 		84449FD9221BD243006D2A10 /* BLSRoomInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSRoomInfo.m; sourceTree = "<group>"; };
 		84449FDB221BD61C006D2A10 /* BLSFamilyListResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLSFamilyListResult.h; sourceTree = "<group>"; };
 		84449FDC221BD61C006D2A10 /* BLSFamilyListResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSFamilyListResult.m; sourceTree = "<group>"; };
+		84BACDDE2236476500C1E5DA /* SceneListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneListController.h; sourceTree = "<group>"; };
+		84BACDDF2236476500C1E5DA /* SceneListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneListController.m; sourceTree = "<group>"; };
+		84BACDE12236555F00C1E5DA /* SceneAddController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneAddController.h; sourceTree = "<group>"; };
+		84BACDE22236555F00C1E5DA /* SceneAddController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneAddController.m; sourceTree = "<group>"; };
 		84EE08D9221CFB0C0088EDE8 /* BLSFamilyIconResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLSFamilyIconResult.h; sourceTree = "<group>"; };
 		84EE08DA221CFB0C0088EDE8 /* BLSFamilyIconResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSFamilyIconResult.m; sourceTree = "<group>"; };
 		84EE08DC221CFF140088EDE8 /* BLSInvitedQrcodeResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLSInvitedQrcodeResult.h; sourceTree = "<group>"; };
@@ -358,6 +364,10 @@
 				8430DCC22228CDB10048DCA7 /* EndpointDetailController.m */,
 				842C9615221E964B00B3A1A6 /* EndpointAddViewController.h */,
 				842C9616221E964B00B3A1A6 /* EndpointAddViewController.m */,
+				84BACDDE2236476500C1E5DA /* SceneListController.h */,
+				84BACDDF2236476500C1E5DA /* SceneListController.m */,
+				84BACDE12236555F00C1E5DA /* SceneAddController.h */,
+				84BACDE22236555F00C1E5DA /* SceneAddController.m */,
 				84449FCA221B9C5B006D2A10 /* BLNewFamilyUrls.h */,
 				84449FC7221B98ED006D2A10 /* BLNewFamilyManager.h */,
 				84449FC8221B98ED006D2A10 /* BLNewFamilyManager.m */,
@@ -731,7 +741,7 @@
 					705B09501D4F1C5B00805109 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 5YQ85Q9UV8;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.AccessWiFi = {
 								enabled = 1;
@@ -865,11 +875,13 @@
 				3AB87FC822154DF200B97D38 /* FastconViewController.m in Sources */,
 				02AE9DAF2058BDD10054677B /* GeneralTimerControlView.m in Sources */,
 				70503DB31FDBE4D6002D3371 /* IRCodeTestViewController.m in Sources */,
+				84BACDE02236476500C1E5DA /* SceneListController.m in Sources */,
 				84EE08DE221CFF140088EDE8 /* BLSInvitedQrcodeResult.m in Sources */,
 				70503DAD1FDBE4D5002D3371 /* DNAControlViewController.m in Sources */,
 				70503DBC1FDBE4D6002D3371 /* BLStatusBar.m in Sources */,
 				70503DB91FDBE4D6002D3371 /* DeviceWebControlViewController.m in Sources */,
 				84EE08EA221D33730088EDE8 /* BLSEndpointInfo.m in Sources */,
+				84BACDE32236555F00C1E5DA /* SceneAddController.m in Sources */,
 				3AFC6D7820EB7278003404E6 /* UIImage+BDL.m in Sources */,
 				842C9611221E7AAC00B3A1A6 /* RoomListViewController.m in Sources */,
 				70503DAB1FDBE4D5002D3371 /* MainViewController.m in Sources */,
@@ -1061,8 +1073,8 @@
 				CODE_SIGN_ENTITLEMENTS = BLAPPSDKDemo/BLAPPSDKDemo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 5YQ85Q9UV8;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1092,7 +1104,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = cn.com.broadlink.blappsdkdemo.baihk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = cn.com.broadlink.blappsdkdemo.baihk_dev;
 			};
 			name = Debug;
 		};
@@ -1107,8 +1119,8 @@
 				CODE_SIGN_ENTITLEMENTS = BLAPPSDKDemo/BLAPPSDKDemo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Broadlink Co.,Ltd";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 5YQ85Q9UV8;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1138,7 +1150,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = cn.com.broadlink.blappsdkdemo.baihk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = cn.com.broadlink.blappsdkdemo.baihk_dis;
 			};
 			name = Release;
 		};

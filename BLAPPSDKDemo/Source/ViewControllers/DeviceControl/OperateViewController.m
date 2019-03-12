@@ -356,11 +356,11 @@
 }
 
 - (void)getDeviceSerInfo {
-    BLController *controller = [BLLet sharedLet].controller;
-    BLBaseResult *result = [controller queryDeviceConnectServerInfo:self.device.did];
-    NSLog(@"result: %ld", (long)result.status);
-    
-    _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+//    BLController *controller = [BLLet sharedLet].controller;
+//    BLBaseResult *result = [controller queryDeviceConnectServerInfo:self.device.did];
+//    NSLog(@"result: %ld", (long)result.status);
+//    
+//    _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

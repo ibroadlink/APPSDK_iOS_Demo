@@ -239,7 +239,10 @@
 - (void)downloadScript {
     [self showIndicatorOnWindowWithMessage:@"Script Downloading..."];
     NSLog(@"Start downloadScript");
-    [[BLLet sharedLet].controller downloadScript:[_device getPid] completionHandler:^(BLDownloadResult * _Nonnull result) {
+//    NSString *pid = @"000000000000000000000000b54f0000";
+    NSString *pid = self.device.pid;
+    
+    [[BLLet sharedLet].controller downloadScript:pid completionHandler:^(BLDownloadResult * _Nonnull result) {
         NSLog(@"End downloadScript");
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideIndicatorOnWindow];

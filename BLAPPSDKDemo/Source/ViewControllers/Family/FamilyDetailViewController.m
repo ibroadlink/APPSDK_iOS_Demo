@@ -86,6 +86,8 @@
         
     }else if ([segue.identifier isEqualToString:@"RoomListView"]) {
         
+    }else if ([segue.identifier isEqualToString:@"SceneListView"]) {
+        
     }
 }
 
@@ -103,6 +105,9 @@
             break;
         case 103:
             [self showEndpointListView];
+            break;
+        case 104:
+            [self showSceneListView];
             break;
         default:
             break;
@@ -161,6 +166,10 @@
 
 - (void)showEndpointListView {
     [self performSegueWithIdentifier:@"EndpointListView" sender:nil];
+}
+
+- (void)showSceneListView {
+    [self performSegueWithIdentifier:@"SceneListView" sender:nil];
 }
 
 - (void)setFamilyInfo:(BLSFamilyInfo *)familyInfo {

@@ -8,6 +8,11 @@
 
 #import "BLSSceneInfo.h"
 
+@implementation BLSSceneDevContent
+
+
+@end
+
 @implementation BLSSceneDev
 
 @end

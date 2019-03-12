@@ -10,6 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface BLSSceneDevContent : NSObject
+
+@property (nonatomic, copy)NSString *name;
+@property (nonatomic, copy)NSArray *cmdParamList;
+@property (nonatomic, assign)NSUInteger delay;
+
+@end
+
 @interface BLSSceneDev : NSObject
 
 @property (nonatomic, copy)NSString *endpointId;
