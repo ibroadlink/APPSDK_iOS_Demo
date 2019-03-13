@@ -772,6 +772,81 @@
     }];
 }
 
+- (void)addAuthWithDid:(BLDNADevice *)device param:(NSDictionary *)param completionHandler:(nullable void (^)(BLSAddAuthResult * __nonnull result))completionHandler {
+    NSDictionary *paramDic = param[@"servicelist"];
+    NSArray *paramList = paramDic.allKeys;
+    NSDictionary *body = @{
+                           @"did": device.did,
+                           @"pid": device.pid,
+                           @"extend": param[@"extend"]?:@"",
+                           @"serverlist": paramList,
+                           @"lid": [BLConfigParam sharedConfigParam].licenseId,
+                           @"licensesig": [BLConfigParam sharedConfigParam].sdkLicense,
+                           @"isremainvalid":@0, //0:一直有效;!0:一定时间有效
+                           @"validhour":@0,
+                           @"ispartdata":@0,//0:全部数据,!0:part data
+                           @"dataid":@[@{@"idtype":@"did",@"idlist":@[@"12",@"33"]}]//支持多重设置
+                           };
+    
+    NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
+    NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyAddAuth];
+    NSDictionary *head = [self generateHttpHead];
+    
+    BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
+    
+    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+        if (error || data == nil) {
+            BLSAddAuthResult *result = [[BLSAddAuthResult alloc] init];
+            result.status = BL_APPSDK_HTTP_REQUEST_ERR;
+            result.msg = @"Http request error";
+            completionHandler(result);
+        } else {
+            BLSAddAuthResult *result = [BLSAddAuthResult BLS_modelWithJSON:data];
+            completionHandler(result);
+        }
+    }];
+}
 
+- (void)delAuthWithAuthid:(nonnull NSString *)authid completionHandler:(nullable void (^)(BLBaseResult * __nonnull result))completionHandler {
+    NSString *url = [NSString stringWithFormat:@"%@?authid=%@",[[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyDelAuth],authid];
+    NSDictionary *head = [self generateHttpHead];
+    
+    BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
+    
+    [httpAccessor get:url head:head timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+        if (error || data == nil) {
+            BLBaseResult *result = [[BLBaseResult alloc] init];
+            result.status = BL_APPSDK_HTTP_REQUEST_ERR;
+            result.msg = @"Http request error";
+            completionHandler(result);
+        } else {
+            BLBaseResult *result = [BLBaseResult BLS_modelWithJSON:data];
+            completionHandler(result);
+        }
+    }];
+}
 
+- (void)queryAuthWithTicket:(nullable NSString *)ticket completionHandler:(nullable void (^)(BLBaseBodyResult * __nonnull result))completionHandler {
+    NSString *url = nil;
+    if ([BLCommonTools isEmpty:ticket]) {
+        url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyQueryAuth];
+    } else {
+        url = [NSString stringWithFormat:@"%@?ticket=%@",[[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyQueryAuth],ticket];
+    }
+    NSDictionary *head = [self generateHttpHead];
+    NSData *jsondata = [NSJSONSerialization dataWithJSONObject:@{} options:0 error:nil];
+    BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
+    
+    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+        if (error || data == nil) {
+            BLBaseBodyResult *result = [[BLBaseBodyResult alloc] init];
+            result.status = BL_APPSDK_HTTP_REQUEST_ERR;
+            result.msg = @"Http request error";
+            completionHandler(result);
+        } else {
+            BLBaseBodyResult *result = [BLBaseBodyResult BLS_modelWithJSON:data];
+            completionHandler(result);
+        }
+    }];
+}
 @end

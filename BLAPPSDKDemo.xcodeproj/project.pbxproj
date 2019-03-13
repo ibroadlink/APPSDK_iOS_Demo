@@ -25,6 +25,7 @@
 		02B89AD72047A540004E0088 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 02B89ACE2047A53F004E0088 /* index.html */; };
 		02B89AD82047A540004E0088 /* index.js in Resources */ = {isa = PBXBuildFile; fileRef = 02B89AD02047A53F004E0088 /* index.js */; };
 		3A3444BF222D2C1500356241 /* ResetSDKInitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3444BD222D2C1500356241 /* ResetSDKInitViewController.m */; };
+		3A39D67E223751EC008C8C9C /* BLSAddAuthResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A39D67D223751EC008C8C9C /* BLSAddAuthResult.m */; };
 		3A44F4AE2223F03800936AFF /* ProductListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4AD2223F03800936AFF /* ProductListViewController.m */; };
 		3A44F4B12224ECA800936AFF /* BLProductCategoryList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4B02224ECA800936AFF /* BLProductCategoryList.m */; };
 		3A44F4B42225146300936AFF /* BLProductCategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4B32225146300936AFF /* BLProductCategoryModel.m */; };
@@ -135,6 +136,8 @@
 		02B89AD02047A53F004E0088 /* index.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
 		3A3444BD222D2C1500356241 /* ResetSDKInitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetSDKInitViewController.m; sourceTree = "<group>"; };
 		3A3444BE222D2C1500356241 /* ResetSDKInitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetSDKInitViewController.h; sourceTree = "<group>"; };
+		3A39D67C223751EC008C8C9C /* BLSAddAuthResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLSAddAuthResult.h; sourceTree = "<group>"; };
+		3A39D67D223751EC008C8C9C /* BLSAddAuthResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSAddAuthResult.m; sourceTree = "<group>"; };
 		3A3D7EB72140FB7200BF9D3D /* BLAPPSDKDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BLAPPSDKDemo.entitlements; sourceTree = "<group>"; };
 		3A44F4AC2223F03800936AFF /* ProductListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProductListViewController.h; sourceTree = "<group>"; };
 		3A44F4AD2223F03800936AFF /* ProductListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProductListViewController.m; sourceTree = "<group>"; };
@@ -694,6 +697,8 @@
 				84EE08EC221D3CD60088EDE8 /* BLSQueryScenesResult.m */,
 				84EE08F1221D414F0088EDE8 /* BLSAddSceneResult.h */,
 				84EE08F2221D414F0088EDE8 /* BLSAddSceneResult.m */,
+				3A39D67C223751EC008C8C9C /* BLSAddAuthResult.h */,
+				3A39D67D223751EC008C8C9C /* BLSAddAuthResult.m */,
 			);
 			path = Result;
 			sourceTree = "<group>";
@@ -857,6 +862,7 @@
 				70503DB61FDBE4D6002D3371 /* DataPassthoughViewController.m in Sources */,
 				70503DAA1FDBE4D5002D3371 /* MyDeviceListViewController.m in Sources */,
 				3AEF737322253BDE00F2376A /* BLDeviceConfigIntroduction.m in Sources */,
+				3A39D67E223751EC008C8C9C /* BLSAddAuthResult.m in Sources */,
 				3A44F4B42225146300936AFF /* BLProductCategoryModel.m in Sources */,
 				3AFC6D6F20EB59E5003404E6 /* BLUserHeadImageCell.m in Sources */,
 				70503DBA1FDBE4D6002D3371 /* BLUserDefaults.m in Sources */,

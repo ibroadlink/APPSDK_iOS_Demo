@@ -58,4 +58,10 @@ static NSString * const kFamilySceneManage = @"/appsync/group/scene/manage";
 //场景属性修改
 static NSString * const kFamilySceneUpdateAttribute = @"/appsync/group/scene/updateattribute";
 
+//增加授权
+static NSString * const kFamilyAddAuth = @"/appsync/group/auth/add";
+//删除授权
+static NSString * const kFamilyDelAuth = @"/appsync/group/auth/del";
+//查询授权
+static NSString *const kFamilyQueryAuth = @"/appsync/group/auth/query";
 #endif /* BLNewFamilyUrls_h */

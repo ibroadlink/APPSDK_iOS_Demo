@@ -866,9 +866,14 @@
     
     BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
     BLDNADevice *selectDevice = deviceService.selectDevice;
-    NSDictionary *dic = @{@"did":[selectDevice getDid], @"ticket":@""};
-    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    
+    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    [manager addAuthWithDid:selectDevice param:param completionHandler:^(BLSAddAuthResult * _Nonnull result) {
+        NSDictionary *dic = @{@"did":[selectDevice getDid], @"ticket":result.ticket?:@"", @"authid":result.authid?:@"", @"status":@(result.status)};
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        
+    }];
 }
 
 - (void)checkDeviceAuth:(CDVInvokedUrlCommand *)command {

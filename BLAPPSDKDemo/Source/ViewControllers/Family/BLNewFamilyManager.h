@@ -17,6 +17,7 @@
 #import "BLSQueryEndpointsResult.h"
 #import "BLSQueryScenesResult.h"
 #import "BLSAddSceneResult.h"
+#import "BLSAddAuthResult.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -236,8 +237,27 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)modifyScene:(nonnull NSString *)sceneId attributes:(NSArray *)attributes completionHandler:(nullable void (^)(BLBaseResult * __nonnull result))completionHandler;
 
+/**
+ Add auth
 
+ @param completionHandler  Callback with result
+ */
+- (void)addAuthWithDid:(nonnull BLDNADevice *)device param:(NSDictionary *)param completionHandler:(nullable void (^)(BLSAddAuthResult * __nonnull result))completionHandler;
 
+/**
+ delete auth
+ 
+ @param completionHandler  Callback with result
+ */
+- (void)delAuthWithAuthid:(nonnull NSString *)authid completionHandler:(nullable void (^)(BLBaseResult * __nonnull result))completionHandler;
+
+/**
+ query auth
+
+ @param ticket ticket
+ @param completionHandler Callback with result
+ */
+- (void)queryAuthWithTicket:(nullable NSString *)ticket completionHandler:(nullable void (^)(BLBaseBodyResult * __nonnull result))completionHandler;
 @end
 
 NS_ASSUME_NONNULL_END

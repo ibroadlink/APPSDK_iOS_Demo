@@ -14,18 +14,19 @@
 
 @interface DNAControlViewController ()<UITextFieldDelegate>
 @property (nonatomic, weak)NSTimer *stateTimer;
+@property (nonatomic, copy)NSString *resultText;
+@property (nonatomic, copy)NSArray *keyList;
+@property (nonatomic, copy)NSString *paramText;
+@property (nonatomic, copy)BLStdData *stdData;
 @end
 
 @implementation DNAControlViewController {
-    NSArray *_keyList;
+    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    _valInputTextField.delegate = self;
-    _paramInputTextField.delegate = self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -35,21 +36,7 @@
 }
     
 
-- (IBAction)paramSelectedList:(id)sender {
-    CGFloat drop_X = self.paramInputTextField.frame.origin.x;
-    CGFloat drop_Y = CGRectGetMaxY(self.paramInputTextField.frame);
-    CGFloat drop_W = self.paramInputTextField.frame.size.width;
-    CGFloat drop_H = _keyList.count * 40 + 10;
-    
-    DropDownList *dropList = [[DropDownList alloc] initWithFrame:CGRectMake(drop_X, drop_Y, drop_W, drop_H) dataArray:_keyList onTheView:self.view] ;
-    
-    dropList.myBlock = ^(NSInteger row,NSString *title)
-    {
-        self.paramInputTextField.text = title;
-    };
-    
-    [self.view addSubview:dropList];
-}
+
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -62,22 +49,8 @@
     [intfsDic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
         [keyArray addObject:key];
     }];
-    _keyList = [NSArray arrayWithArray:keyArray];
-    NSLog(@"keyList:%@",_keyList);
-    
-    
-//    if (![_stateTimer isValid]) {
-//        __weak typeof(self) weakSelf = self;
-//        _stateTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f repeats:YES block:^(NSTimer * _Nonnull timer) {
-//            NSInteger i = [weakSelf.valInputTextField.text integerValue];
-//            if (i == 0) {
-//                weakSelf.valInputTextField.text = @"1";
-//            }else{
-//                weakSelf.valInputTextField.text = @"0";
-//            }
-//            [weakSelf testDnaControl];
-//        }];
-//    }
+    self.keyList = [NSArray arrayWithArray:keyArray];
+    NSLog(@"keyList:%@",self.keyList);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -86,20 +59,16 @@
 }
 
 - (IBAction)buttonClick:(UIButton *)sender {
-    
     if (sender.tag == 101) {
-        NSString *param = _paramInputTextField.text;
         NSString *action = @"get";
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            [self dnaControlWithAction:action param:param val:nil];
+            [self dnaControlWithAction:action stdData:self.stdData];
         });
         
     } else if (sender.tag == 102) {
-        NSString *val = _valInputTextField.text;
-        NSString *param = _paramInputTextField.text;
         NSString *action = @"set";
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            [self dnaControlWithAction:action param:param val:val];
+            [self dnaControlWithAction:action stdData:self.stdData];
         });
     } else if (sender.tag == 103) {
         [self getScriptVersion];
@@ -113,63 +82,18 @@
         [self getDeviceProfile];
     } else if (sender.tag == 108) {
         [self webViewControl];
-        
+    } else if (sender.tag == 110) {
+        [self selectParams];
+    } else if (sender.tag == 111) {
+        [self setParams];
     }
 }
 
-- (void)testDnaControl {
-    //dev_ctrl
-    NSDictionary *dataDic = @{
-                              @"vals": @[
-                                       @[@{
-                                  @"val": @([_valInputTextField.text integerValue]),
-                                  @"idx": @1
-                              }]
-                                       ],
-                              @"did": @"00000000000000000000780f773149c2",
-                              @"act": @"set",
-                              @"params": @[@"pwr"]
-                              };
-//    dev_taskdata
-//    NSDictionary *dataDic = @{
-//                              @"type": @0,
-//                              @"index": @0,
-//                              @"did": @"00000000000000000000780f773149c2"
-//                              };
-    
-    //dev_taskadd
-//    BOOL enable = true;
-//    NSDictionary *dataDic = @{
-//                              @"did": @"00000000000000000000780f773149c2",
-//                              @"enable": @(enable),
-//                              @"data": @{
-//                                  @"vals": @[
-//                                           @[@{
-//                                      @"val": @0,
-//                                      @"idx": @1
-//                                  }]
-//                                           ],
-//                                  @"params": @[@"pwr"]
-//                              },
-//                              @"type": @0,
-//                              @"time": @"2018-07-18 11:31:00"
-//                              };
-    NSString *dataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dataDic options:0 error:nil] encoding:NSUTF8StringEncoding];
-    NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.did subDevDid:nil dataStr:dataStr command:@"dev_ctrl" scriptPath:nil sendcount:5];
-    
-    
-    _resultTextView.text = result;
-}
 
 
-
-- (void)dnaControlWithAction:(NSString *)action param:(NSString *)param val:(NSString *)val {
-    NSInteger valint = [val intValue];
-    BLStdData *stdData = [[BLStdData alloc] init];
-    [stdData setValue:@(valint) forParam:param];
-    
+- (void)dnaControlWithAction:(NSString *)action stdData:(BLStdData *)stdData {
     BLStdControlResult *result = nil;
-    if (self.device.pDid == nil) {
+    if ([BLCommonTools isEmpty:self.device.pDid]) {
         result = [[BLLet sharedLet].controller dnaControl:[_device getDid] stdData:stdData action:action];
     }else {
         result = [[BLLet sharedLet].controller dnaControl:[_device getPDid] subDevDid:[_device getDid] stdData:stdData action:action];
@@ -177,28 +101,25 @@
     
     if ([result succeed]) {
         NSDictionary *dic = [[result getData] toDictionary];
-
-        NSString *resultString = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dic options:0 error:nil] encoding:NSUTF8StringEncoding];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self->_resultTextView.text = resultString;
-        });
-        
+        NSString *result = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dic options:0 error:nil] encoding:NSUTF8StringEncoding];
+        self.resultText = result;
     } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self->_resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-        });
-        
+        self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
     }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
     
 }
 
 - (void)getDeviceProfile {
     BLProfileStringResult *result = [[BLLet sharedLet].controller queryProfileByPid:[_device getPid]];
     if ([result succeed]) {
-        _resultTextView.text = [result getProfile];
+        self.resultText = [result getProfile];
     } else {
-        _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+        self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
     }
+    [self.tableView reloadData];
 }
 
 
@@ -207,20 +128,22 @@
     BLQueryResourceVersionResult *result = [[BLLet sharedLet].controller queryScriptVersion:[self.device getPid]];
     if ([result succeed]) {
         BLResourceVersion *version = [result.versions firstObject];
-        _resultTextView.text = [NSString stringWithFormat:@"Script Pid:%@\n Version:%@", version.pid, version.version];
+        self.resultText = [NSString stringWithFormat:@"Script Pid:%@\n Version:%@", version.pid, version.version];
     } else {
-        _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+        self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
     }
+    [self.tableView reloadData];
 }
 
 - (void)getUIVersion {
     BLQueryResourceVersionResult *result = [[BLLet sharedLet].controller queryUIVersion:[self.device getPid]];
     if ([result succeed]) {
         BLResourceVersion *version = [result.versions firstObject];
-        _resultTextView.text = [NSString stringWithFormat:@"UI Pid:%@\n Version:%@", version.pid, version.version];
+        self.resultText = [NSString stringWithFormat:@"UI Pid:%@\n Version:%@", version.pid, version.version];
     } else {
-        _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+        self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
     }
+    [self.tableView reloadData];
 }
 
 - (void)downloadScript {
@@ -231,13 +154,14 @@
     
     [[BLLet sharedLet].controller downloadScript:pid completionHandler:^(BLDownloadResult * _Nonnull result) {
         NSLog(@"End downloadScript");
+        if ([result succeed]) {
+            self.resultText = [NSString stringWithFormat:@"ScriptPath:%@", [result getSavePath]];
+        } else {
+            self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+        }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideIndicatorOnWindow];
-            if ([result succeed]) {
-                self->_resultTextView.text = [NSString stringWithFormat:@"ScriptPath:%@", [result getSavePath]];
-            } else {
-                self->_resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-            }
+            [self.tableView reloadData];
         });
     }];
 }
@@ -248,22 +172,17 @@
     NSLog(@"Start downloadUI");
     [[BLLet sharedLet].controller downloadUI:[self.device getPid] completionHandler:^(BLDownloadResult * _Nonnull result) {
         NSLog(@"End downloadUI");
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideIndicatorOnWindow];
-        });
         
         if ([result succeed]) {
             BOOL isUnzip = [SSZipArchive unzipFileAtPath:[result getSavePath] toDestination:unzipPath];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self->_resultTextView.text = [NSString stringWithFormat:@"isUnzip:%d \nDownload File:%@ \nUIPath:%@", isUnzip, [result getSavePath], unzipPath];
-            });
+            self.resultText = [NSString stringWithFormat:@"isUnzip:%d \nDownload File:%@ \nUIPath:%@", isUnzip, [result getSavePath], unzipPath];
         } else {
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self->_resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-            });
+            self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
         }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideIndicatorOnWindow];
+            [self.tableView reloadData];
+        });
         NSLog(@"End downloadUI zip");
     }];
 }
@@ -281,10 +200,11 @@
 - (void)bindDeviceToServer {
     BLBindDeviceResult *result = [[BLLet sharedLet].controller bindDeviceWithServer:_device];
     if ([result succeed]) {
-        _resultTextView.text = [NSString stringWithFormat:@"BindMap : %@", [result getBindmap]];
+        self.resultText = [NSString stringWithFormat:@"BindMap : %@", [result getBindmap]];
     } else {
-        _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+        self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
     }
+    [self.tableView reloadData];
 }
 
 - (void)queryTaskList {
@@ -295,10 +215,11 @@
         NSArray *PeriodTask = [result getPeriod];
         NSArray *cycleTask = [result getCycle];
         NSArray *randomTask =[result getRandom];
-        _resultTextView.text = [NSString stringWithFormat:@"timeTask:%ld   delayTask:%ld   PeriodTask:%ld    cycleTask:%ld    randomTask:%ld", (unsigned long)timeTask.count,(unsigned long)delayTask.count,(unsigned long)PeriodTask.count,(unsigned long)cycleTask.count, (unsigned long)randomTask.count];
+        self.resultText = [NSString stringWithFormat:@"timeTask:%ld   delayTask:%ld   PeriodTask:%ld    cycleTask:%ld    randomTask:%ld", (unsigned long)timeTask.count,(unsigned long)delayTask.count,(unsigned long)PeriodTask.count,(unsigned long)cycleTask.count, (unsigned long)randomTask.count];
     } else {
-        _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+        self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
     }
+    [self.tableView reloadData];
 }
 
 - (void)setTask {
@@ -338,16 +259,17 @@
         NSArray *PeriodTask = [result getPeriod];
         NSArray *cycleTask = [result getCycle];
         NSArray *randomTask =[result getRandom];
-        _resultTextView.text = [NSString stringWithFormat:@"timeTask:%ld   delayTask:%ld   PeriodTask:%ld    cycleTask:%ld    randomTask:%ld", (unsigned long)timeTask.count,(unsigned long)delayTask.count,(unsigned long)PeriodTask.count,(unsigned long)cycleTask.count, (unsigned long)randomTask.count];
+        self.resultText = [NSString stringWithFormat:@"timeTask:%ld   delayTask:%ld   PeriodTask:%ld    cycleTask:%ld    randomTask:%ld", (unsigned long)timeTask.count,(unsigned long)delayTask.count,(unsigned long)PeriodTask.count,(unsigned long)cycleTask.count, (unsigned long)randomTask.count];
     } else {
-        _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+        self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
     }
+    [self.tableView reloadData];
 }
 
 - (void)getDeviceTaskData {
     //    BLQueryTaskResult *result = [_blController delTask:[_device getDid] sDid:nil taskType:BL_CYCLE_TYPE_LIST index:0];
-    NSString *val = _valInputTextField.text;
-    NSString *param = _paramInputTextField.text;
+    NSString *val = @"";
+    NSString *param = @"";
     
     NSInteger index = [val integerValue];
     NSInteger taskType = [param integerValue];
@@ -355,10 +277,44 @@
     BLTaskDataResult *result = [[BLLet sharedLet].controller queryTaskData:_device.did sDid:nil taskType:taskType index:index];
     
     if ([result succeed]) {
-        _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+        self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
     } else {
-        _resultTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+        self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
     }
+    [self.tableView reloadData];
+}
+
+- (void)selectParams {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Select Param" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    for (NSString *param in self.keyList) {
+        [alertController addAction:[UIAlertAction actionWithTitle:param style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            self.paramText = param;
+            [self.stdData setValue:@"" forParam:param];
+            [self.tableView reloadData];
+        }]];
+    }
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)setParams {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"set Param" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.text = @"";
+        textField.placeholder = @"param";
+    }];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *param = alertController.textFields.firstObject.text;
+        if ([BLCommonTools isEmpty:param]) {
+            self.resultText = [NSString stringWithFormat:@"param can not set nil"];
+        }else {
+            self.paramText = param;
+            [self.stdData setValue:@"" forParam:param];
+        }
+        [self.tableView reloadData];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (BOOL)copyCordovaJsToUIPathWithFileName:(NSString*)fileName {
@@ -388,8 +344,110 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+    [self.tableView reloadData];
     [textField resignFirstResponder];
 }
+
+#pragma mark - UITableViewDelegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 4;
+}
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0) {
+        return self.stdData.allParams.count;
+    }else if (section == 1) {
+        return 1;
+    }else if (section == 2) {
+        return 1;
+    }else {
+        return 1;
+    }
+    
+}
+
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    static NSString* cellIdentifier = nil;
+    if (indexPath.section == 0) {
+        cellIdentifier = @"PARAMS_CELL";
+        UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        }
+        
+        UITextField *paramTextView = (UITextField *)[cell viewWithTag:100];
+        UITextField *valTextView = (UITextField *)[cell viewWithTag:101];
+        NSString *param = self.stdData.allParams[indexPath.row];
+        [self.stdData setValue:valTextView.text forParam:param];
+        if ([param isEqualToString:self.paramText]) {
+            paramTextView.text = self.paramText;
+        }
+        
+        return cell;
+    }else if (indexPath.section == 1) {
+        cellIdentifier = @"SELECT_PARAMS_CELL";
+    }else if (indexPath.section == 2) {
+        cellIdentifier = @"ACTIONS_CELL";
+    }else {
+        cellIdentifier = @"RESULT_CELL";
+        UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        }
+        UITextView *resultTextView = (UITextView *)[cell viewWithTag:100];
+        resultTextView.text = self.resultText;
+        return cell;
+    }
+    
+    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+//        [self.tableView deleteRowsAtIndexPaths:@[indexPath]  withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        return 60;
+    }else if (indexPath.section == 1) {
+        return 80;
+    }else if (indexPath.section == 2) {
+        return 250;
+    }else {
+        return 250;
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return nil;
+    }else if (section == 1) {
+        return nil;
+    }else if (section == 2) {
+        return @"Action";
+    }else {
+        return @"Result";
+    }
+}
+
+
+
+#pragma mark - property
+- (BLStdData *)stdData {
+    if (!_stdData) {
+        _stdData = [[BLStdData alloc] init];
+    }
+    return _stdData;
+}
+
 
 
 @end

@@ -10,13 +10,11 @@
 #import <BLLetCore/BLLetCore.h>
 
 
-@interface DNAControlViewController : BaseViewController
+@interface DNAControlViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) BLDNADevice *device;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (weak, nonatomic) IBOutlet UITextField *valInputTextField;
-@property (weak, nonatomic) IBOutlet UITextField *paramInputTextField;
-@property (weak, nonatomic) IBOutlet UITextView *resultTextView;
 
 - (IBAction)buttonClick:(UIButton *)sender;
 @end
