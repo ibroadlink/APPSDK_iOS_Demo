@@ -45,9 +45,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideIndicatorOnWindow];
             if ([result succeed]) {
-                if (result.scenes) {
-                    self.sceneList = result.scenes;
-                }
+                self.sceneList = result.scenes;
                 [self.sceneListTable reloadData];
             } else {
                 NSLog(@"ERROR :%@", result.msg);
@@ -79,7 +77,11 @@
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.sceneList.count;
+    if ([BLCommonTools isEmptyArray:self.sceneList]) {
+        return 0;
+    } else {
+        return self.sceneList.count;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -96,7 +98,6 @@
     BLSSceneInfo *info = self.sceneList[indexPath.row];
     
     UIImageView *headImageView = (UIImageView *)[cell viewWithTag:100];
-    headImageView.contentMode = UIViewContentModeCenter;
     [headImageView sd_setImageWithURL:[NSURL URLWithString:info.icon] placeholderImage:[UIImage imageNamed:@"default_module_icon"]];
     
     UILabel *useridLabel = (UILabel *)[cell viewWithTag:101];
