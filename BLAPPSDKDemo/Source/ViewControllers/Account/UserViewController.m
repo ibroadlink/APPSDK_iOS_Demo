@@ -35,9 +35,28 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Main" style:UIBarButtonItemStylePlain target:self action:@selector(viewBack)];
+    self.navigationItem.leftBarButtonItem = leftButton;
+    
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(logout)];
+    self.navigationItem.rightBarButtonItem = rightButton;
+    
     [self getUserInfo];
 }
 
+- (void)viewBack {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+}
+
+- (void)logout {
+    [self.navigationController popViewControllerAnimated:YES];
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    
+    BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
+    [userDefault setUserId:nil];
+    [userDefault setSessionId:nil];
+}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -238,21 +257,6 @@
     }
 }
 
-
-- (void)logout {
-    [self.navigationController popViewControllerAnimated:YES];
-    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
-    
-    BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
-    [userDefault setUserId:nil];
-    [userDefault setSessionId:nil];
-}
-
-- (void)backFirst {
-    [self.navigationController popToRootViewControllerAnimated:YES];
-    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
-}
-
 - (void)getUserInfo {
     BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
     BLAccount *account = [BLAccount sharedAccount];
@@ -267,8 +271,7 @@
             }
             
         }];
-        UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(logout)];
-        [self.navigationItem setRightBarButtonItem:rightButton];
+        
     }else {
         [BLStatusBar showTipMessageWithStatus:@"Not Login!!"];
     }

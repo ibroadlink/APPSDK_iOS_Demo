@@ -69,9 +69,20 @@
     }
 }
 
-- (IBAction)SendIrdaCode:(id)sender {
+- (void)sendCodeWithType:(NSUInteger)type {
     BLStdData *stdData = [[BLStdData alloc] init];
-    [stdData setValue:self.irdaCodeStr forParam:@"irda"];
+
+    if (type == 1) {
+        
+        if ([BLCommonTools isEmpty:self.irdaUnitCodeStr]) {
+            [BLStatusBar showTipMessageWithStatus:@"Please change wave code to unit code first!"];
+            return;
+        }
+        
+        [stdData setValue:self.irdaUnitCodeStr forParam:@"irda"];
+    } else {
+        [stdData setValue:self.irdaCodeStr forParam:@"irda"];
+    }
     
     BLStdControlResult *sendResult = [[BLLet sharedLet].controller dnaControl:self.device.did stdData:stdData action:@"set"];
     if ([sendResult succeed]) {
@@ -79,6 +90,28 @@
     } else {
         self.IrdaCode.text = [NSString stringWithFormat:@"Send ircode failed: (%ld)%@", (long)sendResult.status, sendResult.msg];
     }
+}
+
+- (IBAction)SendIrdaCode:(id)sender {
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Code chose" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *waveAction = [UIAlertAction actionWithTitle:@"Wave Code Send" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self sendCodeWithType:0];
+    }];
+    
+    UIAlertAction *uintAction = [UIAlertAction actionWithTitle:@"Unit Code Send" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self sendCodeWithType:1];
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+
+    [alert addAction:waveAction];
+    [alert addAction:uintAction];
+    [alert addAction:cancelAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (IBAction)waveCode2UnitCode:(UIButton *)sender {

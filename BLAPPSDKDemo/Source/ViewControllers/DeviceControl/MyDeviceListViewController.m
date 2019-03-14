@@ -14,7 +14,6 @@
 
 @interface MyDeviceListViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, weak)NSTimer *stateTimer;
 @end
 
 @implementation MyDeviceListViewController
@@ -26,32 +25,16 @@
     _MyDeviceTable.dataSource = self;
     _devicearray =  [NSMutableArray arrayWithArray: _myDevices];
     [self setExtraCellLineHidden:_MyDeviceTable];
-//    [self queryDeviceState:_devicearray];
     
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    if (![_stateTimer isValid]) {
-        __weak typeof(self) weakSelf = self;
-        _stateTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
-            for (int i = 0; i < weakSelf.devicearray.count; i ++) {
-                BLDNADevice *device = weakSelf.devicearray[i];
-                device.state = [[BLLet sharedLet].controller queryDeviceState:[device getDid]];
-                [weakSelf.devicearray replaceObjectAtIndex:i withObject:device];
-            }
-            [weakSelf.MyDeviceTable reloadData];
-        }];
-    }
+    __weak typeof(self) weakSelf = self;
+    [NSTimer scheduledTimerWithTimeInterval:5.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
+        [weakSelf.MyDeviceTable reloadData];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)queryDeviceState:(NSArray<BLDNADevice *> *)tempArray {
-    BLQueryDeviceStatusResult *result = [[BLLet sharedLet].controller queryDeviceOnServer:tempArray];
-    NSLog(@"statusMaparray array:%@",result.statusMaparray);
 }
 
 #pragma mark - Navigation
@@ -96,12 +79,14 @@
     
     UILabel *netstateLabel = (UILabel *)[cell viewWithTag:104];
 
-    netstateLabel.text = [NSString stringWithFormat:@"NetState:%@", [self getstate:[device getState]]];
-//    NSLog(@"------Mac:%@,state:%ld",[device getMac],(long)[device getState]);
+    
+    netstateLabel.text = [NSString stringWithFormat:@"NetState:%@", [self getstate:device.did]];
     return cell;
 }
 
-- (NSString *)getstate:(BLDeviceStatusEnum)state{
+- (NSString *)getstate:(NSString *)did {
+    BLDeviceStatusEnum state = [[BLLet sharedLet].controller queryDeviceState:did];
+    
     NSString *stateString = @"State UnKown";
     switch (state) {
         case BL_DEVICE_STATE_LAN:

@@ -53,8 +53,8 @@
     self.passwordField.secureTextEntry = YES;
     self.passwordField.rightView = button;
     self.passwordField.rightViewMode = UITextFieldViewModeWhileEditing;
-    self.userNameField.placeholder = @"手机号或邮箱";
-    self.passwordField.placeholder = @"密码";
+    self.userNameField.placeholder = @"Phone number / email";
+    self.passwordField.placeholder = @"Password";
     
 }
 

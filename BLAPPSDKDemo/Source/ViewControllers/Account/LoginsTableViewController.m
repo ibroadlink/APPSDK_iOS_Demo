@@ -8,17 +8,11 @@
 
 #import "LoginsTableViewController.h"
 #import "BLUserDefaults.h"
-#import <BLLetAccount/BLLetAccount.h>
-#import <WebKit/WebKit.h>
-@interface LoginsTableViewController ()
-@property (strong,nonatomic)BLAccount *account;
-@end
 
 @implementation LoginsTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _account = [BLAccount sharedAccount];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -28,6 +22,13 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    NSString *userId = [[BLUserDefaults shareUserDefaults] getUserId];
+    NSString *logSession = [[BLUserDefaults shareUserDefaults] getSessionId];
+    
+    if (userId && logSession) {
+        [self performSegueWithIdentifier:@"ListMainView" sender:nil];
+    }
 }
 
 - (IBAction)passwordLogin:(id)sender {

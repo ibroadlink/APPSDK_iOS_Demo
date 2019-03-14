@@ -27,15 +27,18 @@
     if ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0) {
         [self setViewEdgeInset];
     }
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(viewBack)];
     self.navigationItem.backBarButtonItem = item;
-//    self.navigationController.navigationBar.barTintColor = [UIColor greenColor];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewBack {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - public method
