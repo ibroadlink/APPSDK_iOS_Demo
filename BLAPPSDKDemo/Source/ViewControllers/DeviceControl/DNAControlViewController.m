@@ -410,7 +410,23 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-//        [self.tableView deleteRowsAtIndexPaths:@[indexPath]  withRowAnimation:UITableViewRowAnimationNone];
+        if (indexPath.section == 0) {
+            NSMutableArray *params = [NSMutableArray arrayWithArray:self.stdData.allParams];
+            NSMutableArray *values = [NSMutableArray arrayWithArray:self.stdData.allValues];
+            [params removeObjectAtIndex:indexPath.row];
+            [values removeObjectAtIndex:indexPath.row];
+            [self.stdData setParams:params values:values];
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath]  withRowAnimation:UITableViewRowAnimationNone];
+        }
+        
+    }
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        return UITableViewCellEditingStyleDelete;
+    } else {
+        return UITableViewCellEditingStyleNone;
     }
 }
 
@@ -428,7 +444,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (section == 0) {
-        return nil;
+        return @"Params and Values";
     }else if (section == 1) {
         return nil;
     }else if (section == 2) {
