@@ -191,12 +191,12 @@
     //本地登录 获取账号管理对象
     BLAccount *account = [BLAccount sharedAccount];
     if ([userDefault getUserId] && [userDefault getSessionId]) {
-        NSLog(@"本地登录开始");
+        NSLog(@"Local loging...");
         [BLNewFamilyManager sharedFamily].userid = [userDefault getUserId];
         [BLNewFamilyManager sharedFamily].loginsession = [userDefault getSessionId];
         [account localLoginWithUsrid:[userDefault getUserId] session:[userDefault getSessionId] completionHandler:^(BLLoginResult * _Nonnull result) {
             if ([result succeed]) {
-                NSLog(@"本地登录成功");
+                NSLog(@"Log success!");
             }
         }];
     }

@@ -49,7 +49,8 @@
                               @"userid": account.loginUserid};
     NSDictionary *parameters = @{ @"brandid": @"",
                                   @"protocols": @[]};
-    NSString *url = [NSString stringWithFormat:@"https://%@bizappmanage.ibroadlink.com/ec4/v1/system/resource/categorylist",[BLConfigParam sharedConfigParam].licenseId];
+    //NSString *url = [NSString stringWithFormat:@"https://%@bizappmanage.ibroadlink.com/ec4/v1/system/resource/categorylist",[BLConfigParam sharedConfigParam].licenseId];
+    NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:@"/ec4/v1/system/resource/categorylist"];
     
     [self showIndicatorOnWindow];
     [self generatePost:url head:headers data:parameters timeout:[BLConfigParam sharedConfigParam].httpTimeout completionHandler:^(NSData *data, NSError *error) {

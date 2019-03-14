@@ -27,12 +27,15 @@
 }
 
 - (BOOL)BLS_modelCustomTransformFromDictionary:(NSDictionary *)dic {
-    self.iconUrlString = [NSString stringWithFormat:@"https://%@bizappmanage.ibroadlink.com/ec4/v1/system/configfile%@",[BLConfigParam sharedConfigParam].licenseId,dic[@"icon"]];
-    self.configPicUrlString = [NSString stringWithFormat:@"https://%@bizappmanage.ibroadlink.com/ec4/v1/system/configfile%@",[BLConfigParam sharedConfigParam].licenseId,dic[@"configpic"]];
-    self.shortCutIconUrlString = [NSString stringWithFormat:@"https://%@bizappmanage.ibroadlink.com/ec4/v1/system/configfile%@",[BLConfigParam sharedConfigParam].licenseId,dic[@"shortcuticon"]];
-    self.resetPic = [NSString stringWithFormat:@"https://%@bizappmanage.ibroadlink.com/ec4/v1/system/configfile%@",[BLConfigParam sharedConfigParam].licenseId,dic[@"resetpic"]];
-    self.beforeConfigHtml = [NSString stringWithFormat:@"https://%@bizappmanage.ibroadlink.com/ec4/v1/system/configfile%@",[BLConfigParam sharedConfigParam].licenseId,dic[@"beforecfgpurl"]];
-    self.failedHtml = [NSString stringWithFormat:@"https://%@bizappmanage.ibroadlink.com/ec4/v1/system/configfile%@",[BLConfigParam sharedConfigParam].licenseId,dic[@"cfgfailedurl"]];
+    
+    BLApiUrls *apiUrls = [BLApiUrls sharedApiUrl];
+    self.iconUrlString = [apiUrls familyCommonUrlWithPath:[NSString stringWithFormat:@"/ec4/v1/system/configfile%@", dic[@"icon"]]];
+    self.configPicUrlString = [apiUrls familyCommonUrlWithPath:[NSString stringWithFormat:@"/ec4/v1/system/configfile%@", dic[@"configpic"]]];
+    self.shortCutIconUrlString = [apiUrls familyCommonUrlWithPath:[NSString stringWithFormat:@"/ec4/v1/system/configfile%@", dic[@"shortcuticon"]]];
+    self.resetPic = [apiUrls familyCommonUrlWithPath:[NSString stringWithFormat:@"/ec4/v1/system/configfile%@", dic[@"resetpic"]]];
+    self.beforeConfigHtml = [apiUrls familyCommonUrlWithPath:[NSString stringWithFormat:@"/ec4/v1/system/configfile%@", dic[@"beforecfgpurl"]]];
+    self.failedHtml = [apiUrls familyCommonUrlWithPath:[NSString stringWithFormat:@"/ec4/v1/system/configfile%@", dic[@"cfgfailedurl"]]];
+    
     return YES;
 }
 
