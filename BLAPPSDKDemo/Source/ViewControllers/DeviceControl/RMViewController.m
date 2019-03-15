@@ -153,7 +153,9 @@
     }];
     [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSString *timerInfo = alertController.textFields.firstObject.text;
-        [self setRMTimer:timerInfo];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self setRMTimer:timerInfo];
+        });
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alertController animated:YES completion:nil];
@@ -291,7 +293,9 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *timerInfo = self.timerInfos[indexPath.row];
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [self delTimer:timerInfo];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self delTimer:timerInfo];
+        });
     }
 }
 
