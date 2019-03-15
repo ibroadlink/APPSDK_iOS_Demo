@@ -174,7 +174,9 @@
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setValue:@(index) forParam:@"delrmtimer"];
     
-    [self showIndicatorOnWindow];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self showIndicatorOnWindow];
+    });
     BLStdControlResult *delResult = [[BLLet sharedLet].controller dnaControl:self.device.did stdData:stdData action:@"set"];
     if ([delResult succeed]) {
         [self queryTimerList:0];
@@ -197,7 +199,9 @@
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setValue:value forParam:@"rmtimer"];
     
-    [self showIndicatorOnWindow];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self showIndicatorOnWindow];
+    });
     BLStdControlResult *sendResult = [[BLLet sharedLet].controller dnaControl:self.device.did stdData:stdData action:@"set"];
     if ([sendResult succeed]) {
         [self queryTimerList:0];
