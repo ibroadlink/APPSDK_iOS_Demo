@@ -160,6 +160,32 @@
 
 }
 
+- (void)delTimer:(NSString *)timerInfo {
+    if ([BLCommonTools isEmpty:timerInfo]) {
+        [BLStatusBar showTipMessageWithStatus:@"Please input timer info"];
+        return;
+    }
+    NSInteger index = 0;
+    NSArray *infos = [timerInfo componentsSeparatedByString:@"|"];
+    if (infos && infos.count > 0) {
+        index = [infos[0] integerValue];
+    }
+    
+    BLStdData *stdData = [[BLStdData alloc] init];
+    [stdData setValue:@(index) forParam:@"delrmtimer"];
+    
+    [self showIndicatorOnWindow];
+    BLStdControlResult *delResult = [[BLLet sharedLet].controller dnaControl:self.device.did stdData:stdData action:@"set"];
+    if ([delResult succeed]) {
+        [self queryTimerList:0];
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideIndicatorOnWindow];
+            self.IrdaCode.text = [NSString stringWithFormat:@"Set RM Timer failed: (%ld)%@", (long)delResult.status, delResult.msg];
+        });
+    }
+}
+
 - (void)setRMTimer:(NSString *)timerInfo {
     if ([BLCommonTools isEmpty:timerInfo]) {
         [BLStatusBar showTipMessageWithStatus:@"Please input timer info"];
@@ -171,41 +197,62 @@
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setValue:value forParam:@"rmtimer"];
     
+    [self showIndicatorOnWindow];
     BLStdControlResult *sendResult = [[BLLet sharedLet].controller dnaControl:self.device.did stdData:stdData action:@"set"];
     if ([sendResult succeed]) {
-        self.IrdaCode.text = @"Set RM Timer success!";
-        [self queryTimerList];
+        [self queryTimerList:0];
     } else {
-        self.IrdaCode.text = [NSString stringWithFormat:@"Set RM Timer failed: (%ld)%@", (long)sendResult.status, sendResult.msg];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideIndicatorOnWindow];
+            self.IrdaCode.text = [NSString stringWithFormat:@"Set RM Timer failed: (%ld)%@", (long)sendResult.status, sendResult.msg];
+        });
     }
 }
 
-- (void)queryTimerList {
+- (void)queryTimerList:(NSUInteger)index {
+    if (index == 0) {
+        [self.timerInfos removeAllObjects];
+    }
+    
     BLStdData *stdData = [[BLStdData alloc] init];
-    [stdData setValue:nil forParam:@"rmtimer"];
+    [stdData setValue:@(0) forParam:@"rmtimer"];
+    [stdData setValue:@(0) forParam:@"count"];
+    [stdData setValue:@(index) forParam:@"index"];
+    
     BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:self.device.did stdData:stdData action:@"get"];
     if ([result succeed]) {
-        [self.timerInfos removeAllObjects];
-        
         NSDictionary *dic = [result.data toDictionary];
         NSArray *vals = dic[@"vals"][0];
         if (vals.count > 0) {
-            
             for (NSDictionary *info in vals) {
                 NSString *val = info[@"val"];
                 [self.timerInfos addObject:val];
             }
             
+            NSNumber *totalvals = [result.data valueForParam:@"count"];
+            NSInteger total = 0;
+            if (totalvals) {
+                total = [totalvals integerValue];
+            }
+            
+            if (self.timerInfos.count < total) {
+                [self queryTimerList:self.timerInfos.count];
+                return;
+            }
         }
-        
-        [self.timerTableView reloadData];
-    } else {
-        self.IrdaCode.text = [NSString stringWithFormat:@"Query RM Timer failed: (%ld)%@", (long)result.status, result.msg];
     }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self hideIndicatorOnWindow];
+        [self.timerTableView reloadData];
+    });
 }
 
 - (IBAction)queryTimer:(UIButton *)sender {
-    [self queryTimerList];
+    [self showIndicatorOnWindow];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self queryTimerList:0];
+    });
 }
 
 
@@ -235,6 +282,13 @@
     cell.textLabel.text = timer;
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSString *timerInfo = self.timerInfos[indexPath.row];
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [self delTimer:timerInfo];
+    }
 }
 
 @end
