@@ -82,7 +82,13 @@
     if (indexPath.section==0 && indexPath.row == 0) {
         BLUserHeadImageCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BLUserHeadImageCell"];
         cell.titleLabel.text = @"Avatar";
-        [cell.IconUrlImageView sd_setImageWithURL:[NSURL URLWithString:self.iconUrl]];
+        NSString *iconUrl = nil;
+        if ([BLConfigParam sharedConfigParam].appServiceEnable) {
+            iconUrl = [NSString stringWithFormat:@"https://e284310075456279d8ec73ee0e56279bappservice.ibroadlink.com%@",self.iconUrl];
+        }else {
+            iconUrl = self.iconUrl;
+        }
+        [cell.IconUrlImageView sd_setImageWithURL:[NSURL URLWithString:iconUrl]];
         return cell;
     } else if (indexPath.section == 2) {
         BLUserLogoutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BLUserLogoutCell"];

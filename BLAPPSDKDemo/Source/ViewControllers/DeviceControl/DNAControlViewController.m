@@ -16,7 +16,6 @@
 @property (nonatomic, weak)NSTimer *stateTimer;
 @property (nonatomic, copy)NSString *resultText;
 @property (nonatomic, copy)NSArray *keyList;
-@property (nonatomic, copy)NSString *paramText;
 @property (nonatomic, copy)BLStdData *stdData;
 @end
 
@@ -40,17 +39,22 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [self getKeyList];
+}
+
+- (void)getKeyList {
     BLProfileStringResult *result = [[BLLet sharedLet].controller queryProfile:self.device.did];
     NSString *profileStr = [result getProfile];
     NSData *data = [profileStr dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *profileDic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
     NSDictionary *intfsDic = [[[profileDic valueForKey:@"suids"] objectAtIndex:0] valueForKey:@"intfs"];
-    NSMutableArray *keyArray = [NSMutableArray array];
+    NSMutableArray *keyArray = [NSMutableArray arrayWithCapacity:0];
     [intfsDic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        [keyArray addObject:key];
+        NSMutableDictionary *keyDic = [NSMutableDictionary dictionaryWithCapacity:0];
+        [keyDic setValue:obj forKey:key];
+        [keyArray addObject:keyDic];
     }];
     self.keyList = [NSArray arrayWithArray:keyArray];
-    NSLog(@"keyList:%@",self.keyList);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -155,6 +159,7 @@
     [[BLLet sharedLet].controller downloadScript:pid completionHandler:^(BLDownloadResult * _Nonnull result) {
         NSLog(@"End downloadScript");
         if ([result succeed]) {
+            [self getKeyList];
             self.resultText = [NSString stringWithFormat:@"ScriptPath:%@", [result getSavePath]];
         } else {
             self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
@@ -286,10 +291,39 @@
 
 - (void)selectParams {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Select Param" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    for (NSString *param in self.keyList) {
+    for (NSDictionary *paramDic in self.keyList) {
+        NSString *param = paramDic.allKeys[0];
         [alertController addAction:[UIAlertAction actionWithTitle:param style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            self.paramText = param;
             [self.stdData setValue:@"" forParam:param];
+            
+            NSDictionary *valueDic = [paramDic objectForKey:param][0];
+            NSMutableArray *parameterList = [NSMutableArray arrayWithArray:valueDic[@"in"]];
+            
+            //动作类型act
+            NSInteger act = [valueDic[@"act"] integerValue];
+            NSString *actFunction = nil;
+            if (act == 1) {
+                actFunction = @"only suppot get";
+            }else if (act == 2) {
+                actFunction = @"only suppot set";
+            }else {
+                actFunction = @"suppot get and set";
+            }
+            
+            //第一个元素表示参数格式,1 表示枚举型,2 表示连续型,3 表示简单类型
+            NSInteger parameterformat = [parameterList.firstObject integerValue];
+            NSString *parameterType = nil;
+            
+            [parameterList removeObjectAtIndex:0];
+            if (parameterformat == 1) {
+                parameterType = [NSString stringWithFormat:@"Enumerate type : %@",[BLCommonTools serializeMessage:parameterList]];
+            }else if (parameterformat == 2) {
+                parameterType = [NSString stringWithFormat:@"Continuous type : %@", [BLCommonTools serializeMessage:parameterList]];
+            }else {
+                parameterType = @"Other type : String";
+            }
+            
+            self.resultText = [NSString stringWithFormat:@"%@",@[param,actFunction,parameterType]];
             [self.tableView reloadData];
         }]];
     }
@@ -308,7 +342,6 @@
         if ([BLCommonTools isEmpty:param]) {
             self.resultText = [NSString stringWithFormat:@"param can not set nil"];
         }else {
-            self.paramText = param;
             [self.stdData setValue:@"" forParam:param];
         }
         [self.tableView reloadData];
@@ -348,6 +381,10 @@
     [textField resignFirstResponder];
 }
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    return YES;
+}
+
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 4;
@@ -379,10 +416,8 @@
         UITextField *valTextView = (UITextField *)[cell viewWithTag:101];
         NSString *param = self.stdData.allParams[indexPath.row];
         [self.stdData setValue:valTextView.text forParam:param];
-        if ([param isEqualToString:self.paramText]) {
-            paramTextView.text = self.paramText;
-        }
-        
+        paramTextView.text = param;
+        valTextView.text = [self.stdData valueForParam:param];
         return cell;
     }else if (indexPath.section == 1) {
         cellIdentifier = @"SELECT_PARAMS_CELL";
@@ -463,6 +498,7 @@
     }
     return _stdData;
 }
+
 
 
 
