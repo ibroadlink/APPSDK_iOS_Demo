@@ -318,7 +318,7 @@
             if (parameterformat == 1) {
                 parameterType = [NSString stringWithFormat:@"Enumerate type : %@",[BLCommonTools serializeMessage:parameterList]];
             }else if (parameterformat == 2) {
-                parameterType = [NSString stringWithFormat:@"Continuous type : %@", [BLCommonTools serializeMessage:parameterList]];
+                parameterType = [NSString stringWithFormat:@"Continuous type : [min:%@,max:%@,step:%@,multiple:%@] ", parameterList[0],parameterList[1],parameterList[2],parameterList[3]];
             }else {
                 parameterType = @"Other type : String";
             }
@@ -399,7 +399,35 @@
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    return YES;
+    NSString *param = textField.placeholder;
+    NSMutableArray *parameterList = [NSMutableArray arrayWithCapacity:0];
+    for (NSDictionary *paramDic in self.keyList) {
+        if ([paramDic.allKeys[0] isEqualToString:param]) {
+            NSDictionary *valueDic = [paramDic objectForKey:param][0];
+            parameterList = [NSMutableArray arrayWithArray:valueDic[@"in"]];
+        }
+    }
+    NSInteger parameterformat = [parameterList.firstObject integerValue];
+    [parameterList removeObjectAtIndex:0];
+    if (parameterformat == 1) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Select one value" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        for (NSString *value in parameterList) {
+            [alertController addAction:[UIAlertAction actionWithTitle:[NSString stringWithFormat:@"%@",value] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                textField.text = [NSString stringWithFormat:@"%@",value];
+                [self.tableView reloadData];
+            }]];
+        }
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
+        return NO;
+    }else if (parameterformat == 2) {
+        
+        return YES;
+    }else {
+        
+        return YES;
+    }
+    
 }
 
 #pragma mark - UITableViewDelegate
@@ -440,6 +468,8 @@
         }
         
         paramTextView.text = param;
+        valTextView.placeholder = param;
+        [valTextView setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
         return cell;
     }else if (indexPath.section == 1) {
         cellIdentifier = @"SELECT_PARAMS_CELL";
