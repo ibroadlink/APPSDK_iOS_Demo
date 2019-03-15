@@ -370,6 +370,23 @@
     return YES;
 }
 
+- (BOOL)isNumber:(NSString *)strValue
+{
+    if (strValue == nil || [strValue length] <= 0)
+    {
+        return NO;
+    }
+    
+    NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
+    NSString *filtered = [[strValue componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
+    
+    if (![strValue isEqualToString:filtered])
+    {
+        return NO;
+    }
+    return YES;
+}
+
 #pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
@@ -415,9 +432,14 @@
         UITextField *paramTextView = (UITextField *)[cell viewWithTag:100];
         UITextField *valTextView = (UITextField *)[cell viewWithTag:101];
         NSString *param = self.stdData.allParams[indexPath.row];
-        [self.stdData setValue:valTextView.text forParam:param];
+        NSString *value = valTextView.text;
+        if ([self isNumber:value]) {
+            [self.stdData setValue:@([value integerValue]) forParam:param];
+        }else {
+            [self.stdData setValue:value forParam:param];
+        }
+        
         paramTextView.text = param;
-        valTextView.text = [self.stdData valueForParam:param];
         return cell;
     }else if (indexPath.section == 1) {
         cellIdentifier = @"SELECT_PARAMS_CELL";
