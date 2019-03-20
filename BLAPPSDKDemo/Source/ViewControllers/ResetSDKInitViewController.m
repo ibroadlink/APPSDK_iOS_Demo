@@ -10,8 +10,10 @@
 #import "AppDelegate.h"
 #import "BLUserDefaults.h"
 @interface ResetSDKInitViewController () <UITextViewDelegate,UITextFieldDelegate>
+
 @property (weak, nonatomic) IBOutlet UITextField *packNameLabel;
 @property (weak, nonatomic) IBOutlet UITextView *LicenseLabel;
+@property (weak, nonatomic) IBOutlet UISwitch *enableCloudCluster;
 
 @end
 
@@ -23,19 +25,35 @@
     self.LicenseLabel.delegate = self;
     self.packNameLabel.text = [BLConfigParam sharedConfigParam].packName;
     self.LicenseLabel.text = [BLConfigParam sharedConfigParam].sdkLicense;
+    
+    BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
+    self.enableCloudCluster.enabled = [userDefault getAppServiceEnable] > 0;
 }
 
 - (IBAction)resetTheLicense:(id)sender {
-    [BLConfigParam sharedConfigParam].packName = self.packNameLabel.text; // set package name
-    [BLLet sharedLetWithLicense:self.LicenseLabel.text];               // Init APPSDK
     
-    BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
-    [userDefault setPackName:[BLConfigParam sharedConfigParam].packName];
-    [userDefault setLicense:[BLConfigParam sharedConfigParam].sdkLicense];
-
-    NSString *message = [NSString stringWithFormat:@"Reset The License Success,Lid:%@",[BLConfigParam sharedConfigParam].licenseId];
-    [BLStatusBar showTipMessageWithStatus:message];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"WARNING" message:@"APP will be restarted" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
+        [userDefault setPackName:[BLConfigParam sharedConfigParam].packName];
+        [userDefault setLicense:[BLConfigParam sharedConfigParam].sdkLicense];
+        [userDefault setAppServiceEnable: (self.enableCloudCluster.isEnabled ? 1 : 0)];
+        
+        [userDefault setUserName:nil];
+        [userDefault setPassword:nil];
+        [userDefault setUserId:nil];
+        [userDefault setSessionId:nil];
+        
+        exit(0);
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alert addAction:confirmAction];
+    [alert addAction:cancelAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - UITextFieldDelegate

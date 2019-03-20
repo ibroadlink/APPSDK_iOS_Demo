@@ -154,7 +154,7 @@
     if ([userDefault getPackName] && [userDefault getLicense]) {
         [BLConfigParam sharedConfigParam].packName = [userDefault getPackName];
         self.let = [BLLet sharedLetWithLicense:[userDefault getLicense]];
-    }else {
+    } else {
         [BLConfigParam sharedConfigParam].packName = SDK_PACKAGE_ID;                // Set Package ID
         self.let = [BLLet sharedLetWithLicense:SDK_LICENSE];                        // Init APPSDK
     }
@@ -164,7 +164,7 @@
     [BLConfigParam sharedConfigParam].controllerSendCount = 3;                      // 控制重试次数
     [BLConfigParam sharedConfigParam].controllerQueryCount = 8;                     // 设备批量查询设备个数
     [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;          // 脚本下载平台
-    [BLConfigParam sharedConfigParam].appServiceEnable = 1;                         // 使用appService集群
+    [BLConfigParam sharedConfigParam].appServiceEnable = [userDefault getAppServiceEnable]; // 使用appService集群
 
 #ifndef DISABLE_PUSH_NOTIFICATIONS
     //测试服务器

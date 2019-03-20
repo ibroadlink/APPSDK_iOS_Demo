@@ -87,4 +87,18 @@
     return [userDefaults objectForKey:@"license"];
 }
 
+- (void)setAppServiceEnable:(NSUInteger)enable {
+    [userDefaults setObject:@(enable) forKey:@"enableAppService"];
+    [userDefaults synchronize];
+}
+
+- (NSUInteger)getAppServiceEnable {
+    NSNumber *enable = [userDefaults objectForKey:@"enableAppService"];
+    if (enable) {
+        return [enable unsignedIntegerValue];
+    } else {
+        return 1;
+    }
+}
+
 @end

@@ -35,4 +35,9 @@
 // Get/Set license
 - (void) setLicense: (NSString *)license;
 - (NSString *) getLicense;
+
+// Get/Set Use APPService
+- (void)setAppServiceEnable:(NSUInteger)enable;
+- (NSUInteger)getAppServiceEnable;
+
 @end
