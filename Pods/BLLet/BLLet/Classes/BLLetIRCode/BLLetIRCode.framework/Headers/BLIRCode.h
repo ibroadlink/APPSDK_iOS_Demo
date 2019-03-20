@@ -179,7 +179,7 @@
 /**
  unitCode Change To WaveCode
  
- @param waveCode unitCode
+ @param unitCode unitCode
  @return WaveCode
  */
 - (NSString *_Nullable)unitCodeChangeToWaveCode:(NSString *)unitCode;

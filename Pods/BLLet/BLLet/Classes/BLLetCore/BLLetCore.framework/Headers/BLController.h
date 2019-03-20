@@ -549,6 +549,14 @@
 - (BLFirmwareVersionResult *_Nonnull)querySubDeviceFirmwareVersion:(NSString *_Nonnull)did sdid:(NSString *_Nonnull)sdid;
 
 /**
+ Query device server info
+
+ @param did Device did
+ @return Query result
+ */
+- (BLBaseResult *)queryDeviceConnectServerInfo:(NSString *)did;
+
+/**
  Query device server time
 
  @param did             Device did

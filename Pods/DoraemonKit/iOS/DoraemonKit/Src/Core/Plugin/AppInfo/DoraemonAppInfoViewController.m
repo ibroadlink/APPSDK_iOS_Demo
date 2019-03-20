@@ -92,7 +92,7 @@
                                @"title":DoraemonLocalizedString(@"App信息"),
                                @"array":@[@{
                                               @"title":@"SDK Version",
-                                              @"value":@"2.9.7"
+                                              @"value":@"2.10.1"
                                               },
                                           @{
                                               @"title":@"lid",

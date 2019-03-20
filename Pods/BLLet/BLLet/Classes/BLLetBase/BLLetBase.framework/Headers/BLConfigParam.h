@@ -98,4 +98,7 @@
 
 /* BLPicker Data report count, default 20 **/
 @property (nonatomic, assign) NSUInteger dataReportCount;
+
+/* Device Pair serInfo **/
+@property (nonatomic, copy) NSDictionary *deviceConnectServiceInfo;
 @end

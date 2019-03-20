@@ -423,6 +423,20 @@
 - (NSString *)iRCodeSTBChannelListUrl;
 
 /**
+ 红码匹配树接口
+
+ @return URL地址
+ */
+- (NSString *)iRCodeMatchTreeUrl;
+
+/**
+ 红码下载(新版)
+
+ @return URL地址
+ */
+- (NSString *)iRCodeDownloadUrl;
+
+/**
  获取家庭指定路径URL
  
  @param path 指定路径

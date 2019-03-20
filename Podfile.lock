@@ -1,20 +1,20 @@
 PODS:
   - BLExtension (0.0.1)
-  - BLLet/BLLetAccount (2.9.7):
+  - BLLet/BLLetAccount (2.10.1):
     - BLLet/BLLetBase
-  - BLLet/BLLetBase (2.9.7)
-  - BLLet/BLLetCore (2.9.7):
+  - BLLet/BLLetBase (2.10.1)
+  - BLLet/BLLetCore (2.10.1):
     - BLLet/BLLetBase
-  - BLLet/BLLetFamily (2.9.7):
+  - BLLet/BLLetFamily (2.10.1):
     - BLLet/BLLetBase
-  - BLLet/BLLetIRCode (2.9.7):
+  - BLLet/BLLetIRCode (2.10.1):
     - BLLet/BLLetBase
-  - BLLet/BLLetPlugins (2.9.7):
+  - BLLet/BLLetPlugins (2.10.1):
     - BLLet/BLLetBase
   - BSBacktraceLogger (0.0.1)
-  - CocoaLumberjack (3.5.1):
-    - CocoaLumberjack/Core (= 3.5.1)
-  - CocoaLumberjack/Core (3.5.1)
+  - CocoaLumberjack (3.5.2):
+    - CocoaLumberjack/Core (= 3.5.2)
+  - CocoaLumberjack/Core (3.5.2)
   - Cordova (4.4.0)
   - DoraemonKit/Core (1.1.6):
     - BSBacktraceLogger
@@ -46,12 +46,12 @@ PODS:
 
 DEPENDENCIES:
   - BLExtension
-  - BLLet/BLLetAccount (~> 2.9.7)
-  - BLLet/BLLetBase (~> 2.9.7)
-  - BLLet/BLLetCore (~> 2.9.7)
-  - BLLet/BLLetFamily (~> 2.9.7)
-  - BLLet/BLLetIRCode (~> 2.9.7)
-  - BLLet/BLLetPlugins (~> 2.9.7)
+  - BLLet/BLLetAccount (~> 2.10.1)
+  - BLLet/BLLetBase (~> 2.10.1)
+  - BLLet/BLLetCore (~> 2.10.1)
+  - BLLet/BLLetFamily (~> 2.10.1)
+  - BLLet/BLLetIRCode (~> 2.10.1)
+  - BLLet/BLLetPlugins (~> 2.10.1)
   - Cordova (~> 4.4.0)
   - DoraemonKit/Core (~> 1.1.6)
   - DoraemonKit/WithLogger (~> 1.1.6)
@@ -84,9 +84,9 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   BLExtension: 397cb05b32940fe0ce3467821ce56817c7f8bba8
-  BLLet: 3d7f99412f0bbf7b695150187c5086c3a1edb138
+  BLLet: bbb8c1345688958995e94694f94a8d6adde1bffc
   BSBacktraceLogger: 06b983ee93a9f87d957960e9c73d660d5966b447
-  CocoaLumberjack: 2101f8a5508197a305e737d16c5c2e9e2157628c
+  CocoaLumberjack: 118bf4a820efc641f79fa487b75ed928dccfae23
   Cordova: 561576155c420c54441d99b855de12c6e7b51088
   DoraemonKit: 309c42d828dffb8149942afcfa2af84d8f44bad1
   fishhook: ea19933abfe8f2f52c55fd8b6e2718467d3ebc89
@@ -100,6 +100,6 @@ SPEC CHECKSUMS:
   "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
 
-PODFILE CHECKSUM: 6b2cfb77890d8fc09ce3c81e38e81a13d0a33c48
+PODFILE CHECKSUM: 27eca17b6a81260c24806e2fec5334366ac4850d
 
 COCOAPODS: 1.5.3

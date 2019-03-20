@@ -156,7 +156,6 @@
         self.let = [BLLet sharedLetWithLicense:[userDefault getLicense]];
     }else {
         [BLConfigParam sharedConfigParam].packName = SDK_PACKAGE_ID;                // Set Package ID
-        //BLLetCoreS
         self.let = [BLLet sharedLetWithLicense:SDK_LICENSE];                        // Init APPSDK
     }
     
