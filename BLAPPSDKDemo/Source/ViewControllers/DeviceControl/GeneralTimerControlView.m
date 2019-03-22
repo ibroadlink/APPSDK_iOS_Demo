@@ -7,36 +7,34 @@
 //
 
 #import "GeneralTimerControlView.h"
-#import "AppDelegate.h"
+
+#import "BLDeviceService.h"
 #import "BLStatusBar.h"
 
 @interface GeneralTimerControlView ()<UITextViewDelegate>{
     NSMutableArray *_timeArray;
     NSInteger _nextIndex;
 }
+
 @property (weak, nonatomic) IBOutlet UITableView *timerList;
-@property (nonatomic, weak)NSTimer *stateTimer;
+
+@property (strong, nonatomic) BLDNADevice *device;
+
 @end
 
 @implementation GeneralTimerControlView
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.device = [BLDeviceService sharedDeviceService].selectDevice;
+    
     _timeArray = [NSMutableArray arrayWithCapacity:0];
-//    if (![_stateTimer isValid]) {
-//        __weak typeof(self) weakSelf = self;
-//        _stateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
-//            [weakSelf gettimerDnaControl];
-//        }];
-//    }
     [self gettimerDnaControl];
     _nextIndex = -1;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [_stateTimer invalidate];
-    _stateTimer = nil;
 }
 
 - (IBAction)addTimer:(id)sender {

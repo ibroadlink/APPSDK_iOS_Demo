@@ -9,10 +9,12 @@
 #import "RMViewController.h"
 #import <BLLetIRCode/BLLetIRCode.h>
 
-#import "AppDelegate.h"
+#import "BLDeviceService.h"
 #import "BLStatusBar.h"
 
 @interface RMViewController () <UITableViewDelegate, UITableViewDataSource>
+
+@property (strong, nonatomic) BLDNADevice *device;
 
 @property (strong, nonatomic) NSString *irdaCodeStr;
 @property (strong, nonatomic) NSString *irdaUnitCodeStr;
@@ -26,6 +28,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.device = [BLDeviceService sharedDeviceService].selectDevice;
+    
     self.timerInfos = [NSMutableArray arrayWithCapacity:0];
     self.timerTableView.delegate = self;
     self.timerTableView.dataSource = self;

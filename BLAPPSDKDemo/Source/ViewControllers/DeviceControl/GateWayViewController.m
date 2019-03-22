@@ -7,12 +7,16 @@
 //
 
 #import "GateWayViewController.h"
-#import "AppDelegate.h"
-#import "BLStatusBar.h"
 #import "DeviceWebControlViewController.h"
+
+#import "BLDeviceService.h"
+#import "BLStatusBar.h"
 #import "SSZipArchive.h"
+#import "AppMacro.h"
+
 @interface GateWayViewController ()<UITableViewDelegate,UITableViewDataSource>
 
+@property (nonatomic, strong) BLDNADevice *device;
 @property (nonatomic, strong) BLDNADevice *subDevice;
 
 @property (nonatomic, strong) NSMutableDictionary *privateDataCache;
@@ -33,6 +37,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.device = [BLDeviceService sharedDeviceService].selectDevice;
+    
     [BLLet sharedLet].controller.currentFamilyId = @"00bc30ade0f4a2da1abbb47bc0cc17b2";
     self.subDevicelist = [NSArray array];
     self.privateDataCache = [NSMutableDictionary dictionaryWithCapacity:0];

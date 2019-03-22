@@ -6,12 +6,12 @@
 //  Copyright © 2017年 BroadLink. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 
 @interface GateWayViewController : BaseViewController
-@property (strong, nonatomic) BLDNADevice *device;
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 + (GateWayViewController *)viewController;
+
 @end

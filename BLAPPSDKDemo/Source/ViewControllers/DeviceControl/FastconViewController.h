@@ -10,11 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BLDNADevice;
-
 @interface FastconViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
-
-@property (strong, nonatomic) BLDNADevice *device;
 
 @property (weak, nonatomic) IBOutlet UITextView *resultView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;

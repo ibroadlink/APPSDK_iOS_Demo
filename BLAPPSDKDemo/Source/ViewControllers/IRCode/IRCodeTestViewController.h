@@ -7,6 +7,7 @@
 //
 
 #import "BaseViewController.h"
+
 @interface SubAreaInfo : NSObject
 @property(nonatomic, assign) NSInteger locateid;
 @property(nonatomic, assign) NSInteger levelid;
@@ -15,7 +16,6 @@
 @property(nonatomic, strong) NSString *name;
 @end
 
-@class BLDNADevice;
 @interface IRCodeTestViewController : BaseViewController
-@property (strong, nonatomic) BLDNADevice *device;
+
 @end

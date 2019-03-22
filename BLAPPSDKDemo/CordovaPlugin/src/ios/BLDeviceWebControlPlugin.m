@@ -852,11 +852,17 @@
     NSDictionary *param = [self parseArguments:command.arguments.firstObject];
     NSLog(@"BLDeviceWebControlPlugin method: %@, param: %@", command.methodName, param);
     
-    GateWayViewController *gateWayVC = [GateWayViewController viewController];
-    gateWayVC.device = [[BLLet sharedLet].controller getDevice:param[@"did"]];
-    [self.viewController.navigationController pushViewController:gateWayVC animated:YES];
-    
-    NSDictionary *dic = @{@"status":@0, @"msg":@"ok"};
+    NSString *gatewayDid = param[@"did"];
+    BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
+    BLDNADevice *gatewayDevice = [deviceService.manageDevices objectForKey:gatewayDid];
+
+    if (gatewayDevice) {
+        GateWayViewController *gateWayVC = [GateWayViewController viewController];
+        deviceService.selectDevice = gatewayDevice;
+        [self.viewController.navigationController pushViewController:gateWayVC animated:YES];
+    }
+
+    NSDictionary *dic = @{@"status":@(0), @"msg":@"ok"};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }

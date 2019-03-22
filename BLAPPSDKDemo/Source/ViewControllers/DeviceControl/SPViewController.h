@@ -10,6 +10,7 @@
 #import "BaseViewController.h"
 
 @interface SPViewController : BaseViewController
-@property (nonatomic, strong) BLDNADevice *device;
+
 @property (weak, nonatomic) IBOutlet UIButton *SPswitchtxt;
+
 @end

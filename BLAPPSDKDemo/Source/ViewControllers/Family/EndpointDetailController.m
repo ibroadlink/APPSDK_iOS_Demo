@@ -9,7 +9,7 @@
 #import "EndpointDetailController.h"
 #import "OperateViewController.h"
 
-#import "DeviceDB.h"
+#import "BLDeviceService.h"
 #import "BLStatusBar.h"
 
 @interface EndpointDetailController () <UITextFieldDelegate>
@@ -58,18 +58,9 @@
     
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"OperateView"]) {
-        UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[OperateViewController class]]) {
-            OperateViewController* vc = (OperateViewController *)target;
-            vc.device = (BLDNADevice *)sender;
-        }
-    }
-}
-
-- (void)showDeviceControlView {    
-    [self performSegueWithIdentifier:@"OperateView" sender:[self.endpoint toDNADevice]];
+- (void)showDeviceControlView {
+    [BLDeviceService sharedDeviceService].selectDevice = [self.endpoint toDNADevice];
+    [self performSegueWithIdentifier:@"OperateView" sender:nil];
 }
 
 - (void)ModifyEndPointInfo {
@@ -121,9 +112,7 @@
                 BLSubdevBaseResult *baseResult = [[BLLet sharedLet].controller subDevDelWithDid:device.pDid subDevDid:device.did];
                 NSLog(@"subDevDel Code:%ld MSG:%@", (long)baseResult.status, baseResult.msg);
             }
-            
-            [[BLLet sharedLet].controller removeDevice:device];
-            [[DeviceDB sharedOperateDB] deleteWithinfo:device];
+            [[BLDeviceService sharedDeviceService] removeDevice:device.did];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.navigationController popViewControllerAnimated:YES];

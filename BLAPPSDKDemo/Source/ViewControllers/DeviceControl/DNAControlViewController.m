@@ -7,35 +7,34 @@
 //
 
 #import "DNAControlViewController.h"
-#import "AppDelegate.h"
-#import "DropDownList.h"
-#import "SSZipArchive.h"
 #import "DeviceWebControlViewController.h"
 
+#import "BLDeviceService.h"
+#import "DropDownList.h"
+#import "SSZipArchive.h"
+#import "AppMacro.h"
+
 @interface DNAControlViewController ()<UITextFieldDelegate>
-@property (nonatomic, weak)NSTimer *stateTimer;
+
+@property (nonatomic, strong) BLDNADevice *device;
+
 @property (nonatomic, copy)NSString *resultText;
 @property (nonatomic, copy)NSArray *keyList;
 @property (nonatomic, copy)BLStdData *stdData;
+
 @end
 
-@implementation DNAControlViewController {
-    
-}
+@implementation DNAControlViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.device = [BLDeviceService sharedDeviceService].selectDevice;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [_stateTimer invalidate];
-    _stateTimer = nil;
 }
-    
-
-
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];

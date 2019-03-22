@@ -8,11 +8,7 @@
 
 #import "BaseViewController.h"
 
-@class BLDNADevice;
-
 @interface OperateViewController : BaseViewController
-
-@property (strong, nonatomic) BLDNADevice *device;
 
 @property (weak, nonatomic) IBOutlet UITextView *resultText;
 

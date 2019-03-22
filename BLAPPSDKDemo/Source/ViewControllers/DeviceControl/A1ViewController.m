@@ -8,13 +8,17 @@
 
 #import "A1ViewController.h"
 #import <BLLetPlugins/BLLetPlugins.h>
-#import "AppDelegate.h"
+
+#import "BLDeviceService.h"
 #import "BLStatusBar.h"
 
 @interface A1ViewController (){
     BLeAirNetWorkDataParser *_a1DataParser;
     NSTimer *timer;
 }
+
+@property (strong, nonatomic) BLDNADevice *device;
+
 @property (weak, nonatomic) IBOutlet UILabel *temperatureLabel;
 @property (weak, nonatomic) IBOutlet UILabel *humidityLabel;
 @property (weak, nonatomic) IBOutlet UILabel *lightLabel;
@@ -28,6 +32,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.device = [BLDeviceService sharedDeviceService].selectDevice;
+    
     _a1DataParser = [BLeAirNetWorkDataParser sharedInstace];
     //获取A1的数据
     timer = [NSTimer scheduledTimerWithTimeInterval:2.0f repeats:YES block:^(NSTimer * _Nonnull timer) {

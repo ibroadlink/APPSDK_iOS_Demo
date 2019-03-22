@@ -7,16 +7,22 @@
 //
 
 #import "FastconViewController.h"
+
+#import "BLDeviceService.h"
 #import "BLStatusBar.h"
-#import "AppDelegate.h"
+
 @interface FastconViewController ()
+@property (strong, nonatomic) BLDNADevice *device;
 @property (nonatomic, copy)NSArray *configArray;
+
 @end
 
 @implementation FastconViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.device = [BLDeviceService sharedDeviceService].selectDevice;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     // Do any additional setup after loading the view.

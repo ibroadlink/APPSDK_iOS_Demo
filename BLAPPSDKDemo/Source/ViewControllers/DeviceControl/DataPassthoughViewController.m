@@ -7,9 +7,11 @@
 //
 
 #import "DataPassthoughViewController.h"
-#import "AppDelegate.h"
+#import "BLDeviceService.h"
 
 @interface DataPassthoughViewController ()<UITextViewDelegate>
+
+@property (nonatomic, strong) BLDNADevice *device;
 
 @end
 
@@ -19,6 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.device = [BLDeviceService sharedDeviceService].selectDevice;
     
     _dataInputTextView.delegate = self;
     _dataShowTextView.delegate = self;

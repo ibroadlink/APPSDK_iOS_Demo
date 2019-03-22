@@ -10,6 +10,7 @@
 #import <BLLetIRCode/BLLetIRCode.h>
 
 #import "BLStatusBar.h"
+#import "BLDeviceService.h"
 #import "CateGoriesTableViewController.h"
 #import "AKeyToIdentifyViewController.h"
 
@@ -29,6 +30,7 @@
 
 @interface IRCodeTestViewController ()
 
+@property (nonatomic, strong) BLDNADevice *device;
 @property (nonatomic, strong) NSArray *testList;
 @property (nonatomic, strong) BLController *blcontroller;
 @property (nonatomic, strong) BLIRCode *blircode;
@@ -41,8 +43,8 @@
 @property (nonatomic, assign) NSUInteger locateid;
 @property (nonatomic, assign) NSUInteger isleaf;
 @property (nonatomic, assign) NSUInteger providerid;
-@property(nonatomic, assign) NSInteger devtype;
-@property(nonatomic, strong) NSArray<SubAreaInfo *> *subAreainfo;
+@property (nonatomic, assign) NSInteger devtype;
+@property (nonatomic, strong) NSArray<SubAreaInfo *> *subAreainfo;
 @end
 
 @implementation IRCodeTestViewController
@@ -50,6 +52,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.device = [BLDeviceService sharedDeviceService].selectDevice;
     
     self.locateid = 27;
     self.providerid = 0;

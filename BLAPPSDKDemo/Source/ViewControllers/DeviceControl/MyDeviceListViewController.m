@@ -11,10 +11,6 @@
 
 #import "BLDeviceService.h"
 
-@interface MyDeviceListViewController () <UITableViewDelegate, UITableViewDataSource>
-
-@end
-
 @implementation MyDeviceListViewController
 
 - (void)viewDidLoad {
@@ -33,20 +29,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - Navigation
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    if ([segue.identifier isEqualToString:@"OperateView"]) {
-        UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[OperateViewController class]]) {
-            OperateViewController* opVC = (OperateViewController *)target;
-            opVC.device = (BLDNADevice *)sender;
-        }
-    }
 }
 
 #pragma mark - table delegate

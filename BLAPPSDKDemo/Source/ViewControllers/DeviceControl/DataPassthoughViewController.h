@@ -10,8 +10,6 @@
 
 @interface DataPassthoughViewController : BaseViewController
 
-@property (nonatomic, strong) BLDNADevice *device;
-
 @property (weak, nonatomic) IBOutlet UITextView *dataInputTextView;
 @property (weak, nonatomic) IBOutlet UITextView *dataShowTextView;
 

@@ -66,31 +66,6 @@
 }
 
 #pragma mark - Navigation
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    if ([segue.identifier isEqualToString:@"OperateView"]) {
-        UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[OperateViewController class]]) {
-            OperateViewController* opVC = (OperateViewController *)target;
-            opVC.device = (BLDNADevice *)sender;
-        }
-    }else if ([segue.identifier isEqualToString:@"controllerView"]) {
-        UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[ControlViewController class]]) {
-            ControlViewController* opVC = (ControlViewController *)target;
-            opVC.savePath = (NSString *)sender;
-        }
-    }else if ([segue.identifier isEqualToString:@"controllerView"]) {
-        
-    }else if ([segue.identifier isEqualToString:@"RoomListView"]) {
-        
-    }else if ([segue.identifier isEqualToString:@"SceneListView"]) {
-        
-    }
-}
-
 - (IBAction)buttonClick:(UIButton *)sender {
     
     switch (sender.tag) {

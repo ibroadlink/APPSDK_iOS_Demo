@@ -10,6 +10,5 @@
 
 @interface RMViewController : BaseViewController
 
-@property (strong, nonatomic) BLDNADevice *device;
 
 @end

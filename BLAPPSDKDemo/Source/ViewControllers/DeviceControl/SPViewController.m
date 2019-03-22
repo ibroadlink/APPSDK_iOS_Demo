@@ -7,10 +7,14 @@
 //
 
 #import "SPViewController.h"
-#import "AppDelegate.h"
+
+#import "BLDeviceService.h"
 #import "BLStatusBar.h"
+
 @interface SPViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *timerTableView;
+
+@property (nonatomic, strong) BLDNADevice *device;
 @property (nonatomic, strong) NSMutableArray *timerList;
 @end
 
@@ -18,6 +22,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.device = [BLDeviceService sharedDeviceService].selectDevice;
+    
     self.timerList = [[NSMutableArray alloc] init];
     [self GetSpSwitch];
     self.timerTableView.delegate = self;
