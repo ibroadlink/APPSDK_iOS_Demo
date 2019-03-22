@@ -29,12 +29,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-//    BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
-//    BLAccount *account = [BLLet sharedLet].account;
-//    [account getUserInfo:@[userDefault.getUserId] completionHandler:^(BLGetUserInfoResult * _Nonnull result) {
-//
-//    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -46,16 +40,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"MyDeviceListView"]) {
-        UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[MyDeviceListViewController class]]) {
-            MyDeviceListViewController* myDeviceVC = (MyDeviceListViewController *)target;
-            myDeviceVC.myDevices = [[NSMutableArray alloc] initWithArray:[[DeviceDB sharedOperateDB] readAllDevicesFromSql]];
-        }
-    }
-}
 - (IBAction)configDevices:(id)sender {
     [self performSegueWithIdentifier:@"ConfigureView" sender:nil];
 }

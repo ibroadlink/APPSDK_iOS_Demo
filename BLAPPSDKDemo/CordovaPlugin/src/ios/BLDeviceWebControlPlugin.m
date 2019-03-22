@@ -145,9 +145,11 @@
     
     [self.commandDelegate runInBackground:^{
         BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
-        BLController *selectControl = deviceService.blController;
+        BLController *selectControl = [BLLet sharedLet].controller;
         BLDNADevice *selectDevice = deviceService.selectDevice;
-        NSString *accountName = deviceService.accountName;
+        
+        BLUserDefaults *userDefault = [BLUserDefaults shareUserDefaults];
+        NSString *accountName = [userDefault getUserName];
         
         NSString *deviceinfoJsonString = nil;
         if ([BLCommonTools isEmpty:selectDevice.pDid]) {
@@ -194,8 +196,7 @@
 }
 
 - (void)actWithControlParam:(NSArray *)info andBlock:(void(^)(BOOL ret, NSDictionary *dic))mainBlock {
-    BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
-    BLController *selectControl = deviceService.blController;
+    BLController *selectControl = [BLLet sharedLet].controller;
     
     NSMutableDictionary *dataDic = [NSMutableDictionary dictionaryWithCapacity:0];
     NSString *did = info[0];

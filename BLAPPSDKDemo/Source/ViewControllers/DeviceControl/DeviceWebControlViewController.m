@@ -60,11 +60,8 @@
     BOOL isDir = FALSE;
     if ([[NSFileManager defaultManager] fileExistsAtPath:uiPath isDirectory:&isDir]) {
         if (isDir) {
-            BLUserDefaults *userDefault = [BLUserDefaults shareUserDefaults];
             BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
             deviceService.selectDevice = _selectDevice;
-            deviceService.blController = [BLLet sharedLet].controller;
-            deviceService.accountName = [userDefault getUserName];
             
             NSString *appHtml = [uiPath stringByAppendingPathComponent:DNAKIT_DEFAULTH5PAGE_NAME]; //  ../Let/ui/pid/zh-cn/app.html
             NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:appHtml]];

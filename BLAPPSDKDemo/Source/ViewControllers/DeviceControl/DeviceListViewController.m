@@ -7,14 +7,12 @@
 //
 
 #import "DeviceListViewController.h"
-#import "AppDelegate.h"
-#import "DeviceDB.h"
+#import "BLDeviceService.h"
+#import "BLStatusBar.h"
 
 @interface DeviceListViewController ()
 
 @property (strong, nonatomic) NSMutableArray *showDevices;
-@property (strong, nonatomic) NSArray *myDevices;
-@property (strong, nonatomic) NSArray *scanDevices;
 
 @end
 
@@ -35,25 +33,29 @@
 }
 
 - (void)storeDeviceIndex:(NSInteger)index {
-    if (index < _showDevices.count) {
-        BLDNADevice *device = _showDevices[index];
-        //Pair Device,Get RemoteControl Id and Key
-        BLPairResult *result = [[BLLet sharedLet].controller pairWithDevice:device];
-        if ([result succeed]) {
-            device.controlId = result.getId;
-            device.controlKey = result.getKey;
-            [[BLLet sharedLet].controller addDevice:device];
-            //add device info to local db
-            [[DeviceDB sharedOperateDB] insertSqlWithDevice:device];
-            
-            [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Pair Success,%ld,%@",(long)result.getId,result.getKey]];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.deviceListTableView reloadData];
-            });
-        }else {
-            [BLStatusBar showTipMessageWithStatus:@"Pair Fail,Try again!!!"];
-        }
+    if (index < self.showDevices.count) {
+        BLDNADevice *device = self.showDevices[index];
         
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            //Pair Device,Get RemoteControl Id and Key
+            BLPairResult *result = [[BLLet sharedLet].controller pairWithDevice:device];
+            if ([result succeed]) {
+                device.controlId = result.getId;
+                device.controlKey = result.getKey;
+                
+                BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
+                [deviceService addNewDeivce:device];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Pair Success,%ld,%@",(long)result.getId,result.getKey]];
+                    [self.deviceListTableView reloadData];
+                });
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [BLStatusBar showTipMessageWithStatus:@"Pair Fail,Try again!!!"];
+                });
+            }
+        });
     }
 }
 
@@ -63,24 +65,17 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    self.showDevices = [NSMutableArray arrayWithCapacity:0];
-    NSArray *tmpMyDevices = self.myDevices;
-
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    NSDictionary *scanDevice = [delegate.scanDevices copy];
-    [scanDevice enumerateKeysAndObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(NSString *  _Nonnull key, BLDNADevice *  _Nonnull device, BOOL * _Nonnull stop) {
-        BOOL isAdded = NO;
-        for (BLDNADevice *myDevice in tmpMyDevices) {
-            if ([key isEqualToString:myDevice.did]) {
-                isAdded = YES;
-                break;
-            }
+    
+    [self.showDevices removeAllObjects];
+    
+    BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
+    for (int i = 0; i < deviceService.scanDevices.allKeys.count; i++) {
+        NSString *did = deviceService.scanDevices.allKeys[i];
+        BLDNADevice *manageDevice = [deviceService.manageDevices objectForKey:did];
+        if (!manageDevice) {
+            [self.showDevices addObject:deviceService.scanDevices[did]];
         }
-        
-        if (!isAdded) {
-            [self.showDevices addObject:device];
-        }
-    }];
+    }
     
     return self.showDevices.count;
 }
@@ -92,7 +87,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
 
-    BLDNADevice *device = _showDevices[indexPath.row];
+    BLDNADevice *device = self.showDevices[indexPath.row];
     UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
     titleLabel.text = [device getName];
     
@@ -118,8 +113,11 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (NSArray *)myDevices {
-    return [[DeviceDB sharedOperateDB] readAllDevicesFromSql];
+- (NSMutableArray *)showDevices {
+    if (!_showDevices) {
+        _showDevices = [NSMutableArray arrayWithCapacity:0];
+    }
+    return _showDevices;
 }
 
 @end

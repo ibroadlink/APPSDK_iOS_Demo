@@ -9,11 +9,11 @@
 #import "AppDelegate.h"
 
 #import "AppMacro.h"
-#import "DeviceDB.h"
 #import "MainViewController.h"
 #import "BLUserDefaults.h"
 #import "BLNewFamilyManager.h"
 #import "UserViewController.h"
+#import "BLDeviceService.h"
 
 #import <BLLetAccount/BLLetAccount.h>
 #import <BLLetFamily/BLLetFamily.h>
@@ -167,24 +167,16 @@
     [BLConfigParam sharedConfigParam].appServiceEnable = [userDefault getAppServiceEnable]; // 使用appService集群
 
 #ifndef DISABLE_PUSH_NOTIFICATIONS
-    //测试服务器
     [BLConfigParam sharedConfigParam].appServiceHost = @"https://01e78622f3e6b3a861133fbc0690f4a9appservice.ibroadlink.com";
 #endif
     
     [self.let setDebugLog:BL_LEVEL_DEBUG];                                          // Set APPSDK debug log level
     [self.let.controller setSDKRawDebugLevel:BL_LEVEL_DEBUG];                       // Set DNASDK debug log level
     
-    [self.let.controller startProbe:3000];                                          // Start probe device
-    self.let.controller.delegate = self;
-    
-    //从数据库取出所有设备加入SDK管理
-    NSArray *storeDevices = [[DeviceDB sharedOperateDB] readAllDevicesFromSql];
-    if (storeDevices && storeDevices.count > 0) {
-        [self.let.controller addDeviceArray:storeDevices];
-    }
-    
     [BLFamilyController sharedManager];
     [BLIRCode sharedIrdaCode];
+    
+    [[BLDeviceService sharedDeviceService] startDeviceManagment];
     [BLNewFamilyManager sharedFamily].licenseid = [BLConfigParam sharedConfigParam].licenseId;
     
     //本地登录 获取账号管理对象
@@ -199,33 +191,6 @@
             }
         }];
     }
-}
-
-
-
-#pragma mark - BLControllerDelegate
-- (void)onDeviceUpdate:(BLDNADevice *)device isNewDevice:(Boolean)isNewDevice {
-    //Only device reset, newconfig=1
-    //Not all device support this.
-    //NSLog(@"=====probe device did(%@) newconfig(%hhu)====", device.did, device.newConfig);
-    
-    if (device.did) {
-        [self.scanDevices setObject:device forKey:device.did];
-    }
-    
-}
-
-- (void)statusChanged:(BLDNADevice *)device status:(BLDeviceStatusEnum)status {
-    
-}
-
-#pragma mark - property
-- (NSMutableDictionary *)scanDevices {
-    if (!_scanDevices) {
-        _scanDevices = [[NSMutableDictionary alloc] init];
-    }
-    
-    return _scanDevices;
 }
 
 @end

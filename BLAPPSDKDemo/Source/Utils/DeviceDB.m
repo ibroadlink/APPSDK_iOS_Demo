@@ -84,10 +84,9 @@ static DeviceDB *op = nil;
                 [allDevices addObject:device];
             }
         }
-        return [allDevices copy];
     }
     
-    return nil;
+    return [allDevices copy];
 }
 
 - (NSInteger)insertSqlWithDevice:(BLDNADevice *)device {

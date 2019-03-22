@@ -13,10 +13,10 @@
 #import "AppMacro.h"
 #import "BLStatusBar.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, BLControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) BLLet *let;
-@property (copy, nonatomic) NSMutableDictionary *scanDevices;
+
 @end
 

@@ -402,6 +402,8 @@
 		02B42DA620B2A16D00700177 /* DeviceControl */ = {
 			isa = PBXGroup;
 			children = (
+				70503D541FDBE37A002D3371 /* BLDeviceService.h */,
+				70503D521FDBE37A002D3371 /* BLDeviceService.m */,
 				70503D831FDBE4D5002D3371 /* APConfigTableViewController.h */,
 				70503D6D1FDBE4D5002D3371 /* APConfigTableViewController.m */,
 				70503D631FDBE4D5002D3371 /* ConfigureViewController.h */,
@@ -543,8 +545,6 @@
 		70503D511FDBE37A002D3371 /* ios */ = {
 			isa = PBXGroup;
 			children = (
-				70503D541FDBE37A002D3371 /* BLDeviceService.h */,
-				70503D521FDBE37A002D3371 /* BLDeviceService.m */,
 				70503D551FDBE37A002D3371 /* BLDeviceWebControlPlugin.h */,
 				70503D531FDBE37A002D3371 /* BLDeviceWebControlPlugin.m */,
 			);

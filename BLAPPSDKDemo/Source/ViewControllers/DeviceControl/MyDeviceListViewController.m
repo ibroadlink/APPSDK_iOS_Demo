@@ -8,9 +8,8 @@
 
 #import "MyDeviceListViewController.h"
 #import "OperateViewController.h"
-#import "AppDelegate.h"
-#import "DeviceDB.h"
 
+#import "BLDeviceService.h"
 
 @interface MyDeviceListViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -23,7 +22,6 @@
     // Do any additional setup after loading the view.
     _MyDeviceTable.delegate = self;
     _MyDeviceTable.dataSource = self;
-    _devicearray =  [NSMutableArray arrayWithArray: _myDevices];
     [self setExtraCellLineHidden:_MyDeviceTable];
     
     __weak typeof(self) weakSelf = self;
@@ -57,7 +55,10 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _devicearray.count;
+    BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
+    NSArray *dids = deviceService.manageDevices.allKeys;
+    
+    return dids.count;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -67,7 +68,10 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
-    BLDNADevice *device = _devicearray[indexPath.row];
+    BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
+    NSString *did = deviceService.manageDevices.allKeys[indexPath.row];
+    BLDNADevice *device = [deviceService.manageDevices objectForKey:did];
+    
     UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
     titleLabel.text = [device getName];
     
@@ -78,9 +82,8 @@
     typeLabel.text = [NSString stringWithFormat:@"Type:%ld", (long)[device getType]];
     
     UILabel *netstateLabel = (UILabel *)[cell viewWithTag:104];
-
-    
     netstateLabel.text = [NSString stringWithFormat:@"NetState:%@", [self getstate:device.did]];
+    
     return cell;
 }
 
@@ -105,21 +108,21 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    BLDNADevice *device = _devicearray[indexPath.row];
+    BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
+    NSString *did = deviceService.manageDevices.allKeys[indexPath.row];
+    BLDNADevice *device = [deviceService.manageDevices objectForKey:did];
+    deviceService.selectDevice = device;
+    
     [self performSegueWithIdentifier:@"OperateView" sender:device];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-    BLDNADevice *device = _devicearray[indexPath.row];
-    if (editingStyle == UITableViewCellEditingStyleDelete)
-    {
-        [[BLLet sharedLet].controller removeDevice:device];
-        [_devicearray removeObjectAtIndex:indexPath.row];
-        [[DeviceDB sharedOperateDB] deleteWithinfo:device];
-        [_MyDeviceTable deleteRowsAtIndexPaths:@[indexPath]  withRowAnimation:UITableViewRowAnimationNone];
-    }
-    else if (editingStyle == UITableViewCellEditingStyleInsert)
-    {
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
+        NSString *did = deviceService.manageDevices.allKeys[indexPath.row];
+        [deviceService removeDevice:did];
+        [self.MyDeviceTable reloadData];
     }
 }
 @end

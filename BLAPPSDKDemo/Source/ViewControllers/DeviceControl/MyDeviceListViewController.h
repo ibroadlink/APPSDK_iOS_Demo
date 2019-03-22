@@ -10,9 +10,6 @@
 
 @interface MyDeviceListViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, copy) NSMutableArray *myDevices;
-
 @property (weak, nonatomic) IBOutlet UITableView *MyDeviceTable;
 
-@property (nonatomic,strong)NSMutableArray *devicearray;
 @end
