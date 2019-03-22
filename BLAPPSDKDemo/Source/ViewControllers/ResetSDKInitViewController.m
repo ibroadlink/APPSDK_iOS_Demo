@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *packNameLabel;
 @property (weak, nonatomic) IBOutlet UITextView *LicenseLabel;
 @property (weak, nonatomic) IBOutlet UISwitch *enableCloudCluster;
+@property (weak, nonatomic) IBOutlet UITextField *cloudClusterHostField;
 
 @end
 
@@ -27,6 +28,7 @@
     self.LicenseLabel.delegate = self;
     self.packNameLabel.text = [BLConfigParam sharedConfigParam].packName;
     self.LicenseLabel.text = [BLConfigParam sharedConfigParam].sdkLicense;
+    self.cloudClusterHostField.text = [BLConfigParam sharedConfigParam].appServiceHost;
     
     BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
     self.enableCloudCluster.enabled = [userDefault getAppServiceEnable] > 0;
@@ -37,9 +39,10 @@
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"WARNING" message:@"APP will be restarted" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
-        [userDefault setPackName:[BLConfigParam sharedConfigParam].packName];
-        [userDefault setLicense:[BLConfigParam sharedConfigParam].sdkLicense];
+        [userDefault setPackName:self.packNameLabel.text];
+        [userDefault setLicense:self.LicenseLabel.text];
         [userDefault setAppServiceEnable: (self.enableCloudCluster.isEnabled ? 1 : 0)];
+        [userDefault setAppServiceHost:self.cloudClusterHostField.text];
         
         [userDefault setUserName:nil];
         [userDefault setPassword:nil];

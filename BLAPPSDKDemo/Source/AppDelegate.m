@@ -159,30 +159,34 @@
     [BLConfigParam sharedConfigParam].controllerSendCount = 3;                      // 控制重试次数
     [BLConfigParam sharedConfigParam].controllerQueryCount = 8;                     // 设备批量查询设备个数
     [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;          // 脚本下载平台
-    [BLConfigParam sharedConfigParam].appServiceEnable = [userDefault getAppServiceEnable]; // 使用appService集群
-
-#ifndef DISABLE_PUSH_NOTIFICATIONS
-    [BLConfigParam sharedConfigParam].appServiceHost = @"https://01e78622f3e6b3a861133fbc0690f4a9appservice.ibroadlink.com";
-#endif
+    
+    // 使用云端集群
+    [BLConfigParam sharedConfigParam].appServiceEnable = [userDefault getAppServiceEnable];
+    if ([BLConfigParam sharedConfigParam].appServiceEnable > 0) {
+        NSString *cloudClusterHost = [userDefault getAppServiceHost];
+        if (![BLCommonTools isEmpty:cloudClusterHost]) {
+            [BLConfigParam sharedConfigParam].appServiceHost = cloudClusterHost;
+        }
+    }
     
     [self.let setDebugLog:BL_LEVEL_DEBUG];                                          // Set APPSDK debug log level
     [self.let.controller setSDKRawDebugLevel:BL_LEVEL_DEBUG];                       // Set DNASDK debug log level
     
-    [BLFamilyController sharedManager];
-    [BLIRCode sharedIrdaCode];
+    // 相关模块必须先初始化
+    BLAccount *account = [BLAccount sharedAccount];
+    BLFamilyController *family = [BLFamilyController sharedManager];
+    BLIRCode *ircode = [BLIRCode sharedIrdaCode];
     
     [[BLDeviceService sharedDeviceService] startDeviceManagment];
     [BLNewFamilyManager sharedFamily].licenseid = [BLConfigParam sharedConfigParam].licenseId;
     
     //本地登录 获取账号管理对象
-    BLAccount *account = [BLAccount sharedAccount];
     if ([userDefault getUserId] && [userDefault getSessionId]) {
-        NSLog(@"Local loging...");
         [BLNewFamilyManager sharedFamily].userid = [userDefault getUserId];
         [BLNewFamilyManager sharedFamily].loginsession = [userDefault getSessionId];
         [account localLoginWithUsrid:[userDefault getUserId] session:[userDefault getSessionId] completionHandler:^(BLLoginResult * _Nonnull result) {
             if ([result succeed]) {
-                NSLog(@"Log success!");
+                NSLog(@"Login success!");
             }
         }];
     }

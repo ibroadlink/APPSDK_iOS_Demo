@@ -101,4 +101,13 @@
     }
 }
 
+- (void)setAppServiceHost:(NSString *)host {
+    [userDefaults setObject:host forKey:@"appServiceHost"];
+    [userDefaults synchronize];
+}
+
+- (NSString *)getAppServiceHost {
+    return [userDefaults objectForKey:@"appServiceHost"];
+}
+
 @end

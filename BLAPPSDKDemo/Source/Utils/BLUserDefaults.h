@@ -40,4 +40,8 @@
 - (void)setAppServiceEnable:(NSUInteger)enable;
 - (NSUInteger)getAppServiceEnable;
 
+// Get/Set APPService Host
+- (void)setAppServiceHost:(NSString *)host;
+- (NSString *)getAppServiceHost;
+
 @end
