@@ -7,8 +7,10 @@
 //
 
 #import "ResetSDKInitViewController.h"
-#import "AppDelegate.h"
 #import "BLUserDefaults.h"
+
+#import <BLLetCore/BLLetCore.h>
+
 @interface ResetSDKInitViewController () <UITextViewDelegate,UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *packNameLabel;

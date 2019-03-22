@@ -416,8 +416,6 @@
 				70503D941FDBE4D5002D3371 /* DeviceWebControlViewController.m */,
 				70503D601FDBE4D5002D3371 /* DNAControlViewController.h */,
 				70503D7B1FDBE4D5002D3371 /* DNAControlViewController.m */,
-				022D7AFB20BBDBFA00689F93 /* DropDownList.h */,
-				022D7AFC20BBDBFB00689F93 /* DropDownList.m */,
 				70503D621FDBE4D5002D3371 /* GateWayViewController.h */,
 				70503D811FDBE4D5002D3371 /* GateWayViewController.m */,
 				70503D8C1FDBE4D5002D3371 /* MainViewController.h */,
@@ -572,6 +570,8 @@
 		70503D951FDBE4D5002D3371 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				022D7AFB20BBDBFA00689F93 /* DropDownList.h */,
+				022D7AFC20BBDBFB00689F93 /* DropDownList.m */,
 				0261054020E21AE300883EFC /* BLLoadingButton.h */,
 				0261054120E21AE400883EFC /* BLLoadingButton.m */,
 				70503D9B1FDBE4D5002D3371 /* DeviceDB.h */,

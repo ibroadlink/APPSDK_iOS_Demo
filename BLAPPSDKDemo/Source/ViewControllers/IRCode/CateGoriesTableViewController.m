@@ -7,8 +7,10 @@
 //
 
 #import "CateGoriesTableViewController.h"
-#import "AppDelegate.h"
 #import "ProductModelsTableViewController.h"
+
+#import "BLStatusBar.h"
+#import <BLLetCore/BLLetCore.h>
 #import <BLLetIRCode/BLLetIRCode.h>
 
 
@@ -47,8 +49,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    self.blcontroller = delegate.let.controller;
+    self.blcontroller = [BLLet sharedLet].controller;
     self.blircode = [BLIRCode sharedIrdaCode];
     [self queryDeviceTypes];
     _categories = [NSArray new];

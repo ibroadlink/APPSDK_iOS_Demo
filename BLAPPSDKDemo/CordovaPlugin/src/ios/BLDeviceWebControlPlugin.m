@@ -10,7 +10,7 @@
 #import "BLDeviceService.h"
 #import "BLNewFamilyManager.h"
 #import "BLUserDefaults.h"
-#import "AppDelegate.h"
+#import "AppMacro.h"
 
 #import "EndpointAddViewController.h"
 #import "EndpointDetailController.h"
@@ -195,9 +195,7 @@
     }];
 }
 
-- (void)actWithControlParam:(NSArray *)info andBlock:(void(^)(BOOL ret, NSDictionary *dic))mainBlock {
-    BLController *selectControl = [BLLet sharedLet].controller;
-    
+- (void)actWithControlParam:(NSArray *)info andBlock:(void(^)(BOOL ret, NSDictionary *dic))mainBlock {    
     NSMutableDictionary *dataDic = [NSMutableDictionary dictionaryWithCapacity:0];
     NSString *did = info[0];
     NSString *sdid = info[1];
@@ -218,7 +216,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *controlResult;
         NSString *dataStr = [self p_toJsonString:dataDic];
-        controlResult = [selectControl dnaControl:did subDevDid:sdid
+        controlResult = [[BLLet sharedLet].controller dnaControl:did subDevDid:sdid
                                           dataStr:dataStr command:info[3] scriptPath:nil sendcount:sendCount];
         NSLog(@"H5controlResult:%@",controlResult);
         

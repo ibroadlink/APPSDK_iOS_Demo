@@ -7,8 +7,10 @@
 //
 
 #import "ControlViewController.h"
-#import "AppDelegate.h"
+
+#import "BLStatusBar.h"
 #import "DeviceDB.h"
+#import <BLLetCore/BLLetCore.h>
 #import <BLLetIRCode/BLLetIRCode.h>
 
 
@@ -33,8 +35,8 @@ int tag = 0;
     _windSpeedTextField.delegate = self;
     _modeTextField.delegate = self;
     _directionTextField.delegate = self;
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    self.blcontroller = delegate.let.controller;
+
+    self.blcontroller = [BLLet sharedLet].controller;
     self.blircode = [BLIRCode sharedIrdaCode];
 }
 

@@ -118,14 +118,15 @@
 - (void)getDeviceProfile {
     BLProfileStringResult *result = [[BLLet sharedLet].controller queryProfileByPid:[_device getPid]];
     if ([result succeed]) {
-        self.resultText = [result getProfile];
+        NSString *profile = [result getProfile];
+        NSDictionary *dic = [BLCommonTools deserializeMessageJSON:profile];
+        NSData *data = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
+        self.resultText = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     } else {
         self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
     }
     [self.tableView reloadData];
 }
-
-
 
 - (void)getScriptVersion {
     BLQueryResourceVersionResult *result = [[BLLet sharedLet].controller queryScriptVersion:[self.device getPid]];

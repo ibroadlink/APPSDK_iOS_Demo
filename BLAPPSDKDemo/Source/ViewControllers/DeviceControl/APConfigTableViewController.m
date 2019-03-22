@@ -8,6 +8,8 @@
 
 #import "APConfigTableViewController.h"
 #import "AppDelegate.h"
+#import "BLStatusBar.h"
+
 @interface APConfigTableViewController (){
     BLController *_controller;
     

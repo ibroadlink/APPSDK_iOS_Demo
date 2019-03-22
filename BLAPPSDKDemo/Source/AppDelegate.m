@@ -8,16 +8,11 @@
 
 #import "AppDelegate.h"
 
-#import "AppMacro.h"
 #import "MainViewController.h"
 #import "BLUserDefaults.h"
 #import "BLNewFamilyManager.h"
-#import "UserViewController.h"
 #import "BLDeviceService.h"
 
-#import <BLLetAccount/BLLetAccount.h>
-#import <BLLetFamily/BLLetFamily.h>
-#import <BLLetIRCode/BLLetIRCode.h>
 #import <DoraemonKit.h>
 
 #ifndef DISABLE_PUSH_NOTIFICATIONS

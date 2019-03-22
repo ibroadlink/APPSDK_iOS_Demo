@@ -5,32 +5,12 @@
 //  Created by 朱俊杰 on 16/8/1.
 //  Copyright © 2016年 BroadLink. All rights reserved.
 //
-#import <sys/sysctl.h>
-#import <netinet/in.h>
-#import <net/if.h>
-#import <netdb.h>
-#import <sys/socket.h>
-#import <arpa/inet.h>
-
-#import "DeviceDB.h"
-#import "BLDeviceService.h"
-
 #import "OperateViewController.h"
-#import "DataPassthoughViewController.h"
-#import "DNAControlViewController.h"
-#import "DeviceWebControlViewController.h"
 
-#import "BLStatusBar.h"
-#import "AppDelegate.h"
 #import "AppMacro.h"
+#import "BLStatusBar.h"
 #import "SSZipArchive.h"
-#import "SPViewController.h"
-#import "RMViewController.h"
-#import "A1ViewController.h"
-#import "GateWayViewController.h"
-#import "GeneralTimerControlView.h"
-#import "FastconViewController.h"
-#import "IRCodeTestViewController.h"
+#import "BLDeviceService.h"
 
 @interface OperateViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -55,17 +35,20 @@
     NSData *infoData = [NSJSONSerialization dataWithJSONObject:info options:NSJSONWritingPrettyPrinted error:nil];
     self.deviceInfoView.text = [[NSString alloc] initWithData:infoData encoding:NSUTF8StringEncoding];
 
-    self.operateButtonArray = @[@"Device Control",
-                         @"Device Passthough",
-                         @"Timed Task Functions",
-                         @"GateWay functions",
-                         @"Fastcon functions",
-                         @"Device Status Query",
-                         @"Device Firmware Query",
-                         @"Device Firmware Upgrade",
-                         @"RM Device Management",
-                         @"Device Reset"
-                            ];
+    self.operateButtonArray = @[
+                                @"Device Status Query",
+                                @"Device Time Query",
+                                @"Device Passthough",
+                                @"Device Control",
+                                @"Timer Task Functions",
+                                @"GateWay Functions",
+                                @"Fastcon Functions",
+                                @"Device Firmware Query",
+                                @"Device Firmware Upgrade",
+                                @"RM Device Demo",
+                                @"SP Device Demo",
+                                @"A1 Device Demo"
+                                ];
     
     self.operateTableView.delegate = self;
     self.operateTableView.dataSource = self;
@@ -82,7 +65,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.operateButtonArray count];
+    return self.operateButtonArray.count;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -100,37 +83,40 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.row) {
         case 0:
-            [self dnaControl];
-            break;
-        case 1:
-            [self dataPassthough];
-            break;
-        case 2:
-            [self generalTimerControl];
-            break;
-        case 3:
-            [self GateWayControl];
-            break;
-        case 4:
-            [self fastconNoConfig];
-            break;
-        case 5:
             [self getDeviceState];
             break;
+        case 1:
+            [self getServerTime];
+            break;
+        case 2:
+            [self dataPassthough];
+            break;
+        case 3:
+            [self dnaControl];
+            break;
+        case 4:
+            [self generalTimerControl];
+            break;
+        case 5:
+            [self gateWayControl];
+            break;
         case 6:
-            [self getFirmwareVersion];
+            [self fastconNoConfig];
             break;
         case 7:
-            [self upgradeFirmVersion];
+            [self getFirmwareVersion];
             break;
         case 8:
-            [self rmDeviceController];
+            [self upgradeFirmVersion];
             break;
         case 9:
-            [self deviceReset];
+            [self rmDeviceController];
             break;
         case 10:
-            [self getDeviceSerInfo];
+            [self SPControl];
+            break;
+        case 11:
+            [self A1Control];
             break;
         default:
             break;
@@ -243,7 +229,7 @@
     }
 }
 
-- (void)GateWayControl {
+- (void)gateWayControl {
     if ([self isDownloadScript]) {
         [self performSegueWithIdentifier:@"GateWayControlView" sender:nil];
     }
@@ -314,12 +300,12 @@
 }
 
 //获取设备连接服务器信息
-- (void)getDeviceSerInfo {
-//    BLController *controller = [BLLet sharedLet].controller;
-//    BLBaseResult *result = [controller queryDeviceConnectServerInfo:self.device.did];
-//    NSLog(@"result: %ld", (long)result.status);
-//    
-//    _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+- (void)getDeviceServiceConnectInfo {
+    BLController *controller = [BLLet sharedLet].controller;
+    BLBaseResult *result = [controller queryDeviceConnectServerInfo:self.device.did];
+    NSLog(@"result: %ld", (long)result.status);
+    
+    _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
 }
 
 - (BOOL)copyCordovaJsToUIPathWithFileName:(NSString*)fileName {

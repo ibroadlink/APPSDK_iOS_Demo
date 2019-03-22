@@ -4239,7 +4239,7 @@
                                     <action selector="stopTimerType:" destination="P0c-LM-2jf" id="eNY-SR-6Cl"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="next" id="T4T-Jx-CiZ">
+                            <barButtonItem title="Next" id="T4T-Jx-CiZ">
                                 <connections>
                                     <action selector="next:" destination="P0c-LM-2jf" id="tLd-AO-u52"/>
                                 </connections>
