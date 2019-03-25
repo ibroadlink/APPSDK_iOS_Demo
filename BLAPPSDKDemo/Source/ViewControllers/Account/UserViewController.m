@@ -44,6 +44,11 @@
     [self getUserInfo];
 }
 
++ (instancetype)viewController {
+    UserViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+    return vc;
+}
+
 - (void)viewBack {
     [self.navigationController popToRootViewControllerAnimated:YES];
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
@@ -67,12 +72,8 @@
     switch (section) {
         case 0:
             return 2;
-        case 1: {
+        case 1:
             return 4;
-        }
-        case 2:
-            return 1;
-            
         default:
             return 1;
     }
@@ -83,12 +84,16 @@
         BLUserHeadImageCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BLUserHeadImageCell"];
         cell.titleLabel.text = @"Avatar";
         NSString *iconUrl = nil;
-        if ([BLConfigParam sharedConfigParam].appServiceEnable) {
-            iconUrl = [NSString stringWithFormat:@"https://e284310075456279d8ec73ee0e56279bappservice.ibroadlink.com%@",self.iconUrl];
-        }else {
-            iconUrl = self.iconUrl;
+        
+        if (![BLCommonTools isEmpty:self.iconUrl]) {
+            if ([BLConfigParam sharedConfigParam].appServiceEnable) {
+                iconUrl = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:self.iconUrl];
+            }else {
+                iconUrl = self.iconUrl;
+            }
+            [cell.IconUrlImageView sd_setImageWithURL:[NSURL URLWithString:iconUrl]];
         }
-        [cell.IconUrlImageView sd_setImageWithURL:[NSURL URLWithString:iconUrl]];
+        
         return cell;
     } else if (indexPath.section == 2) {
         BLUserLogoutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BLUserLogoutCell"];
@@ -205,9 +210,8 @@
                         break;
                     }
                     case 1: {
-                        //发送修改邮箱验证码
-                        
                         //修改邮箱地址
+                        [self performSegueWithIdentifier:@"ModifyEmail" sender:nil];
                         break;
                     }
                     case 2: {
@@ -275,7 +279,6 @@
                 self.iconUrl = [info getIconUrl];
                 [self getPhoneOrEmail];
             }
-            
         }];
         
     }else {

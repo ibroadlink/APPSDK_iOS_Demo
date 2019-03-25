@@ -10,5 +10,6 @@
 
 @interface UserViewController : UIViewController
 
++ (instancetype)viewController;
 
 @end

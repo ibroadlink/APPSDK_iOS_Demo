@@ -7,7 +7,6 @@
 //
 
 #import "LoginsTableViewController.h"
-#import "BLUserDefaults.h"
 
 @implementation LoginsTableViewController
 
@@ -20,27 +19,26 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    NSString *userId = [[BLUserDefaults shareUserDefaults] getUserId];
-    NSString *logSession = [[BLUserDefaults shareUserDefaults] getSessionId];
-    
-    if (userId && logSession) {
-        [self performSegueWithIdentifier:@"ListMainView" sender:nil];
-    }
++ (instancetype)viewController {
+    LoginsTableViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+    return vc;
 }
 
+
 - (IBAction)passwordLogin:(id)sender {
+    
 }
 
 - (IBAction)codeLogin:(id)sender {
+    
 }
 
 - (IBAction)accountRegister:(id)sender {
+    
 }
 
 - (IBAction)accountInfo:(id)sender {
+    
 }
 
 

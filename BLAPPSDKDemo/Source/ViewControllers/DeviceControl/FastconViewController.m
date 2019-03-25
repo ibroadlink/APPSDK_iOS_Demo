@@ -13,8 +13,7 @@
 
 @interface FastconViewController ()
 @property (strong, nonatomic) BLDNADevice *device;
-@property (nonatomic, copy)NSArray *configArray;
-
+@property (nonatomic, copy)NSMutableArray *configArray;
 @end
 
 @implementation FastconViewController
@@ -26,65 +25,90 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     // Do any additional setup after loading the view.
-    _configArray = [NSArray array];
+    self.configArray = [NSMutableArray arrayWithCapacity:0];
 }
+
 - (IBAction)getFastconList:(id)sender {
-    [self getFastconList];
+    [self showIndicatorOnWindowWithMessage:@"Getting fastcon devices..."];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self getFastconListWith:0];
+    });
 }
 
 - (IBAction)fastconConfig:(id)sender {
-    [self fastconNoConfig:_configArray];
+    [self fastconNoConfig:self.configArray];
 }
 
 - (IBAction)getFastconStatus:(id)sender {
-    [self getFastconStatusWithDevList:_configArray];
+    [self getFastconStatusWithDevList:self.configArray];
 }
 
 //获取待配网设备列表
-- (void)getFastconList {
+- (void)getFastconListWith:(NSUInteger)index {
+    if (index == 0) {
+        [self.configArray removeAllObjects];
+    }
+    
     NSDictionary *waitConfigDataDic = @{
-                                        @"did": _device.did,
-                                        @"act":@0,
-                                        @"count":@10,
-                                        @"index":@0,
-                                        
+                                        @"did": self.device.did,
+                                        @"act":@(0),
+                                        @"count":@(10),
+                                        @"index":@(index),
                                         };
     NSString *waitConfigDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:waitConfigDataDic options:0 error:nil] encoding:NSUTF8StringEncoding];
-    NSString *waitConfigResult = [[BLLet sharedLet].controller dnaControl:_device.did subDevDid:nil dataStr:waitConfigDataStr command:@"fastcon_no_config" scriptPath:nil];
-    [BLStatusBar showTipMessageWithStatus:waitConfigResult];
-    _resultView.text = waitConfigResult;
+    NSString *waitConfigResult = [[BLLet sharedLet].controller dnaControl:self.device.did subDevDid:nil dataStr:waitConfigDataStr command:@"fastcon_no_config" scriptPath:nil];
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[waitConfigResult dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-    if ([dic[@"status"]integerValue] == 0) {
-        NSArray *configList = dic[@"data"][@"devlist"];
-        _configArray = [configList copy];
-        [self.tableView reloadData];
+    if ([dic[@"status"] integerValue] == 0) {
+        NSDictionary *data = dic[@"data"];
+        NSUInteger total = [data[@"total"] unsignedIntegerValue];
+        NSArray *configList = data[@"devlist"];
+        
+        if (![BLCommonTools isEmptyArray:configList]) {
+            [self.configArray addObjectsFromArray:configList];
+            if (self.configArray.count < total) {
+                [self getFastconListWith:++index];
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self hideIndicatorOnWindow];
+                    [self.tableView reloadData];
+                });
+            }
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideIndicatorOnWindow];
+                [self.tableView reloadData];
+            });
+        }
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideIndicatorOnWindow];
+            [self.tableView reloadData];
+        });
     }
 }
 
 //fastcon配网
 - (void)fastconNoConfig:(NSArray *)configArray {
     NSDictionary *configDataDic = @{
-                                    @"did": _device.did,
-                                    @"act":@1,
+                                    @"did": self.device.did,
+                                    @"act":@(1),
                                     @"devlist":configArray
-                                    
                                     };
     NSString *configDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:configDataDic options:0 error:nil] encoding:NSUTF8StringEncoding];
     NSString *configResult = [[BLLet sharedLet].controller dnaControl:_device.did subDevDid:nil dataStr:configDataStr command:@"fastcon_no_config" scriptPath:nil];
-    _resultView.text = configResult;
+    self.resultView.text = configResult;
 }
 
 //配网结果查询
 - (void)getFastconStatusWithDevList:(NSArray *)configList {
     NSDictionary *dic = @{
-                          @"did": _device.did,
-                          @"act":@2,
+                          @"did": self.device.did,
+                          @"act":@(2),
                           @"devlist":configList
-                          
                           };
     NSString *str = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dic options:0 error:nil] encoding:NSUTF8StringEncoding];
     NSString *result = [[BLLet sharedLet].controller dnaControl:_device.did subDevDid:nil dataStr:str command:@"fastcon_no_config" scriptPath:nil];
-    _resultView.text = result;
+    self.resultView.text = result;
     NSLog(@"fastcon_no_config_result:%@",result);
 }
 
@@ -104,7 +128,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
-    NSDictionary *deviceDic = _configArray[indexPath.row];
+    NSDictionary *deviceDic = self.configArray[indexPath.row];
     cell.textLabel.text = deviceDic[@"did"];
     
     return cell;

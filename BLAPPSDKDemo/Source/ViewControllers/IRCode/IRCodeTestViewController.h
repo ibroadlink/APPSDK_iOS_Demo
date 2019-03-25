@@ -18,4 +18,6 @@
 
 @interface IRCodeTestViewController : BaseViewController
 
++ (instancetype)viewController;
+
 @end

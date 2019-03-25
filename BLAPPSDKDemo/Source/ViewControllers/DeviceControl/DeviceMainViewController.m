@@ -6,22 +6,22 @@
 //  Copyright © 2016年 BroadLink. All rights reserved.
 //
 
-#import "MainViewController.h"
+#import "DeviceMainViewController.h"
 #import "MyDeviceListViewController.h"
 
 #import "DeviceDB.h"
 #import "BLUserDefaults.h"
 
-@interface MainViewController ()
+@interface DeviceMainViewController ()
 
 @property (nonatomic, strong) NSArray *titles;
 
 @end
 
-@implementation MainViewController
+@implementation DeviceMainViewController
 
 + (instancetype)viewController {
-    MainViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+    DeviceMainViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     return vc;
 }
 

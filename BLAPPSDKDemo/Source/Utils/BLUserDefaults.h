@@ -16,10 +16,6 @@
 - (void) setUserName: (NSString *)userName;
 - (NSString *) getUserName;
 
-// Get/Set Password
-- (void) setPassword:(NSString *)password;
-- (NSString *) getPassword;
-
 // Get/Set userId
 - (void) setUserId: (NSString *)userId;
 - (NSString *) getUserId;

@@ -45,7 +45,6 @@
         [userDefault setAppServiceHost:self.cloudClusterHostField.text];
         
         [userDefault setUserName:nil];
-        [userDefault setPassword:nil];
         [userDefault setUserId:nil];
         [userDefault setSessionId:nil];
         

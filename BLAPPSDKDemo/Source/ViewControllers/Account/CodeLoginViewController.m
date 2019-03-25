@@ -7,6 +7,8 @@
 //
 
 #import "CodeLoginViewController.h"
+#import "UserViewController.h"
+
 #import "AppDelegate.h"
 #import "BLUserDefaults.h"
 #import "BLStatusBar.h"
@@ -50,18 +52,22 @@
     [self.phoneNumtxt resignFirstResponder];
     [self.passwordtxt resignFirstResponder];
     
-
     __weak typeof(self) weakSelf = self;
     [self showIndicatorOnWindowWithMessage:@"Logging..."];
     [_account fastLoginWithPhoneOrEmail:self.phoneNumtxt.text countrycode:@"0086" vcode:self.passwordtxt.text completionHandler:^(BLLoginResult * _Nonnull result) {
         if ([result succeed]) {
+            BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
+            [userDefault setUserName:self.phoneNumtxt.text];
+            [userDefault setUserId:[result getUserid]];
+            [userDefault setSessionId:[result getLoginsession]];
+            
             dispatch_async(dispatch_get_main_queue(), ^{
-                BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
-                [userDefault setUserName:self.phoneNumtxt.text];
-                [userDefault setUserId:[result getUserid]];
-                [userDefault setSessionId:[result getLoginsession]];
+
                 [weakSelf hideIndicatorOnWindow];
-                [weakSelf performSegueWithIdentifier:@"UserView" sender:nil];
+                
+                UserViewController *vc = [UserViewController viewController];
+                [self.navigationController pushViewController:vc animated:YES];
+                
             });
         }else {
             dispatch_async(dispatch_get_main_queue(), ^{

@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 
-#import "MainViewController.h"
+#import "DeviceMainViewController.h"
 #import "BLUserDefaults.h"
 #import "BLNewFamilyManager.h"
 #import "BLDeviceService.h"

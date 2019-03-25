@@ -1,35 +1,35 @@
 //
-//  ModifyPhoneViewController.m
+//  ModifyEmailViewController.m
 //  BLAPPSDKDemo
 //
-//  Created by hongkun.bai on 2018/7/4.
-//  Copyright © 2018 BroadLink. All rights reserved.
+//  Created by admin on 2019/3/25.
+//  Copyright © 2019 BroadLink. All rights reserved.
 //
 
-#import "ModifyPhoneViewController.h"
-#import "BLUserDefaults.h"
+#import "ModifyEmailViewController.h"
+
 #import "BLStatusBar.h"
 #import <BLLetAccount/BLLetAccount.h>
 
-@interface ModifyPhoneViewController () <UITextFieldDelegate>
+@interface ModifyEmailViewController () <UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextField *countryField;
-@property (weak, nonatomic) IBOutlet UITextField *phoneField;
+@property (weak, nonatomic) IBOutlet UITextField *emailField;
 
 @end
 
-@implementation ModifyPhoneViewController
+@implementation ModifyEmailViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.countryField.delegate = self;
-    self.phoneField.delegate = self;
+    self.emailField.delegate = self;
 }
 
-- (IBAction)next:(id)sender {
-    [self sendModifyPhoneVCode:self.phoneField.text countryCode:self.countryField.text];
 
+- (IBAction)next:(UIButton *)sender {
+    
+    [self sendModifyEmailVCode:self.emailField.text];
+    
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Please input verification code"
                                                                    message:nil
                                                             preferredStyle:UIAlertControllerStyleAlert];
@@ -46,7 +46,7 @@
                                                           handler:^(UIAlertAction * action) {
                                                               NSString *vcode = alert.textFields.firstObject.text;
                                                               NSString *password = alert.textFields[1].text;
-                                                              [self modifyPhone:self.phoneField.text countryCode:self.countryField.text vcode:vcode password:password];
+                                                              [self modifyEmail:self.emailField.text vcode:vcode password:password];
                                                           }];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}];
     
@@ -55,8 +55,8 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)sendModifyPhoneVCode:(NSString *)phone countryCode:(NSString *)countryCode {
-    [[BLAccount sharedAccount] sendModifyVCode:phone countryCode:countryCode completionHandler:^(BLBaseResult * _Nonnull result) {
+- (void)sendModifyEmailVCode:(NSString *)email {
+    [[BLAccount sharedAccount] sendModifyVCode:email completionHandler:^(BLBaseResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (result.succeed ) {
                 [BLStatusBar showTipMessageWithStatus:@"Send verification code success!"];
@@ -67,20 +67,20 @@
     }];
 }
 
-- (void)modifyPhone:(NSString *)phone countryCode:(NSString *)countryCode vcode:(NSString *)vcode password:(NSString *)password {
-
-    [[BLAccount sharedAccount] modifyPhone:phone countryCode:countryCode vcode:vcode password:password newpassword:password completionHandler:^(BLBaseResult * _Nonnull result) {
+- (void)modifyEmail:(NSString *)email vcode:(NSString *)vcode password:(NSString *)password {
+    
+    [[BLAccount sharedAccount] modifyEmail:email vcode:vcode password:password newpassword:password completionHandler:^(BLBaseResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (result.succeed ) {
-                [BLStatusBar showTipMessageWithStatus:@"Modify phone number success!"];
+                [BLStatusBar showTipMessageWithStatus:@"Modify email success!"];
                 [self.navigationController popViewControllerAnimated:YES];
             } else {
                 [BLStatusBar showTipMessageWithStatus:[result getMsg]?:@""];
             }
         });
-        
     }];
 }
+
 
 #pragma mark - text field delegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -91,4 +91,5 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [textField resignFirstResponder];
 }
+
 @end

@@ -38,15 +38,6 @@
     return [userDefaults objectForKey:@"userName"];
 }
 
-// Get/Set
-- (void) setPassword:(NSString *)password {
-    [userDefaults setObject:password forKey:@"password"];
-    [userDefaults synchronize];
-}
-- (NSString *) getPassword {
-    return [userDefaults objectForKey:@"password"];
-}
-
 // Get/Set userId
 - (void) setUserId: (NSString *)userId {
     [userDefaults setObject:userId forKey:@"userId"];

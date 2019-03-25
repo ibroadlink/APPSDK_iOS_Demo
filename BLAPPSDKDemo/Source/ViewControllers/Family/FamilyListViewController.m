@@ -41,6 +41,11 @@
     [self queryFamilyBaseList];
 }
 
++ (instancetype)viewController {
+    FamilyListViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+    return vc;
+}
+
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.familyInfos.count;

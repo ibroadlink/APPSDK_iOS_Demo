@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "UserViewController.h"
 
 #import "BLUserDefaults.h"
 #import "BLStatusBar.h"
@@ -30,7 +31,6 @@
 - (void)viewDidAppear:(BOOL)animated {
     BLUserDefaults *userDefault = [BLUserDefaults shareUserDefaults];
     self.userNameField.text = [userDefault getUserName];
-    self.passwordField.text = [userDefault getPassword];
 }
 
 - (void)viewInit {
@@ -73,13 +73,14 @@
         if ([result succeed]) {
             BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
             [userDefault setUserName:userName];
-            [userDefault setPassword:password];
             [userDefault setUserId:[result getUserid]];
             [userDefault setSessionId:[result getLoginsession]];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.loginButton.isLoading = NO;
-                [weakSelf performSegueWithIdentifier:@"UserView" sender:nil];
+                
+                UserViewController *vc = [UserViewController viewController];
+                [self.navigationController pushViewController:vc animated:YES];
             });
             
         } else {

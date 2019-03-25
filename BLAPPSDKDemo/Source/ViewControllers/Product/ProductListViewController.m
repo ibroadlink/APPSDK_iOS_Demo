@@ -42,6 +42,11 @@
     self.collectionView.collectionViewLayout = flowLayout;
 }
 
++ (instancetype)viewController {
+    ProductListViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+    return vc;
+}
+
 //获取产品分类列表
 - (void)getProductCategoryList {
     BLAccount *account = [BLAccount sharedAccount];

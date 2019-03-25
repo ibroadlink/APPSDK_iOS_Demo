@@ -10,4 +10,6 @@
 
 @interface LoginsTableViewController : UIViewController
 
++ (instancetype)viewController;
+
 @end

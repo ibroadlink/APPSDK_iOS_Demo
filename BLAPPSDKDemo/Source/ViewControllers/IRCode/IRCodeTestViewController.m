@@ -73,6 +73,11 @@
     // Dispose of any resources that can be recreated.
 }
 
++ (instancetype)viewController {
+    IRCodeTestViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+    return vc;
+}
+
 - (IBAction)button:(UIButton *)sender {
     if (sender.tag == 100) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"AC Code selection" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];

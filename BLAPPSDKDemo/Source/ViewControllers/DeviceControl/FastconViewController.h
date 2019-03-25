@@ -6,11 +6,11 @@
 //  Copyright © 2019 BroadLink. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FastconViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+@interface FastconViewController : BaseViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITextView *resultView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;

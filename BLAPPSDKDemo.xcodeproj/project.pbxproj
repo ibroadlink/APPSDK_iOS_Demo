@@ -60,7 +60,7 @@
 		70503DA81FDBE4D5002D3371 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D711FDBE4D5002D3371 /* RegisterViewController.m */; };
 		70503DA91FDBE4D5002D3371 /* DeviceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D741FDBE4D5002D3371 /* DeviceListViewController.m */; };
 		70503DAA1FDBE4D5002D3371 /* MyDeviceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D761FDBE4D5002D3371 /* MyDeviceListViewController.m */; };
-		70503DAB1FDBE4D5002D3371 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D771FDBE4D5002D3371 /* MainViewController.m */; };
+		70503DAB1FDBE4D5002D3371 /* DeviceMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D771FDBE4D5002D3371 /* DeviceMainViewController.m */; };
 		70503DAC1FDBE4D5002D3371 /* ProductModelsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D781FDBE4D5002D3371 /* ProductModelsTableViewController.m */; };
 		70503DAD1FDBE4D5002D3371 /* DNAControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D7B1FDBE4D5002D3371 /* DNAControlViewController.m */; };
 		70503DAE1FDBE4D5002D3371 /* RMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D7C1FDBE4D5002D3371 /* RMViewController.m */; };
@@ -96,6 +96,8 @@
 		84449FD4221BD0E8006D2A10 /* BLSFamilyCreateResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84449FD3221BD0E8006D2A10 /* BLSFamilyCreateResult.m */; };
 		84449FDA221BD243006D2A10 /* BLSRoomInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84449FD9221BD243006D2A10 /* BLSRoomInfo.m */; };
 		84449FDD221BD61C006D2A10 /* BLSFamilyListResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84449FDC221BD61C006D2A10 /* BLSFamilyListResult.m */; };
+		846CA92D2248BBA200884421 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846CA92C2248BBA200884421 /* MainViewController.m */; };
+		846CA9302248CDB900884421 /* ModifyEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846CA92F2248CDB900884421 /* ModifyEmailViewController.m */; };
 		84BACDE02236476500C1E5DA /* SceneListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BACDDF2236476500C1E5DA /* SceneListController.m */; };
 		84BACDE32236555F00C1E5DA /* SceneAddController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BACDE22236555F00C1E5DA /* SceneAddController.m */; };
 		84EE08DB221CFB0C0088EDE8 /* BLSFamilyIconResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EE08DA221CFB0C0088EDE8 /* BLSFamilyIconResult.m */; };
@@ -208,7 +210,7 @@
 		70503D741FDBE4D5002D3371 /* DeviceListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceListViewController.m; sourceTree = "<group>"; };
 		70503D751FDBE4D5002D3371 /* ControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlViewController.h; sourceTree = "<group>"; };
 		70503D761FDBE4D5002D3371 /* MyDeviceListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDeviceListViewController.m; sourceTree = "<group>"; };
-		70503D771FDBE4D5002D3371 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		70503D771FDBE4D5002D3371 /* DeviceMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceMainViewController.m; sourceTree = "<group>"; };
 		70503D781FDBE4D5002D3371 /* ProductModelsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductModelsTableViewController.m; sourceTree = "<group>"; };
 		70503D791FDBE4D5002D3371 /* FamilyListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FamilyListViewController.h; sourceTree = "<group>"; };
 		70503D7A1FDBE4D5002D3371 /* LoginByOauthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginByOauthViewController.h; sourceTree = "<group>"; };
@@ -229,7 +231,7 @@
 		70503D891FDBE4D5002D3371 /* IRCodeTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRCodeTestViewController.m; sourceTree = "<group>"; };
 		70503D8A1FDBE4D5002D3371 /* TVControllTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVControllTableViewController.m; sourceTree = "<group>"; };
 		70503D8B1FDBE4D5002D3371 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
-		70503D8C1FDBE4D5002D3371 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		70503D8C1FDBE4D5002D3371 /* DeviceMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceMainViewController.h; sourceTree = "<group>"; };
 		70503D8D1FDBE4D5002D3371 /* MyDeviceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDeviceListViewController.h; sourceTree = "<group>"; };
 		70503D8E1FDBE4D5002D3371 /* ControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlViewController.m; sourceTree = "<group>"; };
 		70503D8F1FDBE4D5002D3371 /* DataPassthoughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataPassthoughViewController.m; sourceTree = "<group>"; };
@@ -280,6 +282,10 @@
 		84449FD9221BD243006D2A10 /* BLSRoomInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSRoomInfo.m; sourceTree = "<group>"; };
 		84449FDB221BD61C006D2A10 /* BLSFamilyListResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLSFamilyListResult.h; sourceTree = "<group>"; };
 		84449FDC221BD61C006D2A10 /* BLSFamilyListResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSFamilyListResult.m; sourceTree = "<group>"; };
+		846CA92B2248BBA200884421 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		846CA92C2248BBA200884421 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		846CA92E2248CDB900884421 /* ModifyEmailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyEmailViewController.h; sourceTree = "<group>"; };
+		846CA92F2248CDB900884421 /* ModifyEmailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModifyEmailViewController.m; sourceTree = "<group>"; };
 		84BACDDE2236476500C1E5DA /* SceneListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneListController.h; sourceTree = "<group>"; };
 		84BACDDF2236476500C1E5DA /* SceneListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneListController.m; sourceTree = "<group>"; };
 		84BACDE12236555F00C1E5DA /* SceneAddController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneAddController.h; sourceTree = "<group>"; };
@@ -341,6 +347,8 @@
 				0244948A20AEC26D0056FB10 /* UserViewController.m */,
 				3ACDE3BF20EC9CF00016461D /* ModifyPhoneViewController.h */,
 				3ACDE3C020EC9CF00016461D /* ModifyPhoneViewController.m */,
+				846CA92E2248CDB900884421 /* ModifyEmailViewController.h */,
+				846CA92F2248CDB900884421 /* ModifyEmailViewController.m */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -418,8 +426,8 @@
 				70503D7B1FDBE4D5002D3371 /* DNAControlViewController.m */,
 				70503D621FDBE4D5002D3371 /* GateWayViewController.h */,
 				70503D811FDBE4D5002D3371 /* GateWayViewController.m */,
-				70503D8C1FDBE4D5002D3371 /* MainViewController.h */,
-				70503D771FDBE4D5002D3371 /* MainViewController.m */,
+				70503D8C1FDBE4D5002D3371 /* DeviceMainViewController.h */,
+				70503D771FDBE4D5002D3371 /* DeviceMainViewController.m */,
 				70503D8D1FDBE4D5002D3371 /* MyDeviceListViewController.h */,
 				70503D761FDBE4D5002D3371 /* MyDeviceListViewController.m */,
 				70503D821FDBE4D5002D3371 /* OperateViewController.h */,
@@ -560,6 +568,8 @@
 				02B42DA420B2A15200700177 /* Family */,
 				70503D8B1FDBE4D5002D3371 /* BaseViewController.h */,
 				70503D661FDBE4D5002D3371 /* BaseViewController.m */,
+				846CA92B2248BBA200884421 /* MainViewController.h */,
+				846CA92C2248BBA200884421 /* MainViewController.m */,
 				3A3444BE222D2C1500356241 /* ResetSDKInitViewController.h */,
 				3A3444BD222D2C1500356241 /* ResetSDKInitViewController.m */,
 			);
@@ -878,6 +888,7 @@
 				3AAC2A2D20EB252200031DEC /* BLUserLogoutCell.m in Sources */,
 				70503DA51FDBE4D5002D3371 /* CodeLoginViewController.m in Sources */,
 				84449FD4221BD0E8006D2A10 /* BLSFamilyCreateResult.m in Sources */,
+				846CA9302248CDB900884421 /* ModifyEmailViewController.m in Sources */,
 				3AB87FC822154DF200B97D38 /* FastconViewController.m in Sources */,
 				02AE9DAF2058BDD10054677B /* GeneralTimerControlView.m in Sources */,
 				70503DB31FDBE4D6002D3371 /* IRCodeTestViewController.m in Sources */,
@@ -890,7 +901,7 @@
 				84BACDE32236555F00C1E5DA /* SceneAddController.m in Sources */,
 				3AFC6D7820EB7278003404E6 /* UIImage+BDL.m in Sources */,
 				842C9611221E7AAC00B3A1A6 /* RoomListViewController.m in Sources */,
-				70503DAB1FDBE4D5002D3371 /* MainViewController.m in Sources */,
+				70503DAB1FDBE4D5002D3371 /* DeviceMainViewController.m in Sources */,
 				3A9B60E02100377D0048540B /* JoinFamilyViewController.m in Sources */,
 				3AFC6D7520EB6063003404E6 /* Tools.m in Sources */,
 				3ACDE3C120EC9CF00016461D /* ModifyPhoneViewController.m in Sources */,
@@ -923,6 +934,7 @@
 				70503DAF1FDBE4D5002D3371 /* RecoginzeIRCodeViewController.m in Sources */,
 				70DDAEF91DC73D4A005E4278 /* main.m in Sources */,
 				70503DB51FDBE4D6002D3371 /* ControlViewController.m in Sources */,
+				846CA92D2248BBA200884421 /* MainViewController.m in Sources */,
 				022D7AFD20BBDBFB00689F93 /* DropDownList.m in Sources */,
 				70503DA41FDBE4D5002D3371 /* LoginViewController.m in Sources */,
 				70503D561FDBE37A002D3371 /* BLDeviceService.m in Sources */,

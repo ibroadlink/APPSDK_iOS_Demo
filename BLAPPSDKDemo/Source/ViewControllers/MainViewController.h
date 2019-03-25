@@ -1,8 +1,8 @@
 //
-//  ProductListViewController.h
+//  MainViewController.h
 //  BLAPPSDKDemo
 //
-//  Created by hongkun.bai on 2019/2/25.
+//  Created by admin on 2019/3/25.
 //  Copyright © 2019 BroadLink. All rights reserved.
 //
 
@@ -10,9 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ProductListViewController : BaseViewController
-
-+ (instancetype)viewController;
+@interface MainViewController : BaseViewController
 
 @end
 

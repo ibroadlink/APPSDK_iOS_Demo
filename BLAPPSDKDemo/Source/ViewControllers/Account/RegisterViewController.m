@@ -7,8 +7,11 @@
 //
 
 #import "RegisterViewController.h"
+#import "UserViewController.h"
+
 #import <BLLetAccount/BLLetAccount.h>
 
+#import "BLUserDefaults.h"
 #import "BLStatusBar.h"
 
 @interface RegisterViewController () <UITextFieldDelegate>
@@ -61,11 +64,22 @@
     NSString *password = self.passwordField.text;
     NSString *nickName = self.nickNameField.text;
     
+    __weak typeof(self) weakSelf = self;
+    [self showIndicatorOnWindow];
     [self.account regist:phoneBody password:password nickname:nickName vcode:vCode sex:BL_ACCOUNT_MALE birthday:nil countryCode:phoneHead iconPath:nil
 completionHandler:^(BLLoginResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideIndicatorOnWindow];
             if ([result succeed]) {
+                //Regist Success => Login Success
+                BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
+                [userDefault setUserName:nickName];
+                [userDefault setUserId:[result getUserid]];
+                [userDefault setSessionId:[result getLoginsession]];
                 [BLStatusBar showTipMessageWithStatus:@"Regist Success"];
+                
+                UserViewController *vc = [UserViewController viewController];
+                [self.navigationController pushViewController:vc animated:YES];
             } else {
                 [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
             }

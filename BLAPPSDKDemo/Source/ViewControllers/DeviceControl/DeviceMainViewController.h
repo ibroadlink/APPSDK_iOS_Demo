@@ -1,5 +1,5 @@
 //
-//  MainViewController.h
+//  DeviceMainViewController.h
 //  BLAPPSDKDemo
 //
 //  Created by junjie.zhu on 2016/10/20.
@@ -8,7 +8,7 @@
 
 #import "BaseViewController.h"
 
-@interface MainViewController : BaseViewController
+@interface DeviceMainViewController : BaseViewController
 
 + (instancetype)viewController;
 
