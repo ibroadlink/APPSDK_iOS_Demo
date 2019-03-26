@@ -6,8 +6,8 @@
 //  Copyright © 2019 BroadLink. All rights reserved.
 //
 
-#import "BrandInfo.h"
+#import "IRCodeBrandInfo.h"
 
-@implementation BrandInfo
+@implementation IRCodeBrandInfo
 
 @end

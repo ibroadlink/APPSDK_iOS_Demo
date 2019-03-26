@@ -7,16 +7,20 @@
 //
 
 #import "RecoginzeIRCodeViewController.h"
-#import <BLLetIRCode/BLLetIRCode.h>
-
 #import "ControlViewController.h"
 #import "TVControllTableViewController.h"
 
+#import <BLLetCore/BLLetCore.h>
+#import <BLLetIRCode/BLLetIRCode.h>
+
 @interface RecoginzeIRCodeViewController ()
+
 @property (weak, nonatomic) IBOutlet UILabel *ResultTxt;
 @property (nonatomic, strong) BLController *blcontroller;
 @property (nonatomic, strong) BLIRCode *blircode;
-@property (nonatomic, strong) NSArray *tvList;
+@property (nonatomic, strong) NSMutableArray *tvList;
+@property (nonatomic, strong) BLDNADevice *device;
+
 @end
 
 @implementation RecoginzeIRCodeViewController
@@ -25,7 +29,7 @@
     [super viewDidLoad];
     self.blcontroller = [BLLet sharedLet].controller;
     self.blircode = [BLIRCode sharedIrdaCode];
-    self.tvList = [NSArray array];
+    self.tvList = [NSMutableArray arrayWithCapacity:0];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -34,55 +38,57 @@
 }
 
 - (IBAction)downLoadIRCodeScript:(id)sender {
-    if (_downloadinfo.devtype == BL_IRCODE_DEVICE_AC){
-        _downloadinfo.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:_downloadinfo.name];
-        [self downloadIRCodeScript:_downloadinfo.downloadurl savePath:_downloadinfo.savePath randkey:_downloadinfo.fixkey];
-    }else if (_downloadinfo.devtype == BL_IRCODE_DEVICE_TV_BOX || _downloadinfo.devtype == BL_IRCODE_DEVICE_TV){
-        _downloadinfo.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:_downloadinfo.name];
-        [self downloadIRCodeScript:_downloadinfo.downloadurl savePath:_downloadinfo.savePath randkey:_downloadinfo.randkey];
-    }
+    self.downloadinfo.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:self.downloadinfo.name];
+    [self downloadIRCodeScript:self.downloadinfo.downloadurl savePath:self.downloadinfo.savePath randkey:self.downloadinfo.key];
 }
 
 - (IBAction)getIRCodeBaseInfo:(id)sender {
-    if (_downloadinfo.devtype == BL_IRCODE_DEVICE_AC) {
-        [self queryIRCodeScriptInfoSavePath:_downloadinfo.savePath randkey:nil deviceType:BL_IRCODE_DEVICE_AC];
-    }else if (_downloadinfo.devtype == BL_IRCODE_DEVICE_TV || _downloadinfo.devtype == BL_IRCODE_DEVICE_TV_BOX){
-        [self queryCloudCodeScriptInfoSavePath:_downloadinfo.savePath randkey:nil deviceType:BL_IRCODE_DEVICE_TV];
+    if (self.downloadinfo.devtype == BL_IRCODE_DEVICE_AC) {
+        [self queryIRCodeScriptInfoSavePath:self.downloadinfo.savePath randkey:nil deviceType:BL_IRCODE_DEVICE_AC];
+    } else if (self.downloadinfo.devtype == BL_IRCODE_DEVICE_TV || self.downloadinfo.devtype == BL_IRCODE_DEVICE_TV_BOX){
+        [self queryCloudCodeScriptInfoSavePath:self.downloadinfo.savePath randkey:nil deviceType:BL_IRCODE_DEVICE_TV];
     }
 }
 
 - (IBAction)getIRCodeData:(id)sender {
-    if (_downloadinfo.devtype == BL_IRCODE_DEVICE_AC) {
-        [self performSegueWithIdentifier:@"controllerView" sender:_downloadinfo.savePath];
-    }else if (_downloadinfo.devtype == BL_IRCODE_DEVICE_TV || _downloadinfo.devtype == BL_IRCODE_DEVICE_TV_BOX){
-        [self performSegueWithIdentifier:@"TVcontrollerView" sender:_downloadinfo.savePath];
+    if (self.downloadinfo.devtype == BL_IRCODE_DEVICE_AC) {
+        [self performSegueWithIdentifier:@"controllerView" sender:self.downloadinfo.savePath];
+    }else if (self.downloadinfo.devtype == BL_IRCODE_DEVICE_TV || self.downloadinfo.devtype == BL_IRCODE_DEVICE_TV_BOX){
+        [self performSegueWithIdentifier:@"TVcontrollerView" sender:self.downloadinfo.savePath];
     }
     
 }
 
-
 - (void)downloadIRCodeScript:(NSString *_Nonnull)urlString savePath:(NSString *_Nonnull)path randkey:(NSString *_Nullable)randkey {
+    
     [self.blircode downloadIRCodeScriptWithUrl:urlString savePath:path randkey:randkey completionHandler:^(BLDownloadResult * _Nonnull result) {
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
             NSLog(@"savepath:%@", result.savePath);
             dispatch_async(dispatch_get_main_queue(), ^{
-                self->_ResultTxt.text = result.savePath;
+                self.ResultTxt.text = result.savePath;
             });
-            
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.ResultTxt.text = [NSString stringWithFormat:@"Download failed:%ld Msg:%@", result.status, result.msg];
+            });
         }
     }];
 }
 
 - (void)queryIRCodeScriptInfoSavePath:(NSString *)savePath randkey:(NSString *)randkey deviceType:(NSInteger)devicetype {
+    
     BLIRCodeInfoResult *result = [self.blircode queryIRCodeInfomationWithScript:savePath deviceType:devicetype];
     NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
     if ([result succeed]) {
         NSLog(@"info:%@", result.infomation);
         dispatch_async(dispatch_get_main_queue(), ^{
-            self->_ResultTxt.text = result.infomation;
+            self.ResultTxt.text = result.infomation;
         });
-        
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.ResultTxt.text = [NSString stringWithFormat:@"Query failed:%ld Msg:%@", result.status, result.msg];
+        });
     }
 }
 
@@ -93,17 +99,16 @@
     for (NSDictionary *dic in infoList) {
         function = [function stringByAppendingString:[NSString stringWithFormat:@"%@,",dic[@"function"]]];
     }
-    self.tvList = [self matchString:function toRegexString:@"\\w+"];
+    [self.tvList removeAllObjects];
+    NSArray *funarray = [self matchString:function toRegexString:@"\\w+"];
+    [self.tvList addObjectsFromArray:funarray];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-        self->_ResultTxt.text = function;
+        self.ResultTxt.text = function;
     });
 }
 
-
-
-
 #pragma mark - Navigation
-
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].

@@ -64,7 +64,7 @@
                                                                                   error:nil];
 
                 for (NSDictionary *dic in responseBodydic[@"subareainfo"]) {
-                    SubAreaInfo *info = [SubAreaInfo BLS_modelWithDictionary:dic];
+                    IRCodeSubAreaInfo *info = [IRCodeSubAreaInfo BLS_modelWithDictionary:dic];
                     [self.areaInfos addObject:info];
                 }
                 
@@ -106,7 +106,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
     }
     
-    SubAreaInfo *info = self.areaInfos[indexPath.row];
+    IRCodeSubAreaInfo *info = self.areaInfos[indexPath.row];
     cell.textLabel.text = info.name;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"Locateid : %ld", info.locateid];
     

@@ -68,7 +68,7 @@
             
             if (![BLCommonTools isEmptyArray:responseBodydic[@"brand"]]) {
                 for (NSDictionary *dic in responseBodydic[@"brand"]) {
-                    BrandInfo *info = [BrandInfo BLS_modelWithDictionary:dic];
+                    IRCodeBrandInfo *info = [IRCodeBrandInfo BLS_modelWithDictionary:dic];
                     [self.brandInfos addObject:info];
                 }
             }
@@ -100,7 +100,7 @@
 
                 if (![BLCommonTools isEmptyArray:responseBodydic[@"providerinfo"]]) {
                     for (NSDictionary *dic in responseBodydic[@"providerinfo"]) {
-                        ProviderInfo *info = [ProviderInfo BLS_modelWithDictionary:dic];
+                        IRCodeProviderInfo *info = [IRCodeProviderInfo BLS_modelWithDictionary:dic];
                         [self.brandInfos addObject:info];
                     }
                 }
@@ -134,42 +134,31 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
     }
     if (self.devtype == BL_IRCODE_DEVICE_AC || self.devtype == BL_IRCODE_DEVICE_TV) {
-        BrandInfo *info = _brandInfos[indexPath.row];
+        IRCodeBrandInfo *info = _brandInfos[indexPath.row];
         cell.textLabel.text = info.brand;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"Brand ID: %ld", info.brandid];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"Brand ID: %ld", (long)info.brandid];
     }else if(self.devtype == BL_IRCODE_DEVICE_TV_BOX){
-        ProviderInfo *info = _brandInfos[indexPath.row];
+        IRCodeProviderInfo *info = _brandInfos[indexPath.row];
         cell.textLabel.text = info.providername;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"Provider ID: %ld", info.providerid];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"Provider ID: %ld", (long)info.providerid];
     }
     
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    ProductModelsTableViewController *vc = [ProductModelsTableViewController viewController];
+    vc.devtype = self.devtype;
+    
     if (self.devtype == BL_IRCODE_DEVICE_AC || self.devtype == BL_IRCODE_DEVICE_TV) {
-        BrandInfo *cateGory = _brandInfos[indexPath.row];
-        [self performSegueWithIdentifier:@"ProductModelsView" sender:cateGory];
+        vc.brandInfo = self.brandInfos[indexPath.row];
     }else if(self.devtype == BL_IRCODE_DEVICE_TV_BOX){
-        ProviderInfo *provider = _brandInfos[indexPath.row];
-        provider.locateid = _subAreainfo.locateid;
-        [self performSegueWithIdentifier:@"ProductModelsView" sender:provider];
+        IRCodeProviderInfo *provider = self.brandInfos[indexPath.row];
+        provider.locateid = self.subAreainfo.locateid;
+        vc.provider = provider;
     }
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"ProductModelsView"]) {
-        UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[ProductModelsTableViewController class]]) {
-            ProductModelsTableViewController* opVC = (ProductModelsTableViewController *)target;
-            if (self.devtype == BL_IRCODE_DEVICE_AC || self.devtype == BL_IRCODE_DEVICE_TV) {
-                opVC.cateGory = (BrandInfo *)sender;
-            }else if(self.devtype == BL_IRCODE_DEVICE_TV_BOX){
-                opVC.provider = (ProviderInfo *)sender;
-            }
-            
-            opVC.devtype = self.devtype;
-        }
-    }
-}
 @end

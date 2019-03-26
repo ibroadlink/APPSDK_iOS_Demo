@@ -6,15 +6,13 @@
 //  Copyright © 2017年 BroadLink. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "ProductModelsTableViewController.h"
+#import "BaseViewController.h"
 
-@class Model;
-@class BLDNADevice;
-@interface RecoginzeIRCodeViewController : UIViewController
-@property (strong, nonatomic) BLDNADevice *device;
-@property (nonatomic, strong) NSString *downloadUrl;
-@property (nonatomic, strong) NSString *randkey;
-@property (nonatomic, strong) NSString *savePath;
+#import "IRCodeModel.h"
+#import "IRCodeDownloadInfo.h"
+
+@interface RecoginzeIRCodeViewController : BaseViewController
+
 @property (nonatomic, strong) IRCodeDownloadInfo *downloadinfo;
+
 @end

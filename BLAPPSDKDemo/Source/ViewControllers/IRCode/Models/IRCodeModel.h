@@ -1,5 +1,5 @@
 //
-//  SubAreaInfo.h
+//  IRCodeModel.h
 //  BLAPPSDKDemo
 //
 //  Created by admin on 2019/3/26.
@@ -10,13 +10,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SubAreaInfo : NSObject
+@interface IRCodeModel : NSObject
 
-@property(nonatomic, assign) NSInteger locateid;
-@property(nonatomic, assign) NSInteger levelid;
-@property(nonatomic, assign) NSInteger isleaf;
-@property(nonatomic, copy) NSString *status;
 @property(nonatomic, copy) NSString *name;
+@property(nonatomic, assign) NSInteger modelId;
+@property(nonatomic, assign) NSInteger brandId;
+@property(nonatomic, assign) NSInteger devtype;
 
 @end
 

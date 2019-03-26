@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ProductModelsTableViewController.h"
-@class Model;
+@class IRCodeModel;
 @class BLDNADevice;
 @interface ControlViewController : UIViewController
 @property (strong, nonatomic) BLDNADevice *device;

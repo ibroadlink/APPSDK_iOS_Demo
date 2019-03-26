@@ -9,115 +9,105 @@
 
 #import "ProductModelsTableViewController.h"
 #import "RecoginzeIRCodeViewController.h"
+
+#import "BLStatusBar.h"
 #import <BLLetIRCode/BLLetIRCode.h>
-
-@interface Brand ()
-@property(nonatomic, readwrite, assign) NSInteger cateGoryId;
-@end
-
-@implementation Brand
-
-- (instancetype)initWithDic: (NSDictionary *)dic {
-    self = [super init];
-    if (self) {
-        _name = dic[@"brand"];
-        _brandId = [dic[@"brandid"] integerValue];
-        NSNumber *famous = dic[@"famousstatus"];
-        _famous = [famous boolValue];
-    }
-    return self;
-}
-
-@end
-
-@implementation Model
-
-- (instancetype)initWithDic: (NSDictionary *)dic {
-    self = [super init];
-    if (self) {
-        _name = dic[@"version"];
-        _modelId = [dic[@"versionid"] integerValue];
-    }
-    return self;
-}
-
-@end
 
 @interface ProductModelsTableViewController ()
 
 @property (nonatomic, strong) BLIRCode *blircode;
-@property(nonatomic, strong) NSArray *modelsArray;
+@property(nonatomic, strong) NSMutableArray *modelsArray;
+
 @end
 
 @implementation ProductModelsTableViewController
 
++ (instancetype)viewController {
+    ProductModelsTableViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+    return vc;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _modelsArray = [NSArray array];
+    self.modelsArray = [NSMutableArray arrayWithCapacity:0];
     self.blircode = [BLIRCode sharedIrdaCode];
     
-    if (_devtype == BL_IRCODE_DEVICE_AC) {
-        [self queryDeviceVersionWithTypeId:_devtype brandId:_cateGory.brandid];
-    }else if (_devtype == BL_IRCODE_DEVICE_TV){
-        [self queryDeviceCloudVersionWithTypeId:_devtype brandId:_cateGory.brandid];
-    }else if (_devtype == BL_IRCODE_DEVICE_TV_BOX){
-        [self querySTBIRCodeDownloadUrl:_provider];
+    if (self.devtype == BL_IRCODE_DEVICE_AC) {
+        [self queryDeviceVersionWithTypeId:self.devtype brandId:self.brandInfo.brandid];
+    }else if (self.devtype == BL_IRCODE_DEVICE_TV) {
+        [self queryDeviceCloudVersionWithTypeId:self.devtype brandId:self.brandInfo.brandid];
+    }else if (self.devtype == BL_IRCODE_DEVICE_TV_BOX) {
+        [self querySTBIRCodeDownloadUrl:self.provider];
     }
     
 }
 
 - (void)queryDeviceVersionWithTypeId:(NSInteger)typeId brandId:(NSInteger)brandId {
+    
     [self.blircode requestIRCodeCloudScriptDownloadUrlWithType:typeId brand:brandId completionHandler:^(BLBaseBodyResult * _Nonnull result) {
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
+            [self.modelsArray removeAllObjects];
+            
             NSLog(@"response:%@", result.responseBody);
             if (result.responseBody) {
                 
                 NSData *responseData = [result.responseBody dataUsingEncoding:NSUTF8StringEncoding];
                 NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
                 
-                NSMutableArray *array = [NSMutableArray new];
                 for (NSDictionary *pdic in responseDic[@"downloadinfo"]) {
                     IRCodeDownloadInfo *downloadinfo = [IRCodeDownloadInfo BLS_modelWithDictionary:pdic];
-                    [array addObject: downloadinfo];
+                    [self.modelsArray addObject: downloadinfo];
                 }
-                self.modelsArray = array;
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView reloadData];
-                });
             }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [BLStatusBar showTipMessageWithStatus:result.msg];
+            });
         }
     }];
 }
 
 - (void)queryDeviceCloudVersionWithTypeId:(NSInteger)typeId brandId:(NSInteger)brandId {
+    
     [self.blircode requestIRCodeScriptDownloadUrlWithType:typeId brand:brandId completionHandler:^(BLBaseBodyResult * _Nonnull result) {
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
+            [self.modelsArray removeAllObjects];
+
             NSLog(@"response:%@", result.responseBody);
             if (result.responseBody) {
                 
                 NSData *responseData = [result.responseBody dataUsingEncoding:NSUTF8StringEncoding];
                 NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
                 
-                NSMutableArray *array = [NSMutableArray new];
                 for (NSDictionary *pdic in responseDic[@"downloadinfo"]) {
                     IRCodeDownloadInfo *downloadinfo = [IRCodeDownloadInfo BLS_modelWithDictionary:pdic];
-                    [array addObject: downloadinfo];
+                    [self.modelsArray addObject: downloadinfo];
                 }
-                self.modelsArray = array;
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView reloadData];
-                });
+
             }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+            
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [BLStatusBar showTipMessageWithStatus:result.msg];
+            });
         }
     }];
 }
 
-- (void)querySTBIRCodeDownloadUrl:(ProviderInfo *)provider {
+- (void)querySTBIRCodeDownloadUrl:(IRCodeProviderInfo *)provider {
+    
     [self.blircode requestSTBIRCodeScriptDownloadUrlWithLocateid:provider.locateid providerid:provider.providerid brandId:0 completionHandler:^(BLBaseBodyResult * _Nonnull result) {
+        [self.modelsArray removeAllObjects];
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
             NSLog(@"response:%@", result.responseBody);
@@ -126,17 +116,20 @@
                 NSData *responseData = [result.responseBody dataUsingEncoding:NSUTF8StringEncoding];
                 NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
                 
-                NSMutableArray *array = [NSMutableArray new];
                 for (NSDictionary *pdic in responseDic[@"downloadinfo"]) {
                     IRCodeDownloadInfo *downloadinfo = [IRCodeDownloadInfo BLS_modelWithDictionary:pdic];
-                    [array addObject: downloadinfo];
+                    [self.modelsArray addObject: downloadinfo];
                 }
-                self.modelsArray = array;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView reloadData];
-                });
             }
-
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+            
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [BLStatusBar showTipMessageWithStatus:result.msg];
+            });
         }
     }];
 }
@@ -144,7 +137,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _modelsArray.count;
+    return self.modelsArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -153,17 +146,17 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
     }
-    _downloadinfo = _modelsArray[indexPath.row];
-    cell.textLabel.text = _downloadinfo.name;
-    cell.detailTextLabel.text = _downloadinfo.downloadurl;
+    self.downloadinfo = _modelsArray[indexPath.row];
+    cell.textLabel.text = self.downloadinfo.name;
+    cell.detailTextLabel.text = self.downloadinfo.downloadurl;
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    IRCodeDownloadInfo *downloadinfo = _modelsArray[indexPath.row];
-    downloadinfo.brandId = _cateGory.brandid;
-    downloadinfo.devtype = _devtype;
+    IRCodeDownloadInfo *downloadinfo = self.modelsArray[indexPath.row];
+    downloadinfo.ircodeid = self.brandInfo.brandid;
+    downloadinfo.devtype = self.devtype;
     [self performSegueWithIdentifier:@"RecoginzeIRCodeView" sender:downloadinfo];
 }
 
@@ -173,7 +166,6 @@
         if ([target isKindOfClass:[RecoginzeIRCodeViewController class]]) {
             RecoginzeIRCodeViewController* opVC = (RecoginzeIRCodeViewController *)target;
             opVC.downloadinfo = (IRCodeDownloadInfo *)sender;
-            opVC.device = self.device;
         }
     }
 }

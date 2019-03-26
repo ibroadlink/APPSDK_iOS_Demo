@@ -9,14 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "IRCodeTestViewController.h"
 
-#import "SubAreaInfo.h"
-#import "BrandInfo.h"
-#import "ProviderInfo.h"
+#import "IRCodeSubAreaInfo.h"
+#import "IRCodeBrandInfo.h"
+#import "IRCodeProviderInfo.h"
 
 @interface CateGoriesTableViewController : UITableViewController
 
 @property(nonatomic, assign) NSInteger devtype;
-@property(nonatomic, strong) SubAreaInfo *subAreainfo;
+@property(nonatomic, strong) IRCodeSubAreaInfo *subAreainfo;
 
 + (instancetype)viewController;
 

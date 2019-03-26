@@ -6,8 +6,8 @@
 //  Copyright © 2019 BroadLink. All rights reserved.
 //
 
-#import "ProviderInfo.h"
+#import "IRCodeProviderInfo.h"
 
-@implementation ProviderInfo
+@implementation IRCodeProviderInfo
 
 @end

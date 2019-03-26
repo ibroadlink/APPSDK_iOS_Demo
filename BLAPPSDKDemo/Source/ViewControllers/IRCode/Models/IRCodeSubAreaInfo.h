@@ -1,5 +1,5 @@
 //
-//  ProviderInfo.h
+//  SubAreaInfo.h
 //  BLAPPSDKDemo
 //
 //  Created by admin on 2019/3/26.
@@ -10,11 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ProviderInfo : NSObject
+@interface IRCodeSubAreaInfo : NSObject
 
-@property(nonatomic, copy) NSString *providername;
-@property(nonatomic, assign) NSInteger providerid;
 @property(nonatomic, assign) NSInteger locateid;
+@property(nonatomic, assign) NSInteger levelid;
+@property(nonatomic, assign) NSInteger isleaf;
+@property(nonatomic, copy) NSString *status;
+@property(nonatomic, copy) NSString *name;
 
 @end
 

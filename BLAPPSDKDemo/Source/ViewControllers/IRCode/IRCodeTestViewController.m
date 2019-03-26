@@ -84,7 +84,7 @@
 
 - (void)tvBoxIRCodeSelect {
     TVBoxAreaSelectController *vc = [TVBoxAreaSelectController viewController];
-    SubAreaInfo *area = [[SubAreaInfo alloc] init];
+    IRCodeSubAreaInfo *area = [[IRCodeSubAreaInfo alloc] init];
     vc.currentArea = area;
     
     [self.navigationController pushViewController:vc animated:YES];

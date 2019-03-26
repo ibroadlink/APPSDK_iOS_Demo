@@ -14,10 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *downloadurl;
-@property (nonatomic, copy) NSString *randkey;
-@property (nonatomic, copy) NSString *fixkey;
 @property (nonatomic, copy) NSString *savePath;
-@property (nonatomic, assign) NSInteger brandId;
+@property (nonatomic, copy) NSString *key;
+@property (nonatomic, assign) NSInteger ircodeid;
 @property (nonatomic, assign) NSInteger devtype;
 
 @end

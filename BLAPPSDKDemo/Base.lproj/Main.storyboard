@@ -4678,7 +4678,7 @@
         <!--Select Product Models-->
         <scene sceneID="h3I-Ld-Uz1">
             <objects>
-                <tableViewController id="zJn-1f-fsT" customClass="ProductModelsTableViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ProductModelsTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zJn-1f-fsT" customClass="ProductModelsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="70" sectionHeaderHeight="18" sectionFooterHeight="18" id="jqM-FE-6kc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

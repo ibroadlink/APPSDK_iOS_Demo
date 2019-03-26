@@ -6,8 +6,8 @@
 //  Copyright © 2019 BroadLink. All rights reserved.
 //
 
-#import "SubAreaInfo.h"
+#import "IRCodeSubAreaInfo.h"
 
-@implementation SubAreaInfo
+@implementation IRCodeSubAreaInfo
 
 @end

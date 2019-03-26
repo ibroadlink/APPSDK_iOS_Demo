@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BrandInfo : NSObject
+@interface IRCodeBrandInfo : NSObject
 
 @property(nonatomic, assign) NSInteger brandid;
 @property(nonatomic, copy) NSString *brand;
