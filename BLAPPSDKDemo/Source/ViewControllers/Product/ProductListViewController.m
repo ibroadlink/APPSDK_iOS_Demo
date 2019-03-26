@@ -28,7 +28,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self viewInit];
-    [self getProductCategoryList];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self getProductCategoryList];
+    });
 }
 
 - (void)viewInit {
@@ -54,10 +61,8 @@
                               @"userid": account.loginUserid};
     NSDictionary *parameters = @{ @"brandid": @"",
                                   @"protocols": @[]};
-    //NSString *url = [NSString stringWithFormat:@"https://%@bizappmanage.ibroadlink.com/ec4/v1/system/resource/categorylist",[BLConfigParam sharedConfigParam].licenseId];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:@"/ec4/v1/system/resource/categorylist"];
     
-    [self showIndicatorOnWindow];
     [self generatePost:url head:headers data:parameters timeout:[BLConfigParam sharedConfigParam].httpTimeout completionHandler:^(NSData *data, NSError *error) {
         if (data) {
             BLProductCategoryList *productCategoryList = [BLProductCategoryList BLS_modelWithJSON:data];
@@ -66,7 +71,6 @@
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView reloadData];
-            [self hideIndicatorOnWindow];
         });
         
     }];

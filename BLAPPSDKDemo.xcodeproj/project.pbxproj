@@ -109,6 +109,11 @@
 		84EE08ED221D3CD60088EDE8 /* BLSQueryScenesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EE08EC221D3CD60088EDE8 /* BLSQueryScenesResult.m */; };
 		84EE08F0221D3CED0088EDE8 /* BLSSceneInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EE08EF221D3CED0088EDE8 /* BLSSceneInfo.m */; };
 		84EE08F3221D414F0088EDE8 /* BLSAddSceneResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EE08F2221D414F0088EDE8 /* BLSAddSceneResult.m */; };
+		84F84207224A068A00D60C76 /* TVBoxAreaSelectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F84206224A068A00D60C76 /* TVBoxAreaSelectController.m */; };
+		84F8420B224A09BF00D60C76 /* SubAreaInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F8420A224A09BF00D60C76 /* SubAreaInfo.m */; };
+		84F8420E224A206800D60C76 /* BrandInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F8420D224A206800D60C76 /* BrandInfo.m */; };
+		84F84211224A208600D60C76 /* ProviderInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F84210224A208600D60C76 /* ProviderInfo.m */; };
+		84F84214224A2FA200D60C76 /* IRCodeDownloadInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F84213224A2FA200D60C76 /* IRCodeDownloadInfo.m */; };
 		AADA6EE36D3CC88AD40F195C /* libPods-BLAPPSDKDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D118C5D79AEB44CD00AD9904 /* libPods-BLAPPSDKDemo.a */; };
 /* End PBXBuildFile section */
 
@@ -308,6 +313,16 @@
 		84EE08EF221D3CED0088EDE8 /* BLSSceneInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSSceneInfo.m; sourceTree = "<group>"; };
 		84EE08F1221D414F0088EDE8 /* BLSAddSceneResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLSAddSceneResult.h; sourceTree = "<group>"; };
 		84EE08F2221D414F0088EDE8 /* BLSAddSceneResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSAddSceneResult.m; sourceTree = "<group>"; };
+		84F84205224A068A00D60C76 /* TVBoxAreaSelectController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TVBoxAreaSelectController.h; sourceTree = "<group>"; };
+		84F84206224A068A00D60C76 /* TVBoxAreaSelectController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TVBoxAreaSelectController.m; sourceTree = "<group>"; };
+		84F84209224A09BF00D60C76 /* SubAreaInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubAreaInfo.h; sourceTree = "<group>"; };
+		84F8420A224A09BF00D60C76 /* SubAreaInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SubAreaInfo.m; sourceTree = "<group>"; };
+		84F8420C224A206800D60C76 /* BrandInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BrandInfo.h; sourceTree = "<group>"; };
+		84F8420D224A206800D60C76 /* BrandInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BrandInfo.m; sourceTree = "<group>"; };
+		84F8420F224A208600D60C76 /* ProviderInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProviderInfo.h; sourceTree = "<group>"; };
+		84F84210224A208600D60C76 /* ProviderInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProviderInfo.m; sourceTree = "<group>"; };
+		84F84212224A2FA200D60C76 /* IRCodeDownloadInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCodeDownloadInfo.h; sourceTree = "<group>"; };
+		84F84213224A2FA200D60C76 /* IRCodeDownloadInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRCodeDownloadInfo.m; sourceTree = "<group>"; };
 		D118C5D79AEB44CD00AD9904 /* libPods-BLAPPSDKDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BLAPPSDKDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -389,6 +404,7 @@
 		02B42DA520B2A15F00700177 /* IRCode */ = {
 			isa = PBXGroup;
 			children = (
+				84F84208224A099E00D60C76 /* Models */,
 				70503D871FDBE4D5002D3371 /* AKeyToIdentifyViewController.h */,
 				70503D691FDBE4D5002D3371 /* AKeyToIdentifyViewController.m */,
 				70503D751FDBE4D5002D3371 /* ControlViewController.h */,
@@ -403,6 +419,8 @@
 				70503D7D1FDBE4D5002D3371 /* RecoginzeIRCodeViewController.m */,
 				70503D651FDBE4D5002D3371 /* TVControllTableViewController.h */,
 				70503D8A1FDBE4D5002D3371 /* TVControllTableViewController.m */,
+				84F84205224A068A00D60C76 /* TVBoxAreaSelectController.h */,
+				84F84206224A068A00D60C76 /* TVBoxAreaSelectController.m */,
 			);
 			path = IRCode;
 			sourceTree = "<group>";
@@ -713,6 +731,21 @@
 			path = Result;
 			sourceTree = "<group>";
 		};
+		84F84208224A099E00D60C76 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				84F84209224A09BF00D60C76 /* SubAreaInfo.h */,
+				84F8420A224A09BF00D60C76 /* SubAreaInfo.m */,
+				84F8420C224A206800D60C76 /* BrandInfo.h */,
+				84F8420D224A206800D60C76 /* BrandInfo.m */,
+				84F8420F224A208600D60C76 /* ProviderInfo.h */,
+				84F84210224A208600D60C76 /* ProviderInfo.m */,
+				84F84212224A2FA200D60C76 /* IRCodeDownloadInfo.h */,
+				84F84213224A2FA200D60C76 /* IRCodeDownloadInfo.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		D26DB6AD14549547CD634236 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -782,6 +815,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -875,6 +909,7 @@
 				3A39D67E223751EC008C8C9C /* BLSAddAuthResult.m in Sources */,
 				3A44F4B42225146300936AFF /* BLProductCategoryModel.m in Sources */,
 				3AFC6D6F20EB59E5003404E6 /* BLUserHeadImageCell.m in Sources */,
+				84F84211224A208600D60C76 /* ProviderInfo.m in Sources */,
 				70503DBA1FDBE4D6002D3371 /* BLUserDefaults.m in Sources */,
 				70503DA71FDBE4D5002D3371 /* OperateViewController.m in Sources */,
 				025A168420E33C9700D75DAB /* RetrievePasswordViewController.m in Sources */,
@@ -888,8 +923,10 @@
 				3AAC2A2D20EB252200031DEC /* BLUserLogoutCell.m in Sources */,
 				70503DA51FDBE4D5002D3371 /* CodeLoginViewController.m in Sources */,
 				84449FD4221BD0E8006D2A10 /* BLSFamilyCreateResult.m in Sources */,
+				84F84207224A068A00D60C76 /* TVBoxAreaSelectController.m in Sources */,
 				846CA9302248CDB900884421 /* ModifyEmailViewController.m in Sources */,
 				3AB87FC822154DF200B97D38 /* FastconViewController.m in Sources */,
+				84F8420E224A206800D60C76 /* BrandInfo.m in Sources */,
 				02AE9DAF2058BDD10054677B /* GeneralTimerControlView.m in Sources */,
 				70503DB31FDBE4D6002D3371 /* IRCodeTestViewController.m in Sources */,
 				84BACDE02236476500C1E5DA /* SceneListController.m in Sources */,
@@ -937,12 +974,14 @@
 				846CA92D2248BBA200884421 /* MainViewController.m in Sources */,
 				022D7AFD20BBDBFB00689F93 /* DropDownList.m in Sources */,
 				70503DA41FDBE4D5002D3371 /* LoginViewController.m in Sources */,
+				84F8420B224A09BF00D60C76 /* SubAreaInfo.m in Sources */,
 				70503D561FDBE37A002D3371 /* BLDeviceService.m in Sources */,
 				3AEF73792226645500F2376A /* BLDeviceResetViewController.m in Sources */,
 				842C960E221E3D0500B3A1A6 /* MemberListViewController.m in Sources */,
 				842C9617221E964B00B3A1A6 /* EndpointAddViewController.m in Sources */,
 				70DDAEF51DC73D4A005E4278 /* AppDelegate.m in Sources */,
 				70503DAC1FDBE4D5002D3371 /* ProductModelsTableViewController.m in Sources */,
+				84F84214224A2FA200D60C76 /* IRCodeDownloadInfo.m in Sources */,
 				70503DAE1FDBE4D5002D3371 /* RMViewController.m in Sources */,
 				84449FD1221BB176006D2A10 /* BLSFamilyInfoResult.m in Sources */,
 				84EE08ED221D3CD60088EDE8 /* BLSQueryScenesResult.m in Sources */,

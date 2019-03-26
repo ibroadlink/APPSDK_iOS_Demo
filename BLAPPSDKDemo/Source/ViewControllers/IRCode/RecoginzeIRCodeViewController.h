@@ -16,5 +16,5 @@
 @property (nonatomic, strong) NSString *downloadUrl;
 @property (nonatomic, strong) NSString *randkey;
 @property (nonatomic, strong) NSString *savePath;
-@property (nonatomic, strong) downloadInfo *downloadinfo;
+@property (nonatomic, strong) IRCodeDownloadInfo *downloadinfo;
 @end

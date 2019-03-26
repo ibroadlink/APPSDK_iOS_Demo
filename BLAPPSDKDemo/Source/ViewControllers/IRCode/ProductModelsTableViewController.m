@@ -43,23 +43,8 @@
 
 @end
 
-@implementation downloadInfo
-
-- (instancetype)initWithDic: (NSDictionary *)dic {
-    self = [super init];
-    if (self) {
-        _downloadUrl = dic[@"downloadurl"];
-        _name = dic[@"name"];
-        _fixkey = dic[@"fixkey"];
-        _randkey = dic[@"randkey"];
-    }
-    return self;
-}
-
-@end
-
 @interface ProductModelsTableViewController ()
-@property (nonatomic, strong) BLController *blcontroller;
+
 @property (nonatomic, strong) BLIRCode *blircode;
 @property(nonatomic, strong) NSArray *modelsArray;
 @end
@@ -69,8 +54,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _modelsArray = [NSArray array];
-    self.blcontroller = [BLLet sharedLet].controller;
     self.blircode = [BLIRCode sharedIrdaCode];
+    
     if (_devtype == BL_IRCODE_DEVICE_AC) {
         [self queryDeviceVersionWithTypeId:_devtype brandId:_cateGory.brandid];
     }else if (_devtype == BL_IRCODE_DEVICE_TV){
@@ -93,7 +78,7 @@
                 
                 NSMutableArray *array = [NSMutableArray new];
                 for (NSDictionary *pdic in responseDic[@"downloadinfo"]) {
-                    downloadInfo *downloadinfo = [[downloadInfo alloc] initWithDic:pdic];
+                    IRCodeDownloadInfo *downloadinfo = [IRCodeDownloadInfo BLS_modelWithDictionary:pdic];
                     [array addObject: downloadinfo];
                 }
                 self.modelsArray = array;
@@ -118,7 +103,7 @@
                 
                 NSMutableArray *array = [NSMutableArray new];
                 for (NSDictionary *pdic in responseDic[@"downloadinfo"]) {
-                    downloadInfo *downloadinfo = [[downloadInfo alloc] initWithDic:pdic];
+                    IRCodeDownloadInfo *downloadinfo = [IRCodeDownloadInfo BLS_modelWithDictionary:pdic];
                     [array addObject: downloadinfo];
                 }
                 self.modelsArray = array;
@@ -131,7 +116,7 @@
     }];
 }
 
-- (void)querySTBIRCodeDownloadUrl:(Provider *)provider {
+- (void)querySTBIRCodeDownloadUrl:(ProviderInfo *)provider {
     [self.blircode requestSTBIRCodeScriptDownloadUrlWithLocateid:provider.locateid providerid:provider.providerid brandId:0 completionHandler:^(BLBaseBodyResult * _Nonnull result) {
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
@@ -143,7 +128,7 @@
                 
                 NSMutableArray *array = [NSMutableArray new];
                 for (NSDictionary *pdic in responseDic[@"downloadinfo"]) {
-                    downloadInfo *downloadinfo = [[downloadInfo alloc] initWithDic:pdic];
+                    IRCodeDownloadInfo *downloadinfo = [IRCodeDownloadInfo BLS_modelWithDictionary:pdic];
                     [array addObject: downloadinfo];
                 }
                 self.modelsArray = array;
@@ -163,25 +148,23 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *ID = @"SelectModelCellIdentifier";
+    static NSString *ID = @"SELECT_MODEL_CELL";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
     }
     _downloadinfo = _modelsArray[indexPath.row];
     cell.textLabel.text = _downloadinfo.name;
-    cell.detailTextLabel.text = _downloadinfo.downloadUrl;
+    cell.detailTextLabel.text = _downloadinfo.downloadurl;
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    downloadInfo *downloadinfo = _modelsArray[indexPath.row];
+    IRCodeDownloadInfo *downloadinfo = _modelsArray[indexPath.row];
     downloadinfo.brandId = _cateGory.brandid;
     downloadinfo.devtype = _devtype;
     [self performSegueWithIdentifier:@"RecoginzeIRCodeView" sender:downloadinfo];
-    
-    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -189,7 +172,7 @@
         UIViewController *target = segue.destinationViewController;
         if ([target isKindOfClass:[RecoginzeIRCodeViewController class]]) {
             RecoginzeIRCodeViewController* opVC = (RecoginzeIRCodeViewController *)target;
-            opVC.downloadinfo = (downloadInfo *)sender;
+            opVC.downloadinfo = (IRCodeDownloadInfo *)sender;
             opVC.device = self.device;
         }
     }

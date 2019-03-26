@@ -127,10 +127,12 @@
                     if ([self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_JS_FILE]) {
                         [self performSegueWithIdentifier:@"DeviceWebControlView" sender:subDevice];
                     }
+                    [self hideIndicatorOnWindow];
                 });
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [BLStatusBar showTipMessageWithStatus:@"Download script or ui failed!!!"];
+                    [self hideIndicatorOnWindow];
                 });
             }
         });

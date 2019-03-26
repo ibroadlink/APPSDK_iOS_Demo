@@ -36,10 +36,10 @@
 - (IBAction)downLoadIRCodeScript:(id)sender {
     if (_downloadinfo.devtype == BL_IRCODE_DEVICE_AC){
         _downloadinfo.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:_downloadinfo.name];
-        [self downloadIRCodeScript:_downloadinfo.downloadUrl savePath:_downloadinfo.savePath randkey:_downloadinfo.fixkey];
+        [self downloadIRCodeScript:_downloadinfo.downloadurl savePath:_downloadinfo.savePath randkey:_downloadinfo.fixkey];
     }else if (_downloadinfo.devtype == BL_IRCODE_DEVICE_TV_BOX || _downloadinfo.devtype == BL_IRCODE_DEVICE_TV){
         _downloadinfo.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:_downloadinfo.name];
-        [self downloadIRCodeScript:_downloadinfo.downloadUrl savePath:_downloadinfo.savePath randkey:_downloadinfo.randkey];
+        [self downloadIRCodeScript:_downloadinfo.downloadurl savePath:_downloadinfo.savePath randkey:_downloadinfo.randkey];
     }
 }
 

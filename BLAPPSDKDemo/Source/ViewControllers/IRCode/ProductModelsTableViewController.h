@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "CateGoriesTableViewController.h"
+
+#import "IRCodeDownloadInfo.h"
+
 @interface Brand : NSObject
 @property(nonatomic, readonly, strong) NSString *name;
 @property(nonatomic, readonly, assign) NSInteger brandId;
@@ -23,26 +26,15 @@
 @property(nonatomic, assign) NSInteger devtype;
 @end
 
-@interface downloadInfo : NSObject
-
-@property(nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *downloadUrl;
-@property (nonatomic, strong) NSString *randkey;
-@property (nonatomic, strong) NSString *fixkey;
-@property (nonatomic, strong) NSString *savePath;
-@property(nonatomic, assign) NSInteger brandId;
-@property(nonatomic, assign) NSInteger devtype;
-@end
-
-@class CateGory;
-@class Provider;
+@class BrandInfo;
+@class ProviderInfo;
 @class BLDNADevice;
 @interface ProductModelsTableViewController : UITableViewController
 @property (strong, nonatomic) BLDNADevice *device;
 @property(nonatomic, strong) Model *model;
-@property(nonatomic, strong) downloadInfo *downloadinfo;
-@property(nonatomic, strong) CateGory *cateGory;
-@property(nonatomic, strong) Provider *provider;
+@property(nonatomic, strong) IRCodeDownloadInfo *downloadinfo;
+@property(nonatomic, strong) BrandInfo *cateGory;
+@property(nonatomic, strong) ProviderInfo *provider;
 @property(nonatomic, assign) NSInteger devtype;
 @property (nonatomic, strong) NSString *downloadUrl;
 @property (nonatomic, strong) NSString *randkey;

@@ -10,49 +10,34 @@
 #import "ProductModelsTableViewController.h"
 
 #import "BLStatusBar.h"
-#import <BLLetCore/BLLetCore.h>
 #import <BLLetIRCode/BLLetIRCode.h>
 
-
-@implementation Provider
-- (instancetype)initWithDic: (NSDictionary *)dic {
-    self = [super init];
-    if (self) {
-        _providerid = [dic[@"providerid"] integerValue];
-        _providername = dic[@"providername"];
-    }
-    return self;
-}
-
-@end
-
-
-@implementation CateGory
-- (instancetype)initWithDic: (NSDictionary *)dic {
-    self = [super init];
-    if (self) {
-        _brandid = [dic[@"brandid"] integerValue];
-        _brand = dic[@"brand"];
-    }
-    return self;
-}
-
-@end
-
 @interface CateGoriesTableViewController ()
-@property (nonatomic, strong) BLController *blcontroller;
+
 @property (nonatomic, strong) BLIRCode *blircode;
-@property(nonatomic, strong) NSArray *categories;
+@property (nonatomic, strong) NSMutableArray *brandInfos;
+
 @end
 
 @implementation CateGoriesTableViewController
 
++ (instancetype)viewController {
+    CateGoriesTableViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+    return vc;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.blcontroller = [BLLet sharedLet].controller;
+    self.brandInfos = [NSMutableArray arrayWithCapacity:0];
     self.blircode = [BLIRCode sharedIrdaCode];
-    [self queryDeviceTypes];
-    _categories = [NSArray new];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self queryDeviceTypes];
+    });
 }
 
 - (void)didReceiveMemoryWarning {
@@ -60,67 +45,74 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setDevtype:(NSInteger)devtype{
-    _devtype = devtype;
-}
-
 - (void)queryDeviceTypes {
-    if (_devtype == BL_IRCODE_DEVICE_AC || _devtype == BL_IRCODE_DEVICE_TV) {
-        [self.blircode requestIRCodeDeviceBrandsWithType:_devtype completionHandler:^(BLBaseBodyResult * _Nonnull result) {
-            NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
-            if ([result succeed]) {
-                NSLog(@"response:%@", result.responseBody);
-                NSData *jsonData = [result.responseBody dataUsingEncoding:NSUTF8StringEncoding];
-                NSError *err;
-                NSDictionary *responseBodydic = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                                                options:NSJSONReadingMutableContainers
-                                                                                  error:&err];
-                NSMutableArray *array = [NSMutableArray new];
-                if (![responseBodydic[@"brand"] isKindOfClass:[NSNull class]]) {
-                    for (NSDictionary *dic in responseBodydic[@"brand"]) {
-                        [array addObject: [[CateGory alloc] initWithDic:dic]];
-                    }
-                    self.categories = array;
-                }
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView reloadData];
-                });
-                
-                
-            }else{
-                [BLStatusBar showTipMessageWithStatus:result.msg];
-            }
-        }];
-    }else if(_devtype == BL_IRCODE_DEVICE_TV_BOX){
+    if (self.devtype == BL_IRCODE_DEVICE_AC || self.devtype == BL_IRCODE_DEVICE_TV) {
+        [self queryIRCodeBrands];
+    } else if(self.devtype == BL_IRCODE_DEVICE_TV_BOX){
         [self querySTBProvider];
     }
+}
 
+- (void)queryIRCodeBrands {
+    
+    [self.blircode requestIRCodeDeviceBrandsWithType:self.devtype completionHandler:^(BLBaseBodyResult * _Nonnull result) {
+        NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
+        if ([result succeed]) {
+            [self.brandInfos removeAllObjects];
+            
+            NSLog(@"response:%@", result.responseBody);
+            NSData *jsonData = [result.responseBody dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *responseBodydic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                                            options:NSJSONReadingMutableContainers
+                                                                              error:nil];
+            
+            if (![BLCommonTools isEmptyArray:responseBodydic[@"brand"]]) {
+                for (NSDictionary *dic in responseBodydic[@"brand"]) {
+                    BrandInfo *info = [BrandInfo BLS_modelWithDictionary:dic];
+                    [self.brandInfos addObject:info];
+                }
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                 [BLStatusBar showTipMessageWithStatus:result.msg];
+            });
+        }
+    }];
+    
 }
 
 - (void)querySTBProvider {
+    
     [self.blircode requestSTBProviderWithLocateid:_subAreainfo.locateid completionHandler:^(BLBaseBodyResult * _Nonnull result) {
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
             NSLog(@"response:%@", result.responseBody);
             if (result.responseBody) {
+                [self.brandInfos removeAllObjects];
+                
                 NSData *jsonData = [result.responseBody dataUsingEncoding:NSUTF8StringEncoding];
-                NSError *err;
                 NSDictionary *responseBodydic = [NSJSONSerialization JSONObjectWithData:jsonData
                                                                                 options:NSJSONReadingMutableContainers
-                                                                                  error:&err];
-                NSMutableArray *array = [NSMutableArray new];
-                if (![responseBodydic[@"providerinfo"] isKindOfClass:[NSNull class]]) {
+                                                                                  error:nil];
+
+                if (![BLCommonTools isEmptyArray:responseBodydic[@"providerinfo"]]) {
                     for (NSDictionary *dic in responseBodydic[@"providerinfo"]) {
-                        [array addObject: [[Provider alloc] initWithDic:dic]];
+                        ProviderInfo *info = [ProviderInfo BLS_modelWithDictionary:dic];
+                        [self.brandInfos addObject:info];
                     }
-                    self.categories = array;
                 }
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.tableView reloadData];
                 });
-                
             }
-            
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [BLStatusBar showTipMessageWithStatus:result.msg];
+            });
         }
     }];
 }
@@ -132,36 +124,37 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [_categories count];
+    return self.brandInfos.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *ID = @"listCellIdentifier";
+    static NSString *ID = @"IRCODE_BRAND_CELL";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
     }
-    if (_devtype == BL_IRCODE_DEVICE_AC || _devtype == BL_IRCODE_DEVICE_TV) {
-        CateGory *cateGory = _categories[indexPath.row];
-        cell.textLabel.text = cateGory.brand;
-    }else if(_devtype == BL_IRCODE_DEVICE_TV_BOX){
-        Provider *provider = _categories[indexPath.row];
-        cell.textLabel.text = provider.providername;
+    if (self.devtype == BL_IRCODE_DEVICE_AC || self.devtype == BL_IRCODE_DEVICE_TV) {
+        BrandInfo *info = _brandInfos[indexPath.row];
+        cell.textLabel.text = info.brand;
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"Brand ID: %ld", info.brandid];
+    }else if(self.devtype == BL_IRCODE_DEVICE_TV_BOX){
+        ProviderInfo *info = _brandInfos[indexPath.row];
+        cell.textLabel.text = info.providername;
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"Provider ID: %ld", info.providerid];
     }
     
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (_devtype == BL_IRCODE_DEVICE_AC || _devtype == BL_IRCODE_DEVICE_TV) {
-        CateGory *cateGory = _categories[indexPath.row];
+    if (self.devtype == BL_IRCODE_DEVICE_AC || self.devtype == BL_IRCODE_DEVICE_TV) {
+        BrandInfo *cateGory = _brandInfos[indexPath.row];
         [self performSegueWithIdentifier:@"ProductModelsView" sender:cateGory];
-    }else if(_devtype == BL_IRCODE_DEVICE_TV_BOX){
-        Provider *provider = _categories[indexPath.row];
+    }else if(self.devtype == BL_IRCODE_DEVICE_TV_BOX){
+        ProviderInfo *provider = _brandInfos[indexPath.row];
         provider.locateid = _subAreainfo.locateid;
         [self performSegueWithIdentifier:@"ProductModelsView" sender:provider];
     }
-    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -169,15 +162,13 @@
         UIViewController *target = segue.destinationViewController;
         if ([target isKindOfClass:[ProductModelsTableViewController class]]) {
             ProductModelsTableViewController* opVC = (ProductModelsTableViewController *)target;
-            if (_devtype == BL_IRCODE_DEVICE_AC || _devtype == BL_IRCODE_DEVICE_TV) {
-                opVC.device = self.device;
-                opVC.cateGory = (CateGory *)sender;
-            }else if(_devtype == BL_IRCODE_DEVICE_TV_BOX){
-                opVC.device = self.device;
-                opVC.provider = (Provider *)sender;
+            if (self.devtype == BL_IRCODE_DEVICE_AC || self.devtype == BL_IRCODE_DEVICE_TV) {
+                opVC.cateGory = (BrandInfo *)sender;
+            }else if(self.devtype == BL_IRCODE_DEVICE_TV_BOX){
+                opVC.provider = (ProviderInfo *)sender;
             }
             
-            opVC.devtype = _devtype;
+            opVC.devtype = self.devtype;
         }
     }
 }

@@ -23,6 +23,11 @@
 
 @implementation GeneralTimerControlView
 
++ (instancetype)viewController {
+    GeneralTimerControlView *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+    return vc;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.device = [BLDeviceService sharedDeviceService].selectDevice;
@@ -238,6 +243,7 @@
         NSInteger randenStr = [timerTypeController.textFields.lastObject.text integerValue];
         [self startOrstopTimerTypeCommen:CommenStr delayen:delayenStr perioden:periodenStr cycleen:cycleenStr randen:randenStr];
     }]];
+    [timerTypeController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:timerTypeController animated:YES completion:nil];
     
     [self queryTimeType];
@@ -285,7 +291,8 @@
         NSString *timerStr = timerTypeController.textFields.firstObject.text;
         NSDictionary *timeInfo = [BLCommonTools deserializeMessageJSON:timerStr];
         NSDictionary *stdData = @{
-                                  @"act":@2,
+                                  @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
+                                  @"act":@(2),
                                   @"timerlist":@[
                                           timeInfo
                                           ]
@@ -312,15 +319,16 @@
 
 - (void)timerController:(NSString *)time type:(NSString *)type name:(NSString *)name cmd:(NSDictionary *)cmd {
     NSDictionary *timeInfo = @{
-                               @"did":self.device.did,
+                               @"did": [BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
                                @"type":type,
-                               @"en":@1,
+                               @"en":@(1),
                                @"name":name,
                                @"time":time,
                                @"cmd":cmd,
                                };
     NSDictionary *stdData = @{
-                              @"act":@0,
+                              @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
+                              @"act":@(0),
                               @"timerlist":@[
                                       timeInfo
                                       ]
@@ -355,7 +363,7 @@
     
     NSDictionary *cycInfo = @{
                               @"type":@"rand",
-                              @"en":@1,
+                              @"en":@(1),
                               @"name":@"随机定时",
                               @"stime":stime,
                               @"etime":etime,
@@ -365,7 +373,8 @@
                               @"cmd2":cmd1
                               };
     NSDictionary *stdData = @{
-                              @"act":@0,
+                              @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
+                              @"act":@(0),
                               @"timerlist":@[
                                       cycInfo
                                       ]
@@ -384,7 +393,7 @@
 
     NSDictionary *cycInfo = @{
                               @"type":@"cycle",
-                              @"en":@1,
+                              @"en":@(1),
                               @"name":@"循环定时",
                               @"stime":stime,
                               @"etime":etime,
@@ -394,7 +403,8 @@
                               @"cmd2":cmd1
                               };
     NSDictionary *stdData = @{
-                              @"act":@0,
+                              @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
+                              @"act":@(0),
                               @"timerlist":@[
                                       cycInfo
                                       ]
@@ -413,7 +423,8 @@
                                @"id":@(sid)
                                };
     NSDictionary *stdData = @{
-                              @"act":@1,
+                              @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
+                              @"act":@(1),
                               @"timerlist":@[
                                       timeInfo
                                       ]
@@ -433,14 +444,14 @@
 //获取定时列表
 - (void)gettimerDnaControl:(NSInteger)count index:(NSInteger)index {
     NSDictionary *stdData = @{
-                              @"act":@3,
+                              @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
+                              @"act":@(3),
                               @"type":@"all",
                               @"count":@(count),
                               @"index":@(index)
                               };
     NSString *stdDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:stdData options:0 error:nil] encoding:NSUTF8StringEncoding];
     
-    [self showIndicatorOnWindow];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.did subDevDid:nil dataStr:stdDataStr command:@"dev_subdev_timer" scriptPath:nil];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
@@ -448,13 +459,11 @@
         if (status == 0) {
             self.timeArray = dic[@"data"][@"timerlist"];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self hideIndicatorOnWindow];
                 [self.timerList reloadData];
             });
         } else {
             NSString *msg = dic[@"msg"];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self hideIndicatorOnWindow];
                 [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)status, msg]];
             });
         }
@@ -464,8 +473,8 @@
 //开启或者禁用某种定时
 - (void)startOrstopTimerTypeCommen:(NSInteger)commen delayen:(NSInteger)delayen perioden:(NSInteger)perioden cycleen:(NSInteger)cycleen randen:(NSInteger)randen  {
     NSDictionary *stdData = @{
-                              @"did":self.device.did,
-                              @"act":@4,
+                              @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
+                              @"act":@(4),
                               @"comm_en":@(commen),
                               @"delay_en":@(delayen),
                               @"period_en":@(perioden),
@@ -482,8 +491,8 @@
 //查询定时限制信息
 - (void)queryTimeType {
     NSDictionary *stdData = @{
-                              @"did":self.device.did,
-                              @"act":@5,
+                              @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
+                              @"act":@(5),
                               @"type":@""
                               };
     NSString *stdDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:stdData options:0 error:nil] encoding:NSUTF8StringEncoding];
@@ -526,7 +535,7 @@
         sunset_hour = [self setHour:sunset_hour];
         
         [tableList addObject:@(i)];
-        [tableList addObject:@1];
+        [tableList addObject:@(1)];
         [tableList addObject:@(sunrise_hour)];
         [tableList addObject:@(sunrise_min)];
         [tableList addObject:@(sunrise_sec)];
@@ -562,8 +571,8 @@
 
 - (void)addSunriseTime:(NSInteger)year longitude:(double)longitude latitude:(double)latitude table:(NSArray *)tableList {
     NSDictionary *stdData = @{
-                              @"did":self.device.did,
-                              @"act":@6,
+                              @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
+                              @"act":@(6),
                               @"year":@(year),
                               @"longitude":[NSString stringWithFormat:@"%f",longitude],
                               @"latitude":[NSString stringWithFormat:@"%f",latitude],

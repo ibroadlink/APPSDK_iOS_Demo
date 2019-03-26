@@ -8,21 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "IRCodeTestViewController.h"
-@interface CateGory : NSObject
-@property(nonatomic, assign) NSInteger brandid;
-@property(nonatomic, strong) NSString *brand;
-@end
 
-@interface Provider : NSObject
-@property(nonatomic, assign) NSInteger providerid;
-@property(nonatomic, strong) NSString *providername;
-@property(nonatomic, assign) NSInteger locateid;
-@end
+#import "SubAreaInfo.h"
+#import "BrandInfo.h"
+#import "ProviderInfo.h"
 
-@class SubAreaInfo;
-@class BLDNADevice;
 @interface CateGoriesTableViewController : UITableViewController
-@property (strong, nonatomic) BLDNADevice *device;
+
 @property(nonatomic, assign) NSInteger devtype;
 @property(nonatomic, strong) SubAreaInfo *subAreainfo;
+
++ (instancetype)viewController;
+
 @end

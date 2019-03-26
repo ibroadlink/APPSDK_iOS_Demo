@@ -89,10 +89,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     BLSFamilyInfo *familyInfo = self.familyInfos[indexPath.section];
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self performSegueWithIdentifier:@"FamilyDetailView" sender:familyInfo];
-    });
+    [self performSegueWithIdentifier:@"FamilyDetailView" sender:familyInfo];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -121,22 +118,20 @@
 #pragma mark - private method
 - (void)queryFamilyBaseList {
     
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
-    
-    [self showIndicatorOnWindow];
-    [manager queryFamilyBaseInfoListWithCompletionHandler:^(BLSFamilyListResult * _Nonnull result) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideIndicatorOnWindow];
-
-            if ([result succeed]) {
-                self.familyInfos = result.familyList;
-                [self.familyListTableView reloadData];
-            } else {
-                NSLog(@"error:%ld msg:%@", (long)result.error, result.msg);
-                [BLStatusBar showTipMessageWithStatus:result.msg];
-            }
-        });
-    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+        [manager queryFamilyBaseInfoListWithCompletionHandler:^(BLSFamilyListResult * _Nonnull result) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if ([result succeed]) {
+                    self.familyInfos = result.familyList;
+                    [self.familyListTableView reloadData];
+                } else {
+                    NSLog(@"error:%ld msg:%@", (long)result.error, result.msg);
+                    [BLStatusBar showTipMessageWithStatus:result.msg];
+                }
+            });
+        }];
+    });
 }
 
 - (IBAction)addFamilyBtnClick:(UIBarButtonItem *)sender {

@@ -6,6 +6,7 @@
 //  Copyright © 2016年 BroadLink. All rights reserved.
 //
 #import "OperateViewController.h"
+#import "GeneralTimerControlView.h"
 
 #import "AppMacro.h"
 #import "BLStatusBar.h"
@@ -253,7 +254,24 @@
 }
 
 - (void)generalTimerControl {
-    [self performSegueWithIdentifier:@"generalTimerControlView" sender:nil];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Please input query device did or sdid" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.text = @"";
+        textField.placeholder = @"Device did or sdid";
+    }];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *did = alertController.textFields.firstObject.text;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            GeneralTimerControlView *vc = [GeneralTimerControlView viewController];
+            vc.sdid = did;
+            [self.navigationController pushViewController:vc animated:YES];
+        });
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+    
 }
 
 - (void)fastconNoConfig {

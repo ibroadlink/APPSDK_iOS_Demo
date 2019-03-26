@@ -9,5 +9,8 @@
 #import "BaseViewController.h"
 @interface GeneralTimerControlView : BaseViewController
 
++ (instancetype)viewController;
+
+@property (nonatomic, copy) NSString *sdid;
 
 @end
