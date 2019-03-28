@@ -13,8 +13,6 @@
 #import "UIView+Doraemon.h"
 #import "UIColor+Doraemon.h"
 
-#import <BLLet/BLLetBase/BLConfigParam.h>
-
 @interface DoraemonAppInfoViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -66,10 +64,6 @@
     //获取手机型号
     NSString *iphoneType = [DoraemonAppInfoUtil iphoneType];
     
-    //获取Lid & License
-    NSString *lid = [BLConfigParam sharedConfigParam].licenseId;
-    NSString *companyid = [BLConfigParam sharedConfigParam].companyId;
-    
     NSArray *dataArray = @[
                            @{
                                @"title":DoraemonLocalizedString(@"手机信息"),
@@ -93,14 +87,6 @@
                                @"array":@[@{
                                               @"title":@"SDK Version",
                                               @"value":@"2.10.1"
-                                              },
-                                          @{
-                                              @"title":@"lid",
-                                              @"value":lid
-                                              },
-                                          @{
-                                              @"title":@"uid",
-                                              @"value":companyid
                                               }
                                           ]
                                },

@@ -4618,7 +4618,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="RecoginzeTxt" destination="Mkf-pb-rlM" id="GVt-MG-iKc"/>
+                        <outlet property="recoginzeTxt" destination="Mkf-pb-rlM" id="GVt-MG-iKc"/>
                         <outlet property="resultTxt" destination="Izk-9R-HL5" id="GRw-Sm-GCb"/>
                         <segue destination="yPk-cQ-dOd" kind="push" identifier="controllerView" id="WM4-gc-yx5"/>
                     </connections>
@@ -4921,7 +4921,7 @@
         <!--ACControllerView-->
         <scene sceneID="j0j-mQ-g6C">
             <objects>
-                <viewController id="yPk-cQ-dOd" customClass="ControlViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ACControlViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="yPk-cQ-dOd" customClass="ACControlViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="W2X-8b-q50"/>
                         <viewControllerLayoutGuide type="bottom" id="vVa-eH-XD6"/>
@@ -5173,7 +5173,7 @@
         <image name="login_banner1_CH" width="750" height="400"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="g4G-6j-sfv"/>
+        <segue reference="WM4-gc-yx5"/>
         <segue reference="B3Y-Hw-nwy"/>
         <segue reference="cre-Xs-Zgj"/>
         <segue reference="JdS-Wy-Cgc"/>

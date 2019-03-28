@@ -7,7 +7,7 @@
 //
 
 #import "RecoginzeIRCodeViewController.h"
-#import "ControlViewController.h"
+#import "ACControlViewController.h"
 #import "TVControllTableViewController.h"
 
 #import <BLLetCore/BLLetCore.h>
@@ -70,7 +70,7 @@
             });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.ResultTxt.text = [NSString stringWithFormat:@"Download failed:%ld Msg:%@", result.status, result.msg];
+                self.ResultTxt.text = [NSString stringWithFormat:@"Download failed:%ld Msg:%@", (long)result.status, result.msg];
             });
         }
     }];
@@ -87,7 +87,7 @@
         });
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.ResultTxt.text = [NSString stringWithFormat:@"Query failed:%ld Msg:%@", result.status, result.msg];
+            self.ResultTxt.text = [NSString stringWithFormat:@"Query failed:%ld Msg:%@", (long)result.status, result.msg];
         });
     }
 }
@@ -115,8 +115,8 @@
     // Pass the selected object to the new view controller.
     if ([segue.identifier isEqualToString:@"controllerView"]) {
         UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[ControlViewController class]]) {
-            ControlViewController* opVC = (ControlViewController *)target;
+        if ([target isKindOfClass:[ACControlViewController class]]) {
+            ACControlViewController* opVC = (ACControlViewController *)target;
             opVC.savePath = (NSString *)sender;
             opVC.device = self.device;
         }

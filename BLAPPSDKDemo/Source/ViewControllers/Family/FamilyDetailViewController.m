@@ -8,7 +8,7 @@
 
 #import "FamilyDetailViewController.h"
 #import "OperateViewController.h"
-#import "ControlViewController.h"
+#import "ACControlViewController.h"
 
 #import "BLNewFamilyManager.h"
 

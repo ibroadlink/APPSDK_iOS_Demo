@@ -7,41 +7,33 @@
 //
 
 #import "AKeyToIdentifyViewController.h"
+#import "ACControlViewController.h"
+
+#import "BLDeviceService.h"
+#import "BLStatusBar.h"
 #import <BLLetIRCode/BLLetIRCode.h>
 
-#import "ControlViewController.h"
-#import "BLStatusBar.h"
-#import "DeviceDB.h"
-
 @interface AKeyToIdentifyViewController ()<UITextViewDelegate>
-@property (weak, nonatomic) IBOutlet UITextView *RecoginzeTxt;
+
+@property (weak, nonatomic) IBOutlet UITextView *recoginzeTxt;
 @property (weak, nonatomic) IBOutlet UITextView *resultTxt;
-@property (nonatomic, strong) BLController *blcontroller;
-@property (nonatomic, strong) BLIRCode *blircode;
-@property (nonatomic, weak)NSTimer *stateTimer;
+@property (strong, nonatomic) BLDNADevice *device;
+
 @end
 
 @implementation AKeyToIdentifyViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.blcontroller = [BLLet sharedLet].controller;
-    self.blircode = [BLIRCode sharedIrdaCode];
-    self.RecoginzeTxt.delegate = self;
-    self.RecoginzeTxt.text = @"2600ca008d950c3b0f1410380e3a0d160e160d3b0d150e150e3910150d160d3a0f36101411380d150f3a0e390d3910370f150f38103a0d3a0e1211140f1411121038101310150f3710380e390e150f160d160e1410140f131113101310380e3b0f351137123611ad8e9210370f1511370e390f140f1410380f1311130f39101211130f390f380f150f390f1310380f3810380f380f141038103710380f1411121014101310380f14101310380f3810381013101311121014101211131014101310370f3910361138103710000d05";
-}
-
-- (void)dealloc {
-    [_stateTimer invalidate];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [_stateTimer invalidate];
+    self.recoginzeTxt.delegate = self;
+    self.recoginzeTxt.text = @"2600ca008d950c3b0f1410380e3a0d160e160d3b0d150e150e3910150d160d3a0f36101411380d150f3a0e390d3910370f150f38103a0d3a0e1211140f1411121038101310150f3710380e390e150f160d160e1410140f131113101310380e3b0f351137123611ad8e9210370f1511370e390f140f1410380f1311130f39101211130f390f380f150f390f1310380f3810380f380f141038103710380f1411121014101310380f14101310380f3810381013101311121014101211131014101310370f3910361138103710000d05";
 }
 
 - (IBAction)identifyTheIRCode:(id)sender {
-    [_RecoginzeTxt resignFirstResponder];
-    [self.blircode recognizeIRCodeWithHexString:_RecoginzeTxt.text completionHandler:^(BLBaseBodyResult * _Nonnull result) {
+    [self.recoginzeTxt resignFirstResponder];
+    BLIRCode *blircode = [BLIRCode sharedIrdaCode];
+    
+    [blircode recognizeIRCodeWithHexString:_recoginzeTxt.text completionHandler:^(BLBaseBodyResult * _Nonnull result) {
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
             NSLog(@"response:%@", result.responseBody);
@@ -57,62 +49,72 @@
                     self.randkey = downloadInfos[0][@"fixkey"];
                     self.downloadUrl = downloadInfos[0][@"downloadurl"];
                     NSString *name = downloadInfos[0][@"name"];
-                    self.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:name];
+                    
+                    BLController *blcontroller = [BLLet sharedLet].controller;
+                    self.savePath = [blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:name];
                 }
             }
         }else{
             [BLStatusBar showTipMessageWithStatus:result.msg];
         }
-
-
     }];
 }
+
 - (IBAction)downLoadIRCodeScript:(id)sender {
-    [_RecoginzeTxt resignFirstResponder];
+    [self.recoginzeTxt resignFirstResponder];
     [self downloadIRCodeScript:self.downloadUrl savePath:self.savePath randkey:self.randkey];
 }
 
 - (IBAction)getIRCodeBaseInfo:(id)sender {
-    [_RecoginzeTxt resignFirstResponder];
+    [self.recoginzeTxt resignFirstResponder];
     [self queryIRCodeScriptInfoSavePath:self.savePath randkey:nil deviceType:BL_IRCODE_DEVICE_AC];
 }
+
 - (IBAction)getIRCodeData:(id)sender {
-    [_RecoginzeTxt resignFirstResponder];
+    [self.recoginzeTxt resignFirstResponder];
     if (self.savePath == nil) {
         [BLStatusBar showTipMessageWithStatus:@"identifyTheIRCode first!"];
         return;
     }
-    [self performSegueWithIdentifier:@"controllerView" sender:self.savePath];
+    
+    ACControlViewController *vc = [ACControlViewController viewController];
+    vc.savePath = self.savePath;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (IBAction)RMLearnBtn:(id)sender {
-    [_RecoginzeTxt resignFirstResponder];
+    [self.recoginzeTxt resignFirstResponder];
+    BLController *blcontroller = [BLLet sharedLet].controller;
+    
+    //进入学习模式
     BLStdData *stdStudyData = [[BLStdData alloc] init];
     [stdStudyData setValue:nil forParam:@"irdastudy"];
-    //进入学习模式
-    BLStdControlResult *studyResult = [self.blcontroller dnaControl:[self.device getDid] stdData:stdStudyData action:@"get"];
+    BLStdControlResult *studyResult = [blcontroller dnaControl:[self.device getDid] stdData:stdStudyData action:@"get"];
     if ([studyResult succeed]) {
-        if (![_stateTimer isValid]) {
-            _stateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
-                BLStdData *stdData = [[BLStdData alloc] init];
-                [stdData setValue:nil forParam:@"irda"];
-                //获取学习的红码
-                BLStdControlResult *irdaResult = [self.blcontroller dnaControl:[self.device getDid] stdData:stdData action:@"get"];
-                NSDictionary *dic = [[irdaResult getData] toDictionary];
-                if ([dic[@"vals"] count] != 0) {
-                    self.RecoginzeTxt.text = dic[@"vals"][0][0][@"val"];
-                    [self.stateTimer invalidate];
-                }else{
-                    self.RecoginzeTxt.text = @"未学习红码";
-                }
-            }];
+        for (int i = 0; i < 10; i++) {
+            sleep(3);
+            
+            //获取学习的红码
+            BLStdData *stdData = [[BLStdData alloc] init];
+            [stdData setValue:nil forParam:@"irda"];
+            
+            BLStdControlResult *irdaResult = [blcontroller dnaControl:[self.device getDid] stdData:stdData action:@"get"];
+            NSDictionary *dic = [[irdaResult getData] toDictionary];
+            if ([dic[@"vals"] count] != 0) {
+                self.recoginzeTxt.text = dic[@"vals"][0][0][@"val"];
+                break;
+            } else {
+                self.recoginzeTxt.text = @"Can not get learn ircode";
+            }
         }
     }
     
 }
 
 - (void)downloadIRCodeScript:(NSString *_Nonnull)urlString savePath:(NSString *_Nonnull)path randkey:(NSString *_Nullable)randkey {
-    [self.blircode downloadIRCodeScriptWithUrl:urlString savePath:path randkey:randkey completionHandler:^(BLDownloadResult * _Nonnull result) {
+    BLIRCode *blircode = [BLIRCode sharedIrdaCode];
+
+    [blircode downloadIRCodeScriptWithUrl:urlString savePath:path randkey:randkey completionHandler:^(BLDownloadResult * _Nonnull result) {
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
             NSLog(@"savepath:%@", result.savePath);
@@ -129,7 +131,8 @@
 
 - (void)queryIRCodeScriptInfoSavePath:(NSString *)savePath randkey:(NSString *)randkey deviceType:(NSInteger)devicetype {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        BLIRCodeInfoResult *result = [self.blircode queryIRCodeInfomationWithScript:savePath deviceType:devicetype];
+        BLIRCode *blircode = [BLIRCode sharedIrdaCode];
+        BLIRCodeInfoResult *result = [blircode queryIRCodeInfomationWithScript:savePath deviceType:devicetype];
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
             NSLog(@"info:%@", result.infomation);
@@ -146,21 +149,6 @@
 }
 
 #pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    if ([segue.identifier isEqualToString:@"controllerView"]) {
-        UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[ControlViewController class]]) {
-            ControlViewController* opVC = (ControlViewController *)target;
-            opVC.device = self.device;
-            opVC.savePath = (NSString *)sender;
-        }
-    }
-}
-
 - (void)textViewDidEndEditing:(UITextView *)textView {
     [textView resignFirstResponder];
 }

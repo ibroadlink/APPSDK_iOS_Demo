@@ -70,7 +70,7 @@
 		70503DB21FDBE4D6002D3371 /* CateGoriesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D841FDBE4D5002D3371 /* CateGoriesTableViewController.m */; };
 		70503DB31FDBE4D6002D3371 /* IRCodeTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D891FDBE4D5002D3371 /* IRCodeTestViewController.m */; };
 		70503DB41FDBE4D6002D3371 /* TVControllTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D8A1FDBE4D5002D3371 /* TVControllTableViewController.m */; };
-		70503DB51FDBE4D6002D3371 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D8E1FDBE4D5002D3371 /* ControlViewController.m */; };
+		70503DB51FDBE4D6002D3371 /* ACControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D8E1FDBE4D5002D3371 /* ACControlViewController.m */; };
 		70503DB61FDBE4D6002D3371 /* DataPassthoughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D8F1FDBE4D5002D3371 /* DataPassthoughViewController.m */; };
 		70503DB71FDBE4D6002D3371 /* SPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D921FDBE4D5002D3371 /* SPViewController.m */; };
 		70503DB81FDBE4D6002D3371 /* FamilyDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D931FDBE4D5002D3371 /* FamilyDetailViewController.m */; };
@@ -214,7 +214,7 @@
 		70503D721FDBE4D5002D3371 /* SPViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPViewController.h; sourceTree = "<group>"; };
 		70503D731FDBE4D5002D3371 /* DataPassthoughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataPassthoughViewController.h; sourceTree = "<group>"; };
 		70503D741FDBE4D5002D3371 /* DeviceListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceListViewController.m; sourceTree = "<group>"; };
-		70503D751FDBE4D5002D3371 /* ControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlViewController.h; sourceTree = "<group>"; };
+		70503D751FDBE4D5002D3371 /* ACControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACControlViewController.h; sourceTree = "<group>"; };
 		70503D761FDBE4D5002D3371 /* MyDeviceListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDeviceListViewController.m; sourceTree = "<group>"; };
 		70503D771FDBE4D5002D3371 /* DeviceMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceMainViewController.m; sourceTree = "<group>"; };
 		70503D781FDBE4D5002D3371 /* ProductModelsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductModelsTableViewController.m; sourceTree = "<group>"; };
@@ -239,7 +239,7 @@
 		70503D8B1FDBE4D5002D3371 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		70503D8C1FDBE4D5002D3371 /* DeviceMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceMainViewController.h; sourceTree = "<group>"; };
 		70503D8D1FDBE4D5002D3371 /* MyDeviceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDeviceListViewController.h; sourceTree = "<group>"; };
-		70503D8E1FDBE4D5002D3371 /* ControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlViewController.m; sourceTree = "<group>"; };
+		70503D8E1FDBE4D5002D3371 /* ACControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACControlViewController.m; sourceTree = "<group>"; };
 		70503D8F1FDBE4D5002D3371 /* DataPassthoughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataPassthoughViewController.m; sourceTree = "<group>"; };
 		70503D901FDBE4D5002D3371 /* DeviceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceListViewController.h; sourceTree = "<group>"; };
 		70503D911FDBE4D5002D3371 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
@@ -410,8 +410,8 @@
 				84F84208224A099E00D60C76 /* Models */,
 				70503D871FDBE4D5002D3371 /* AKeyToIdentifyViewController.h */,
 				70503D691FDBE4D5002D3371 /* AKeyToIdentifyViewController.m */,
-				70503D751FDBE4D5002D3371 /* ControlViewController.h */,
-				70503D8E1FDBE4D5002D3371 /* ControlViewController.m */,
+				70503D751FDBE4D5002D3371 /* ACControlViewController.h */,
+				70503D8E1FDBE4D5002D3371 /* ACControlViewController.m */,
 				70503D6C1FDBE4D5002D3371 /* CateGoriesTableViewController.h */,
 				70503D841FDBE4D5002D3371 /* CateGoriesTableViewController.m */,
 				70503D671FDBE4D5002D3371 /* IRCodeTestViewController.h */,
@@ -882,7 +882,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo-resources.sh",
 				"${PODS_ROOT}/BLExtension/BLExtension/BLExtension/Extensions/BLExtension.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/DoraemonKit/DoraemonKit.bundle",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
@@ -895,7 +895,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -975,7 +975,7 @@
 				840F55C62231171C0026D3BE /* BLSNotificationService.m in Sources */,
 				70503DAF1FDBE4D5002D3371 /* RecoginzeIRCodeViewController.m in Sources */,
 				70DDAEF91DC73D4A005E4278 /* main.m in Sources */,
-				70503DB51FDBE4D6002D3371 /* ControlViewController.m in Sources */,
+				70503DB51FDBE4D6002D3371 /* ACControlViewController.m in Sources */,
 				846CA92D2248BBA200884421 /* MainViewController.m in Sources */,
 				022D7AFD20BBDBFB00689F93 /* DropDownList.m in Sources */,
 				70503DA41FDBE4D5002D3371 /* LoginViewController.m in Sources */,
