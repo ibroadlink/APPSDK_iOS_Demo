@@ -1160,6 +1160,7 @@
 					"$(PROJECT_DIR)/BLAPPSDKDemo/Source/SSZipArchive/BroadLinkRFSwitch",
 					"$(PROJECT_DIR)/BLAPPSDKDemo/Source/AppSdk/BroadLinkRFSwitch",
 					"$(PROJECT_DIR)/BLAPPSDKDemo/Source/BroadLinkRFSwitch",
+					"$(PROJECT_DIR)/BLAPPSDKDemo/Library",
 				);
 				NEW_SETTING = "";
 				OTHER_LDFLAGS = "$(inherited)";
@@ -1206,6 +1207,7 @@
 					"$(PROJECT_DIR)/BLAPPSDKDemo/Source/SSZipArchive/BroadLinkRFSwitch",
 					"$(PROJECT_DIR)/BLAPPSDKDemo/Source/AppSdk/BroadLinkRFSwitch",
 					"$(PROJECT_DIR)/BLAPPSDKDemo/Source/BroadLinkRFSwitch",
+					"$(PROJECT_DIR)/BLAPPSDKDemo/Library",
 				);
 				NEW_SETTING = "";
 				OTHER_LDFLAGS = "$(inherited)";

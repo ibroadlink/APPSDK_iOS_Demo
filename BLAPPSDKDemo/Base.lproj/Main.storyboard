@@ -3489,6 +3489,112 @@
             </objects>
             <point key="canvasLocation" x="-4281" y="2070"/>
         </scene>
+        <!--Device Check View Controller-->
+        <scene sceneID="bdT-eM-ckh">
+            <objects>
+                <viewController storyboardIdentifier="DeviceCheckViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ucP-vt-hSf" customClass="DeviceCheckViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ut7-AS-nL2"/>
+                        <viewControllerLayoutGuide type="bottom" id="rHi-dO-UEL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bjR-HH-2eg">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="riG-HY-3aq">
+                                <rect key="frame" x="20" y="175" width="374" height="44"/>
+                                <color key="backgroundColor" red="0.91764705879999997" green="0.72941176470000002" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="hrj-sZ-R6C"/>
+                                </constraints>
+                                <state key="normal" title="Start">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="buttonClick:" destination="ucP-vt-hSf" eventType="touchUpInside" id="fAO-Sd-6w8"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fJB-4c-gJe">
+                                <rect key="frame" x="20" y="245" width="374" height="44"/>
+                                <color key="backgroundColor" red="0.91764705879999997" green="0.72941176470000002" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="fN9-le-mFQ"/>
+                                </constraints>
+                                <state key="normal" title="Query Service List">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="buttonClick:" destination="ucP-vt-hSf" eventType="touchUpInside" id="wc9-H4-bYU"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="saK-91-E09">
+                                <rect key="frame" x="20" y="397" width="374" height="44"/>
+                                <color key="backgroundColor" red="0.91764705879999997" green="0.72941176470000002" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="ac0-JK-2EA"/>
+                                </constraints>
+                                <state key="normal" title="Close">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="buttonClick:" destination="ucP-vt-hSf" eventType="touchUpInside" id="4Jz-ZL-Imf"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="102" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a3e-ac-Pks">
+                                <rect key="frame" x="20" y="320" width="374" height="44"/>
+                                <color key="backgroundColor" red="0.91764705879999997" green="0.72941176470000002" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="ZUn-fv-XFX"/>
+                                </constraints>
+                                <state key="normal" title="Send Heart Beat">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="buttonClick:" destination="ucP-vt-hSf" eventType="touchUpInside" id="hee-XA-iAt"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="saK-91-E09" firstAttribute="leading" secondItem="riG-HY-3aq" secondAttribute="leading" id="3pR-m2-rPs"/>
+                            <constraint firstItem="riG-HY-3aq" firstAttribute="leading" secondItem="bjR-HH-2eg" secondAttribute="leading" constant="20" id="6HP-62-gLT"/>
+                            <constraint firstItem="a3e-ac-Pks" firstAttribute="leading" secondItem="fJB-4c-gJe" secondAttribute="leading" id="APK-2l-tbH"/>
+                            <constraint firstItem="saK-91-E09" firstAttribute="trailing" secondItem="riG-HY-3aq" secondAttribute="trailing" id="EZe-xq-rea"/>
+                            <constraint firstItem="saK-91-E09" firstAttribute="top" secondItem="a3e-ac-Pks" secondAttribute="bottom" constant="33" id="FBS-Br-RoA"/>
+                            <constraint firstItem="riG-HY-3aq" firstAttribute="top" secondItem="Ut7-AS-nL2" secondAttribute="bottom" constant="155" id="I4r-M1-iXE"/>
+                            <constraint firstAttribute="trailing" secondItem="riG-HY-3aq" secondAttribute="trailing" constant="20" id="SuY-Vc-i8G"/>
+                            <constraint firstItem="a3e-ac-Pks" firstAttribute="trailing" secondItem="fJB-4c-gJe" secondAttribute="trailing" id="XPN-7k-Zgb"/>
+                            <constraint firstItem="fJB-4c-gJe" firstAttribute="trailing" secondItem="riG-HY-3aq" secondAttribute="trailing" id="YkA-fL-le5"/>
+                            <constraint firstItem="a3e-ac-Pks" firstAttribute="top" secondItem="fJB-4c-gJe" secondAttribute="bottom" constant="31" id="rQb-t2-ShM"/>
+                            <constraint firstItem="fJB-4c-gJe" firstAttribute="leading" secondItem="riG-HY-3aq" secondAttribute="leading" id="tWN-mf-lRu"/>
+                            <constraint firstItem="fJB-4c-gJe" firstAttribute="top" secondItem="riG-HY-3aq" secondAttribute="bottom" constant="26" id="z5Q-sz-Lul"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jlI-5c-Qh7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3152" y="1132"/>
+        </scene>
         <!--Main-->
         <scene sceneID="Qjk-pK-SVO">
             <objects>
