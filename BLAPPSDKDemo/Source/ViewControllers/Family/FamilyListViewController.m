@@ -96,8 +96,8 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         BLSFamilyInfo *familyInfo = self.familyInfos[indexPath.row];
         BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
-        [self showIndicatorOnWindow];
         
+        [self showIndicatorOnWindow];
         [manager delFamilyWithFamilyid:familyInfo.familyid completionHandler:^(BLBaseResult * _Nonnull result) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -117,11 +117,14 @@
 
 #pragma mark - private method
 - (void)queryFamilyBaseList {
-    
+    [self showIndicatorOnWindow];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
         BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
         [manager queryFamilyBaseInfoListWithCompletionHandler:^(BLSFamilyListResult * _Nonnull result) {
             dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideIndicatorOnWindow];
+                
                 if ([result succeed]) {
                     self.familyInfos = result.familyList;
                     [self.familyListTableView reloadData];

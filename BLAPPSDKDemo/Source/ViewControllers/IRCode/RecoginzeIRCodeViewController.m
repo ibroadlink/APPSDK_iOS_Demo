@@ -70,7 +70,7 @@
             });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.ResultTxt.text = [NSString stringWithFormat:@"Download failed:%ld Msg:%@", (long)result.status, result.msg];
+                self.ResultTxt.text = [NSString stringWithFormat:@"Download failed:%ld \nMsg:%@", (long)result.status, result.msg];
             });
         }
     }];
@@ -87,7 +87,7 @@
         });
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.ResultTxt.text = [NSString stringWithFormat:@"Query failed:%ld Msg:%@", (long)result.status, result.msg];
+            self.ResultTxt.text = [NSString stringWithFormat:@"Query failed:%ld \nMsg:%@", (long)result.status, result.msg];
         });
     }
 }

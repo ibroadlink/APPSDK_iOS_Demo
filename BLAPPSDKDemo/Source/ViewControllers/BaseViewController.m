@@ -14,12 +14,12 @@
 @property (nonatomic, strong) MBProgressHUD* progressHUD;
 @property (nonatomic, strong) UIView* progressHUDBackView;
 
+@property (nonatomic, strong) NSTimer *overTimer;
+@property (nonatomic, assign) NSInteger downCount;
+
 @end
 
-@implementation BaseViewController{
-    NSTimer *_overTimer;
-    NSInteger _downCount;
-}
+@implementation BaseViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -44,13 +44,15 @@
 #pragma mark - public method
 - (void)showIndicatorOnWindowWithMessage:(NSString *)message
 {
-    [self initProgressHUD];
-
-    _progressHUD.label.text = message;
-    [_progressHUD showAnimated:YES];
-    
-    _downCount = 240;
-    _overTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(overTimer:) userInfo:nil repeats:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self initProgressHUD];
+        
+       self.progressHUD.label.text = message;
+        [self.progressHUD showAnimated:YES];
+        
+        self.downCount = 240;
+        self.overTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(overTimer:) userInfo:nil repeats:YES];
+    });
 }
 
 - (void)showIndicatorOnWindow
@@ -60,24 +62,25 @@
 
 - (void)hideIndicatorOnWindow
 {
-    [_overTimer invalidate];
-    _overTimer = nil;
-    [_progressHUDBackView removeFromSuperview];
-    _progressHUDBackView = nil;
-    [_progressHUD hideAnimated:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.overTimer invalidate];
+        self.overTimer = nil;
+        [self.progressHUDBackView removeFromSuperview];
+        self.progressHUDBackView = nil;
+        [self.progressHUD hideAnimated:YES];
+    });
 }
 
 - (void)showTextOnly:(NSString *)text
 {
     _progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    // Configure for text only and offset down
     _progressHUD.mode = MBProgressHUDModeText;
-    _progressHUD.labelText = text;
+    _progressHUD.label.text = text;
     _progressHUD.margin = 10.f;
     _progressHUD.removeFromSuperViewOnHide = YES;
     
-    [_progressHUD hide:YES afterDelay:2];
+    [_progressHUD hideAnimated:YES afterDelay:2.0f];
 }
 
 -(void)setExtraCellLineHidden: (UITableView *)tableView {

@@ -130,30 +130,21 @@
 
 - (void)getScriptVersion {
     BLQueryResourceVersionResult *result = [[BLLet sharedLet].controller queryScriptVersion:[self.device getPid]];
-    if ([result succeed]) {
-        BLResourceVersion *version = [result.versions firstObject];
-        self.resultText = [NSString stringWithFormat:@"Script Pid:%@\n Version:%@", version.pid, version.version];
-    } else {
-        self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-    }
+    self.resultText = [result BLS_modelToJSONString];
+    
     [self.tableView reloadData];
 }
 
 - (void)getUIVersion {
     BLQueryResourceVersionResult *result = [[BLLet sharedLet].controller queryUIVersion:[self.device getPid]];
-    if ([result succeed]) {
-        BLResourceVersion *version = [result.versions firstObject];
-        self.resultText = [NSString stringWithFormat:@"UI Pid:%@\n Version:%@", version.pid, version.version];
-    } else {
-        self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-    }
+    self.resultText = [result BLS_modelToJSONString];
+    
     [self.tableView reloadData];
 }
 
 - (void)downloadScript {
     [self showIndicatorOnWindowWithMessage:@"Script Downloading..."];
     NSLog(@"Start downloadScript");
-//    NSString *pid = @"000000000000000000000000b54f0000";
     NSString *pid = self.device.pid;
     
     [[BLLet sharedLet].controller downloadScript:pid completionHandler:^(BLDownloadResult * _Nonnull result) {

@@ -35,9 +35,7 @@
     self.areasTable.dataSource = self;
     [self setExtraCellLineHidden:self.areasTable];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self querySubAreas];
-    });
+    [self querySubAreas];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -53,39 +51,42 @@
     BLIRCode *blircode = [BLIRCode sharedIrdaCode];
     
     if (self.currentArea.isleaf != 1) {
-        [blircode requestSubAreaWithLocateid:self.currentArea.locateid completionHandler:^(BLBaseBodyResult * _Nonnull result) {
+        [self showIndicatorOnWindow];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [blircode requestSubAreaWithLocateid:self.currentArea.locateid completionHandler:^(BLBaseBodyResult * _Nonnull result) {
+                if ([result succeed]) {
+                    [self.areaInfos removeAllObjects];
+                    NSData *jsonData = [result.responseBody dataUsingEncoding:NSUTF8StringEncoding];
+                    NSDictionary *responseBodydic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                                                    options:NSJSONReadingMutableContainers
+                                                                                      error:nil];
 
-            if ([result succeed]) {
-                [self.areaInfos removeAllObjects];
-                
-                NSData *jsonData = [result.responseBody dataUsingEncoding:NSUTF8StringEncoding];
-                NSDictionary *responseBodydic = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                                                options:NSJSONReadingMutableContainers
-                                                                                  error:nil];
-
-                for (NSDictionary *dic in responseBodydic[@"subareainfo"]) {
-                    IRCodeSubAreaInfo *info = [IRCodeSubAreaInfo BLS_modelWithDictionary:dic];
-                    [self.areaInfos addObject:info];
+                    if (responseBodydic[@"subareainfo"] && [responseBodydic[@"subareainfo"] isKindOfClass:[NSArray class]]) {
+                        for (NSDictionary *dic in responseBodydic[@"subareainfo"]) {
+                            IRCodeSubAreaInfo *info = [IRCodeSubAreaInfo BLS_modelWithDictionary:dic];
+                            [self.areaInfos addObject:info];
+                        }
+                    }
+        
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self hideIndicatorOnWindow];
+                        self.title = self.currentArea.name;
+                        [self.areasTable reloadData];
+                    });
+                    
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self hideIndicatorOnWindow];
+                        [BLStatusBar showTipMessageWithStatus:result.msg];
+                    });
                 }
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    self.title = self.currentArea.name;
-                    [self.areasTable reloadData];
-                });
-                
-            } else {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [BLStatusBar showTipMessageWithStatus:result.msg];
-                });
-            }
-        }];
-    } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            CateGoriesTableViewController *vc = [CateGoriesTableViewController viewController];
-            vc.subAreainfo = self.currentArea;
-            vc.devtype = BL_IRCODE_DEVICE_TV_BOX;
-            [self.navigationController pushViewController:vc animated:YES];
+            }];
         });
+    } else {
+        CateGoriesTableViewController *vc = [CateGoriesTableViewController viewController];
+        vc.subAreainfo = self.currentArea;
+        vc.devtype = BL_IRCODE_DEVICE_TV_BOX;
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -116,9 +117,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     self.currentArea = self.areaInfos[indexPath.row];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self querySubAreas];
-    });
+    [self showIndicatorOnWindow];
+    [self querySubAreas];
 }
 
 @end

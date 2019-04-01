@@ -33,9 +33,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self getProductCategoryList];
-    });
+    [self getProductCategoryList];
 }
 
 - (void)viewInit {
@@ -63,17 +61,22 @@
                                   @"protocols": @[]};
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:@"/ec4/v1/system/resource/categorylist"];
     
-    [self generatePost:url head:headers data:parameters timeout:[BLConfigParam sharedConfigParam].httpTimeout completionHandler:^(NSData *data, NSError *error) {
-        if (data) {
-            BLProductCategoryList *productCategoryList = [BLProductCategoryList BLS_modelWithJSON:data];
-            self.categoryArray = productCategoryList.categorylist;
-            self.hotDeviceArray = productCategoryList.hotproducts;
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.collectionView reloadData];
-        });
-        
-    }];
+    [self showIndicatorOnWindow];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self generatePost:url head:headers data:parameters timeout:[BLConfigParam sharedConfigParam].httpTimeout completionHandler:^(NSData *data, NSError *error) {
+            if (data) {
+                BLProductCategoryList *productCategoryList = [BLProductCategoryList BLS_modelWithJSON:data];
+                self.categoryArray = productCategoryList.categorylist;
+                self.hotDeviceArray = productCategoryList.hotproducts;
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideIndicatorOnWindow];
+                [self.collectionView reloadData];
+            });
+            
+        }];
+    });
 }
 
 - (void)generatePost:(NSString *)url
