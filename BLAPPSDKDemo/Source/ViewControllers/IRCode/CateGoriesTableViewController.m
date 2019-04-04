@@ -59,19 +59,17 @@
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
             [self.brandInfos removeAllObjects];
-            
-            NSLog(@"response:%@", result.responseBody);
-            NSData *jsonData = [result.responseBody dataUsingEncoding:NSUTF8StringEncoding];
-            NSDictionary *responseBodydic = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                                            options:NSJSONReadingMutableContainers
-                                                                              error:nil];
-            
-            if (![BLCommonTools isEmptyArray:responseBodydic[@"brand"]]) {
-                for (NSDictionary *dic in responseBodydic[@"brand"]) {
-                    IRCodeBrandInfo *info = [IRCodeBrandInfo BLS_modelWithDictionary:dic];
-                    [self.brandInfos addObject:info];
+
+            if (result.respbody) {
+                NSArray *brands = result.respbody[@"brand"];
+                if (![BLCommonTools isEmptyArray:brands]) {
+                    for (NSDictionary *dic in brands) {
+                        IRCodeBrandInfo *info = [IRCodeBrandInfo BLS_modelWithDictionary:dic];
+                        [self.brandInfos addObject:info];
+                    }
                 }
             }
+
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
             });
@@ -86,29 +84,25 @@
 
 - (void)querySTBProvider {
     
-    [self.blircode requestSTBProviderWithLocateid:_subAreainfo.locateid completionHandler:^(BLBaseBodyResult * _Nonnull result) {
+    [self.blircode requestSTBProviderWithLocateid:self.subAreainfo.locateid completionHandler:^(BLBaseBodyResult * _Nonnull result) {
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
-            NSLog(@"response:%@", result.responseBody);
-            if (result.responseBody) {
-                [self.brandInfos removeAllObjects];
-                
-                NSData *jsonData = [result.responseBody dataUsingEncoding:NSUTF8StringEncoding];
-                NSDictionary *responseBodydic = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                                                options:NSJSONReadingMutableContainers
-                                                                                  error:nil];
+            [self.brandInfos removeAllObjects];
 
-                if (![BLCommonTools isEmptyArray:responseBodydic[@"providerinfo"]]) {
-                    for (NSDictionary *dic in responseBodydic[@"providerinfo"]) {
+            if (result.respbody) {
+                NSArray *providers = result.respbody[@"providerinfo"];
+                
+                if (![BLCommonTools isEmptyArray:providers]) {
+                    for (NSDictionary *dic in providers) {
                         IRCodeProviderInfo *info = [IRCodeProviderInfo BLS_modelWithDictionary:dic];
                         [self.brandInfos addObject:info];
                     }
                 }
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView reloadData];
-                });
             }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [BLStatusBar showTipMessageWithStatus:result.msg];

@@ -77,6 +77,20 @@ static BLDeviceService *_deviceService = nil;
         NSString *did = device.did;
         [self.manageDevices setObject:device forKey:did];
     }
+//    
+//    BLDNADevice *device = [[BLDNADevice alloc] init];
+//    device.did = @"00000000000000000000b4430dbc2cc4";
+//    device.mac = @"b4:43:0d:bc:2c:c4";
+//    device.pid = @"000000000000000000000000ad4e0000";
+//    device.name = @"温控器";
+//    device.controlKey = @"da1ecea672bae66e8a96d2f23e5aca46";
+//    device.controlId = 1;
+//    device.password = 175708214;
+//    device.type = 20141;
+//    
+//    [[BLLet sharedLet].controller addDevice:device];
+//    [self.manageDevices setObject:device forKey:device.did];
+//    
 }
 
 - (void)addNewDeivce:(BLDNADevice *)device {

@@ -19,17 +19,27 @@
 @property (nonatomic, strong) BLController *blcontroller;
 @property (nonatomic, strong) BLIRCode *blircode;
 @property (nonatomic, strong) NSMutableArray *tvList;
-@property (nonatomic, strong) BLDNADevice *device;
 
 @end
 
 @implementation RecoginzeIRCodeViewController
+
++ (instancetype)viewController {
+    RecoginzeIRCodeViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+    return vc;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.blcontroller = [BLLet sharedLet].controller;
     self.blircode = [BLIRCode sharedIrdaCode];
     self.tvList = [NSMutableArray arrayWithCapacity:0];
+    
+    if (![BLCommonTools isEmpty:self.downloadinfo.name]) {
+        self.title = self.downloadinfo.name;
+    } else {
+        self.title = [NSString stringWithFormat:@"%ld", self.downloadinfo.ircodeid];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,8 +48,15 @@
 }
 
 - (IBAction)downLoadIRCodeScript:(id)sender {
-    self.downloadinfo.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:self.downloadinfo.name];
-    [self downloadIRCodeScript:self.downloadinfo.downloadurl savePath:self.downloadinfo.savePath randkey:self.downloadinfo.key];
+    
+    if (![BLCommonTools isEmpty:self.downloadinfo.downloadurl]) {
+        self.downloadinfo.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:self.downloadinfo.name];
+        [self downloadIRCodeScript:self.downloadinfo.downloadurl savePath:self.downloadinfo.savePath randkey:self.downloadinfo.key];
+    } else {
+        NSString *ircodeid = [NSString stringWithFormat:@"%ld", self.downloadinfo.ircodeid];
+        self.downloadinfo.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:ircodeid];
+        [self downloadIRCodeScript:ircodeid savePath:self.downloadinfo.savePath];
+    }
 }
 
 - (IBAction)getIRCodeBaseInfo:(id)sender {
@@ -60,20 +77,45 @@
 }
 
 - (void)downloadIRCodeScript:(NSString *_Nonnull)urlString savePath:(NSString *_Nonnull)path randkey:(NSString *_Nullable)randkey {
-    
-    [self.blircode downloadIRCodeScriptWithUrl:urlString savePath:path randkey:randkey completionHandler:^(BLDownloadResult * _Nonnull result) {
-        NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
-        if ([result succeed]) {
-            NSLog(@"savepath:%@", result.savePath);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.ResultTxt.text = result.savePath;
-            });
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.ResultTxt.text = [NSString stringWithFormat:@"Download failed:%ld \nMsg:%@", (long)result.status, result.msg];
-            });
-        }
-    }];
+    [self showIndicatorOnWindow];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self.blircode downloadIRCodeScriptWithUrl:urlString savePath:path randkey:randkey completionHandler:^(BLDownloadResult * _Nonnull result) {
+            NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
+            [self hideIndicatorOnWindow];
+            if ([result succeed]) {
+                NSLog(@"savepath:%@", result.savePath);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.ResultTxt.text = result.savePath;
+                });
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.ResultTxt.text = [NSString stringWithFormat:@"Download failed:%ld \nMsg:%@", (long)result.status, result.msg];
+                });
+            }
+        }];
+    });
+}
+
+- (void)downloadIRCodeScript:(NSString *)ircodeid savePath:(NSString *_Nonnull)path {
+    [self showIndicatorOnWindow];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSLog(@"download url:%@", [[BLApiUrls sharedApiUrl] iRCodeDownloadUrl]);
+        [self.blircode downloadIRCodeScriptWithIRCodeid:ircodeid mtag:@"" savePath:path completionHandler:^(BLDownloadResult * _Nonnull result) {
+            NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
+            [self hideIndicatorOnWindow];
+            if ([result succeed]) {
+                NSLog(@"savepath:%@", result.savePath);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.ResultTxt.text = result.savePath;
+                });
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.ResultTxt.text = [NSString stringWithFormat:@"Download failed:%ld \nMsg:%@", (long)result.status, result.msg];
+                });
+            }
+        }];
+    });
+
 }
 
 - (void)queryIRCodeScriptInfoSavePath:(NSString *)savePath randkey:(NSString *)randkey deviceType:(NSInteger)devicetype {

@@ -423,6 +423,12 @@
 - (NSString *)iRCodeSTBChannelListUrl;
 
 /**
+ 获取机顶盒品牌列表
+ 
+ @return URL地址
+ */
+- (NSString *)iRCodeSTBBrandsGetUrl;
+/**
  红码匹配树接口
 
  @return URL地址

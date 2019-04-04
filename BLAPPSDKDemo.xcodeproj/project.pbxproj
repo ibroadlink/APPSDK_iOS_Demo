@@ -84,7 +84,11 @@
 		70A3904C1D83B1FC002F2867 /* httpDemo.js in Resources */ = {isa = PBXBuildFile; fileRef = 70A3904B1D83B1FC002F2867 /* httpDemo.js */; };
 		70DDAEF51DC73D4A005E4278 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 70DDAEE91DC73D4A005E4278 /* AppDelegate.m */; };
 		70DDAEF91DC73D4A005E4278 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 70DDAEF01DC73D4A005E4278 /* main.m */; };
+		8405E12F225485ED00DC73D1 /* IRCodeMatchTreeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8405E12E225485ED00DC73D1 /* IRCodeMatchTreeInfo.m */; };
+		8405E1322254BE4E00DC73D1 /* MatchTreeTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8405E1312254BE4E00DC73D1 /* MatchTreeTestController.m */; };
 		840F55C62231171C0026D3BE /* BLSNotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 840F55C52231171C0026D3BE /* BLSNotificationService.m */; };
+		8414253C2254538F00E8A7C8 /* BrandSelectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414253B2254538F00E8A7C8 /* BrandSelectController.m */; };
+		8414253F22545CCB00E8A7C8 /* MatchTreeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414253E22545CCB00E8A7C8 /* MatchTreeController.m */; };
 		842C960E221E3D0500B3A1A6 /* MemberListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C960D221E3D0500B3A1A6 /* MemberListViewController.m */; };
 		842C9611221E7AAC00B3A1A6 /* RoomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C9610221E7AAC00B3A1A6 /* RoomListViewController.m */; };
 		842C9614221E850300B3A1A6 /* EndpointListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C9613221E850300B3A1A6 /* EndpointListViewController.m */; };
@@ -263,8 +267,16 @@
 		70DDAEE91DC73D4A005E4278 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Source/AppDelegate.m; sourceTree = "<group>"; };
 		70DDAEF01DC73D4A005E4278 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Source/main.m; sourceTree = "<group>"; };
 		72367507CB38F6AA480979FA /* Pods-BLAPPSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLAPPSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		8405E12D225485ED00DC73D1 /* IRCodeMatchTreeInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCodeMatchTreeInfo.h; sourceTree = "<group>"; };
+		8405E12E225485ED00DC73D1 /* IRCodeMatchTreeInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRCodeMatchTreeInfo.m; sourceTree = "<group>"; };
+		8405E1302254BE4E00DC73D1 /* MatchTreeTestController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MatchTreeTestController.h; sourceTree = "<group>"; };
+		8405E1312254BE4E00DC73D1 /* MatchTreeTestController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MatchTreeTestController.m; sourceTree = "<group>"; };
 		840F55C42231171C0026D3BE /* BLSNotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLSNotificationService.h; sourceTree = "<group>"; };
 		840F55C52231171C0026D3BE /* BLSNotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSNotificationService.m; sourceTree = "<group>"; };
+		8414253A2254538F00E8A7C8 /* BrandSelectController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BrandSelectController.h; sourceTree = "<group>"; };
+		8414253B2254538F00E8A7C8 /* BrandSelectController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BrandSelectController.m; sourceTree = "<group>"; };
+		8414253D22545CCB00E8A7C8 /* MatchTreeController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MatchTreeController.h; sourceTree = "<group>"; };
+		8414253E22545CCB00E8A7C8 /* MatchTreeController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MatchTreeController.m; sourceTree = "<group>"; };
 		842C960C221E3D0500B3A1A6 /* MemberListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemberListViewController.h; sourceTree = "<group>"; };
 		842C960D221E3D0500B3A1A6 /* MemberListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MemberListViewController.m; sourceTree = "<group>"; };
 		842C960F221E7AAC00B3A1A6 /* RoomListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomListViewController.h; sourceTree = "<group>"; };
@@ -424,6 +436,12 @@
 				70503D8A1FDBE4D5002D3371 /* TVControllTableViewController.m */,
 				84F84205224A068A00D60C76 /* TVBoxAreaSelectController.h */,
 				84F84206224A068A00D60C76 /* TVBoxAreaSelectController.m */,
+				8414253A2254538F00E8A7C8 /* BrandSelectController.h */,
+				8414253B2254538F00E8A7C8 /* BrandSelectController.m */,
+				8414253D22545CCB00E8A7C8 /* MatchTreeController.h */,
+				8414253E22545CCB00E8A7C8 /* MatchTreeController.m */,
+				8405E1302254BE4E00DC73D1 /* MatchTreeTestController.h */,
+				8405E1312254BE4E00DC73D1 /* MatchTreeTestController.m */,
 			);
 			path = IRCode;
 			sourceTree = "<group>";
@@ -747,6 +765,8 @@
 				84F84216224A3E8A00D60C76 /* IRCodeModel.m */,
 				84F84212224A2FA200D60C76 /* IRCodeDownloadInfo.h */,
 				84F84213224A2FA200D60C76 /* IRCodeDownloadInfo.m */,
+				8405E12D225485ED00DC73D1 /* IRCodeMatchTreeInfo.h */,
+				8405E12E225485ED00DC73D1 /* IRCodeMatchTreeInfo.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -908,6 +928,7 @@
 				84EE08E4221D22380088EDE8 /* BLSManageRoomResult.m in Sources */,
 				84EE08E7221D33440088EDE8 /* BLSQueryEndpointsResult.m in Sources */,
 				3AFC6D7220EB5DDC003404E6 /* BLSystemImage.m in Sources */,
+				8414253C2254538F00E8A7C8 /* BrandSelectController.m in Sources */,
 				70503DB61FDBE4D6002D3371 /* DataPassthoughViewController.m in Sources */,
 				70503DAA1FDBE4D5002D3371 /* MyDeviceListViewController.m in Sources */,
 				3AEF737322253BDE00F2376A /* BLDeviceConfigIntroduction.m in Sources */,
@@ -946,6 +967,7 @@
 				70503DAB1FDBE4D5002D3371 /* DeviceMainViewController.m in Sources */,
 				3A9B60E02100377D0048540B /* JoinFamilyViewController.m in Sources */,
 				3AFC6D7520EB6063003404E6 /* Tools.m in Sources */,
+				8414253F22545CCB00E8A7C8 /* MatchTreeController.m in Sources */,
 				3ACDE3C120EC9CF00016461D /* ModifyPhoneViewController.m in Sources */,
 				70503DB81FDBE4D6002D3371 /* FamilyDetailViewController.m in Sources */,
 				025A168720E33CBC00D75DAB /* RestPasswordViewController.m in Sources */,
@@ -966,6 +988,7 @@
 				70503D9D1FDBE4D5002D3371 /* A1ViewController.m in Sources */,
 				3A44F4B12224ECA800936AFF /* BLProductCategoryList.m in Sources */,
 				84449FCD221BA5CC006D2A10 /* BLSFamilyInfo.m in Sources */,
+				8405E1322254BE4E00DC73D1 /* MatchTreeTestController.m in Sources */,
 				84EE08E1221D042B0088EDE8 /* BLSFamilyMembersResult.m in Sources */,
 				70503DB71FDBE4D6002D3371 /* SPViewController.m in Sources */,
 				842C9614221E850300B3A1A6 /* EndpointListViewController.m in Sources */,
@@ -982,6 +1005,7 @@
 				84F8420B224A09BF00D60C76 /* IRCodeSubAreaInfo.m in Sources */,
 				70503D561FDBE37A002D3371 /* BLDeviceService.m in Sources */,
 				3AEF73792226645500F2376A /* BLDeviceResetViewController.m in Sources */,
+				8405E12F225485ED00DC73D1 /* IRCodeMatchTreeInfo.m in Sources */,
 				842C960E221E3D0500B3A1A6 /* MemberListViewController.m in Sources */,
 				84F84219224A416900D60C76 /* IRCodeProviderInfo.m in Sources */,
 				842C9617221E964B00B3A1A6 /* EndpointAddViewController.m in Sources */,

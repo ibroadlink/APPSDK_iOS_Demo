@@ -56,18 +56,18 @@
             [blircode requestSubAreaWithLocateid:self.currentArea.locateid completionHandler:^(BLBaseBodyResult * _Nonnull result) {
                 if ([result succeed]) {
                     [self.areaInfos removeAllObjects];
-                    NSData *jsonData = [result.responseBody dataUsingEncoding:NSUTF8StringEncoding];
-                    NSDictionary *responseBodydic = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                                                    options:NSJSONReadingMutableContainers
-                                                                                      error:nil];
-
-                    if (responseBodydic[@"subareainfo"] && [responseBodydic[@"subareainfo"] isKindOfClass:[NSArray class]]) {
-                        for (NSDictionary *dic in responseBodydic[@"subareainfo"]) {
-                            IRCodeSubAreaInfo *info = [IRCodeSubAreaInfo BLS_modelWithDictionary:dic];
-                            [self.areaInfos addObject:info];
+                    
+                    if (result.respbody) {
+                        NSArray *infos = result.respbody[@"subareainfo"];
+                        
+                        if (![BLCommonTools isEmptyArray:infos]) {
+                            for (NSDictionary *dic in infos) {
+                                IRCodeSubAreaInfo *info = [IRCodeSubAreaInfo BLS_modelWithDictionary:dic];
+                                [self.areaInfos addObject:info];
+                            }
                         }
                     }
-        
+                    
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self hideIndicatorOnWindow];
                         self.title = self.currentArea.name;

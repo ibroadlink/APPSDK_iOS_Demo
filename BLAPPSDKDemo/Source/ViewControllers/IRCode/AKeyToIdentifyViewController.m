@@ -36,15 +36,14 @@
     [blircode recognizeIRCodeWithHexString:_recoginzeTxt.text completionHandler:^(BLBaseBodyResult * _Nonnull result) {
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
-            NSLog(@"response:%@", result.responseBody);
-            if (result.responseBody) {
+
+            if (result.respbody) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     self.resultTxt.text = result.responseBody;
                 });
-                NSData *responseData = [result.responseBody dataUsingEncoding:NSUTF8StringEncoding];
-                NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
-                NSArray *downloadInfos = [responseDic objectForKey:@"downloadinfo"];
-                if (downloadInfos && downloadInfos.count > 0) {
+                
+                NSArray *downloadInfos = [result.respbody objectForKey:@"downloadinfo"];
+                if (![BLCommonTools isEmptyArray:downloadInfos]) {
                     
                     self.randkey = downloadInfos[0][@"fixkey"];
                     self.downloadUrl = downloadInfos[0][@"downloadurl"];

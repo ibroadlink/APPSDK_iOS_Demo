@@ -10,6 +10,7 @@
 #import "TVBoxAreaSelectController.h"
 #import "CateGoriesTableViewController.h"
 #import "AKeyToIdentifyViewController.h"
+#import "BrandSelectController.h"
 
 #import "BLStatusBar.h"
 #import <BLLetIRCode/BLLetIRCode.h>
@@ -55,12 +56,10 @@
 - (void)acIRCodeSelect {
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"AC Code selection" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction *cateGories = [UIAlertAction actionWithTitle:@"Brand selection" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            CateGoriesTableViewController *vc = [CateGoriesTableViewController viewController];
-            vc.devtype = BL_IRCODE_DEVICE_AC;
-            [self.navigationController pushViewController:vc animated:YES];
-        });
+    UIAlertAction *cateGories = [UIAlertAction actionWithTitle:@"Choose Brand Model" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        CateGoriesTableViewController *vc = [CateGoriesTableViewController viewController];
+        vc.devtype = BL_IRCODE_DEVICE_AC;
+        [self.navigationController pushViewController:vc animated:YES];
     }];
     UIAlertAction *keyIdentify = [UIAlertAction actionWithTitle:@"Code one key recognition" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         [self performSegueWithIdentifier:@"aKeyToIdentify" sender:nil];
@@ -75,19 +74,48 @@
 }
 
 - (void)tvIRCodeSelect {
-    dispatch_async(dispatch_get_main_queue(), ^{
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"TV Code selection" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *cateGories = [UIAlertAction actionWithTitle:@"Choose Brand Model" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         CateGoriesTableViewController *vc = [CateGoriesTableViewController viewController];
         vc.devtype = BL_IRCODE_DEVICE_TV;
         [self.navigationController pushViewController:vc animated:YES];
-    });
+    }];
+    UIAlertAction *keyIdentify = [UIAlertAction actionWithTitle:@"Match Tree" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        BrandSelectController *vc = [BrandSelectController viewController];
+        vc.devtype = BL_IRCODE_DEVICE_TV;
+        [self.navigationController pushViewController:vc animated:YES];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    
+    [alertController addAction:cateGories];
+    [alertController addAction:keyIdentify];
+    [alertController addAction:cancelAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)tvBoxIRCodeSelect {
-    TVBoxAreaSelectController *vc = [TVBoxAreaSelectController viewController];
-    IRCodeSubAreaInfo *area = [[IRCodeSubAreaInfo alloc] init];
-    vc.currentArea = area;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"TV Code selection" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *cateGories = [UIAlertAction actionWithTitle:@"Choose Brand Model" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        TVBoxAreaSelectController *vc = [TVBoxAreaSelectController viewController];
+        IRCodeSubAreaInfo *area = [[IRCodeSubAreaInfo alloc] init];
+        vc.currentArea = area;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }];
+    UIAlertAction *keyIdentify = [UIAlertAction actionWithTitle:@"Match Tree" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        BrandSelectController *vc = [BrandSelectController viewController];
+        vc.devtype = BL_IRCODE_DEVICE_TV_BOX;
+        [self.navigationController pushViewController:vc animated:YES];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
-    [self.navigationController pushViewController:vc animated:YES];
+    [alertController addAction:cateGories];
+    [alertController addAction:keyIdentify];
+    [alertController addAction:cancelAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

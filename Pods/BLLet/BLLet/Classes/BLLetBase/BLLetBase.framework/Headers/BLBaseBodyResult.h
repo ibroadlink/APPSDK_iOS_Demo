@@ -15,4 +15,9 @@
  */
 @property (nonatomic, copy) NSString *responseBody;
 
+/**
+ Response body - Json.
+ */
+@property (nonatomic, copy) NSDictionary *respbody;
+
 @end

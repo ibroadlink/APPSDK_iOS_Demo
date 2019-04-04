@@ -51,21 +51,19 @@
     return cell;
 }
 
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     //获取的ircode使用RM发射接口发射
     NSString *ircode = [self queryTVIRCodeDataWithScript:self.savePath funcname:self.tvList[indexPath.row]];
-    NSLog(@"ircode----%@",ircode);
+    NSLog(@"ircode: %@", ircode);
     //发送红码
     BLStdData *stdStudyData = [[BLStdData alloc] init];
     [stdStudyData setValue:ircode forParam:@"irda"];
     BLStdControlResult *studyResult = [self.blcontroller dnaControl:[self.device getDid] stdData:stdStudyData action:@"set"];
     if ([studyResult succeed]) {
-        [BLStatusBar showTipMessageWithStatus:@"发送成功"];
+        [BLStatusBar showTipMessageWithStatus:@"Send Success"];
     }else{
         [BLStatusBar showTipMessageWithStatus:studyResult.msg];
     }
-    
 }
 
 - (NSString *)queryTVIRCodeDataWithScript:(NSString *_Nonnull)savePath funcname:(NSString *_Nonnull)funcname {

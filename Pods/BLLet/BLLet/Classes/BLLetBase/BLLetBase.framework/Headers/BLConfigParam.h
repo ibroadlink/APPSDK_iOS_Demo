@@ -21,17 +21,29 @@
 /** Get License from BroadLink Co., Ltd. */
 @property (nonatomic, copy) NSString *sdkLicense;
 
+/** APP Package Name (Bundle ID)**/
+@property (nonatomic, copy) NSString *packName;
+
 /** Get Company ID */
 @property (nonatomic, copy) NSString *companyId;
 
 /** Get License ID */
 @property (nonatomic, copy) NSString *licenseId;
 
+/** Get login user ID */
+@property (nonatomic, copy) NSString *userid;
+
+/** Get login user session */
+@property (nonatomic, copy) NSString *loginSession;
+
+/** Get login user family ID */
+@property (nonatomic, copy) NSString *familyId;
+
+/* Device Pair serInfo **/
+@property (nonatomic, copy) NSDictionary *deviceConnectServiceInfo;
+
 /** Global Http timeout, default 30000ms */
 @property (nonatomic, assign, getter=getHttpTimeout) NSUInteger httpTimeout;
-
-/** APP Package Name (Bundle ID)**/
-@property (nonatomic, copy, getter=getPackName) NSString *packName;
 
 /** Account Http request host base url */
 @property (nonatomic, copy, getter=getAccountHost) NSString *accountHost;
@@ -93,12 +105,10 @@
 /** APPService Enable , default 0 */
 @property (nonatomic, assign, getter=getAppServiceEnable) NSUInteger appServiceEnable;
 
-/* APP Controler remote resend , default 1 **/
+/* APP Controler remote resend , default 0 **/
 @property (nonatomic, assign) NSUInteger controllerResendMode;
 
 /* BLPicker Data report count, default 20 **/
 @property (nonatomic, assign) NSUInteger dataReportCount;
 
-/* Device Pair serInfo **/
-@property (nonatomic, copy) NSDictionary *deviceConnectServiceInfo;
 @end

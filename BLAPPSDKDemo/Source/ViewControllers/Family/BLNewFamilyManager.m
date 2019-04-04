@@ -28,8 +28,8 @@
 
 - (void)setFamilyid:(NSString *)familyid {
     _familyid = familyid;
+    [BLConfigParam sharedConfigParam].familyId = familyid;
     [[BLLet sharedLet].controller setCurrentFamilyId:familyid];
-    [BLIRCode sharedIrdaCode].familyId = familyid;
 }
 
 - (NSDictionary *)generateHttpHead {

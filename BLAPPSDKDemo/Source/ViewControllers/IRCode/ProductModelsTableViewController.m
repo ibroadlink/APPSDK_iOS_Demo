@@ -49,15 +49,14 @@
         if ([result succeed]) {
             [self.modelsArray removeAllObjects];
             
-            NSLog(@"response:%@", result.responseBody);
-            if (result.responseBody) {
-                
-                NSData *responseData = [result.responseBody dataUsingEncoding:NSUTF8StringEncoding];
-                NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
-                
-                for (NSDictionary *pdic in responseDic[@"downloadinfo"]) {
-                    IRCodeDownloadInfo *downloadinfo = [IRCodeDownloadInfo BLS_modelWithDictionary:pdic];
-                    [self.modelsArray addObject: downloadinfo];
+            if (result.respbody) {
+                NSArray *downloadInfos = result.respbody[@"downloadinfo"];
+
+                if (![BLCommonTools isEmptyArray:downloadInfos]) {
+                    for (NSDictionary *pdic in downloadInfos) {
+                        IRCodeDownloadInfo *downloadinfo = [IRCodeDownloadInfo BLS_modelWithDictionary:pdic];
+                        [self.modelsArray addObject: downloadinfo];
+                    }
                 }
             }
             
@@ -79,17 +78,14 @@
         if ([result succeed]) {
             [self.modelsArray removeAllObjects];
 
-            NSLog(@"response:%@", result.responseBody);
-            if (result.responseBody) {
-                
-                NSData *responseData = [result.responseBody dataUsingEncoding:NSUTF8StringEncoding];
-                NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
-                
-                for (NSDictionary *pdic in responseDic[@"downloadinfo"]) {
-                    IRCodeDownloadInfo *downloadinfo = [IRCodeDownloadInfo BLS_modelWithDictionary:pdic];
-                    [self.modelsArray addObject: downloadinfo];
+            if (result.respbody) {
+                NSArray *downloadInfos = result.respbody[@"downloadinfo"];
+                if (![BLCommonTools isEmptyArray:downloadInfos]) {
+                    for (NSDictionary *pdic in downloadInfos) {
+                        IRCodeDownloadInfo *downloadinfo = [IRCodeDownloadInfo BLS_modelWithDictionary:pdic];
+                        [self.modelsArray addObject: downloadinfo];
+                    }
                 }
-
             }
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -110,15 +106,14 @@
         [self.modelsArray removeAllObjects];
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
-            NSLog(@"response:%@", result.responseBody);
-            if (result.responseBody) {
-                
-                NSData *responseData = [result.responseBody dataUsingEncoding:NSUTF8StringEncoding];
-                NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
-                
-                for (NSDictionary *pdic in responseDic[@"downloadinfo"]) {
-                    IRCodeDownloadInfo *downloadinfo = [IRCodeDownloadInfo BLS_modelWithDictionary:pdic];
-                    [self.modelsArray addObject: downloadinfo];
+
+            if (result.respbody) {
+                NSArray *downloadInfos = result.respbody[@"downloadinfo"];
+                if (![BLCommonTools isEmptyArray:downloadInfos]) {
+                    for (NSDictionary *pdic in downloadInfos) {
+                        IRCodeDownloadInfo *downloadinfo = [IRCodeDownloadInfo BLS_modelWithDictionary:pdic];
+                        [self.modelsArray addObject: downloadinfo];
+                    }
                 }
             }
             

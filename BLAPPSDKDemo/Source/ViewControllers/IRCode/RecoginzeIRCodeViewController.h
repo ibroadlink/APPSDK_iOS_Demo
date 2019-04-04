@@ -8,11 +8,15 @@
 
 #import "BaseViewController.h"
 
-#import "IRCodeModel.h"
 #import "IRCodeDownloadInfo.h"
+
+@class BLDNADevice;
 
 @interface RecoginzeIRCodeViewController : BaseViewController
 
 @property (nonatomic, strong) IRCodeDownloadInfo *downloadinfo;
+@property (nonatomic, strong) BLDNADevice *device;
+
++ (instancetype)viewController;
 
 @end

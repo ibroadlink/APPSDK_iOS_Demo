@@ -13,25 +13,16 @@
 @interface BLIRCode : NSObject
 
 /**
- Account UserId
- */
-@property (nonatomic, strong) NSString *loginUserid;
-
-/**
- Account session
- */
-@property (nonatomic, strong) NSString *loginSession;
-
-/**
- Family Id
- */
-@property (nonatomic, copy) NSString *familyId;
-/**
  Get BLIRCode Object
 
  @return Object
  */
 + (nullable instancetype)sharedIrdaCode;
+
+/**
+ Start RM New Sub Device Work, add some block into sdk.
+ */
+- (void)startRMSubDeviceWork;
 
 /**
  IRService common request
@@ -111,6 +102,14 @@
  */
 - (void)requestSTBProviderWithLocateid:(NSUInteger)locateid completionHandler:(nullable void (^)(BLBaseBodyResult * _Nonnull result))completionHandler;
 
+
+/**
+ Get a list of set-top box brands
+
+ @param completionHandler Callback with brand infos
+ */
+- (void)requestSTBBrandsWithCompletionHandler:(nullable void (^)(BLBaseBodyResult * _Nonnull result))completionHandler;
+
 /**
  Get the set-top box ircode download URL
  
@@ -174,7 +173,7 @@
  @param waveCode waveCode
  @return UnitCode
  */
-- (NSString *_Nullable)waveCodeChangeToUnitCode:(NSString *)waveCode;
+- (NSString *_Nullable)waveCodeChangeToUnitCode:(NSString *_Nonnull)waveCode;
 
 /**
  unitCode Change To WaveCode
@@ -182,5 +181,26 @@
  @param unitCode unitCode
  @return WaveCode
  */
-- (NSString *_Nullable)unitCodeChangeToWaveCode:(NSString *)unitCode;
+- (NSString *_Nullable)unitCodeChangeToWaveCode:(NSString *_Nonnull)unitCode;
+
+/**
+ IRCode Match Tree
+ 
+ @param countrycode 国家码
+ @param devtypeid 产品类型id
+ @param brandid 品牌id
+ @param completionHandler callback
+ */
+- (void)getMatchTreeWithCountry:(NSString *_Nonnull)countrycode devtypeid:(NSUInteger)devtypeid brandid:(NSUInteger)brandid completionHandler:(nullable void (^)(BLBaseBodyResult * _Nonnull result))completionHandler;
+
+/**
+ Download ircode script with ircode id
+ 
+ @param ircodeid          Ircode id
+ @param mtag              " ":普通红码文件,"xz":空调xz文件,"gz":空调gz文件。电视机顶盒默认为json,空调为lua,其他为脚本
+ @param path              Ircode script store path
+ @param completionHandler   Callback with Ircode script decrypted key
+ */
+- (void)downloadIRCodeScriptWithIRCodeid:(NSString *_Nonnull)ircodeid mtag:(NSString *_Nonnull)mtag savePath:(NSString *_Nonnull)path completionHandler:(nullable void (^)(BLDownloadResult * _Nonnull result))completionHandler;
+
 @end

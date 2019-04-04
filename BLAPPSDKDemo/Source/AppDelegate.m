@@ -142,9 +142,7 @@
 
 
 #pragma mark - private method
-- (void)loadAppSdk {
-    [BLConfigParam sharedConfigParam].controllerResendMode = 0;                     // 本地控制失败，远程尝试控制
-    
+- (void)loadAppSdk {    
     BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
     if ([userDefault getPackName] && [userDefault getLicense]) {
         [BLConfigParam sharedConfigParam].packName = [userDefault getPackName];
@@ -174,8 +172,9 @@
     
     // 相关模块必须先初始化
     BLAccount *account = [BLAccount sharedAccount];
-    BLFamilyController *family = [BLFamilyController sharedManager];
+    
     BLIRCode *ircode = [BLIRCode sharedIrdaCode];
+    [ircode startRMSubDeviceWork];
     
     [[BLDeviceService sharedDeviceService] startDeviceManagment];
     [BLNewFamilyManager sharedFamily].licenseid = [BLConfigParam sharedConfigParam].licenseId;
