@@ -30,13 +30,6 @@
 
 @interface BLFamilyController : NSObject
 
-/** Obtain loginUserid from Login result */
-@property (nonatomic, copy)NSString *loginUserid;
-/** Obtain loginSession from Login result */
-@property (nonatomic, copy)NSString *loginSession;
-/** Obtain familyId from BLFamilyInfoResult */
-@property (nonatomic, copy)NSString *currentFamilyId;
-
 /**
  *  Get family controller with global config
  *  This method can only be used after "sharedManagerWithlicenseId:" .
@@ -87,11 +80,6 @@
  */
 - (void)createDefaultFamilyWithInfo:(nonnull NSString *)name country:(nullable NSString *)country province:(nullable NSString *)province city:(nullable NSString *)city completionHandler:(nullable void (^)(BLFamilyInfoResult * __nonnull result))completionHandler;
 
-/**
- * Set current family id
- * @param currentFamilyId currentFamilyId
- */
-- (void)setCurrentFamilyId:(NSString *_Nullable)currentFamilyId;
 /**
  Query all family id list by current login user.
  

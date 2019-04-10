@@ -8,6 +8,7 @@
 
 #import "DeviceMainViewController.h"
 #import "MyDeviceListViewController.h"
+#import "DeviceStressTestController.h"
 
 #import "DeviceDB.h"
 #import "BLUserDefaults.h"
@@ -50,6 +51,12 @@
 
 - (IBAction)myDeviceList:(id)sender {
     [self performSegueWithIdentifier:@"MyDeviceListView" sender:nil];
+}
+
+
+- (IBAction)pushToDeviceStressTestView:(id)sender {
+    DeviceStressTestController *vc = [DeviceStressTestController viewController];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

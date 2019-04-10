@@ -16,6 +16,5 @@ FOUNDATION_EXPORT const unsigned char BLLetFamilyVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <BLLetFamily/PublicHeader.h>
 
-
 #import "BLFamilyController.h"
-#import "BLProduct.h"
+

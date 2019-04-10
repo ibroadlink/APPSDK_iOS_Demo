@@ -19,6 +19,7 @@ FOUNDATION_EXPORT const unsigned char BLLetBaseVersionString[];
 #import "BLLog.h"
 #import "BLApiUrls.h"
 #import "BLBaseHttpAccessor.h"
+#import "BLFamilyHttpAccessor.h"
 #import "BLCommonTools.h"
 #import "BLConstantInner.h"
 #import "BLConstants.h"

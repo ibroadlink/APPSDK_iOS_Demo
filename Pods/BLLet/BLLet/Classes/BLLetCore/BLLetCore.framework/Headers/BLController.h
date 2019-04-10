@@ -62,25 +62,6 @@
 @interface BLController : NSObject
 
 /**
- SDK License
- */
-@property (nonatomic, copy) NSString *sdkLicense;
-/**
- Account loginUserid
- */
-@property (nonatomic, copy) NSString *loginUserid;
-
-/**
- Account loginSession
- */
-@property (nonatomic, copy) NSString *loginSession;
-
-/**
- Obtain familyId from BLFamilyInfoResult
- */
-@property (nonatomic, copy) NSString *currentFamilyId;
-
-/**
  Device Controller Delegate
  */
 @property (nonatomic, weak) id <BLControllerDelegate> _Nullable delegate;
@@ -94,25 +75,19 @@
 + (instancetype _Nullable)sharedControllerWithLicense:(NSString *_Nonnull)license;
 
 /**
- * Set current family id
- * @param currentFamilyId currentFamilyId
+ Reset SDK License
+ 
+ @param license license
+ 
+ @return Reset result
  */
-- (void)setCurrentFamilyId:(NSString *_Nullable)currentFamilyId;
-
+- (BOOL)resetSdkLicense:(NSString *_Nonnull)license;
 /**
  Get DNASDK version
 
  @return                DNASDK version
  */
 - (NSString *_Nonnull)getSDKVersion;
-
-/**
- Set DNASDK device control only in lan.
-
- @param localMode       YES/NO
- @return                Set result
- */
-- (Boolean)setSDKOnlyLocalControl:(Boolean)localMode;
 
 /**
  Set DNASDK debug log level.
@@ -200,7 +175,7 @@
  @param tempArray   Device
  @return            Query result
  */
-- (BLQueryDeviceStatusResult *)queryDeviceOnServer:(NSArray<BLDNADevice *> *)tempArray;
+- (BLQueryDeviceStatusResult *_Nonnull)queryDeviceOnServer:(NSArray<BLDNADevice *> *_Nonnull)tempArray;
 
 /**
  Query device lan ip address.
@@ -253,7 +228,7 @@
 
  @param dids device did
  */
-- (void)addWhiteList:(NSArray *)dids;
+- (void)addWhiteList:(NSArray *_Nonnull)dids;
 
 /**
  Query device is in sdk
@@ -268,7 +243,7 @@
  @param did device did
  @return  Device info
  */
-- (BLDNADevice *)getDevice:(NSString *)did;
+- (BLDNADevice *_Nullable)getDevice:(NSString *_Nonnull)did;
 
 /**
  Remove device list from sdk.
@@ -996,5 +971,5 @@
  @param latitude latitude
  @return Sunrise and sunset time
  */
-- (BLSunriseResult *)calulateSunriseTimeWithData:(NSString *)data longitude:(double)longitude latitude:(double)latitude;
+- (BLSunriseResult *_Nonnull)calulateSunriseTimeWithData:(NSString *_Nonnull)data longitude:(double)longitude latitude:(double)latitude;
 @end

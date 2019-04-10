@@ -86,6 +86,7 @@
 		70DDAEF91DC73D4A005E4278 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 70DDAEF01DC73D4A005E4278 /* main.m */; };
 		8405E12F225485ED00DC73D1 /* IRCodeMatchTreeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8405E12E225485ED00DC73D1 /* IRCodeMatchTreeInfo.m */; };
 		8405E1322254BE4E00DC73D1 /* MatchTreeTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8405E1312254BE4E00DC73D1 /* MatchTreeTestController.m */; };
+		8405E139225C3B6000DC73D1 /* DeviceStressTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8405E138225C3B6000DC73D1 /* DeviceStressTestController.m */; };
 		840F55C62231171C0026D3BE /* BLSNotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 840F55C52231171C0026D3BE /* BLSNotificationService.m */; };
 		8414253C2254538F00E8A7C8 /* BrandSelectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414253B2254538F00E8A7C8 /* BrandSelectController.m */; };
 		8414253F22545CCB00E8A7C8 /* MatchTreeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414253E22545CCB00E8A7C8 /* MatchTreeController.m */; };
@@ -271,6 +272,8 @@
 		8405E12E225485ED00DC73D1 /* IRCodeMatchTreeInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRCodeMatchTreeInfo.m; sourceTree = "<group>"; };
 		8405E1302254BE4E00DC73D1 /* MatchTreeTestController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MatchTreeTestController.h; sourceTree = "<group>"; };
 		8405E1312254BE4E00DC73D1 /* MatchTreeTestController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MatchTreeTestController.m; sourceTree = "<group>"; };
+		8405E137225C3B6000DC73D1 /* DeviceStressTestController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceStressTestController.h; sourceTree = "<group>"; };
+		8405E138225C3B6000DC73D1 /* DeviceStressTestController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceStressTestController.m; sourceTree = "<group>"; };
 		840F55C42231171C0026D3BE /* BLSNotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLSNotificationService.h; sourceTree = "<group>"; };
 		840F55C52231171C0026D3BE /* BLSNotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSNotificationService.m; sourceTree = "<group>"; };
 		8414253A2254538F00E8A7C8 /* BrandSelectController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BrandSelectController.h; sourceTree = "<group>"; };
@@ -481,6 +484,8 @@
 				02AE9DAE2058BDD10054677B /* GeneralTimerControlView.m */,
 				3AB87FC622154DF200B97D38 /* FastconViewController.h */,
 				3AB87FC722154DF200B97D38 /* FastconViewController.m */,
+				8405E137225C3B6000DC73D1 /* DeviceStressTestController.h */,
+				8405E138225C3B6000DC73D1 /* DeviceStressTestController.m */,
 			);
 			path = DeviceControl;
 			sourceTree = "<group>";
@@ -984,6 +989,7 @@
 				3A44F4AE2223F03800936AFF /* ProductListViewController.m in Sources */,
 				84EE08F0221D3CED0088EDE8 /* BLSSceneInfo.m in Sources */,
 				70503DA61FDBE4D5002D3371 /* APConfigTableViewController.m in Sources */,
+				8405E139225C3B6000DC73D1 /* DeviceStressTestController.m in Sources */,
 				70503D9F1FDBE4D5002D3371 /* LoginByOauthViewController.m in Sources */,
 				70503D9D1FDBE4D5002D3371 /* A1ViewController.m in Sources */,
 				3A44F4B12224ECA800936AFF /* BLProductCategoryList.m in Sources */,

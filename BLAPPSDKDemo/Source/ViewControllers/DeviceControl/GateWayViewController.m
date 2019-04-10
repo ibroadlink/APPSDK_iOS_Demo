@@ -39,8 +39,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.device = [BLDeviceService sharedDeviceService].selectDevice;
-    //必须先设置家庭FamilyId
-    [BLLet sharedLet].controller.currentFamilyId = [BLNewFamilyManager sharedFamily].familyid;
     
     self.subDevicelist = [NSMutableArray arrayWithCapacity:0];
     self.privateDataCache = [NSMutableDictionary dictionaryWithCapacity:0];

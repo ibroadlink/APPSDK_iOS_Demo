@@ -29,7 +29,6 @@
 - (void)setFamilyid:(NSString *)familyid {
     _familyid = familyid;
     [BLConfigParam sharedConfigParam].familyId = familyid;
-    [[BLLet sharedLet].controller setCurrentFamilyId:familyid];
 }
 
 - (NSDictionary *)generateHttpHead {

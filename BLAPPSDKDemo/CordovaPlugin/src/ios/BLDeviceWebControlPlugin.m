@@ -20,7 +20,6 @@
 
 #import <BLLetAccount/BLLetAccount.h>
 #import <BLLetCore/BLLetCore.h>
-#import <BLLetCore/BLFamilyPrivateDataHttpAccessor.h>
 
 @implementation BLDeviceWebControlPlugin
 
@@ -340,7 +339,7 @@
             myUrlString = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:interface];
             NSDictionary *postDic = [self p_toDictory:httpBody];
 
-            BLFamilyPrivateDataHttpAccessor *accessor = [BLFamilyPrivateDataHttpAccessor sharedAccessor];
+            BLFamilyHttpAccessor *accessor = [BLFamilyHttpAccessor sharedAccessor];
             [accessor generatePost:myUrlString head:head data:postDic timeout:10*1000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
                 NSString *jsonString;
                 if (error) {
