@@ -10,7 +10,6 @@
 #import <BLLetBase/BLLetBase.h>
 #import <BLLetCore/BLLetCore.h>
 #import <BLLetAccount/BLLetAccount.h>
-#import <BLLetFamily/BLLetFamily.h>
 #import <BLLetIRCode/BLLetIRCode.h>
 
 #import "AppMacro.h"

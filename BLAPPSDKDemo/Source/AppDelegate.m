@@ -17,6 +17,7 @@
 
 #ifndef DISABLE_PUSH_NOTIFICATIONS
 #import "BLSNotificationService.h"
+#import "BLSMediator.h"
 #endif
 
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
@@ -62,6 +63,10 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationSignificantTimeChangeNotification object:nil];
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -88,20 +93,24 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSLog(@"userInfo == %@",userInfo);
-//    [self alertViewWithUserInfo:userInfo];
+    [self alertViewWithUserInfo:userInfo];
     [UIApplication sharedApplication].applicationIconBadgeNumber -= 1;
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
     
     completionHandler(UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert);
+    if (IsiOS10Later) {
+        [self alertViewWithUserInfo:notification.request.content.userInfo];
+        [UIApplication sharedApplication].applicationIconBadgeNumber -= 1;
+    }
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
     NSDictionary *userInfo = response.notification.request.content.userInfo;
-//    if(!self.pushMessageDic) {
-//        [self performWithPushMessage:userInfo];
-//    }
+    if(!self.pushMessageDic) {
+        [self performWithPushMessage:userInfo];
+    }
     completionHandler();
 }
 
@@ -138,6 +147,32 @@
     }
 }
 
+- (void)performWithPushMessage:(NSDictionary *)messageDic {
+    if (messageDic) {
+        NSDictionary *userinfo = [[messageDic objectForKey:@"data"] objectFromJSONString];
+        if (!userinfo) {
+            return;
+        }
+        NSString *urlStr = [userinfo objectForKey:@"action"];
+        NSURL *url = [[NSURL alloc] initWithString:urlStr];
+        [[BLSMediator shared] performActionWithURL:url completion:^(NSDictionary *info) {
+            self.pushMessageDic = nil;
+        }];
+    }
+}
+
+- (void)alertViewWithUserInfo:(NSDictionary *)userInfo {
+    NSString *message = [[userInfo objectForKey:@"aps"]objectForKey:@"alert"];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self performWithPushMessage:userInfo];
+    }];
+    [alert addAction:cancelAction];
+    [alert addAction:okAction];
+    [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+}
+
 #endif
 
 
@@ -157,6 +192,7 @@
     [BLConfigParam sharedConfigParam].controllerSendCount = 2;                      // 控制重试次数
     [BLConfigParam sharedConfigParam].controllerQueryCount = 8;                     // 设备批量查询设备个数
     [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;          // 脚本下载平台
+    
     
     // 使用云端集群
     [BLConfigParam sharedConfigParam].appServiceEnable = [userDefault getAppServiceEnable];
