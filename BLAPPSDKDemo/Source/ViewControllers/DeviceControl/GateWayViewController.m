@@ -46,6 +46,8 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
+    [BLConfigParam sharedConfigParam].familyId = @"016b134aaacecae761d4e621a40ea1d9";
+    
     [self write];
 }
 
@@ -221,7 +223,7 @@
 
 - (void)subDevListQuery:(NSUInteger)index  {
     if (index == 0) {
-        self.isAdd = YES;
+        self.isAdd = NO;
         [self.subDevicelist removeAllObjects];
     }
     

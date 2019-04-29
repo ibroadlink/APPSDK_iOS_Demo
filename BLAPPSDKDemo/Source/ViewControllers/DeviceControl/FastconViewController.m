@@ -13,7 +13,7 @@
 
 @interface FastconViewController ()
 @property (strong, nonatomic) BLDNADevice *device;
-@property (nonatomic, copy)NSMutableArray *configArray;
+@property (nonatomic, strong)NSMutableArray *configArray;
 @end
 
 @implementation FastconViewController
