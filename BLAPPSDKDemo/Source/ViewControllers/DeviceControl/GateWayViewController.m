@@ -22,7 +22,7 @@
 
 @property (nonatomic, strong) NSMutableDictionary *privateDataCache;
 
-@property (nonatomic, copy) NSMutableArray<BLDNADevice *>* subDevicelist;
+@property (nonatomic, strong) NSMutableArray<BLDNADevice *>* subDevicelist;
 
 @property (nonatomic, assign) BOOL isAdd;
 

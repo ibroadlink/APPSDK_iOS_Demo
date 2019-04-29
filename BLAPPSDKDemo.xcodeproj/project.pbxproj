@@ -12,7 +12,6 @@
 		025A168420E33C9700D75DAB /* RetrievePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 025A168320E33C9700D75DAB /* RetrievePasswordViewController.m */; };
 		025A168720E33CBC00D75DAB /* RestPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 025A168620E33CBC00D75DAB /* RestPasswordViewController.m */; };
 		0261054220E21AE400883EFC /* BLLoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0261054120E21AE400883EFC /* BLLoadingButton.m */; };
-		02AE62F12007139B00847CE5 /* libz.1.2.5.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 02AE62F02007139B00847CE5 /* libz.1.2.5.tbd */; };
 		02AE62F3200713A700847CE5 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 02AE62F2200713A700847CE5 /* libsqlite3.0.tbd */; };
 		02AE9DAF2058BDD10054677B /* GeneralTimerControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 02AE9DAE2058BDD10054677B /* GeneralTimerControlView.m */; };
 		02B415FD2008603300329783 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 02B415FC2008603300329783 /* config.xml */; };
@@ -103,8 +102,11 @@
 		84449FDD221BD61C006D2A10 /* BLSFamilyListResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84449FDC221BD61C006D2A10 /* BLSFamilyListResult.m */; };
 		846CA92D2248BBA200884421 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846CA92C2248BBA200884421 /* MainViewController.m */; };
 		846CA9302248CDB900884421 /* ModifyEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846CA92F2248CDB900884421 /* ModifyEmailViewController.m */; };
+		847A640A2269CFD300DAABA0 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 847A64082269CFD300DAABA0 /* GCDAsyncUdpSocket.m */; };
+		84906B642260893400FBA364 /* libz.1.2.11.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 84906B632260893400FBA364 /* libz.1.2.11.tbd */; };
 		84BACDE02236476500C1E5DA /* SceneListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BACDDF2236476500C1E5DA /* SceneListController.m */; };
 		84BACDE32236555F00C1E5DA /* SceneAddController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BACDE22236555F00C1E5DA /* SceneAddController.m */; };
+		84E246C2226EEB3A0042BB48 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E246C1226EEB3A0042BB48 /* ExternalAccessory.framework */; };
 		84EE08DB221CFB0C0088EDE8 /* BLSFamilyIconResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EE08DA221CFB0C0088EDE8 /* BLSFamilyIconResult.m */; };
 		84EE08DE221CFF140088EDE8 /* BLSInvitedQrcodeResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EE08DD221CFF140088EDE8 /* BLSInvitedQrcodeResult.m */; };
 		84EE08E1221D042B0088EDE8 /* BLSFamilyMembersResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EE08E0221D042B0088EDE8 /* BLSFamilyMembersResult.m */; };
@@ -307,10 +309,14 @@
 		846CA92C2248BBA200884421 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		846CA92E2248CDB900884421 /* ModifyEmailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyEmailViewController.h; sourceTree = "<group>"; };
 		846CA92F2248CDB900884421 /* ModifyEmailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModifyEmailViewController.m; sourceTree = "<group>"; };
+		847A64082269CFD300DAABA0 /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
+		847A64092269CFD300DAABA0 /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
+		84906B632260893400FBA364 /* libz.1.2.11.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.11.tbd; path = usr/lib/libz.1.2.11.tbd; sourceTree = SDKROOT; };
 		84BACDDE2236476500C1E5DA /* SceneListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneListController.h; sourceTree = "<group>"; };
 		84BACDDF2236476500C1E5DA /* SceneListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneListController.m; sourceTree = "<group>"; };
 		84BACDE12236555F00C1E5DA /* SceneAddController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneAddController.h; sourceTree = "<group>"; };
 		84BACDE22236555F00C1E5DA /* SceneAddController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneAddController.m; sourceTree = "<group>"; };
+		84E246C1226EEB3A0042BB48 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		84EE08D9221CFB0C0088EDE8 /* BLSFamilyIconResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLSFamilyIconResult.h; sourceTree = "<group>"; };
 		84EE08DA221CFB0C0088EDE8 /* BLSFamilyIconResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSFamilyIconResult.m; sourceTree = "<group>"; };
 		84EE08DC221CFF140088EDE8 /* BLSInvitedQrcodeResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLSInvitedQrcodeResult.h; sourceTree = "<group>"; };
@@ -349,8 +355,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84906B642260893400FBA364 /* libz.1.2.11.tbd in Frameworks */,
 				02AE62F3200713A700847CE5 /* libsqlite3.0.tbd in Frameworks */,
-				02AE62F12007139B00847CE5 /* libz.1.2.5.tbd in Frameworks */,
+				84E246C2226EEB3A0042BB48 /* ExternalAccessory.framework in Frameworks */,
 				AADA6EE36D3CC88AD40F195C /* libPods-BLAPPSDKDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -692,6 +699,7 @@
 		705B096B1D4F28DA00805109 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				847A64072269CFC200DAABA0 /* UDP */,
 				70503D951FDBE4D5002D3371 /* Utils */,
 				70503D5A1FDBE4D5002D3371 /* ViewControllers */,
 				70DDAEE81DC73D4A005E4278 /* AppDelegate.h */,
@@ -704,6 +712,8 @@
 		70AE16E81DB8B1A8002FF319 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84E246C1226EEB3A0042BB48 /* ExternalAccessory.framework */,
+				84906B632260893400FBA364 /* libz.1.2.11.tbd */,
 				02AE62F2200713A700847CE5 /* libsqlite3.0.tbd */,
 				02AE62F02007139B00847CE5 /* libz.1.2.5.tbd */,
 				D118C5D79AEB44CD00AD9904 /* libPods-BLAPPSDKDemo.a */,
@@ -755,6 +765,15 @@
 				3A39D67D223751EC008C8C9C /* BLSAddAuthResult.m */,
 			);
 			path = Result;
+			sourceTree = "<group>";
+		};
+		847A64072269CFC200DAABA0 /* UDP */ = {
+			isa = PBXGroup;
+			children = (
+				847A64092269CFD300DAABA0 /* GCDAsyncUdpSocket.h */,
+				847A64082269CFD300DAABA0 /* GCDAsyncUdpSocket.m */,
+			);
+			path = UDP;
 			sourceTree = "<group>";
 		};
 		84F84208224A099E00D60C76 /* Models */ = {
@@ -834,7 +853,7 @@
 								enabled = 0;
 							};
 							com.apple.WAC = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -931,6 +950,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84EE08E4221D22380088EDE8 /* BLSManageRoomResult.m in Sources */,
+				847A640A2269CFD300DAABA0 /* GCDAsyncUdpSocket.m in Sources */,
 				84EE08E7221D33440088EDE8 /* BLSQueryEndpointsResult.m in Sources */,
 				3AFC6D7220EB5DDC003404E6 /* BLSystemImage.m in Sources */,
 				8414253C2254538F00E8A7C8 /* BrandSelectController.m in Sources */,

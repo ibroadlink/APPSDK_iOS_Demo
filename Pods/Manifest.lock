@@ -1,16 +1,32 @@
 PODS:
+  - AFNetworking (3.2.1):
+    - AFNetworking/NSURLSession (= 3.2.1)
+    - AFNetworking/Reachability (= 3.2.1)
+    - AFNetworking/Security (= 3.2.1)
+    - AFNetworking/Serialization (= 3.2.1)
+    - AFNetworking/UIKit (= 3.2.1)
+  - AFNetworking/NSURLSession (3.2.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.2.1)
+  - AFNetworking/Security (3.2.1)
+  - AFNetworking/Serialization (3.2.1)
+  - AFNetworking/UIKit (3.2.1):
+    - AFNetworking/NSURLSession
   - BLExtension (0.0.1)
-  - BLLet/BLLetAccount (2.10.1):
-    - BLLet/BLLetBase
-  - BLLet/BLLetBase (2.10.1)
-  - BLLet/BLLetCore (2.10.1):
-    - BLLet/BLLetBase
-  - BLLet/BLLetFamily (2.10.1):
-    - BLLet/BLLetBase
-  - BLLet/BLLetIRCode (2.10.1):
-    - BLLet/BLLetBase
-  - BLLet/BLLetPlugins (2.10.1):
-    - BLLet/BLLetBase
+  - BLLetAccount (2.10.0):
+    - BLLetBase (~> 2.10)
+  - BLLetBase (2.10.1):
+    - AFNetworking
+  - BLLetCore (2.10.0):
+    - BLLetBase (~> 2.10)
+  - BLLetFamily (2.10.0):
+    - BLLetBase (~> 2.10)
+  - BLLetIRCode (2.10.4):
+    - BLLetCore (~> 2.10.0)
+  - BLLetPlugins (2.10.0):
+    - BLLetBase (~> 2.10)
   - BSBacktraceLogger (0.0.1)
   - CocoaLumberjack (3.5.2):
     - CocoaLumberjack/Core (= 3.5.2)
@@ -45,25 +61,26 @@ PODS:
   - YYCategories/no-arc (1.0.4)
 
 DEPENDENCIES:
-  - BLExtension
-  - BLLet/BLLetAccount (~> 2.10.1)
-  - BLLet/BLLetBase (~> 2.10.1)
-  - BLLet/BLLetCore (~> 2.10.1)
-  - BLLet/BLLetFamily (~> 2.10.1)
-  - BLLet/BLLetIRCode (~> 2.10.1)
-  - BLLet/BLLetPlugins (~> 2.10.1)
+  - BLExtension (~> 0.0.1)
+  - BLLetAccount (from `../../Gitlab/BLLetSDK/iOS/BLLetAccount`)
+  - BLLetBase (from `../../Gitlab/BLLetSDK/iOS/BLLetBase`)
+  - BLLetCore (from `../../Gitlab/BLLetSDK/iOS/BLLetCore`)
+  - BLLetFamily (from `../../Gitlab/BLLetSDK/iOS/BLLetFamily`)
+  - BLLetIRCode (from `../../Gitlab/BLLetSDK/iOS/BLLetIRCode`)
+  - BLLetPlugins (from `../../Gitlab/BLLetSDK/iOS/BLLetPlugins`)
   - Cordova (~> 4.4.0)
   - DoraemonKit/Core (~> 1.1.6)
   - DoraemonKit/WithLogger (~> 1.1.6)
   - Masonry (~> 0.6.2)
   - MBProgressHUD (~> 1.1.0)
-  - SDWebImage
+  - SDWebImage (~> 4.4.6)
   - SSZipArchive (~> 2.1.1)
   - SVProgressHUD
   - YYCategories (~> 1.0.4)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - AFNetworking
     - BLExtension
     - BSBacktraceLogger
     - CocoaLumberjack
@@ -79,12 +96,30 @@ SPEC REPOS:
     - UICountingLabel
     - "UITextView+Placeholder"
     - YYCategories
-  https://github.com/ibroadlink/BLLibSpecs.git:
-    - BLLet
+
+EXTERNAL SOURCES:
+  BLLetAccount:
+    :path: "../../Gitlab/BLLetSDK/iOS/BLLetAccount"
+  BLLetBase:
+    :path: "../../Gitlab/BLLetSDK/iOS/BLLetBase"
+  BLLetCore:
+    :path: "../../Gitlab/BLLetSDK/iOS/BLLetCore"
+  BLLetFamily:
+    :path: "../../Gitlab/BLLetSDK/iOS/BLLetFamily"
+  BLLetIRCode:
+    :path: "../../Gitlab/BLLetSDK/iOS/BLLetIRCode"
+  BLLetPlugins:
+    :path: "../../Gitlab/BLLetSDK/iOS/BLLetPlugins"
 
 SPEC CHECKSUMS:
+  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   BLExtension: 397cb05b32940fe0ce3467821ce56817c7f8bba8
-  BLLet: bbb8c1345688958995e94694f94a8d6adde1bffc
+  BLLetAccount: 4d5c600790f39b79813befda220397f2873cdf25
+  BLLetBase: 4eafe51bdaffcc187edefff14e4dc6589f38fb20
+  BLLetCore: 4b991e57d6dec2f78b56f175d3d4e4af879fc1a3
+  BLLetFamily: cc7a1cede3bab532bac3a18ce005dd8f8e9288af
+  BLLetIRCode: e79c71e463d32dbd38403db5301bdf93b7a1ecc6
+  BLLetPlugins: 0c2d7f234b9fb2458b15d79d20066b79827c3052
   BSBacktraceLogger: 06b983ee93a9f87d957960e9c73d660d5966b447
   CocoaLumberjack: 118bf4a820efc641f79fa487b75ed928dccfae23
   Cordova: 561576155c420c54441d99b855de12c6e7b51088
@@ -100,6 +135,6 @@ SPEC CHECKSUMS:
   "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
 
-PODFILE CHECKSUM: 1a6eff51ecb1099d318462703393a59f65203cd1
+PODFILE CHECKSUM: a966491d6c70ce575100b4b5b666647661b6217c
 
 COCOAPODS: 1.7.0.beta.2

@@ -1,6 +1,0 @@
-framework module BLLetBase {
-  umbrella header "BLLetBase.h"
-
-  export *
-  module * { export * }
-}

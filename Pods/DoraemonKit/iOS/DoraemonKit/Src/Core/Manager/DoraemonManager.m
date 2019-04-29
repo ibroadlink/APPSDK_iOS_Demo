@@ -76,7 +76,7 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
         Class pluginClass = NSClassFromString(pluginName);
         id<DoraemonStartPluginProtocol> plugin = [[pluginClass alloc] init];
         if (plugin) {
-            [plugin pluginDidLoad];
+            [plugin startPluginDidLoad];
         }
     }
 
@@ -156,23 +156,23 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
     [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonCocoaLumberjackPlugin];
 #endif
     
-//    #pragma mark - 性能检测
-//    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonFPSPlugin];
-//    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonCPUPlugin];
-//    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonMemoryPlugin];
-//    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonNetFlowPlugin];
-//    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonANRPlugin];
-//    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonAllTestPlugin];
-//#if DoraemonWithLoad
-//    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonMethodUseTimePlugin];
-//#endif
-//
-//    #pragma mark - 视觉工具
-//    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonColorPickPlugin];
-//    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonViewCheckPlugin];
-//
-//    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonViewAlignPlugin];
-//    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonViewMetricsPlugin];
+    #pragma mark - 性能检测
+    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonFPSPlugin];
+    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonCPUPlugin];
+    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonMemoryPlugin];
+    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonNetFlowPlugin];
+    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonANRPlugin];
+    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonAllTestPlugin];
+#if DoraemonWithLoad
+    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonMethodUseTimePlugin];
+#endif
+    
+    #pragma mark - 视觉工具
+    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonColorPickPlugin];
+    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonViewCheckPlugin];
+
+    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonViewAlignPlugin];
+    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonViewMetricsPlugin];
 }
 
 /**

@@ -12,11 +12,13 @@
 #import "Doraemoni18NUtil.h"
 #import "UIView+Doraemon.h"
 #import "UIColor+Doraemon.h"
+#import <CoreTelephony/CTCellularData.h>
 
 @interface DoraemonAppInfoViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSArray *dataArray;
+@property (nonatomic, strong) CTCellularData *cellularData;
 @property (nonatomic, copy) NSString *authority;
 
 @end
@@ -32,6 +34,8 @@
 
 - (void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
+    _cellularData.cellularDataRestrictionDidUpdateNotifier = nil;
+    _cellularData = nil;
 }
 
 - (BOOL)needBigTitleView{
@@ -64,6 +68,56 @@
     //获取手机型号
     NSString *iphoneType = [DoraemonAppInfoUtil iphoneType];
     
+    //获取bundle id
+    NSString *bundleIdentifier = [DoraemonAppInfoUtil bundleIdentifier];
+    
+    //获取App版本号
+    NSString *bundleVersion = [DoraemonAppInfoUtil bundleVersion];
+    
+    //获取App版本Code
+    NSString *bundleShortVersionString = [DoraemonAppInfoUtil bundleShortVersionString];
+    
+    //获取手机是否有地理位置权限
+    NSString *locationAuthority = [DoraemonAppInfoUtil locationAuthority];
+    
+    //获取网络权限
+    _cellularData = [[CTCellularData alloc]init];
+    __weak typeof(self) weakSelf = self;
+    _cellularData.cellularDataRestrictionDidUpdateNotifier = ^(CTCellularDataRestrictedState state) {
+        if (state == kCTCellularDataRestricted) {
+            weakSelf.authority = @"Restricted";
+        }else if(state == kCTCellularDataNotRestricted){
+            weakSelf.authority = @"NotRestricted";
+        }else{
+            weakSelf.authority = @"Unknown";
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
+        
+    };
+    
+    //获取push权限
+    NSString *pushAuthority = [DoraemonAppInfoUtil pushAuthority];
+    
+    //获取拍照权限
+    NSString *cameraAuthority = [DoraemonAppInfoUtil cameraAuthority];
+    
+    //获取麦克风权限
+    NSString *audioAuthority = [DoraemonAppInfoUtil audioAuthority];
+    
+    //获取相册权限
+    NSString *photoAuthority = [DoraemonAppInfoUtil photoAuthority];
+    
+    //获取通讯录权限
+    NSString *addressAuthority = [DoraemonAppInfoUtil addressAuthority];
+    
+    //获取日历权限
+    NSString *calendarAuthority = [DoraemonAppInfoUtil calendarAuthority];
+    
+    //获取提醒事项权限
+    NSString *remindAuthority = [DoraemonAppInfoUtil remindAuthority];
+    
     NSArray *dataArray = @[
                            @{
                                @"title":DoraemonLocalizedString(@"手机信息"),
@@ -85,24 +139,56 @@
                            @{
                                @"title":DoraemonLocalizedString(@"App信息"),
                                @"array":@[@{
-                                              @"title":@"SDK Version",
-                                              @"value":@"2.10.1"
+                                              @"title":@"Bundle ID",
+                                              @"value":bundleIdentifier
+                                              },
+                                          @{
+                                              @"title":@"Version",
+                                              @"value":bundleVersion
+                                              },
+                                          @{
+                                              @"title":@"VersionCode",
+                                              @"value":bundleShortVersionString
                                               }
                                           ]
                                },
                            @{
-                               @"title":DoraemonLocalizedString(@"云端信息"),
+                               @"title":DoraemonLocalizedString(@"权限信息"),
                                @"array":@[@{
-                                              @"title":DoraemonLocalizedString(@"集群名称"),
-                                              @"value":@"international 中国集群"
+                                              @"title":DoraemonLocalizedString(@"地理位置权限"),
+                                              @"value":locationAuthority
                                               },
                                           @{
-                                              @"title":DoraemonLocalizedString(@"集群名称版本号"),
-                                              @"value":@"v5.2.1"
+                                              @"title":DoraemonLocalizedString(@"网络权限"),
+                                              @"value":@"Unknown"
                                               },
                                           @{
-                                              @"title":DoraemonLocalizedString(@"域名地址"),
-                                              @"value":[NSString stringWithFormat:@"appservice.ibroadlink.com"]
+                                              @"title":DoraemonLocalizedString(@"推送权限"),
+                                              @"value":pushAuthority
+                                              },
+                                          @{
+                                              @"title":DoraemonLocalizedString(@"相机权限"),
+                                              @"value":cameraAuthority
+                                              },
+                                          @{
+                                              @"title":DoraemonLocalizedString(@"麦克风权限"),
+                                              @"value":audioAuthority
+                                              },
+                                          @{
+                                              @"title":DoraemonLocalizedString(@"相册权限"),
+                                              @"value":photoAuthority
+                                              },
+                                          @{
+                                              @"title":DoraemonLocalizedString(@"通讯录权限"),
+                                              @"value":addressAuthority
+                                              },
+                                          @{
+                                              @"title":DoraemonLocalizedString(@"日历权限"),
+                                              @"value":calendarAuthority
+                                              },
+                                          @{
+                                              @"title":DoraemonLocalizedString(@"提醒事项权限"),
+                                              @"value":remindAuthority
                                               }
                                           ]
                                }
