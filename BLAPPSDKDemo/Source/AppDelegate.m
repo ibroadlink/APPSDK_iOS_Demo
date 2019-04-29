@@ -195,6 +195,7 @@
     
     
     // 使用云端集群
+    // [BLConfigParam sharedConfigParam].appServiceEnable = 1;
     [BLConfigParam sharedConfigParam].appServiceEnable = [userDefault getAppServiceEnable];
     if ([BLConfigParam sharedConfigParam].appServiceEnable > 0) {
         NSString *cloudClusterHost = [userDefault getAppServiceHost];
@@ -203,7 +204,7 @@
         }
     }
     
-    [self.let setDebugLog:BL_LEVEL_DEBUG];                                          // Set APPSDK debug log level
+    [self.let setDebugLog:BL_LEVEL_ALL];                                          // Set APPSDK debug log level
     [self.let.controller setSDKRawDebugLevel:BL_LEVEL_DEBUG];                       // Set DNASDK debug log level
     
     // 相关模块必须先初始化

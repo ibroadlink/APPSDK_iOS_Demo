@@ -132,7 +132,14 @@ static NSString *const kDoreamonCrashListCellIdentifier = @"kDoreamonCrashListCe
 #pragma mark HandleFile
 
 - (void)handleFileWithPath:(NSString *)filePath{
-    UIAlertController *alertVc = [UIAlertController alertControllerWithTitle:DoraemonLocalizedString(@"请选择操作方式") message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertControllerStyle style;
+    if ([DoraemonAppInfoUtil isIpad]) {
+        style = UIAlertControllerStyleAlert;
+    }else{
+        style = UIAlertControllerStyleActionSheet;
+    }
+    
+    UIAlertController *alertVc = [UIAlertController alertControllerWithTitle:DoraemonLocalizedString(@"请选择操作方式") message:nil preferredStyle:style];
     __weak typeof(self) weakSelf = self;
     UIAlertAction *previewAction = [UIAlertAction actionWithTitle:DoraemonLocalizedString(@"本地预览") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         __strong typeof(self) strongSelf = weakSelf;
@@ -171,7 +178,14 @@ static NSString *const kDoreamonCrashListCellIdentifier = @"kDoreamonCrashListCe
                                     UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
     controller.excludedActivityTypes = excludedActivities;
     
-    [self presentViewController:controller animated:YES completion:nil];
+    if([DoraemonAppInfoUtil isIpad]){
+        if ( [controller respondsToSelector:@selector(popoverPresentationController)] ) {
+            controller.popoverPresentationController.sourceView = self.view;
+        }
+        [self presentViewController:controller animated:YES completion:nil];
+    }else{
+        [self presentViewController:controller animated:YES completion:nil];
+    }
 }
 
 #pragma mark - Delegate

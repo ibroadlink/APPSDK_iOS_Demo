@@ -68,7 +68,7 @@
                 self.roomList = result.roomInfos;
                 [self.roomListTable reloadData];
             } else {
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Delete Room Failed. Code:%ld MSG:%@", result.status, result.msg]];
+                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Get Rooms Failed. Code:%ld MSG:%@", result.status, result.msg]];
             }
         });
     }];

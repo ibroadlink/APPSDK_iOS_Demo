@@ -131,8 +131,11 @@
     [self createStressTestLogFile];
     [self writeLogToFileWithString:@"doStressTest start!!!"];
     
+    double successCost = 0;
+    int totalTimes = 0;
+    
     for (int k = 0; k < self.recycleTimes; k++) {
-        NSString *totalString = [NSString stringWithFormat:@"Recycle Total %ld, now %d", (long)self.recycleTimes, k+1];
+        NSString *totalString = [NSString stringWithFormat:@"Recycle Total %ld, now %d, success: %d, cost %lfms", (long)self.recycleTimes, k+1, totalTimes, successCost];
         
         for (int i = 0; i < self.cmdList.count; i++) {
             NSDictionary *cmdDic = self.cmdList[i];
@@ -164,10 +167,12 @@
             }
             
             for (int j = 0; j < count; j++) {
-                
+                double start = [[NSDate date] timeIntervalSince1970] * 1000;
                 [self writeLogToFileWithString:[NSString stringWithFormat:@"cmd:%@ times:%d", cmdDic, j]];
                 NSString *result = [controller dnaControl:gatewayDid subDevDid:subDeviceDid dataStr:dataStr command:cmd scriptPath:nil sendcount:1];
-                [self writeLogToFileWithString:[NSString stringWithFormat:@"result:%@", result]];
+                double end = [[NSDate date] timeIntervalSince1970] * 1000;
+                double cost = end - start;
+                [self writeLogToFileWithString:[NSString stringWithFormat:@"result:\n%@\ncost: %lfms", result, cost]];
                 
                 NSDictionary *retDic = [BLCommonTools deserializeMessageJSON:result];
                 int status = [retDic[@"status"] intValue];
@@ -187,6 +192,9 @@
                 
                 if (status == 0) {
                     success++;
+                    
+                    totalTimes++;
+                    successCost = (successCost * (totalTimes-1) + cost) / totalTimes;
                 } else {
                     failed++;
                 }

@@ -13,18 +13,26 @@
 #import "SSZipArchive.h"
 #import "BLDeviceService.h"
 
+#import "GCDAsyncUdpSocket.h"
+
 @interface OperateViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) BLDNADevice *device;
 
 @property (nonatomic, strong) NSArray *operateButtonArray;
 
+@property (nonatomic, strong) NSString *logfile;
+@property (nonatomic, strong) NSDateFormatter *formatter;
+
 @property (weak, nonatomic) IBOutlet UITextView *deviceInfoView;
 @property (weak, nonatomic) IBOutlet UITableView *operateTableView;
 
 @end
 
-@implementation OperateViewController
+@implementation OperateViewController {
+    BOOL isRunning;
+    GCDAsyncUdpSocket *udpSocket;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -48,16 +56,29 @@
                                 @"Device Firmware Upgrade",
                                 @"RM Device Demo",
                                 @"SP Device Demo",
-                                @"A1 Device Demo"
+                                @"A1 Device Demo",
+                                @"Start Log Redirect",
+                                @"Stop Log Redirect"
                                 ];
     
     self.operateTableView.delegate = self;
     self.operateTableView.dataSource = self;
     [self setExtraCellLineHidden:self.operateTableView];
+    
+    self.formatter = [[NSDateFormatter alloc] init];
+    [self.formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"]];
+    [self.formatter setDateFormat:@"yyyy-MM-dd_HH:mm:ss"];
+    
+    udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     self.navigationController.navigationBarHidden = NO;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self stopDeviceLogRedirect];
 }
 
 #pragma mark - table delegate
@@ -118,6 +139,12 @@
             break;
         case 11:
             [self A1Control];
+            break;
+        case 12:
+            [self startDeviceLogRedirect];
+        break;
+        case 13:
+            [self stopDeviceLogRedirect];
             break;
         default:
             break;
@@ -366,6 +393,137 @@
         return NO;
     }
     return YES;
+}
+
+- (BOOL)createDeviceLogFile {
+    
+    //将NSlog打印信息保存到Document目录下的Log文件夹下
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *logDirectory = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"DeviceLog"];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL fileExists = [fileManager fileExistsAtPath:logDirectory];
+    if (!fileExists) {
+        [fileManager createDirectoryAtPath:logDirectory  withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    
+    //每次启动后都保存一个新的日志文件中
+    NSString *dateStr = [self.formatter stringFromDate:[NSDate date]];
+    self.logfile = [logDirectory stringByAppendingFormat:@"/%@-%@.log", self.device.did, dateStr];
+    
+    BOOL isSuccess = [fileManager createFileAtPath:self.logfile contents:nil attributes:nil];
+    if (isSuccess) {
+        NSLog(@"createStressTestLogFile success");
+    } else {
+        NSLog(@"createStressTestLogFile fail");
+    }
+    
+    return isSuccess;
+}
+
+- (void)writeDeviceLogToFileWithString:(NSString *)log {
+    
+    if ([BLCommonTools isEmpty:log]) {
+        return;
+    }
+    
+    NSString *input = [NSString stringWithFormat:@"\n%@\n", log];
+    
+    NSFileHandle *outFile = [NSFileHandle fileHandleForWritingAtPath:self.logfile];
+    [outFile seekToEndOfFile];
+    [outFile writeData:[input dataUsingEncoding:NSUTF8StringEncoding]];
+    [outFile closeFile];
+    
+}
+
+- (void)startDeviceLogRedirect {
+    
+    // START udp echo server
+    int port = 18880;
+    
+    NSString *ipaddr = [BLNetworkImp getIPAddress:YES];
+    NSLog(@"IP:%@ Port:%d", ipaddr, port);
+    
+    if (ipaddr && !isRunning) {
+        NSError *error = nil;
+        
+        if (![udpSocket bindToPort:port error:&error])
+        {
+            [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Error starting server (bind): %@", error]];
+            return;
+        }
+        if (![udpSocket beginReceiving:&error])
+        {
+            [udpSocket close];
+            
+            [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Error starting server (recv): %@", error]];
+            return;
+        }
+        
+        _resultText.text = [NSString stringWithFormat:@"Udp Echo server started on port %hu", [udpSocket localPort]];
+        isRunning = YES;
+        
+        //发送命令给设备
+        NSDictionary *dic = @{
+                              @"enable":@(1),
+                              @"ip":ipaddr,
+                              @"port":@(port)
+                              };
+        NSString *dataStr = [BLCommonTools serializeMessage:dic];
+        
+        NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.did subDevDid:nil dataStr:dataStr command:@"device_log_redirect" scriptPath:nil sendcount:1];
+        
+        NSLog(@"startDeviceLogRedirect result:%@", result);
+    }
+}
+
+- (void)stopDeviceLogRedirect {
+    // STOP udp echo server
+    
+    if (isRunning) {
+        NSLog(@"Stopped Udp Echo server");
+
+        [udpSocket close];
+        isRunning = false;
+
+        int port = 18880;
+        //发送命令给设备
+        NSDictionary *dic = @{
+                              @"enable":@(0),
+                              @"ip":@"",
+                              @"port":@(port)
+                              };
+        NSString *dataStr = [BLCommonTools serializeMessage:dic];
+        
+        NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.did subDevDid:nil dataStr:dataStr command:@"device_log_redirect" scriptPath:nil sendcount:1];
+        
+        NSLog(@"stopDeviceLogRedirect result:%@", result);
+    }
+}
+
+- (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext
+{
+    if (!isRunning) return;
+    
+    NSString *msg = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    if (msg)
+    {
+        /* If you want to get a display friendly version of the IPv4 or IPv6 address, you could do this:
+         
+         NSString *host = nil;
+         uint16_t port = 0;
+         [GCDAsyncUdpSocket getHost:&host port:&port fromAddress:address];
+         
+         */
+        [self writeDeviceLogToFileWithString:msg];
+    }
+    else
+    {
+        NSString *errmsg = @"Error converting received data into UTF-8 String";
+        [self writeDeviceLogToFileWithString:errmsg];
+    }
+    
+//    [udpSocket sendData:data toAddress:address withTimeout:-1 tag:0];
 }
 
 

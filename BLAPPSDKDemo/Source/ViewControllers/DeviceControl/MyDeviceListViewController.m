@@ -21,7 +21,7 @@
     [self setExtraCellLineHidden:_MyDeviceTable];
     
     __weak typeof(self) weakSelf = self;
-    [NSTimer scheduledTimerWithTimeInterval:5.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
+    [NSTimer scheduledTimerWithTimeInterval:2.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
         [weakSelf.MyDeviceTable reloadData];
     }];
 }
