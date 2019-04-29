@@ -24,11 +24,16 @@
 		02B89AD62047A540004E0088 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 02B89ACD2047A53F004E0088 /* logo.png */; };
 		02B89AD72047A540004E0088 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 02B89ACE2047A53F004E0088 /* index.html */; };
 		02B89AD82047A540004E0088 /* index.js in Resources */ = {isa = PBXBuildFile; fileRef = 02B89AD02047A53F004E0088 /* index.js */; };
+		3A1D47A52275973100B8CA34 /* PushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1D47A42275973100B8CA34 /* PushViewController.m */; };
 		3A3444BF222D2C1500356241 /* ResetSDKInitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3444BD222D2C1500356241 /* ResetSDKInitViewController.m */; };
 		3A39D67E223751EC008C8C9C /* BLSAddAuthResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A39D67D223751EC008C8C9C /* BLSAddAuthResult.m */; };
 		3A44F4AE2223F03800936AFF /* ProductListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4AD2223F03800936AFF /* ProductListViewController.m */; };
 		3A44F4B12224ECA800936AFF /* BLProductCategoryList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4B02224ECA800936AFF /* BLProductCategoryList.m */; };
 		3A44F4B42225146300936AFF /* BLProductCategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4B32225146300936AFF /* BLProductCategoryModel.m */; };
+		3A4580A92276D92100283A17 /* LinkageTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4580A12276D92100283A17 /* LinkageTemplate.m */; };
+		3A4580AA2276D92100283A17 /* TemplateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4580A32276D92100283A17 /* TemplateAction.m */; };
+		3A4580AB2276D92100283A17 /* TemplateConditionsinfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4580A52276D92100283A17 /* TemplateConditionsinfo.m */; };
+		3A4580AC2276D92100283A17 /* LinkageInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4580A82276D92100283A17 /* LinkageInfo.m */; };
 		3A76A15022278AF7007DF83A /* BLWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A76A14F22278AF7007DF83A /* BLWebViewController.m */; };
 		3A9B60E02100377D0048540B /* JoinFamilyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9B60DF2100377D0048540B /* JoinFamilyViewController.m */; };
 		3AAC2A2A20EB250D00031DEC /* BLUserSaftyInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC2A2920EB250D00031DEC /* BLUserSaftyInfoCell.m */; };
@@ -40,6 +45,7 @@
 		3AEF73762226325A00F2376A /* BLConfigureStartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF73752226325A00F2376A /* BLConfigureStartViewController.m */; };
 		3AEF73792226645500F2376A /* BLDeviceResetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF73782226645500F2376A /* BLDeviceResetViewController.m */; };
 		3AEF737C222670BD00F2376A /* BLAddDeviceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF737B222670BD00F2376A /* BLAddDeviceListViewController.m */; };
+		3AF900C4227008BF00F57E9B /* BLSMediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF900C3227008BF00F57E9B /* BLSMediator.m */; };
 		3AFC6D6F20EB59E5003404E6 /* BLUserHeadImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC6D6E20EB59E5003404E6 /* BLUserHeadImageCell.m */; };
 		3AFC6D7220EB5DDC003404E6 /* BLSystemImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC6D7020EB5DDB003404E6 /* BLSystemImage.m */; };
 		3AFC6D7520EB6063003404E6 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC6D7420EB6063003404E6 /* Tools.m */; };
@@ -147,6 +153,8 @@
 		02B89ACD2047A53F004E0088 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		02B89ACE2047A53F004E0088 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		02B89AD02047A53F004E0088 /* index.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
+		3A1D47A32275973100B8CA34 /* PushViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PushViewController.h; sourceTree = "<group>"; };
+		3A1D47A42275973100B8CA34 /* PushViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PushViewController.m; sourceTree = "<group>"; };
 		3A3444BD222D2C1500356241 /* ResetSDKInitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetSDKInitViewController.m; sourceTree = "<group>"; };
 		3A3444BE222D2C1500356241 /* ResetSDKInitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetSDKInitViewController.h; sourceTree = "<group>"; };
 		3A39D67C223751EC008C8C9C /* BLSAddAuthResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLSAddAuthResult.h; sourceTree = "<group>"; };
@@ -158,6 +166,14 @@
 		3A44F4B02224ECA800936AFF /* BLProductCategoryList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLProductCategoryList.m; sourceTree = "<group>"; };
 		3A44F4B22225146300936AFF /* BLProductCategoryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLProductCategoryModel.h; sourceTree = "<group>"; };
 		3A44F4B32225146300936AFF /* BLProductCategoryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLProductCategoryModel.m; sourceTree = "<group>"; };
+		3A4580A12276D92100283A17 /* LinkageTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinkageTemplate.m; sourceTree = "<group>"; };
+		3A4580A22276D92100283A17 /* TemplateConditionsinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplateConditionsinfo.h; sourceTree = "<group>"; };
+		3A4580A32276D92100283A17 /* TemplateAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemplateAction.m; sourceTree = "<group>"; };
+		3A4580A42276D92100283A17 /* LinkageInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkageInfo.h; sourceTree = "<group>"; };
+		3A4580A52276D92100283A17 /* TemplateConditionsinfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemplateConditionsinfo.m; sourceTree = "<group>"; };
+		3A4580A62276D92100283A17 /* LinkageTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkageTemplate.h; sourceTree = "<group>"; };
+		3A4580A72276D92100283A17 /* TemplateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplateAction.h; sourceTree = "<group>"; };
+		3A4580A82276D92100283A17 /* LinkageInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinkageInfo.m; sourceTree = "<group>"; };
 		3A76A14E22278AF7007DF83A /* BLWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLWebViewController.h; sourceTree = "<group>"; };
 		3A76A14F22278AF7007DF83A /* BLWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLWebViewController.m; sourceTree = "<group>"; };
 		3A9B60DE2100377C0048540B /* JoinFamilyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoinFamilyViewController.h; sourceTree = "<group>"; };
@@ -181,6 +197,8 @@
 		3AEF73782226645500F2376A /* BLDeviceResetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLDeviceResetViewController.m; sourceTree = "<group>"; };
 		3AEF737A222670BD00F2376A /* BLAddDeviceListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLAddDeviceListViewController.h; sourceTree = "<group>"; };
 		3AEF737B222670BD00F2376A /* BLAddDeviceListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLAddDeviceListViewController.m; sourceTree = "<group>"; };
+		3AF900C2227008BF00F57E9B /* BLSMediator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLSMediator.h; sourceTree = "<group>"; };
+		3AF900C3227008BF00F57E9B /* BLSMediator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSMediator.m; sourceTree = "<group>"; };
 		3AFC6D6E20EB59E5003404E6 /* BLUserHeadImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUserHeadImageCell.m; sourceTree = "<group>"; };
 		3AFC6D7020EB5DDB003404E6 /* BLSystemImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLSystemImage.m; sourceTree = "<group>"; };
 		3AFC6D7120EB5DDC003404E6 /* BLSystemImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLSystemImage.h; sourceTree = "<group>"; };
@@ -562,6 +580,21 @@
 			path = Product;
 			sourceTree = "<group>";
 		};
+		3A4580A02276D92100283A17 /* Linkage */ = {
+			isa = PBXGroup;
+			children = (
+				3A4580A62276D92100283A17 /* LinkageTemplate.h */,
+				3A4580A12276D92100283A17 /* LinkageTemplate.m */,
+				3A4580A22276D92100283A17 /* TemplateConditionsinfo.h */,
+				3A4580A52276D92100283A17 /* TemplateConditionsinfo.m */,
+				3A4580A72276D92100283A17 /* TemplateAction.h */,
+				3A4580A32276D92100283A17 /* TemplateAction.m */,
+				3A4580A42276D92100283A17 /* LinkageInfo.h */,
+				3A4580A82276D92100283A17 /* LinkageInfo.m */,
+			);
+			path = Linkage;
+			sourceTree = "<group>";
+		};
 		3AAC2A2E20EB597C00031DEC /* UserCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -714,8 +747,13 @@
 		840F55C3223116D80026D3BE /* Push */ = {
 			isa = PBXGroup;
 			children = (
+				3A4580A02276D92100283A17 /* Linkage */,
 				840F55C42231171C0026D3BE /* BLSNotificationService.h */,
 				840F55C52231171C0026D3BE /* BLSNotificationService.m */,
+				3AF900C2227008BF00F57E9B /* BLSMediator.h */,
+				3AF900C3227008BF00F57E9B /* BLSMediator.m */,
+				3A1D47A32275973100B8CA34 /* PushViewController.h */,
+				3A1D47A42275973100B8CA34 /* PushViewController.m */,
 			);
 			path = Push;
 			sourceTree = "<group>";
@@ -796,7 +834,7 @@
 				705B094D1D4F1C5B00805109 /* Sources */,
 				705B094E1D4F1C5B00805109 /* Frameworks */,
 				705B094F1D4F1C5B00805109 /* Resources */,
-				286DED45BEC942B8FFED64F7 /* [CP] Copy Pods Resources */,
+				10CCFA33E92400C1D323B4A8 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -901,18 +939,22 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		286DED45BEC942B8FFED64F7 /* [CP] Copy Pods Resources */ = {
+		10CCFA33E92400C1D323B4A8 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputFileListPaths = (
+			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo-resources.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo-resources.sh",
 				"${PODS_ROOT}/BLExtension/BLExtension/BLExtension/Extensions/BLExtension.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/DoraemonKit/DoraemonKit.bundle",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/BLExtension.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DoraemonKit.bundle",
@@ -920,7 +962,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -939,6 +981,7 @@
 				3AEF737322253BDE00F2376A /* BLDeviceConfigIntroduction.m in Sources */,
 				3A39D67E223751EC008C8C9C /* BLSAddAuthResult.m in Sources */,
 				3A44F4B42225146300936AFF /* BLProductCategoryModel.m in Sources */,
+				3A4580A92276D92100283A17 /* LinkageTemplate.m in Sources */,
 				3AFC6D6F20EB59E5003404E6 /* BLUserHeadImageCell.m in Sources */,
 				70503DBA1FDBE4D6002D3371 /* BLUserDefaults.m in Sources */,
 				70503DA71FDBE4D5002D3371 /* OperateViewController.m in Sources */,
@@ -952,6 +995,7 @@
 				70503DB01FDBE4D6002D3371 /* ConfigureViewController.m in Sources */,
 				3AAC2A2D20EB252200031DEC /* BLUserLogoutCell.m in Sources */,
 				70503DA51FDBE4D5002D3371 /* CodeLoginViewController.m in Sources */,
+				3A4580AC2276D92100283A17 /* LinkageInfo.m in Sources */,
 				84449FD4221BD0E8006D2A10 /* BLSFamilyCreateResult.m in Sources */,
 				84F84207224A068A00D60C76 /* TVBoxAreaSelectController.m in Sources */,
 				846CA9302248CDB900884421 /* ModifyEmailViewController.m in Sources */,
@@ -981,6 +1025,7 @@
 				0261054220E21AE400883EFC /* BLLoadingButton.m in Sources */,
 				70503DA81FDBE4D5002D3371 /* RegisterViewController.m in Sources */,
 				3AEF737022253B2C00F2376A /* BLDeviceConfigureInfo.m in Sources */,
+				3A4580AB2276D92100283A17 /* TemplateConditionsinfo.m in Sources */,
 				0244948B20AEC26D0056FB10 /* UserViewController.m in Sources */,
 				3A76A15022278AF7007DF83A /* BLWebViewController.m in Sources */,
 				84EE08F3221D414F0088EDE8 /* BLSAddSceneResult.m in Sources */,
@@ -994,6 +1039,7 @@
 				70503D9D1FDBE4D5002D3371 /* A1ViewController.m in Sources */,
 				3A44F4B12224ECA800936AFF /* BLProductCategoryList.m in Sources */,
 				84449FCD221BA5CC006D2A10 /* BLSFamilyInfo.m in Sources */,
+				3AF900C4227008BF00F57E9B /* BLSMediator.m in Sources */,
 				8405E1322254BE4E00DC73D1 /* MatchTreeTestController.m in Sources */,
 				84EE08E1221D042B0088EDE8 /* BLSFamilyMembersResult.m in Sources */,
 				70503DB71FDBE4D6002D3371 /* SPViewController.m in Sources */,
@@ -1011,10 +1057,12 @@
 				84F8420B224A09BF00D60C76 /* IRCodeSubAreaInfo.m in Sources */,
 				70503D561FDBE37A002D3371 /* BLDeviceService.m in Sources */,
 				3AEF73792226645500F2376A /* BLDeviceResetViewController.m in Sources */,
+				3A4580AA2276D92100283A17 /* TemplateAction.m in Sources */,
 				8405E12F225485ED00DC73D1 /* IRCodeMatchTreeInfo.m in Sources */,
 				842C960E221E3D0500B3A1A6 /* MemberListViewController.m in Sources */,
 				84F84219224A416900D60C76 /* IRCodeProviderInfo.m in Sources */,
 				842C9617221E964B00B3A1A6 /* EndpointAddViewController.m in Sources */,
+				3A1D47A52275973100B8CA34 /* PushViewController.m in Sources */,
 				70DDAEF51DC73D4A005E4278 /* AppDelegate.m in Sources */,
 				70503DAC1FDBE4D5002D3371 /* ProductModelsTableViewController.m in Sources */,
 				84F84214224A2FA200D60C76 /* IRCodeDownloadInfo.m in Sources */,

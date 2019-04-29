@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *resultText;
 @property (weak, nonatomic) IBOutlet UITableView *cmdTable;
 
+@property (nonatomic, strong) BLDNADevice *device;
 @property (nonatomic, strong) NSMutableArray *cmdList;
 @property (nonatomic, assign) NSUInteger recycleTimes;
 
@@ -49,7 +50,7 @@
     
     switch (sender.tag) {
         case 100:
-            [self showCmdInputView];
+            [self showDeviceList];
             break;
         case 102:
             [self startStressTest];
@@ -211,9 +212,11 @@
             usleep(delay * 1000);
         }
     }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self writeLogToFileWithString:self.resultText.text];
+        [self writeLogToFileWithString:@"doStressTest over!!!"];
+    });
     
-    [self writeLogToFileWithString:self.resultText.text];
-    [self writeLogToFileWithString:@"doStressTest over!!!"];
 }
 
 - (void)startStressTest {
@@ -224,7 +227,7 @@
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Times input" message:nil preferredStyle:UIAlertControllerStyleAlert];
     [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.text = @"";
+        textField.text = @"1";
         textField.placeholder = @"Recycle Times";
     }];
     [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -250,20 +253,76 @@
     self.logfile = nil;
 }
 
-- (void)showCmdInputView {
+- (void)showDeviceList {
+    BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:@"Please Select Device" preferredStyle:UIAlertControllerStyleActionSheet];
+    [deviceService.manageDevices enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull did, BLDNADevice * _Nonnull dev, BOOL * _Nonnull stop) {
+        UIAlertAction *action = [UIAlertAction actionWithTitle:[NSString stringWithFormat:@"%@%@",dev.name,did] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            self.device = dev;
+            [self showCmdList];
+        }];
+        [alert addAction:action];
+    }];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)showCmdList {
+    NSDictionary *cmdList = @{
+                              @"dev_ctrl":@"{\"vals\":[[{\"val\":1,\"idx\":1}]],\"act\":\"set\",\"params\":[\"pwr\"],\"prop\":\"stdctrl\"}",
+                              @"dev_passthrough":@"",
+                              @"dev_online":@"",
+                              @"dev_info":@"{\"data\":{\"name\":\"xxx\",\"lock\":false}}",
+                              @"fw_version":@"",
+                              @"fw_upgrade":@"{\"hw_url\":\"xxx\"}",
+                              @"serv_time":@"",
+                              @"fastcon_no_config":@"{\"did\":\"xxx\",\"act\":1}",
+                              @"dev_newsubdev_scan_start":@"{\"pid\":\"xxx\"}",
+                              @"dev_newsubdev_scan_stop":@"",
+                              @"dev_newsubdevlist":@"{\"count\":5,\"index\":0}",
+                              @"dev_subdevdel":@"{\"did\":\"xxx\"}",
+                              @"dev_subdev_backup":@"{\"count\":5,\"index\":0}",
+                              @"dev_subdev_restore":@"",
+                              @"dev_subdev_update_version":@"{\"did\":\"xxx\",\"hw_url\":\"xxx\"}",
+                              @"dev_subdevmodify":@"{\"did\":\"xxx\",\"pid\":\"xxx\",\"name\":\"xxx\",\"lock\":false,\"type\":10024}",
+                              @"dev_subdev_timer":@"",
+                              @"dev_subdev_query_version":@"{\"did\":\"xxx\"}",
+                              @"dev_tasklist":@"",
+                              @"dev_taskadd":@"",
+                              @"dev_taskdel":@"",
+                              @"dev_taskdata":@"",
+                              @"service_info_get":@"",
+                              @"dev_data":@"{\"vals\":[[{\"val\":1,\"idx\":1}]],\"act\":\"set\",\"params\":[\"pwr\"],\"prop\":\"stdctrl\"}",
+                              @"dev_reset":@"",
+                              @"dev_log_redirect":@""
+                            };
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:@"Please Select Cmd" preferredStyle:UIAlertControllerStyleActionSheet];
+    [cmdList enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        UIAlertAction *action = [UIAlertAction actionWithTitle:key style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self showCmdInputViewWithKey:key Value:obj];
+        }];
+        [alert addAction:action];
+    }];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)showCmdInputViewWithKey:(NSString *)key Value:(NSString *)value {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Cmd input" message:nil preferredStyle:UIAlertControllerStyleAlert];
     [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.text = @"";
+        textField.text = self.device.did;
         textField.placeholder = @"Device did";
     }];
     
     [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.text = @"";
+        textField.text = key;
         textField.placeholder = @"Cmd. Default : dev_ctrl";
     }];
     
     [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.text = @"{\"vals\":[[{\"val\":1,\"idx\":1}]],\"act\":\"set\",\"params\":[\"pwr\"],\"prop\":\"stdctrl\"}";
+        textField.text = value;
         textField.placeholder = @"Data String";
     }];
     
@@ -356,6 +415,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         [self.cmdList removeObjectAtIndex:indexPath.row];
     }
+    [self.cmdTable reloadData];
 }
 
 @end

@@ -16,8 +16,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (BLSNotificationService *)sharedInstance;
 - (void)registerDevice;
+- (void)registerDeviceCompletionHandler:(nullable void (^)(NSString * _Nonnull result))completionHandler;
 - (void)setAllPushState:(BOOL)state;
-
+- (void)setAllPushState:(BOOL)state completionHandler:(nullable void (^)(NSString * _Nonnull result))completionHandler;
+- (void)userLogout;
+- (void)userLogoutCompletionHandler:(nullable void (^)(NSString * _Nonnull result))completionHandler;
+- (void)queryCategory:(NSArray *)category TemplateWithCompletionHandler:(nullable void (^)(NSString * _Nonnull result))completionHandler;
+- (void)queryLinkageInfoWithCompletionHandler:(void (^)(NSString *result))completionHandler;
 @end
 
 NS_ASSUME_NONNULL_END
