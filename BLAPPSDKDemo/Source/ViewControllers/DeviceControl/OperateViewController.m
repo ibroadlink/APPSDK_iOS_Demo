@@ -441,7 +441,7 @@
     // START udp echo server
     int port = 18880;
     
-    NSString *ipaddr = [BLNetworkImp getIPAddress:YES];
+    NSString *ipaddr = [BLNetworkImp getIpAddrFromHost:@""];
     NSLog(@"IP:%@ Port:%d", ipaddr, port);
     
     if (ipaddr && !isRunning) {

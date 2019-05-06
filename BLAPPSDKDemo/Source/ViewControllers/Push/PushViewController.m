@@ -9,11 +9,17 @@
 #import "PushViewController.h"
 #import "BLSNotificationService.h"
 #import "BLDeviceService.h"
+#import "BLTemplate.h"
+#import "BLLinkageTemplate.h"
 
-@interface PushViewController ()
+@interface PushViewController () <UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITextView *deviceInfoView;
 @property (weak, nonatomic) IBOutlet UITextView *resultTextView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) BLDNADevice *device;
+@property (nonatomic, copy)   NSArray<BLTemplateElement *> *templates;
+@property (nonatomic, copy)   NSArray *linkages;
+@property (nonatomic, assign)   BOOL isTemplates;
 @end
 
 @implementation PushViewController
@@ -21,6 +27,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.isTemplates = YES;
 }
 
 + (instancetype)viewController {
@@ -43,7 +52,7 @@
             [self showDeviceList];
             break;
         case 104:
-            [self showDeviceList];
+            [self queryLinkageList];
             break;
             
         default:
@@ -120,11 +129,18 @@
         NSString *srvs = alertController.textFields.firstObject.text;
         NSArray *categorys = [NSArray arrayWithObject:srvs];
         //查询模板
-        [[BLSNotificationService sharedInstance] queryCategory:categorys TemplateWithCompletionHandler:^(NSString * _Nonnull result) {
+        [[BLSNotificationService sharedInstance] queryCategory:categorys TemplateWithCompletionHandler:^(BLTemplate * _Nonnull template) {
+            if (template.status == 0) {
+                self.templates = template.templates;
+                self.isTemplates = YES;
+                
+            }
+            NSDictionary *dic = [template BLS_modelToJSONObject];
             dispatch_async(dispatch_get_main_queue(), ^{
-            
-               self.resultTextView.text = result;
+                [self.tableView reloadData];
+                self.resultTextView.text = [BLCommonTools serializeMessage:dic];
             });
+            
         }];
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
@@ -147,9 +163,78 @@
 }
 
 - (void)queryLinkageList {
-    [[BLSNotificationService sharedInstance] queryLinkageInfoWithCompletionHandler:^(NSString * _Nonnull result) {
-        
+    [[BLSNotificationService sharedInstance] queryLinkageInfoWithCompletionHandler:^(BLLinkageTemplate * _Nonnull linkageTemplate) {
+        if (linkageTemplate.status == 0) {
+            self.linkages = linkageTemplate.linkages;
+            self.isTemplates = NO;
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            self.resultTextView.text = [linkageTemplate BLS_modelToJSONString];
+        });
     }];
+}
+
+#pragma mark - tabel delegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (self.isTemplates) {
+        return self.templates.count;
+    }else {
+        return self.linkages.count;
+    }
+    
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString* cellIdentifier = @"TEMPLATES_LIST_CELL";
+    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+    
+    if (self.isTemplates) {
+        BLTemplateElement *template = self.templates[indexPath.row];
+        cell.textLabel.text = template.templatename[0].name;
+    }else {
+        BLLinkage *linkage = self.linkages[indexPath.row];
+        cell.textLabel.text = linkage.rulename;
+    }
+    
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.isTemplates) {
+        BLTemplateElement *template = self.templates[indexPath.row];
+        NSDictionary *module = @{
+                                 @"moduleid":@"",
+                                 @"name":self.device.name,
+                                 @"did":self.device.did
+                                 };
+        [[BLSNotificationService sharedInstance] addLinkageWithTemplate:template module:module deviceRoom:@"" CompletionHandler:^(BLBaseResult * _Nonnull result) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.resultTextView.text = [result BLS_modelToJSONString];
+            });
+        }];
+    }
+    
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (!self.isTemplates) {
+        BLLinkage *linkage = self.linkages[indexPath.row];
+        [[BLSNotificationService sharedInstance] deleteLinkageInfoWithRuleid:linkage.ruleid CompletionHandler:^(BLBaseResult * _Nonnull result) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.resultTextView.text = [result BLS_modelToJSONString];
+            });
+        }];
+    }
 }
 
 @end

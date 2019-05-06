@@ -18,7 +18,7 @@
 #define SDK_PACKAGE_ID  @"com.broadlink.blappsdkdemo"
 #define SDK_LICENSE     @"4oQxAHVFYnnY7HPuDlYnm0I6pGcRvFTh/Ct2Vv+/5qZDpJJiIweBn2RUUA6oE8InRDV+XAAAAABz4LOxmXdGndIQ0J762DN4lXimLcoYN1h90T3OlpYrQrNgvm0/7+Kdmrgfawtr+QWBY+UBaf8hxk19tobFrLsFsEkbxXTfoUSQjDzWcfVjcAAAAAA="
 
-#define DISABLE_PUSH_NOTIFICATIONS 1    //不使能推送功能
+//#define DISABLE_PUSH_NOTIFICATIONS 1    //不使能推送功能
 
 #define PROBE_DEVICES_CHANGED   @"Probe_Devices_Changed"
 

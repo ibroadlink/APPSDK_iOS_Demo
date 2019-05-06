@@ -18,7 +18,7 @@
              };
 }
 
-+ (NSDictionary *)modelContainerPropertyGenericClass {
++ (NSDictionary *)BLS_modelContainerPropertyGenericClass {
     
     return @{
              @"roominfo":[BLSRoomInfo class]

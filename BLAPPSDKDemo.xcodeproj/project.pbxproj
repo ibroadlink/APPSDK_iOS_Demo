@@ -29,10 +29,8 @@
 		3A44F4AE2223F03800936AFF /* ProductListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4AD2223F03800936AFF /* ProductListViewController.m */; };
 		3A44F4B12224ECA800936AFF /* BLProductCategoryList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4B02224ECA800936AFF /* BLProductCategoryList.m */; };
 		3A44F4B42225146300936AFF /* BLProductCategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4B32225146300936AFF /* BLProductCategoryModel.m */; };
-		3A4580A92276D92100283A17 /* LinkageTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4580A12276D92100283A17 /* LinkageTemplate.m */; };
-		3A4580AA2276D92100283A17 /* TemplateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4580A32276D92100283A17 /* TemplateAction.m */; };
-		3A4580AB2276D92100283A17 /* TemplateConditionsinfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4580A52276D92100283A17 /* TemplateConditionsinfo.m */; };
-		3A4580AC2276D92100283A17 /* LinkageInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4580A82276D92100283A17 /* LinkageInfo.m */; };
+		3A4580AF227E792C00283A17 /* BLLinkageTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4580AE227E792C00283A17 /* BLLinkageTemplate.m */; };
+		3A4580B2227E892200283A17 /* BLTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4580B1227E892200283A17 /* BLTemplate.m */; };
 		3A76A15022278AF7007DF83A /* BLWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A76A14F22278AF7007DF83A /* BLWebViewController.m */; };
 		3A9B60E02100377D0048540B /* JoinFamilyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9B60DF2100377D0048540B /* JoinFamilyViewController.m */; };
 		3AAC2A2A20EB250D00031DEC /* BLUserSaftyInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC2A2920EB250D00031DEC /* BLUserSaftyInfoCell.m */; };
@@ -168,14 +166,10 @@
 		3A44F4B02224ECA800936AFF /* BLProductCategoryList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLProductCategoryList.m; sourceTree = "<group>"; };
 		3A44F4B22225146300936AFF /* BLProductCategoryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLProductCategoryModel.h; sourceTree = "<group>"; };
 		3A44F4B32225146300936AFF /* BLProductCategoryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLProductCategoryModel.m; sourceTree = "<group>"; };
-		3A4580A12276D92100283A17 /* LinkageTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinkageTemplate.m; sourceTree = "<group>"; };
-		3A4580A22276D92100283A17 /* TemplateConditionsinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplateConditionsinfo.h; sourceTree = "<group>"; };
-		3A4580A32276D92100283A17 /* TemplateAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemplateAction.m; sourceTree = "<group>"; };
-		3A4580A42276D92100283A17 /* LinkageInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkageInfo.h; sourceTree = "<group>"; };
-		3A4580A52276D92100283A17 /* TemplateConditionsinfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemplateConditionsinfo.m; sourceTree = "<group>"; };
-		3A4580A62276D92100283A17 /* LinkageTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkageTemplate.h; sourceTree = "<group>"; };
-		3A4580A72276D92100283A17 /* TemplateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplateAction.h; sourceTree = "<group>"; };
-		3A4580A82276D92100283A17 /* LinkageInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinkageInfo.m; sourceTree = "<group>"; };
+		3A4580AD227E792C00283A17 /* BLLinkageTemplate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLLinkageTemplate.h; sourceTree = "<group>"; };
+		3A4580AE227E792C00283A17 /* BLLinkageTemplate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLLinkageTemplate.m; sourceTree = "<group>"; };
+		3A4580B0227E892200283A17 /* BLTemplate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLTemplate.h; sourceTree = "<group>"; };
+		3A4580B1227E892200283A17 /* BLTemplate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLTemplate.m; sourceTree = "<group>"; };
 		3A76A14E22278AF7007DF83A /* BLWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLWebViewController.h; sourceTree = "<group>"; };
 		3A76A14F22278AF7007DF83A /* BLWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLWebViewController.m; sourceTree = "<group>"; };
 		3A9B60DE2100377C0048540B /* JoinFamilyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoinFamilyViewController.h; sourceTree = "<group>"; };
@@ -590,14 +584,10 @@
 		3A4580A02276D92100283A17 /* Linkage */ = {
 			isa = PBXGroup;
 			children = (
-				3A4580A62276D92100283A17 /* LinkageTemplate.h */,
-				3A4580A12276D92100283A17 /* LinkageTemplate.m */,
-				3A4580A22276D92100283A17 /* TemplateConditionsinfo.h */,
-				3A4580A52276D92100283A17 /* TemplateConditionsinfo.m */,
-				3A4580A72276D92100283A17 /* TemplateAction.h */,
-				3A4580A32276D92100283A17 /* TemplateAction.m */,
-				3A4580A42276D92100283A17 /* LinkageInfo.h */,
-				3A4580A82276D92100283A17 /* LinkageInfo.m */,
+				3A4580AD227E792C00283A17 /* BLLinkageTemplate.h */,
+				3A4580AE227E792C00283A17 /* BLLinkageTemplate.m */,
+				3A4580B0227E892200283A17 /* BLTemplate.h */,
+				3A4580B1227E892200283A17 /* BLTemplate.m */,
 			);
 			path = Linkage;
 			sourceTree = "<group>";
@@ -1001,7 +991,6 @@
 				3AEF737322253BDE00F2376A /* BLDeviceConfigIntroduction.m in Sources */,
 				3A39D67E223751EC008C8C9C /* BLSAddAuthResult.m in Sources */,
 				3A44F4B42225146300936AFF /* BLProductCategoryModel.m in Sources */,
-				3A4580A92276D92100283A17 /* LinkageTemplate.m in Sources */,
 				3AFC6D6F20EB59E5003404E6 /* BLUserHeadImageCell.m in Sources */,
 				70503DBA1FDBE4D6002D3371 /* BLUserDefaults.m in Sources */,
 				70503DA71FDBE4D5002D3371 /* OperateViewController.m in Sources */,
@@ -1015,7 +1004,6 @@
 				70503DB01FDBE4D6002D3371 /* ConfigureViewController.m in Sources */,
 				3AAC2A2D20EB252200031DEC /* BLUserLogoutCell.m in Sources */,
 				70503DA51FDBE4D5002D3371 /* CodeLoginViewController.m in Sources */,
-				3A4580AC2276D92100283A17 /* LinkageInfo.m in Sources */,
 				84449FD4221BD0E8006D2A10 /* BLSFamilyCreateResult.m in Sources */,
 				84F84207224A068A00D60C76 /* TVBoxAreaSelectController.m in Sources */,
 				846CA9302248CDB900884421 /* ModifyEmailViewController.m in Sources */,
@@ -1038,6 +1026,8 @@
 				3AFC6D7520EB6063003404E6 /* Tools.m in Sources */,
 				8414253F22545CCB00E8A7C8 /* MatchTreeController.m in Sources */,
 				3ACDE3C120EC9CF00016461D /* ModifyPhoneViewController.m in Sources */,
+				3A4580AF227E792C00283A17 /* BLLinkageTemplate.m in Sources */,
+				3A4580B2227E892200283A17 /* BLTemplate.m in Sources */,
 				70503DB81FDBE4D6002D3371 /* FamilyDetailViewController.m in Sources */,
 				025A168720E33CBC00D75DAB /* RestPasswordViewController.m in Sources */,
 				70503DA21FDBE4D5002D3371 /* CreateFamilyViewController.m in Sources */,
@@ -1045,7 +1035,6 @@
 				0261054220E21AE400883EFC /* BLLoadingButton.m in Sources */,
 				70503DA81FDBE4D5002D3371 /* RegisterViewController.m in Sources */,
 				3AEF737022253B2C00F2376A /* BLDeviceConfigureInfo.m in Sources */,
-				3A4580AB2276D92100283A17 /* TemplateConditionsinfo.m in Sources */,
 				0244948B20AEC26D0056FB10 /* UserViewController.m in Sources */,
 				3A76A15022278AF7007DF83A /* BLWebViewController.m in Sources */,
 				84EE08F3221D414F0088EDE8 /* BLSAddSceneResult.m in Sources */,
@@ -1077,7 +1066,6 @@
 				84F8420B224A09BF00D60C76 /* IRCodeSubAreaInfo.m in Sources */,
 				70503D561FDBE37A002D3371 /* BLDeviceService.m in Sources */,
 				3AEF73792226645500F2376A /* BLDeviceResetViewController.m in Sources */,
-				3A4580AA2276D92100283A17 /* TemplateAction.m in Sources */,
 				8405E12F225485ED00DC73D1 /* IRCodeMatchTreeInfo.m in Sources */,
 				842C960E221E3D0500B3A1A6 /* MemberListViewController.m in Sources */,
 				84F84219224A416900D60C76 /* IRCodeProviderInfo.m in Sources */,

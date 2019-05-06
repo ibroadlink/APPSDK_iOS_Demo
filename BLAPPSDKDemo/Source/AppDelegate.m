@@ -149,7 +149,7 @@
 
 - (void)performWithPushMessage:(NSDictionary *)messageDic {
     if (messageDic) {
-        NSDictionary *userinfo = [[messageDic objectForKey:@"data"] objectFromJSONString];
+        NSDictionary *userinfo = [BLCommonTools deserializeMessageJSON:[messageDic objectForKey:@"data"]];
         if (!userinfo) {
             return;
         }

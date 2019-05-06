@@ -8,9 +8,9 @@
 
 #import "BLSNotificationService.h"
 #import "BLUserDefaults.h"
-#import <BLLetBase/BLLetBase.h>
-#import "LinkageTemplate.h"
-#import "LinkageInfo.h"
+
+
+
 
 @implementation BLSNotificationService
 
@@ -153,7 +153,7 @@
  @param category 分类
  @param completionHandler
  */
-- (void)queryCategory:(NSArray *)category TemplateWithCompletionHandler:(nullable void (^)(NSString * _Nonnull result))completionHandler {
+- (void)queryCategory:(NSArray *)category TemplateWithCompletionHandler:(nullable void (^)(BLTemplate * _Nonnull template))completionHandler {
     NSArray *categoryArray;
     if (category) {
         NSArray *tempArray = [[category firstObject] componentsSeparatedByString:@"."];
@@ -161,7 +161,7 @@
     }
     NSDictionary *bodyDic = @{
                               @"category" : categoryArray?:@[],
-                              @"companyid" :[BLConfigParam sharedConfigParam].companyId,
+                              @"companyid" :[BLConfigParam sharedConfigParam].licenseId,
                               @"pagestart" : @1,
                               @"pagesize" : @100
                               };
@@ -169,13 +169,11 @@
     
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:@"/appfront/v1/tempalte/query"];
     NSDictionary *head = [self getHeadDic];
-    
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:data timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
-        NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:0];
-        [result setObject:[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil] forKey:@"Return"];
-        completionHandler([BLCommonTools serializeMessage:result]);
+    [httpAccessor post:url head:head data:data timeout:60000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+        BLTemplate *template = [BLTemplate BLS_modelWithJSON:data];
+        completionHandler(template);
     }];
 }
 
@@ -187,66 +185,65 @@
  @param module module description
  @param deviceRoom deviceRoom description
  @param block block description
+
  */
-- (void)addLinkageWithLinkage:(LinkageTemplate *)linkage
+- (void)addLinkageWithTemplate:(BLTemplateElement *)template
                    module:(NSDictionary *)module
                deviceRoom:(NSString *)deviceRoom
-                 CompletionHandler:(void (^)(NSString *result))completionHandler {
-    __block LinkageInfo *info = [[LinkageInfo alloc] init];
-    NSString *did = module[@"did"];
-    NSString *timeStamp = @"";
-    NSData * Key = @"";
-    info.familyid = @"";
-    info.enable = linkage.enable;
+                 CompletionHandler:(void (^)(BLBaseResult *result))completionHandler {
+    __block BLLinkage *info = [[BLLinkage alloc] init];
+    info.familyid = @"016b134aaacecae761d4e621a40ea1d9";
     info.ruletype = 1;
-    info.modulename = module[@"name"];
-    info.moduleid = @[module[@"moduleId"]];
-    info.source = [NSString stringWithFormat:@"%@_%@",@"notify",linkage.templateid];
-    for (TemplateEvent *event in linkage.events) {
-        event.dev_name = module[@"name"];
-        event.idev_did = did;
-    }
-    for (TemplateProperty *property in linkage.conditionsinfo.property) {
-        property.dev_name = module[@"name"];
-        property.idev_did = did;
-    }
-    LinkageDevices *linkageDevices = [[LinkageDevices alloc] init];
+    info.rulename = @"RuleEcho";
+    info.enable = 1;
+    
+    info.locationinfo = @"";
+    info.moduleid = @[module[@"moduleid"]];
+    info.subscribe = @[];
+    info.linkEnable = true;
+    
+    BLLinkagedevices *linkageDevices = [[BLLinkagedevices alloc]init];
     NSMutableArray *actionArray = [[NSMutableArray alloc] init];
-    for (TemplateAction *action in linkage.action) {
-        action.templatetype = linkage.templatetype;
-        NSDictionary *contentDic = @{@"devname" : module[@"name"]?:@"",
-                                     @"location" : deviceRoom?:@""};
+    for (BLAction *action in template.action) {
+        NSDictionary *contentDic = @{@"devname" : module[@"name"]?:@""};
         NSString *contentStr = [BLCommonTools serializeMessage:contentDic];
-        action.ios.content = [[NSData alloc] initWithBase64EncodedString:contentStr options:0];
-        action.gcm.content = [[NSData alloc] initWithBase64EncodedString:contentStr options:0];
-        action.alicloud.content = [[NSData alloc] initWithBase64EncodedString:contentStr options:0];
-        action.alicloud.did = did;
+        action.ios.content = [self base64EncodeString:contentStr];
+        action.gcm.content = [self base64EncodeString:contentStr];
+        action.alicloud.content = [self base64EncodeString:contentStr];
+        action.name = @"";
+        action.alicloud.did = module[@"did"];
         action.alicloud.enable = info.enable;
-        action.gcm.did = did;
+        action.gcm.did = module[@"did"];
         action.gcm.enable = info.enable;
-        action.ios.did = did;
+        action.ios.did = module[@"did"];
         action.ios.enable = info.enable;
         [actionArray addObject:[action BLS_modelToJSONObject]];
     }
     NSDictionary *actionDic = @{@"action" : actionArray};
-    NSString *externStr = [actionDic BLS_modelToJSONString]?:@"";
-    linkageDevices.externStr = [[NSData alloc] initWithBase64EncodedString:externStr options:0];
+    NSString *externStr = [BLCommonTools serializeMessage:actionDic]?:@"";
+    linkageDevices.did = module[@"did"];
+    linkageDevices.linkagedevicesExtern = [self base64EncodeString:externStr];
     linkageDevices.linkagetype = @"notify";
-    linkageDevices.did = did?:@"";
+    
+   
     info.linkagedevices = linkageDevices;
-    info.characteristicinfo = [linkage BLS_modelToJSONString]?:@"";
+    info.source = [NSString stringWithFormat:@"notify_%@",template.templateid];
+
+    NSMutableDictionary *characteristicinfo = [NSMutableDictionary dictionaryWithCapacity:0];
+    [characteristicinfo setObject:[template.events BLS_modelToJSONObject] forKey:@"events"];
+    [characteristicinfo setObject:[template.conditionsinfo BLS_modelToJSONObject] forKey:@"conditionsinfo"];
+    info.characteristicinfo = [BLCommonTools serializeMessage:characteristicinfo];
     NSDictionary *bodyDic = [info BLS_modelToJSONObject];
     NSData *data = [NSJSONSerialization dataWithJSONObject:bodyDic options:0 error:nil];
-    
+
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:@"/appfront/v2/linkage/add"];
     NSDictionary *head = [self getHeadDic];
-    
+
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
-    
-    [httpAccessor post:url head:head data:data timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
-        NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:0];
-        [result setObject:[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil] forKey:@"Return"];
-        completionHandler([BLCommonTools serializeMessage:result]);
+    NSLog(@"bodyDic:%@",bodyDic);
+    [httpAccessor post:url head:head data:data timeout:60000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+        BLBaseResult *result = [BLBaseResult BLS_modelWithJSON:data];
+        completionHandler(result);
     }];
 }
 
@@ -256,7 +253,7 @@
 
  @param completionHandler completionHandler description
  */
-- (void)queryLinkageInfoWithCompletionHandler:(void (^)(NSString *result))completionHandler{
+- (void)queryLinkageInfoWithCompletionHandler:(void (^)(BLLinkageTemplate *linkageTemplate))completionHandler{
     NSDictionary *bodyDic = @{};
     NSData *data = [NSJSONSerialization dataWithJSONObject:bodyDic options:0 error:nil];
     
@@ -265,10 +262,26 @@
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:data timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
-        NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:0];
-        [result setObject:[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil] forKey:@"Return"];
-        completionHandler([BLCommonTools serializeMessage:result]);
+    [httpAccessor post:url head:head data:data timeout:60000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+        BLLinkageTemplate *linkageTemplate = [BLLinkageTemplate BLS_modelWithJSON:data];
+        completionHandler(linkageTemplate);
+    }];
+}
+
+- (void)deleteLinkageInfoWithRuleid:(NSString *)ruleid CompletionHandler:(void (^)(BLBaseResult *result))completionHandler{
+    NSDictionary *bodyDic = @{
+                              @"ruleid":ruleid
+                              };
+    NSData *data = [NSJSONSerialization dataWithJSONObject:bodyDic options:0 error:nil];
+    
+    NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:@"/appfront/v2/linkage/delete"];
+    NSDictionary *head = [self getHeadDic];
+    
+    BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
+    
+    [httpAccessor post:url head:head data:data timeout:60000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+        BLBaseResult *result = [BLBaseResult BLS_modelWithJSON:data];
+        completionHandler(result);
     }];
 }
 
@@ -287,7 +300,7 @@
     NSString *loginSession = [[BLUserDefaults shareUserDefaults] getSessionId] ?: @"";
     
 #ifdef DEBUG
-    NSString *appId = @"cn.com.broadlink.blappsdkdemo.baihk";
+    NSString *appId = @"cn.com.broadlink.blappsdkdemo";
 #else
     NSString *appId = @"cn.com.broadlink.blappsdkdemo.baihk_release";
 #endif
@@ -295,10 +308,27 @@
     NSDictionary *headDic = @{
                               @"userid" : userID,
                               @"loginsession" : loginSession,
+                              @"licenseid": [BLConfigParam sharedConfigParam].licenseId,
                               @"appid" : appId,
-                              @"testuser":@"1"
+                              @"familyid": @"016b134aaacecae761d4e621a40ea1d9",
+                              @"testuser":@"false"
                               };
     return headDic;
+}
+
+-(NSString *)base64EncodeString:(NSString *)string{
+    //1、先转换成二进制数据
+    NSData *data =[string dataUsingEncoding:NSUTF8StringEncoding];
+    //2、对二进制数据进行base64编码，完成后返回字符串
+    return [data base64EncodedStringWithOptions:0];
+}
+
+-(NSString *)base64DecodeString:(NSString *)string{
+    //注意：该字符串是base64编码后的字符串
+    //1、转换为二进制数据（完成了解码的过程）
+    NSData *data=[[NSData alloc]initWithBase64EncodedString:string options:0];
+    //2、把二进制数据转换成字符串
+    return [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 @end

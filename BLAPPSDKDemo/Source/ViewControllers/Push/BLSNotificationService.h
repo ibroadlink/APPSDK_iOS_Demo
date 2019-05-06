@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <BLLetBase/BLLetBase.h>
+#import "BLTemplate.h"
+#import "BLLinkageTemplate.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BLSNotificationService : NSObject
@@ -21,8 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setAllPushState:(BOOL)state completionHandler:(nullable void (^)(NSString * _Nonnull result))completionHandler;
 - (void)userLogout;
 - (void)userLogoutCompletionHandler:(nullable void (^)(NSString * _Nonnull result))completionHandler;
-- (void)queryCategory:(NSArray *)category TemplateWithCompletionHandler:(nullable void (^)(NSString * _Nonnull result))completionHandler;
-- (void)queryLinkageInfoWithCompletionHandler:(void (^)(NSString *result))completionHandler;
+- (void)queryCategory:(NSArray *)category TemplateWithCompletionHandler:(nullable void (^)(BLTemplate * _Nonnull template))completionHandler;
+- (void)addLinkageWithTemplate:(BLTemplateElement *)template module:(NSDictionary *)module deviceRoom:(NSString *)deviceRoom CompletionHandler:(void (^)(BLBaseResult *result))completionHandler;
+- (void)queryLinkageInfoWithCompletionHandler:(void (^)(BLLinkageTemplate *linkageTemplate))completionHandler;
+- (void)deleteLinkageInfoWithRuleid:(NSString *)ruleid CompletionHandler:(void (^)(BLBaseResult *result))completionHandler;
 @end
 
 NS_ASSUME_NONNULL_END
