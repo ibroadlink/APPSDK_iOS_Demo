@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JoinFamilyViewController : BaseViewController
 
+@property (nonatomic, copy)NSString *qCode;
 @property (weak, nonatomic) IBOutlet UITextField *familyCodeField;
 - (IBAction)joinBtn:(id)sender;
 

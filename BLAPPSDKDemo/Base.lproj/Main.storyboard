@@ -2491,6 +2491,24 @@
                                     <action selector="joinBtn:" destination="MTS-Ks-nQU" eventType="touchUpInside" id="S2I-vQ-TLe"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X5T-qc-MJD">
+                                <rect key="frame" x="20" y="237" width="374" height="44"/>
+                                <color key="backgroundColor" red="0.91764705879999997" green="0.72941176470000002" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="XRU-kO-TM8"/>
+                                </constraints>
+                                <state key="normal" title="QRCode">
+                                    <color key="titleColor" red="0.96470588239999999" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="QRcodeBtn:" destination="MTS-Ks-nQU" eventType="touchUpInside" id="GU3-x7-erv"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -2498,6 +2516,9 @@
                             <constraint firstItem="H2q-06-zPn" firstAttribute="top" secondItem="uWN-mV-MSL" secondAttribute="bottom" constant="44" id="6qL-tY-sAQ"/>
                             <constraint firstItem="H2q-06-zPn" firstAttribute="width" secondItem="uWN-mV-MSL" secondAttribute="width" id="JbS-4K-ZNi"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="H2q-06-zPn" secondAttribute="trailing" constant="16" id="NWo-dl-Ihn"/>
+                            <constraint firstItem="X5T-qc-MJD" firstAttribute="top" secondItem="H2q-06-zPn" secondAttribute="bottom" constant="26" id="cT0-Nb-K4U"/>
+                            <constraint firstItem="X5T-qc-MJD" firstAttribute="trailing" secondItem="H2q-06-zPn" secondAttribute="trailing" id="i5A-m6-L6G"/>
+                            <constraint firstItem="X5T-qc-MJD" firstAttribute="leading" secondItem="H2q-06-zPn" secondAttribute="leading" id="jsc-fE-g1l"/>
                             <constraint firstItem="uWN-mV-MSL" firstAttribute="top" secondItem="bh3-uV-uww" secondAttribute="bottom" constant="15" id="l9B-oL-34v"/>
                             <constraint firstItem="uWN-mV-MSL" firstAttribute="trailing" secondItem="rwD-S7-cqg" secondAttribute="trailingMargin" id="oye-2M-Gso"/>
                             <constraint firstItem="uWN-mV-MSL" firstAttribute="leading" secondItem="rwD-S7-cqg" secondAttribute="leadingMargin" id="t6g-pN-bqG"/>
@@ -2506,6 +2527,7 @@
                     <navigationItem key="navigationItem" title="Join Family" id="41e-ED-7Xv"/>
                     <connections>
                         <outlet property="familyCodeField" destination="uWN-mV-MSL" id="t6E-JS-I0r"/>
+                        <segue destination="ts5-ko-XPe" kind="push" identifier="QcodeView" id="96h-pD-gJH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tvx-wX-0iL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3000,6 +3022,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="UDH-MT-mT8">
                             <connections>
                                 <action selector="barButtonClick:" destination="XD9-2C-iKr" id="1bt-mU-kze"/>
+                                <segue destination="vm3-IU-uaT" kind="push" identifier="ShareFamilyView" id="ZFt-kL-YRL"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -3010,6 +3033,99 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P0H-yR-b8p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-6602.3999999999996" y="5122.4887556221893"/>
+        </scene>
+        <!--Share Family-->
+        <scene sceneID="VhJ-N9-rnh">
+            <objects>
+                <viewController id="vm3-IU-uaT" customClass="ShareFamilyViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hNW-PN-qEh"/>
+                        <viewControllerLayoutGuide type="bottom" id="xNH-3g-tzw"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0bG-9t-rJB">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Jav-hu-sGv">
+                                <rect key="frame" x="87" y="129" width="240" height="240"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="2EV-JJ-CZM"/>
+                                    <constraint firstAttribute="height" constant="240" id="TzC-Ou-6NV"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This qr code is vaild in 15 minutes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Uu-cX-Hm1">
+                                <rect key="frame" x="50" y="525" width="314" height="20.333333333333371"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.44" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ja9-kG-ps9">
+                                <rect key="frame" x="50" y="431" width="314" height="30"/>
+                                <state key="normal" title="Refresh">
+                                    <color key="titleColor" red="0.91764705879999997" green="0.72941176470000002" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <connections>
+                                    <action selector="refresh:" destination="vm3-IU-uaT" eventType="touchUpInside" id="aAh-15-NjG"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="4Uu-cX-Hm1" firstAttribute="leading" secondItem="0bG-9t-rJB" secondAttribute="leading" constant="50" id="3Va-Q0-zov"/>
+                            <constraint firstAttribute="trailing" secondItem="Ja9-kG-ps9" secondAttribute="trailing" constant="50" id="5F2-d7-3g5"/>
+                            <constraint firstItem="Ja9-kG-ps9" firstAttribute="top" secondItem="Jav-hu-sGv" secondAttribute="bottom" constant="62" id="FA6-bW-2jo"/>
+                            <constraint firstItem="Ja9-kG-ps9" firstAttribute="leading" secondItem="0bG-9t-rJB" secondAttribute="leading" constant="50" id="JFB-Hv-0Rz"/>
+                            <constraint firstItem="4Uu-cX-Hm1" firstAttribute="top" secondItem="Ja9-kG-ps9" secondAttribute="bottom" constant="64" id="VI5-0R-kOY"/>
+                            <constraint firstItem="Jav-hu-sGv" firstAttribute="top" secondItem="hNW-PN-qEh" secondAttribute="bottom" constant="65" id="lpI-qN-Ofe"/>
+                            <constraint firstAttribute="trailing" secondItem="4Uu-cX-Hm1" secondAttribute="trailing" constant="50" id="vzv-lp-3lJ"/>
+                            <constraint firstItem="Jav-hu-sGv" firstAttribute="centerX" secondItem="0bG-9t-rJB" secondAttribute="centerX" id="wQh-W2-eNZ"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Share Family" id="ljf-8N-vfs"/>
+                    <connections>
+                        <outlet property="qCodeImageView" destination="Jav-hu-sGv" id="vCg-T5-9fc"/>
+                        <outlet property="qCodeLabel" destination="4Uu-cX-Hm1" id="kag-Fj-p5r"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2r1-IO-V7m" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-6604.347826086957" y="6010.597826086957"/>
+        </scene>
+        <!--QRCode-->
+        <scene sceneID="BWH-6d-TS3">
+            <objects>
+                <viewController id="ts5-ko-XPe" customClass="QRCodeViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ypc-ou-dTW"/>
+                        <viewControllerLayoutGuide type="bottom" id="OZn-qv-liy"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="coD-q5-U1n">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NBI-5F-xxM">
+                                <rect key="frame" x="67" y="228" width="280" height="280"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="280" id="BOl-XW-wkb"/>
+                                    <constraint firstAttribute="width" constant="280" id="dfm-Xz-Kf3"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="NBI-5F-xxM" firstAttribute="centerX" secondItem="coD-q5-U1n" secondAttribute="centerX" id="AzD-Lp-htl"/>
+                            <constraint firstItem="NBI-5F-xxM" firstAttribute="centerY" secondItem="coD-q5-U1n" secondAttribute="centerY" id="Kjg-QL-2SX"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="QRCode" id="BJf-b8-W3y"/>
+                    <connections>
+                        <outlet property="viewPreview" destination="NBI-5F-xxM" id="tek-Sf-guf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Qm4-3P-BYB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-5129" y="4606"/>
         </scene>
         <!--RoomList-->
         <scene sceneID="WWj-hR-aIT">

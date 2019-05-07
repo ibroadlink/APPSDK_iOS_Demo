@@ -23,6 +23,10 @@
     self.familyCodeField.delegate = self;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    self.familyCodeField.text = self.qCode;
+}
+
 - (IBAction)joinBtn:(id)sender {
     [self.familyCodeField resignFirstResponder];
     
@@ -39,6 +43,10 @@
             }
         });
     }];
+}
+
+- (IBAction)QRcodeBtn:(id)sender {
+    [self performSegueWithIdentifier:@"QcodeView" sender:nil];
 }
 
 - (void)goBack {
