@@ -93,11 +93,12 @@
     
     if (!manager.roomList) {
         //获取一次房间列表
-        dispatch_semaphore_t sema = dispatch_semaphore_create(0);  //创建信号量
+        dispatch_group_t group = dispatch_group_create();  //创建信号量
+        dispatch_group_enter(group);  //在此发送信号量
         [manager getFamilyRoomsWithCompletionHandler:^(BLSManageRoomResult * _Nonnull result) {
-            dispatch_semaphore_signal(sema);  //在此发送信号量
+            dispatch_group_leave(group);
         }];
-        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);  //关键点，在此等待信号量
+        dispatch_group_wait(group, dispatch_time(DISPATCH_TIME_NOW, 30 * NSEC_PER_SEC));  //关键点，在此等待信号量
     }
     
     for (BLSEndpointInfo *info in manager.endpointList) {
@@ -580,11 +581,12 @@
                 
                 if (!manager.roomList) {
                     //获取一次房间列表
-                    dispatch_semaphore_t sema = dispatch_semaphore_create(0);  //创建信号量
+                    dispatch_group_t group = dispatch_group_create();  //创建信号量
+                    dispatch_group_enter(group);  //在此发送信号量
                     [manager getFamilyRoomsWithCompletionHandler:^(BLSManageRoomResult * _Nonnull result) {
-                        dispatch_semaphore_signal(sema);  //在此发送信号量
+                        dispatch_group_leave(group);
                     }];
-                    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);  //关键点，在此等待信号量
+                    dispatch_group_wait(group, dispatch_time(DISPATCH_TIME_NOW, 30 * NSEC_PER_SEC));  //关键点，在此等待信号量
                 }
                 
                 for (BLSEndpointInfo *info in manager.endpointList) {

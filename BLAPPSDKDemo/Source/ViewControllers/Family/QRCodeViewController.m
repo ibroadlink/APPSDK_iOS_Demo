@@ -88,8 +88,14 @@
         //判断回传的数据类型
         if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeQRCode]) {
             NSString *qcode = [metadataObj stringValue];
-            self.qCode = [qcode substringFromIndex:9];
+            self.qCode = qcode;
             [self performSelectorOnMainThread:@selector(stopReading) withObject:nil waitUntilDone:NO];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                JoinFamilyViewController *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+                vc.qCode = self.qCode;
+                [self.navigationController popToViewController:vc animated:YES];
+            });
+            
         }
     }
 }
@@ -114,9 +120,6 @@
 -(void)stopReading{
     [self.captureSession stopRunning];
     self.captureSession = nil;
-    JoinFamilyViewController *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-    vc.qCode = self.qCode;
-    [self.navigationController popToViewController:vc animated:YES];
 }
 
 @end

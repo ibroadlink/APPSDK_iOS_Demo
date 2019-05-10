@@ -80,8 +80,8 @@
             NSString *scriptFile = [[BLLet sharedLet].controller queryScriptFileName:subDevice.pid];
             NSString *uiPath = [[BLLet sharedLet].controller queryUIPath:subDevice.pid];
             NSString *uiFile = [uiPath stringByAppendingString:subDevice.pid];
-            __block BOOL isDownloadScript = NO;
-            __block BOOL isDownloadUI = NO;
+            __block BOOL isDownloadScript = YES;
+            __block BOOL isDownloadUI = YES;
             
             NSFileManager *fileManager = [NSFileManager defaultManager];
             

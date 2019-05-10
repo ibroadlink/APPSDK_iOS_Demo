@@ -42,7 +42,7 @@
 }
 
 - (void)getKeyList {
-    BLProfileStringResult *result = [[BLLet sharedLet].controller queryProfile:self.device.did];
+    BLProfileStringResult *result = [[BLLet sharedLet].controller queryProfileByPid:self.device.pid];
     NSString *profileStr = [result getProfile];
     NSData *data = [profileStr dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *profileDic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];

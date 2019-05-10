@@ -217,7 +217,7 @@
                                  @"name":self.device.name,
                                  @"did":self.device.did
                                  };
-        [[BLSNotificationService sharedInstance] addLinkageWithTemplate:template module:module deviceRoom:@"" CompletionHandler:^(BLBaseResult * _Nonnull result) {
+        [[BLSNotificationService sharedInstance] addLinkageWithTemplate:template module:module CompletionHandler:^(BLBaseResult * _Nonnull result) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.resultTextView.text = [result BLS_modelToJSONString];
             });

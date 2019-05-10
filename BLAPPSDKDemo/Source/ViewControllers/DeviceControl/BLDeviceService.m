@@ -77,7 +77,7 @@ static BLDeviceService *_deviceService = nil;
         NSString *did = device.did;
         [self.manageDevices setObject:device forKey:did];
     }
-//    
+ 
 //    BLDNADevice *device = [[BLDNADevice alloc] init];
 //    device.did = @"00000000000000000000b4430dbc2cc4";
 //    device.mac = @"b4:43:0d:bc:2c:c4";
@@ -90,7 +90,6 @@ static BLDeviceService *_deviceService = nil;
 //    
 //    [[BLLet sharedLet].controller addDevice:device];
 //    [self.manageDevices setObject:device forKey:device.did];
-//    
 }
 
 - (void)addNewDeivce:(BLDNADevice *)device {

@@ -31,7 +31,7 @@
     self.cloudClusterHostField.text = [BLConfigParam sharedConfigParam].appServiceHost;
     
     BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
-    self.enableCloudCluster.enabled = [userDefault getAppServiceEnable] > 0;
+    self.enableCloudCluster.on = [userDefault getAppServiceEnable];
 }
 
 - (IBAction)resetTheLicense:(id)sender {
@@ -41,7 +41,7 @@
         BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
         [userDefault setPackName:self.packNameLabel.text];
         [userDefault setLicense:self.LicenseLabel.text];
-        [userDefault setAppServiceEnable: (self.enableCloudCluster.isEnabled ? 1 : 0)];
+        [userDefault setAppServiceEnable: (self.enableCloudCluster.isOn ? 1 : 0)];
         [userDefault setAppServiceHost:self.cloudClusterHostField.text];
         
         [userDefault setUserName:nil];

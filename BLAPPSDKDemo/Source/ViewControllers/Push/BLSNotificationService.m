@@ -122,10 +122,6 @@
 /**
  用户退出通知
  */
-- (void)userLogout {
-    [self userLogoutCompletionHandler:^(NSString * _Nonnull result) {}];
-}
-
 - (void)userLogoutCompletionHandler:(nullable void (^)(NSString * _Nonnull result))completionHandler {
     NSDictionary *bodyDic = @{
                               @"touser" : _deviceToken ? _deviceToken:@"",
@@ -189,7 +185,6 @@
  */
 - (void)addLinkageWithTemplate:(BLTemplateElement *)template
                    module:(NSDictionary *)module
-               deviceRoom:(NSString *)deviceRoom
                  CompletionHandler:(void (^)(BLBaseResult *result))completionHandler {
     __block BLLinkage *info = [[BLLinkage alloc] init];
     info.familyid = @"016b134aaacecae761d4e621a40ea1d9";
