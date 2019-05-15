@@ -97,9 +97,10 @@
 - (void)dnaControlWithAction:(NSString *)action stdData:(BLStdData *)stdData {
     BLStdControlResult *result = nil;
     if ([BLCommonTools isEmpty:self.device.pDid]) {
-        result = [[BLLet sharedLet].controller dnaControl:[_device getDid] stdData:stdData action:action];
+        result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:action];
     }else {
-        result = [[BLLet sharedLet].controller dnaControl:[_device getPDid] subDevDid:[_device getDid] stdData:stdData action:action];
+        BLDNADevice *fDevice = [[BLLet sharedLet].controller getDevice:[NSString stringWithFormat:@"%@++%@", self.device.pDid, self.device.ownerId]];
+        result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? fDevice.deviceId : self.device.pDid subDevDid:self.device.ownerId ? self.device.deviceId :[_device getDid] stdData:stdData action:action];
     }
     
     if ([result succeed]) {

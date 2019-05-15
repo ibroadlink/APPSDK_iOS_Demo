@@ -9,7 +9,7 @@
 #import "DeviceListViewController.h"
 #import "BLDeviceService.h"
 #import "BLStatusBar.h"
-
+#import "BLUserDefaults.h"
 @interface DeviceListViewController ()
 
 @property (strong, nonatomic) NSMutableArray *showDevices;
@@ -25,6 +25,10 @@
     self.deviceListTableView.delegate = self;
     self.deviceListTableView.dataSource = self;
     [self setExtraCellLineHidden:self.deviceListTableView];
+    NSArray *addedList = [[BLLet sharedLet].controller queryDeviceAddedList];
+    for (BLDNADevice *device in addedList) {
+        NSLog(@"deviceid:%@",device.deviceId);
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -42,6 +46,8 @@
             if ([result succeed]) {
                 device.controlId = result.getId;
                 device.controlKey = result.getKey;
+                BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
+                device.ownerId = [userDefault getUserId];
                 
                 BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
                 [deviceService addNewDeivce:device];

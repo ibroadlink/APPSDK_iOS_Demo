@@ -53,7 +53,7 @@
         self.downloadinfo.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:self.downloadinfo.name];
         [self downloadIRCodeScript:self.downloadinfo.downloadurl savePath:self.downloadinfo.savePath randkey:self.downloadinfo.key];
     } else {
-        NSString *ircodeid = [NSString stringWithFormat:@"%ld", self.downloadinfo.ircodeid];
+        NSString *ircodeid = [NSString stringWithFormat:@"%ld", (long)self.downloadinfo.ircodeid];
         self.downloadinfo.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:ircodeid];
         [self downloadIRCodeScript:ircodeid savePath:self.downloadinfo.savePath];
     }

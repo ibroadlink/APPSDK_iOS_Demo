@@ -72,7 +72,7 @@
     [stdStudyData setValue:code forParam:@"irda"];
     
     BLController *blcontroller = [BLLet sharedLet].controller;
-    BLStdControlResult *studyResult = [blcontroller dnaControl:self.device.did stdData:stdStudyData action:@"set"];
+    BLStdControlResult *studyResult = [blcontroller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdStudyData action:@"set"];
     if ([studyResult succeed]) {
         [BLStatusBar showTipMessageWithStatus:@"Send Success"];
     } else {

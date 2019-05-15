@@ -58,7 +58,7 @@
     //发送红码
     BLStdData *stdStudyData = [[BLStdData alloc] init];
     [stdStudyData setValue:ircode forParam:@"irda"];
-    BLStdControlResult *studyResult = [self.blcontroller dnaControl:[self.device getDid] stdData:stdStudyData action:@"set"];
+    BLStdControlResult *studyResult = [self.blcontroller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdStudyData action:@"set"];
     if ([studyResult succeed]) {
         [BLStatusBar showTipMessageWithStatus:@"Send Success"];
     }else{

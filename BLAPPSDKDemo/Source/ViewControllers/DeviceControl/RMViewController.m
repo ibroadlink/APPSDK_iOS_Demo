@@ -48,7 +48,7 @@
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setValue:nil forParam:@"irdastudy"];
     
-    BLStdControlResult *studyResult = [[BLLet sharedLet].controller dnaControl:self.device.did stdData:stdData action:@"get"];
+    BLStdControlResult *studyResult = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"get"];
     if ([studyResult succeed]) {
         self.IrdaCode.text = @"Learnning... Please click your remote control button!";
     } else {
@@ -60,7 +60,7 @@
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setValue:nil forParam:@"irda"];
     
-    BLStdControlResult *irdaResult = [[BLLet sharedLet].controller dnaControl:self.device.did stdData:stdData action:@"get"];
+    BLStdControlResult *irdaResult = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"get"];
     if ([irdaResult succeed]) {
         NSDictionary *dic = [[irdaResult getData] toDictionary];
         if ([dic[@"vals"] count] != 0) {
@@ -88,7 +88,7 @@
         [stdData setValue:self.irdaCodeStr forParam:@"irda"];
     }
     
-    BLStdControlResult *sendResult = [[BLLet sharedLet].controller dnaControl:self.device.did stdData:stdData action:@"set"];
+    BLStdControlResult *sendResult = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"set"];
     if ([sendResult succeed]) {
         self.IrdaCode.text = @"Send ircode success!";
     } else {
@@ -183,7 +183,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self showIndicatorOnWindow];
     });
-    BLStdControlResult *delResult = [[BLLet sharedLet].controller dnaControl:self.device.did stdData:stdData action:@"set"];
+    BLStdControlResult *delResult = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"set"];
     if ([delResult succeed]) {
         [self queryTimerList:0];
     } else {
@@ -208,7 +208,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self showIndicatorOnWindow];
     });
-    BLStdControlResult *sendResult = [[BLLet sharedLet].controller dnaControl:self.device.did stdData:stdData action:@"set"];
+    BLStdControlResult *sendResult = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"set"];
     if ([sendResult succeed]) {
         [self queryTimerList:0];
     } else {
@@ -229,7 +229,7 @@
     [stdData setValue:@(0) forParam:@"count"];
     [stdData setValue:@(index) forParam:@"index"];
     
-    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:self.device.did stdData:stdData action:@"get"];
+    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"get"];
     if ([result succeed]) {
         NSDictionary *dic = [result.data toDictionary];
         NSArray *vals = dic[@"vals"][0];

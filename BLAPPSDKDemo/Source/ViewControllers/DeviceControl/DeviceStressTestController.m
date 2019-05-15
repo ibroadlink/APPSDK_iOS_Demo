@@ -153,11 +153,12 @@
                 continue;
             }
             
-            NSString *gatewayDid = device.did;
+            NSString *gatewayDid = device.ownerId ? device.deviceId : device.did;
             NSString *subDeviceDid;
             if (![BLCommonTools isEmpty:device.pDid]) {
-                gatewayDid = device.pDid;
-                subDeviceDid = device.did;
+                BLDNADevice *fDevice = [[BLLet sharedLet].controller getDevice:[NSString stringWithFormat:@"%@++%@", device.pDid, device.ownerId]];
+                gatewayDid = device.ownerId ? fDevice.deviceId : device.pDid;
+                subDeviceDid = device.ownerId ? device.deviceId : device.did;
                 
                 BLDNADevice *gatewayDevice = [deviceService.manageDevices objectForKey:gatewayDid];
                 if (!gatewayDevice) {

@@ -10,17 +10,17 @@ target 'BLAPPSDKDemo' do
   # use_frameworks!
 
   # Pods for BLAPPSDKDemo
-
-  pod 'BLLetBase', :path => '../../Gitlab/BLLetSDK/iOS/BLLetBase'
-  pod 'BLLetIRCode', :path => '../../Gitlab/BLLetSDK/iOS/BLLetIRCode'
-  pod 'BLLetCore', :path => '../../Gitlab/BLLetSDK/iOS/BLLetCore'
-  pod 'BLLetPlugins', :path => '../../Gitlab/BLLetSDK/iOS/BLLetPlugins'
-  pod 'BLLetAccount', :path => '../../Gitlab/BLLetSDK/iOS/BLLetAccount'
-  pod 'BLLetFamily', :path => '../../Gitlab/BLLetSDK/iOS/BLLetFamily'
   
-	pod 'Cordova', '~> 4.4.0'
-	pod 'SSZipArchive', '~> 2.1.1'
-	pod 'MBProgressHUD', '~> 1.1.0'
+  pod 'BLLetBase', '~> 2.11.1'
+  pod 'BLLetCore', '~> 2.11.0'
+  pod 'BLLetPlugins', '~> 2.11.0'
+  pod 'BLLetAccount', '~> 2.11.0'
+  pod 'BLLetIRCode', '~> 2.11.0'
+  pod 'BLLetFamily', '~> 2.11.0'
+  
+  pod 'Cordova', '~> 4.4.0'
+  pod 'SSZipArchive', '~> 2.1.1'
+  pod 'MBProgressHUD', '~> 1.1.0'
   pod 'SDWebImage', '~> 4.4.6'
   pod 'YYCategories', '~> 1.0.4'
   pod 'Masonry', '~> 0.6.2'
@@ -29,4 +29,5 @@ target 'BLAPPSDKDemo' do
   
   pod 'DoraemonKit/Core', '~> 1.1.6'
   pod 'DoraemonKit/WithLogger', '~> 1.1.6'
+  pod 'AFNetworking'
 end

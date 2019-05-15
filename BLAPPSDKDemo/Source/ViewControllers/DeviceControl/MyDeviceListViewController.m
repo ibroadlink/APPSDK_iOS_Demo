@@ -64,7 +64,7 @@
     typeLabel.text = [NSString stringWithFormat:@"Type:%ld", (long)[device getType]];
     
     UILabel *netstateLabel = (UILabel *)[cell viewWithTag:104];
-    netstateLabel.text = [NSString stringWithFormat:@"NetState:%@", [self getstate:device.did]];
+    netstateLabel.text = [NSString stringWithFormat:@"NetState:%@", [self getstate:device.ownerId ? device.deviceId : device.did]];
     
     return cell;
 }
