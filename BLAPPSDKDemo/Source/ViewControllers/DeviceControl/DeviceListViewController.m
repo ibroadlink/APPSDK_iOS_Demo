@@ -46,9 +46,8 @@
             if ([result succeed]) {
                 device.controlId = result.getId;
                 device.controlKey = result.getKey;
-                BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
-                device.ownerId = [userDefault getUserId];
-                
+//                BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
+//                device.ownerId = [userDefault getUserId];
                 BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
                 [deviceService addNewDeivce:device];
                 

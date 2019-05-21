@@ -197,12 +197,12 @@
     // 使用云端集群
     // [BLConfigParam sharedConfigParam].appServiceEnable = 1;
     [BLConfigParam sharedConfigParam].appServiceEnable = [userDefault getAppServiceEnable];
-    if ([BLConfigParam sharedConfigParam].appServiceEnable > 0) {
-        NSString *cloudClusterHost = [userDefault getAppServiceHost];
-        if (![BLCommonTools isEmpty:cloudClusterHost]) {
-            [BLConfigParam sharedConfigParam].appServiceHost = cloudClusterHost;
-        }
-    }
+//    if ([BLConfigParam sharedConfigParam].appServiceEnable > 0) {
+//        NSString *cloudClusterHost = [userDefault getAppServiceHost];
+//        if (![BLCommonTools isEmpty:cloudClusterHost]) {
+//            [BLConfigParam sharedConfigParam].appServiceHost = cloudClusterHost;
+//        }
+//    }
     
     [self.let setDebugLog:BL_LEVEL_ALL];                                          // Set APPSDK debug log level
     [self.let.controller setSDKRawDebugLevel:BL_LEVEL_DEBUG];                       // Set DNASDK debug log level

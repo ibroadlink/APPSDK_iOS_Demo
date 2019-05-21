@@ -58,12 +58,18 @@
     //发送红码
     BLStdData *stdStudyData = [[BLStdData alloc] init];
     [stdStudyData setValue:ircode forParam:@"irda"];
-    BLStdControlResult *studyResult = [self.blcontroller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdStudyData action:@"set"];
-    if ([studyResult succeed]) {
-        [BLStatusBar showTipMessageWithStatus:@"Send Success"];
-    }else{
-        [BLStatusBar showTipMessageWithStatus:studyResult.msg];
-    }
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        BLStdControlResult *studyResult = [self.blcontroller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdStudyData action:@"set"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([studyResult succeed]) {
+                [BLStatusBar showTipMessageWithStatus:@"Send Success"];
+            }else{
+                [BLStatusBar showTipMessageWithStatus:studyResult.msg];
+            }
+        });
+        
+    });
+    
 }
 
 - (NSString *)queryTVIRCodeDataWithScript:(NSString *_Nonnull)savePath funcname:(NSString *_Nonnull)funcname {

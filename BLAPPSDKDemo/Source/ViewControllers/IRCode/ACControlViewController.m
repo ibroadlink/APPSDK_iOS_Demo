@@ -141,18 +141,24 @@
 }
 
 - (void)sendACIRCodeWithDevice {
-    
     //发送红码
     BLStdData *stdStudyData = [[BLStdData alloc] init];
     [stdStudyData setValue:self.resultText.text forParam:@"irda"];
     
     BLController *blcontroller = [BLLet sharedLet].controller;
-    BLStdControlResult *studyResult = [blcontroller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdStudyData action:@"set"];
-    if ([studyResult succeed]) {
-        [BLStatusBar showTipMessageWithStatus:@"Send success!"];
-    } else {
-        [BLStatusBar showTipMessageWithStatus:studyResult.msg];
-    }
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        BLStdControlResult *studyResult = [blcontroller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdStudyData action:@"set"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([studyResult succeed]) {
+                
+                [BLStatusBar showTipMessageWithStatus:@"Send success!"];
+            } else {
+                [BLStatusBar showTipMessageWithStatus:studyResult.msg];
+            }
+        });
+        
+    });
+    
     
 }
 
