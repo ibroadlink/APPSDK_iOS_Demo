@@ -82,7 +82,7 @@ static DeviceDB *op = nil;
                 [device setControlKey:[[NSString alloc] initWithUTF8String:(const char*)controlKey]];
                 
                 const unsigned char *ownerid = sqlite3_column_text(statement, 8);
-                if ([[[NSString alloc] initWithUTF8String:(const char*)ownerid] isEqualToString:@"null"]) {
+                if (![[[NSString alloc] initWithUTF8String:(const char*)ownerid] isEqualToString:@"(null)"]) {
                     [device setOwnerId:[[NSString alloc] initWithUTF8String:(const char*)ownerid]];
                 }
                 
