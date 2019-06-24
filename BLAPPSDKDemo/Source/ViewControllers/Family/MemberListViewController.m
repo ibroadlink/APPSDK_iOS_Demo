@@ -8,7 +8,7 @@
 
 #import "MemberListViewController.h"
 #import "BLNewFamilyManager.h"
-
+#import "ShareFamilyViewController.h"
 #import <BLLetAccount/BLLetAccount.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -161,7 +161,8 @@
 
 
 - (IBAction)barButtonClick:(UIBarButtonItem *)sender {
-    [self getFamilyMemberInviteQrcode];
+    [self performSegueWithIdentifier:@"ShareFamilyView" sender:nil];
+//    [self getFamilyMemberInviteQrcode];
 }
 
 

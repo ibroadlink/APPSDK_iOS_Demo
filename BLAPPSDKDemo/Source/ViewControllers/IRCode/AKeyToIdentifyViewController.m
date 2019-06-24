@@ -89,7 +89,7 @@
     //进入学习模式
     BLStdData *stdStudyData = [[BLStdData alloc] init];
     [stdStudyData setValue:nil forParam:@"irdastudy"];
-    BLStdControlResult *studyResult = [blcontroller dnaControl:[self.device getDid] stdData:stdStudyData action:@"get"];
+    BLStdControlResult *studyResult = [blcontroller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdStudyData action:@"get"];
     if ([studyResult succeed]) {
         for (int i = 0; i < 10; i++) {
             sleep(3);

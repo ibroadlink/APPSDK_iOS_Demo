@@ -46,7 +46,7 @@ static DeviceDB *op = nil;
         sqlite3_close(_database);
         NSLog(@"open db failed");
     } else {
-        NSString *sqlCreateTable = @"CREATE TABLE IF NOT EXISTS BLDeviceInfo (id integer PRIMARY KEY AUTOINCREMENT, pid text NOT NULL, did text NOT NULL, name text NOT NULL, mac text NOT NULL, type integer NOT NULL, controlId integer NOT NULL, controlKey text NOT NULL)";
+        NSString *sqlCreateTable = @"CREATE TABLE IF NOT EXISTS BLDeviceInfo (id integer PRIMARY KEY AUTOINCREMENT, pid text NOT NULL, did text NOT NULL, name text NOT NULL, mac text NOT NULL, type integer NOT NULL, controlId integer NOT NULL, controlKey text NOT NULL, ownerId text NOT NULL, pDid text)";
         [self execSql:sqlCreateTable];
     }
 }
@@ -81,6 +81,16 @@ static DeviceDB *op = nil;
                 const unsigned char *controlKey = sqlite3_column_text(statement, 7);
                 [device setControlKey:[[NSString alloc] initWithUTF8String:(const char*)controlKey]];
                 
+                const unsigned char *ownerid = sqlite3_column_text(statement, 8);
+                if (![[[NSString alloc] initWithUTF8String:(const char*)ownerid] isEqualToString:@"(null)"]) {
+                    [device setOwnerId:[[NSString alloc] initWithUTF8String:(const char*)ownerid]];
+                }
+                
+                
+                const unsigned char *pDid = sqlite3_column_text(statement, 9);
+                [device setPDid:[[NSString alloc] initWithUTF8String:(const char*)pDid]];
+                
+                
                 [allDevices addObject:device];
             }
         }
@@ -98,8 +108,8 @@ static DeviceDB *op = nil;
             NSInteger sql_id = sqlite3_column_int(statement, 0);
             sql_id++;
             NSString *sqlInsert = [NSString stringWithFormat:
-                                   @"INSERT INTO BLDeviceInfo (id, pid, did, name, mac, type, controlId, controlKey) VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
-                                   @(sql_id), device.getPid, device.getDid, device.getName, device.getMac, @(device.getType), @(device.getControlId), device.getControlKey];
+                                   @"INSERT INTO BLDeviceInfo (id, pid, did, name, mac, type, controlId, controlKey, ownerId, pDid) VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
+                                   @(sql_id), device.getPid, device.getDid, device.getName, device.getMac, @(device.getType), @(device.getControlId), device.getControlKey, device.ownerId, device.pDid];
             [self execSql:sqlInsert];
             return sql_id;
         }

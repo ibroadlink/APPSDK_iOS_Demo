@@ -37,18 +37,21 @@
     NSData *srcData = [self hexString2Bytes:srcString];
     
     [self showIndicatorOnWindowWithMessage:@"Data Passthough..."];
-    
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        BLPassthroughResult *result = [[BLLet sharedLet].controller dnaPassthrough:self.device.did passthroughData:srcData];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideIndicatorOnWindow];
-            if ([result succeed]) {
-                NSString *resStr = [self data2hexString:[result getData]];
+        BLPassthroughResult *result = [[BLLet sharedLet].controller dnaPassthrough:self.device.ownerId ? self.device.deviceId : [self.device getDid] passthroughData:srcData];
+        [self hideIndicatorOnWindow];
+        if ([result succeed]) {
+            NSString *resStr = [self data2hexString:[result getData]];
+            dispatch_async(dispatch_get_main_queue(), ^{
                 self.dataShowTextView.text = resStr;
-            } else {
+            });
+            
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
                 self.dataShowTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-            }
-        });
+            });
+            
+        }
     });
 }
 

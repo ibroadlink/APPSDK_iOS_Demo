@@ -13,6 +13,7 @@
 #import "DeviceMainViewController.h"
 #import "IRCodeTestViewController.h"
 #import "ProductListViewController.h"
+#import "PushViewController.h"
 
 #import "BLUserDefaults.h"
 #import "BLStatusBar.h"
@@ -48,6 +49,9 @@
             break;
         case 104:
             [self gotoProductViewController];
+            break;
+        case 105:
+            [self gotoPushViewController];
             break;
         default:
             break;
@@ -90,6 +94,15 @@
 - (void)gotoProductViewController {
     if ([self hasBeenLogined]) {
         ProductListViewController *vc = [ProductListViewController viewController];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        [BLStatusBar showTipMessageWithStatus:@"Please login first!!!"];
+    }
+}
+
+- (void)gotoPushViewController {
+    if ([self hasBeenLogined]) {
+        PushViewController *vc = [PushViewController viewController];
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         [BLStatusBar showTipMessageWithStatus:@"Please login first!!!"];

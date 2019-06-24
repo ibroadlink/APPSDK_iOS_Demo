@@ -63,7 +63,7 @@
 - (void)GetTimerList{
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setParams:@[@"tmrtsk",@"pertsk",@"cyctsk",@"randtsk"] values:@[@[@{@"val":@"", @"idx":@(1)}],@[@{ @"val":@"", @"idx":@(1)}],@[@{ @"val":@"", @"idx":@(1)}],@[@{ @"val":@"", @"idx":@(1)}]]];
-    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[self.device getDid] stdData:stdData action:@"get"];
+    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"get"];
     if ([result succeed]) {
         NSDictionary *dic = [[result getData] toDictionary];
         NSArray *dicArray = dic[@"vals"];
@@ -102,9 +102,9 @@
     UIAlertAction *tmrtskAction = [UIAlertAction actionWithTitle:@"单次定时" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         BLStdData *stdData = [[BLStdData alloc] init];
         [stdData setParams:@[@"tmrtsk"] values:@[@[@{@"val":@"+0800@20180911-151426|1@null|0",@"idx":@(1)}]]];
-        BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[self.device getDid] stdData:stdData action:@"set"];
+        BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"set"];
         if ([result succeed]) {
-            BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[self.device getDid] stdData:stdData action:@"get"];
+            BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"get"];
             if ([result succeed]) {
                 NSDictionary *dic = [[result getData] toDictionary];
                 NSString *switchResult = dic[@"vals"][0][0][@"val"];
@@ -176,7 +176,7 @@
         [stdData setValue:val forParam:param];
         
         
-        BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[self.device getDid] stdData:stdData action:action];
+        BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:action];
 
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([result succeed]) {

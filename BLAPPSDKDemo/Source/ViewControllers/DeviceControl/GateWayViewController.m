@@ -80,8 +80,8 @@
             NSString *scriptFile = [[BLLet sharedLet].controller queryScriptFileName:subDevice.pid];
             NSString *uiPath = [[BLLet sharedLet].controller queryUIPath:subDevice.pid];
             NSString *uiFile = [uiPath stringByAppendingString:subDevice.pid];
-            __block BOOL isDownloadScript = NO;
-            __block BOOL isDownloadUI = NO;
+            __block BOOL isDownloadScript = YES;
+            __block BOOL isDownloadUI = YES;
             
             NSFileManager *fileManager = [NSFileManager defaultManager];
             
@@ -150,10 +150,12 @@
 
 - (IBAction)subDevStart:(id)sender {
     [self subDevStart];
+    
 }
 
 - (IBAction)subDevStop:(id)sender {
     [self subDevStop];
+    
 }
 
 - (IBAction)getNewSubDevList:(id)sender {
@@ -179,16 +181,29 @@
     }];
     [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         self.spid = alertController.textFields.firstObject.text;
-        BLBaseResult *result = [[BLLet sharedLet].controller subDevScanStartWithDid:[self.device getDid] subPid:self.spid];
-        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            BLBaseResult *result = [[BLLet sharedLet].controller subDevScanStartWithDid:self.device.ownerId ? self.device.deviceId : [self.device getDid] subPid:self.spid];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
+            });
+            
+        });
+        
+        
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)subDevStop {
-    BLBaseResult *result = [[BLLet sharedLet].controller subDevScanStopWithDid:[self.device getDid]];
-    [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BLBaseResult *result = [[BLLet sharedLet].controller subDevScanStopWithDid:self.device.ownerId ? self.device.deviceId : [self.device getDid]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
+        });
+    });
+    
+    
 }
 
 - (void)subDevNewListQuery:(NSUInteger)index {
@@ -197,7 +212,7 @@
         [self.subDevicelist removeAllObjects];
     }
     
-    BLSubDevListResult *result = [[BLLet sharedLet].controller subDevNewListQueryWithDid:self.device.did index:index count:10 subPid:self.spid];
+    BLSubDevListResult *result = [[BLLet sharedLet].controller subDevNewListQueryWithDid:self.device.ownerId ? self.device.deviceId : self.device.did index:index count:10 subPid:self.spid];
     if ([result succeed]) {
         if (result.list.count > 0) {
             [self.subDevicelist addObjectsFromArray:result.list];
@@ -227,7 +242,7 @@
         [self.subDevicelist removeAllObjects];
     }
     
-    BLSubDevListResult *result = [[BLLet sharedLet].controller subDevListQueryWithDid:self.device.did index:index count:10];
+    BLSubDevListResult *result = [[BLLet sharedLet].controller subDevListQueryWithDid:self.device.ownerId ? self.device.deviceId : self.device.did index:index count:10];
     if ([result succeed]) {
         if (result.list.count > 0) {
             [self.subDevicelist addObjectsFromArray:result.list];
@@ -252,7 +267,7 @@
 }
 
 - (void)addSubDev:(BLDNADevice *)subDevice {
-    BLBaseResult *result = [[BLLet sharedLet].controller subDevAddWithDid:self.device.did subDevInfo:subDevice];
+    BLBaseResult *result = [[BLLet sharedLet].controller subDevAddWithDid:self.device.ownerId ? self.device.deviceId : self.device.did subDevInfo:subDevice];
     if ([result succeed]) {
         [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"AddSubDev:%@ success",subDevice.getDid]];
     } else {
@@ -266,7 +281,7 @@
 }
 
 - (void)deleteSubDev:(BLDNADevice *)subDevice {
-    BLBaseResult *result = [[BLLet sharedLet].controller subDevDelWithDid:self.device.did subDevDid:subDevice.getDid];
+    BLBaseResult *result = [[BLLet sharedLet].controller subDevDelWithDid:self.device.ownerId ? self.device.deviceId : self.device.did subDevDid:subDevice.getDid];
     if ([result succeed]) {
         [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"DeleteSubDev:%@ success",subDevice.getDid]];
     } else {

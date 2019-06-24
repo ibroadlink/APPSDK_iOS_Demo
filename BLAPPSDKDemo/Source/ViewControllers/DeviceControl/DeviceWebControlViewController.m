@@ -72,6 +72,10 @@
 
 - (void)notice:(NSNotification *)notification {
     //设置页面当前标题栏
+    if (notification.userInfo) {
+        self.navigationController.navigationBarHidden = NO;
+        [self.webViewEngine evaluateJavaScript:notification.userInfo[@"rightButtons"] completionHandler:nil];
+    }
 }
 
 - (void)h5Param:(NSNotification *)notification {

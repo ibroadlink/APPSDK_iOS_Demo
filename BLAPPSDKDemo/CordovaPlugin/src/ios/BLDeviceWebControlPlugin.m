@@ -93,11 +93,12 @@
     
     if (!manager.roomList) {
         //获取一次房间列表
-        dispatch_semaphore_t sema = dispatch_semaphore_create(0);  //创建信号量
+        dispatch_group_t group = dispatch_group_create();  //创建信号量
+        dispatch_group_enter(group);  //在此发送信号量
         [manager getFamilyRoomsWithCompletionHandler:^(BLSManageRoomResult * _Nonnull result) {
-            dispatch_semaphore_signal(sema);  //在此发送信号量
+            dispatch_group_leave(group);
         }];
-        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);  //关键点，在此等待信号量
+        dispatch_group_wait(group, dispatch_time(DISPATCH_TIME_NOW, 30 * NSEC_PER_SEC));  //关键点，在此等待信号量
     }
     
     for (BLSEndpointInfo *info in manager.endpointList) {
@@ -158,7 +159,7 @@
                                     [selectDevice getMac],
                                     [selectDevice getDid],
                                     [selectDevice getName],
-                                    (long)[selectControl queryDeviceState:[selectDevice getDid]],
+                                    (long)[selectControl queryDeviceState:selectDevice.ownerId ? selectDevice.deviceId : [selectDevice getDid]],
                                     accountName];
         } else {
             //子设备
@@ -167,7 +168,7 @@
                                     [selectDevice getPDid],
                                     [selectDevice getDid],
                                     [selectDevice getName],
-                                    (long)[selectControl queryDeviceState:[selectDevice getPDid]],
+                                    (long)[selectControl queryDeviceState:selectDevice.ownerId ? selectDevice.deviceId :[selectDevice getPDid]],
                                     accountName];
         }
         
@@ -212,10 +213,13 @@
         sendCount = dic[@"sendCount"] ? [dic[@"sendCount"] integerValue] : 1;
     }
     
+    BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
+    BLDNADevice *device = deviceService.selectDevice;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *controlResult;
         NSString *dataStr = [self p_toJsonString:dataDic];
-        controlResult = [[BLLet sharedLet].controller dnaControl:did subDevDid:sdid
+        BLDNADevice *fDevice = [[BLLet sharedLet].controller getDevice:[NSString stringWithFormat:@"%@++%@", device.pDid, device.ownerId]];
+        controlResult = [[BLLet sharedLet].controller dnaControl:device.ownerId ? fDevice.deviceId : did subDevDid:device.ownerId ? device.deviceId : sdid
                                           dataStr:dataStr command:info[3] scriptPath:nil sendcount:sendCount];
         NSLog(@"H5controlResult:%@",controlResult);
         
@@ -580,11 +584,12 @@
                 
                 if (!manager.roomList) {
                     //获取一次房间列表
-                    dispatch_semaphore_t sema = dispatch_semaphore_create(0);  //创建信号量
+                    dispatch_group_t group = dispatch_group_create();  //创建信号量
+                    dispatch_group_enter(group);  //在此发送信号量
                     [manager getFamilyRoomsWithCompletionHandler:^(BLSManageRoomResult * _Nonnull result) {
-                        dispatch_semaphore_signal(sema);  //在此发送信号量
+                        dispatch_group_leave(group);
                     }];
-                    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);  //关键点，在此等待信号量
+                    dispatch_group_wait(group, dispatch_time(DISPATCH_TIME_NOW, 30 * NSEC_PER_SEC));  //关键点，在此等待信号量
                 }
                 
                 for (BLSEndpointInfo *info in manager.endpointList) {

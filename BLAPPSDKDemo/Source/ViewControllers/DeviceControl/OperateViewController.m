@@ -154,7 +154,7 @@
 
 #pragma mark - private method
 - (void)networkState {
-    BLDeviceStatusEnum state = [[BLLet sharedLet].controller queryDeviceState:[_device getDid]];
+    BLDeviceStatusEnum state = [[BLLet sharedLet].controller queryDeviceState:self.device.ownerId ? self.device.deviceId : [self.device getDid]];
     NSString *stateString = @"State UnKown";
     switch (state) {
         case BL_DEVICE_STATE_LAN:
@@ -177,7 +177,7 @@
 }
 
 - (void)getDeviceState {
-    BLDeviceStatusEnum state = [[BLLet sharedLet].controller queryDeviceState:self.device.did];
+    BLDeviceStatusEnum state = [[BLLet sharedLet].controller queryDeviceState:self.device.ownerId ? self.device.deviceId : self.device.did];
     
     NSString *stateString = @"State UnKown";
     switch (state) {
@@ -198,12 +198,21 @@
 }
 
 - (void)getFirmwareVersion {
-    BLFirmwareVersionResult *result = [[BLLet sharedLet].controller queryFirmwareVersion:[_device getDid]];
-    if ([result succeed]) {
-        _resultText.text = [NSString stringWithFormat:@"Firmware Version:%@", [result getVersion]];
-    } else {
-        _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BLFirmwareVersionResult *result = [[BLLet sharedLet].controller queryFirmwareVersion:self.device.ownerId ? self.device.deviceId : [self.device getDid]];
+        if ([result succeed]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.resultText.text = [NSString stringWithFormat:@"Firmware Version:%@", [result getVersion]];
+            });
+            
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+            });
+            
+        }
+    });
+    
 }
 
 - (void)upgradeFirmVersion {
@@ -215,10 +224,13 @@
     }];
     [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSString *upgradeFirmwareUrl = alertController.textFields.firstObject.text;
-        BLBaseResult *result = [[BLLet sharedLet].controller upgradeFirmware:[self.device getDid] url:upgradeFirmwareUrl];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            BLBaseResult *result = [[BLLet sharedLet].controller upgradeFirmware:self.device.ownerId ? self.device.deviceId : [self.device getDid] url:upgradeFirmwareUrl];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+            });
         });
+        
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alertController animated:YES completion:nil];
@@ -307,7 +319,7 @@
 
 //查询设备数据上报
 - (void)queryDeviceData {
-    BLBaseBodyResult *result = [[BLLet sharedLet].controller queryDeviceDataWithDid:[_device getDid] familyId:@"" startTime:@"2018-03-26_17:00:00" endTime:@"2018-03-27_22:00:00" type:@"fw_spminielec_v1"];
+    BLBaseBodyResult *result = [[BLLet sharedLet].controller queryDeviceDataWithDid:self.device.ownerId ? self.device.deviceId : [self.device getDid] familyId:@"" startTime:@"2018-03-26_17:00:00" endTime:@"2018-03-27_22:00:00" type:@"fw_spminielec_v1"];
     if ([result succeed]) {
         _resultText.text = [NSString stringWithFormat:@"responseBody : %@", result.responseBody];
     } else {
@@ -320,7 +332,7 @@
 - (void)getServerTime {
     self.resultText.text = @"Query Device Time .....";
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        BLDeviceTimeResult *result = [[BLLet sharedLet].controller queryDeviceTime:self.device.did];
+        BLDeviceTimeResult *result = [[BLLet sharedLet].controller queryDeviceTime:self.device.ownerId ? self.device.deviceId : self.device.did];
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([result succeed]) {
                 self.resultText.text = [NSString stringWithFormat:@"Time:%@ diff:%ld", result.time, (long)result.difftime];
@@ -334,7 +346,7 @@
 //设备复位
 - (void)deviceReset {
     BLController *controller = [BLLet sharedLet].controller;
-    NSString *result = [controller dnaControl:self.device.did subDevDid:nil dataStr:@"{}" command:@"dev_reset" scriptPath:nil];
+    NSString *result = [controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did subDevDid:nil dataStr:@"{}" command:@"dev_reset" scriptPath:nil];
     NSLog(@"result: %@", result);
     
     BLBaseResult *baseResult = [BLBaseResult BLS_modelWithJSON:result];
@@ -352,7 +364,7 @@
 //获取设备连接服务器信息
 - (void)getDeviceServiceConnectInfo {
     BLController *controller = [BLLet sharedLet].controller;
-    BLBaseResult *result = [controller queryDeviceConnectServerInfo:self.device.did];
+    BLBaseResult *result = [controller queryDeviceConnectServerInfo:self.device.ownerId ? self.device.deviceId : self.device.did];
     NSLog(@"result: %ld", (long)result.status);
     
     _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
@@ -484,7 +496,6 @@
 
 - (void)stopDeviceLogRedirect {
     // STOP udp echo server
-    
 //    if (isRunning) {
 //        NSLog(@"Stopped Udp Echo server");
 //
