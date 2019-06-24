@@ -11,6 +11,7 @@
 #import <BLLetCore/BLLetCore.h>
 #import <BLLetAccount/BLLetAccount.h>
 #import <BLLetIRCode/BLLetIRCode.h>
+#import <BLLetPlugins/BLLetPlugins.h>
 
 #import "AppMacro.h"
 

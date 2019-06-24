@@ -318,12 +318,17 @@
 
 //获取设备服务器时间
 - (void)getServerTime {
-    BLDeviceTimeResult *result = [[BLLet sharedLet].controller queryDeviceTime:self.device.did];
-    if ([result succeed]) {
-        _resultText.text = [NSString stringWithFormat:@"Time:%@ diff:%ld", result.time, (long)result.difftime];
-    } else {
-        _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-    }
+    self.resultText.text = @"Query Device Time .....";
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        BLDeviceTimeResult *result = [[BLLet sharedLet].controller queryDeviceTime:self.device.did];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([result succeed]) {
+                self.resultText.text = [NSString stringWithFormat:@"Time:%@ diff:%ld", result.time, (long)result.difftime];
+            } else {
+                self.resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+            }
+        });
+    });
 }
 
 //设备复位
@@ -439,66 +444,66 @@
 - (void)startDeviceLogRedirect {
     
     // START udp echo server
-    int port = 18880;
-    
-    NSString *ipaddr = [BLNetworkImp getIPAddress:YES];
-    NSLog(@"IP:%@ Port:%d", ipaddr, port);
-    
-    if (ipaddr && !isRunning) {
-        NSError *error = nil;
-        
-        if (![udpSocket bindToPort:port error:&error])
-        {
-            [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Error starting server (bind): %@", error]];
-            return;
-        }
-        if (![udpSocket beginReceiving:&error])
-        {
-            [udpSocket close];
-            
-            [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Error starting server (recv): %@", error]];
-            return;
-        }
-        
-        _resultText.text = [NSString stringWithFormat:@"Udp Echo server started on port %hu", [udpSocket localPort]];
-        isRunning = YES;
-        
-        //发送命令给设备
-        NSDictionary *dic = @{
-                              @"enable":@(1),
-                              @"ip":ipaddr,
-                              @"port":@(port)
-                              };
-        NSString *dataStr = [BLCommonTools serializeMessage:dic];
-        
-        NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.did subDevDid:nil dataStr:dataStr command:@"device_log_redirect" scriptPath:nil sendcount:1];
-        
-        NSLog(@"startDeviceLogRedirect result:%@", result);
-    }
+//    int port = 18880;
+//
+//    NSString *ipaddr = [BLNetworkImp getIPAddress:YES];
+//    NSLog(@"IP:%@ Port:%d", ipaddr, port);
+//    
+//    if (ipaddr && !isRunning) {
+//        NSError *error = nil;
+//        
+//        if (![udpSocket bindToPort:port error:&error])
+//        {
+//            [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Error starting server (bind): %@", error]];
+//            return;
+//        }
+//        if (![udpSocket beginReceiving:&error])
+//        {
+//            [udpSocket close];
+//            
+//            [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Error starting server (recv): %@", error]];
+//            return;
+//        }
+//        
+//        _resultText.text = [NSString stringWithFormat:@"Udp Echo server started on port %hu", [udpSocket localPort]];
+//        isRunning = YES;
+//        
+//        //发送命令给设备
+//        NSDictionary *dic = @{
+//                              @"enable":@(1),
+//                              @"ip":ipaddr,
+//                              @"port":@(port)
+//                              };
+//        NSString *dataStr = [BLCommonTools serializeMessage:dic];
+//        
+//        NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.did subDevDid:nil dataStr:dataStr command:@"device_log_redirect" scriptPath:nil sendcount:1];
+//        
+//        NSLog(@"startDeviceLogRedirect result:%@", result);
+//    }
 }
 
 - (void)stopDeviceLogRedirect {
     // STOP udp echo server
     
-    if (isRunning) {
-        NSLog(@"Stopped Udp Echo server");
-
-        [udpSocket close];
-        isRunning = false;
-
-        int port = 18880;
-        //发送命令给设备
-        NSDictionary *dic = @{
-                              @"enable":@(0),
-                              @"ip":@"",
-                              @"port":@(port)
-                              };
-        NSString *dataStr = [BLCommonTools serializeMessage:dic];
-        
-        NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.did subDevDid:nil dataStr:dataStr command:@"device_log_redirect" scriptPath:nil sendcount:1];
-        
-        NSLog(@"stopDeviceLogRedirect result:%@", result);
-    }
+//    if (isRunning) {
+//        NSLog(@"Stopped Udp Echo server");
+//
+//        [udpSocket close];
+//        isRunning = false;
+//
+//        int port = 18880;
+//        //发送命令给设备
+//        NSDictionary *dic = @{
+//                              @"enable":@(0),
+//                              @"ip":@"",
+//                              @"port":@(port)
+//                              };
+//        NSString *dataStr = [BLCommonTools serializeMessage:dic];
+//
+//        NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.did subDevDid:nil dataStr:dataStr command:@"device_log_redirect" scriptPath:nil sendcount:1];
+//
+//        NSLog(@"stopDeviceLogRedirect result:%@", result);
+//    }
 }
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext

@@ -12,11 +12,12 @@
 #import "IRCodeSubAreaInfo.h"
 #import "IRCodeBrandInfo.h"
 #import "IRCodeProviderInfo.h"
+#import "IRCodeLocationInfo.h"
 
 @interface CateGoriesTableViewController : UITableViewController
 
 @property(nonatomic, assign) NSInteger devtype;
-@property(nonatomic, strong) IRCodeSubAreaInfo *subAreainfo;
+@property(nonatomic, strong) IRCodeLocationInfo *currentLocation;
 
 + (instancetype)viewController;
 

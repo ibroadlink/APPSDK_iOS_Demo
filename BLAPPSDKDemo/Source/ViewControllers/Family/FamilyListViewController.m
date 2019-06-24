@@ -12,7 +12,6 @@
 #import "DropDownList.h"
 #import "BLNewFamilyManager.h"
 
-#import <BLLetFamily/BLLetFamily.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface FamilyListViewController () <UITableViewDelegate, UITableViewDataSource>
@@ -40,8 +39,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self queryFamilyBaseList];
-//    [self queryFamilyBaseInfos];
-//    [self queryDefineRooms];
 }
 
 + (instancetype)viewController {
@@ -119,36 +116,6 @@
 }
 
 #pragma mark - private method
-- (void)queryFamilyBaseInfos {
-    BLFamilyController *manager = [BLFamilyController sharedManager];
-    
-    [self showIndicatorOnWindow];
-    [manager queryLoginUserFamilyBaseInfoListWithCompletionHandler:^(BLFamilyBaseInfoListResult * _Nonnull result) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideIndicatorOnWindow];
-            if ([result succeed]) {
-                [BLStatusBar showTipMessageWithStatus:@"Query Family Base Infos Success."];
-            } else {
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Query Family Base Infos. Code:%ld MSG:%@", result.status, result.msg]];
-            }
-        });
-    }];
-}
-
-- (void)queryDefineRooms {
-    BLFamilyController *manager = [BLFamilyController sharedManager];
-    
-    [self showIndicatorOnWindow];
-    [manager getSystemPreDefineRoomTypesWithcompletionHandler:^(BLDefineRoomTypesResult * _Nonnull result) {
-        [self hideIndicatorOnWindow];
-        if ([result succeed]) {
-            [BLStatusBar showTipMessageWithStatus:@"Query Rooms Success."];
-        } else {
-            [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Query Rooms Failed. Code:%ld MSG:%@", result.status, result.msg]];
-        }
-    }];
-}
-
 
 - (void)queryFamilyBaseList {
     [self showIndicatorOnWindow];

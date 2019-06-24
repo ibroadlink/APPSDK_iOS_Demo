@@ -13,8 +13,6 @@
 #import "BLNewFamilyManager.h"
 #import "BLDeviceService.h"
 
-#import <DoraemonKit.h>
-
 #ifndef DISABLE_PUSH_NOTIFICATIONS
 #import "BLSNotificationService.h"
 #import "BLSMediator.h"
@@ -35,9 +33,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-#ifdef DEBUG
-    [[DoraemonManager shareInstance] install];
-#endif
     
     [self loadAppSdk];
 
@@ -193,7 +188,6 @@
     [BLConfigParam sharedConfigParam].controllerQueryCount = 8;                     // 设备批量查询设备个数
     [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;          // 脚本下载平台
     
-    
     // 使用云端集群
     // [BLConfigParam sharedConfigParam].appServiceEnable = 1;
     [BLConfigParam sharedConfigParam].appServiceEnable = [userDefault getAppServiceEnable];
@@ -204,7 +198,7 @@
         }
     }
     
-    [self.let setDebugLog:BL_LEVEL_ALL];                                          // Set APPSDK debug log level
+    [self.let setDebugLog:BL_LEVEL_DEBUG];                                            // Set APPSDK debug log level
     [self.let.controller setSDKRawDebugLevel:BL_LEVEL_DEBUG];                       // Set DNASDK debug log level
     
     // 相关模块必须先初始化

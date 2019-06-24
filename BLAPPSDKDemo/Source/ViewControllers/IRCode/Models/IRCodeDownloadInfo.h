@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *downloadurl;
 @property (nonatomic, copy) NSString *savePath;
 @property (nonatomic, copy) NSString *key;
-@property (nonatomic, assign) NSInteger ircodeid;
+@property (nonatomic, copy) NSString *ircodeid;
 @property (nonatomic, assign) NSInteger devtype;
 
 @end

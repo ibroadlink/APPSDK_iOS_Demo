@@ -325,7 +325,7 @@
         return;
     }
     
-    NSMutableDictionary *head = [[NSMutableDictionary alloc] initWithDictionary:[[BLNewFamilyManager sharedFamily] generateHttpHead]];
+    NSMutableDictionary *head = [NSMutableDictionary dictionaryWithCapacity:0];
     NSString *myUrlString = nil;
     
     if (![BLCommonTools isEmpty:serviceName]) {

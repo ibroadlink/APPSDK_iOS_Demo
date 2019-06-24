@@ -36,13 +36,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)sharedFamily;
 
 /**
- Get common http head
-
- @return http head
- */
-- (NSDictionary *)generateHttpHead;
-
-/**
  Create Default family
  
  @param name name

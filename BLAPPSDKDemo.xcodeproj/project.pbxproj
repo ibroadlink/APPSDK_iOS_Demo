@@ -80,7 +80,6 @@
 		705B095F1D4F1C5B00805109 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 705B095D1D4F1C5B00805109 /* Main.storyboard */; };
 		705B09611D4F1C5B00805109 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 705B09601D4F1C5B00805109 /* Assets.xcassets */; };
 		705B09641D4F1C5B00805109 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 705B09621D4F1C5B00805109 /* LaunchScreen.storyboard */; };
-		70A3904C1D83B1FC002F2867 /* httpDemo.js in Resources */ = {isa = PBXBuildFile; fileRef = 70A3904B1D83B1FC002F2867 /* httpDemo.js */; };
 		70DDAEF51DC73D4A005E4278 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 70DDAEE91DC73D4A005E4278 /* AppDelegate.m */; };
 		70DDAEF91DC73D4A005E4278 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 70DDAEF01DC73D4A005E4278 /* main.m */; };
 		8405E12F225485ED00DC73D1 /* IRCodeMatchTreeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8405E12E225485ED00DC73D1 /* IRCodeMatchTreeInfo.m */; };
@@ -100,10 +99,14 @@
 		84449FD4221BD0E8006D2A10 /* BLSFamilyCreateResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84449FD3221BD0E8006D2A10 /* BLSFamilyCreateResult.m */; };
 		84449FDA221BD243006D2A10 /* BLSRoomInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84449FD9221BD243006D2A10 /* BLSRoomInfo.m */; };
 		84449FDD221BD61C006D2A10 /* BLSFamilyListResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84449FDC221BD61C006D2A10 /* BLSFamilyListResult.m */; };
+		8468350022B1E9A3001FA64D /* SMCallTraceCore.c in Sources */ = {isa = PBXBuildFile; fileRef = 846834E822B1E9A3001FA64D /* SMCallTraceCore.c */; };
+		8468350222B1E9A3001FA64D /* SMCallTraceTimeCostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 846834EB22B1E9A3001FA64D /* SMCallTraceTimeCostModel.m */; };
+		8468350922B1E9A3001FA64D /* SMCallTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 846834F722B1E9A3001FA64D /* SMCallTrace.m */; };
+		8468350B22B1E9A3001FA64D /* SMCallLib.m in Sources */ = {isa = PBXBuildFile; fileRef = 846834FA22B1E9A3001FA64D /* SMCallLib.m */; };
 		846CA92D2248BBA200884421 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846CA92C2248BBA200884421 /* MainViewController.m */; };
 		846CA9302248CDB900884421 /* ModifyEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846CA92F2248CDB900884421 /* ModifyEmailViewController.m */; };
 		847A640A2269CFD300DAABA0 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 847A64082269CFD300DAABA0 /* GCDAsyncUdpSocket.m */; };
-		84906B642260893400FBA364 /* libz.1.2.11.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 84906B632260893400FBA364 /* libz.1.2.11.tbd */; };
+		848C781622AFA22700E464F2 /* IRCodeLocationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 848C781522AFA22700E464F2 /* IRCodeLocationInfo.m */; };
 		84BACDE02236476500C1E5DA /* SceneListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BACDDF2236476500C1E5DA /* SceneListController.m */; };
 		84BACDE32236555F00C1E5DA /* SceneAddController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BACDE22236555F00C1E5DA /* SceneAddController.m */; };
 		84E246C2226EEB3A0042BB48 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E246C1226EEB3A0042BB48 /* ExternalAccessory.framework */; };
@@ -265,7 +268,6 @@
 		705B09601D4F1C5B00805109 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		705B09631D4F1C5B00805109 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		705B09651D4F1C5B00805109 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		70A3904B1D83B1FC002F2867 /* httpDemo.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = httpDemo.js; sourceTree = "<group>"; };
 		70DDAEE81DC73D4A005E4278 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Source/AppDelegate.h; sourceTree = "<group>"; };
 		70DDAEE91DC73D4A005E4278 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Source/AppDelegate.m; sourceTree = "<group>"; };
 		70DDAEF01DC73D4A005E4278 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Source/main.m; sourceTree = "<group>"; };
@@ -305,12 +307,22 @@
 		84449FD9221BD243006D2A10 /* BLSRoomInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSRoomInfo.m; sourceTree = "<group>"; };
 		84449FDB221BD61C006D2A10 /* BLSFamilyListResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLSFamilyListResult.h; sourceTree = "<group>"; };
 		84449FDC221BD61C006D2A10 /* BLSFamilyListResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSFamilyListResult.m; sourceTree = "<group>"; };
+		846834E822B1E9A3001FA64D /* SMCallTraceCore.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SMCallTraceCore.c; sourceTree = "<group>"; };
+		846834EA22B1E9A3001FA64D /* SMCallTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCallTrace.h; sourceTree = "<group>"; };
+		846834EB22B1E9A3001FA64D /* SMCallTraceTimeCostModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCallTraceTimeCostModel.m; sourceTree = "<group>"; };
+		846834EF22B1E9A3001FA64D /* SMCallLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCallLib.h; sourceTree = "<group>"; };
+		846834F122B1E9A3001FA64D /* SMCallTraceCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCallTraceCore.h; sourceTree = "<group>"; };
+		846834F722B1E9A3001FA64D /* SMCallTrace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCallTrace.m; sourceTree = "<group>"; };
+		846834FA22B1E9A3001FA64D /* SMCallLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCallLib.m; sourceTree = "<group>"; };
+		846834FE22B1E9A3001FA64D /* SMCallTraceTimeCostModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCallTraceTimeCostModel.h; sourceTree = "<group>"; };
 		846CA92B2248BBA200884421 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		846CA92C2248BBA200884421 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		846CA92E2248CDB900884421 /* ModifyEmailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyEmailViewController.h; sourceTree = "<group>"; };
 		846CA92F2248CDB900884421 /* ModifyEmailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModifyEmailViewController.m; sourceTree = "<group>"; };
 		847A64082269CFD300DAABA0 /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
 		847A64092269CFD300DAABA0 /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
+		848C781422AFA22700E464F2 /* IRCodeLocationInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCodeLocationInfo.h; sourceTree = "<group>"; };
+		848C781522AFA22700E464F2 /* IRCodeLocationInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRCodeLocationInfo.m; sourceTree = "<group>"; };
 		84906B632260893400FBA364 /* libz.1.2.11.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.11.tbd; path = usr/lib/libz.1.2.11.tbd; sourceTree = SDKROOT; };
 		84BACDDE2236476500C1E5DA /* SceneListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneListController.h; sourceTree = "<group>"; };
 		84BACDDF2236476500C1E5DA /* SceneListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneListController.m; sourceTree = "<group>"; };
@@ -355,7 +367,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84906B642260893400FBA364 /* libz.1.2.11.tbd in Frameworks */,
 				02AE62F3200713A700847CE5 /* libsqlite3.0.tbd in Frameworks */,
 				84E246C2226EEB3A0042BB48 /* ExternalAccessory.framework in Frameworks */,
 				AADA6EE36D3CC88AD40F195C /* libPods-BLAPPSDKDemo.a in Frameworks */,
@@ -678,7 +689,6 @@
 			isa = PBXGroup;
 			children = (
 				3A3D7EB72140FB7200BF9D3D /* BLAPPSDKDemo.entitlements */,
-				70A3904B1D83B1FC002F2867 /* httpDemo.js */,
 				705B096B1D4F28DA00805109 /* Source */,
 				705B09541D4F1C5B00805109 /* Supporting Files */,
 			);
@@ -699,6 +709,7 @@
 		705B096B1D4F28DA00805109 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				846834E222B1E9A3001FA64D /* SMLagMonitor */,
 				847A64072269CFC200DAABA0 /* UDP */,
 				70503D951FDBE4D5002D3371 /* Utils */,
 				70503D5A1FDBE4D5002D3371 /* ViewControllers */,
@@ -767,6 +778,21 @@
 			path = Result;
 			sourceTree = "<group>";
 		};
+		846834E222B1E9A3001FA64D /* SMLagMonitor */ = {
+			isa = PBXGroup;
+			children = (
+				846834EF22B1E9A3001FA64D /* SMCallLib.h */,
+				846834FA22B1E9A3001FA64D /* SMCallLib.m */,
+				846834EA22B1E9A3001FA64D /* SMCallTrace.h */,
+				846834F722B1E9A3001FA64D /* SMCallTrace.m */,
+				846834E822B1E9A3001FA64D /* SMCallTraceCore.c */,
+				846834F122B1E9A3001FA64D /* SMCallTraceCore.h */,
+				846834FE22B1E9A3001FA64D /* SMCallTraceTimeCostModel.h */,
+				846834EB22B1E9A3001FA64D /* SMCallTraceTimeCostModel.m */,
+			);
+			path = SMLagMonitor;
+			sourceTree = "<group>";
+		};
 		847A64072269CFC200DAABA0 /* UDP */ = {
 			isa = PBXGroup;
 			children = (
@@ -791,6 +817,8 @@
 				84F84213224A2FA200D60C76 /* IRCodeDownloadInfo.m */,
 				8405E12D225485ED00DC73D1 /* IRCodeMatchTreeInfo.h */,
 				8405E12E225485ED00DC73D1 /* IRCodeMatchTreeInfo.m */,
+				848C781422AFA22700E464F2 /* IRCodeLocationInfo.h */,
+				848C781522AFA22700E464F2 /* IRCodeLocationInfo.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -815,7 +843,6 @@
 				705B094D1D4F1C5B00805109 /* Sources */,
 				705B094E1D4F1C5B00805109 /* Frameworks */,
 				705B094F1D4F1C5B00805109 /* Resources */,
-				286DED45BEC942B8FFED64F7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -886,7 +913,6 @@
 				02B415FD2008603300329783 /* config.xml in Resources */,
 				705B09641D4F1C5B00805109 /* LaunchScreen.storyboard in Resources */,
 				02B89AD62047A540004E0088 /* logo.png in Resources */,
-				70A3904C1D83B1FC002F2867 /* httpDemo.js in Resources */,
 				02B89AD32047A540004E0088 /* cordova.js in Resources */,
 				02B89AD12047A540004E0088 /* exec.js in Resources */,
 				02B89AD22047A540004E0088 /* platform.js in Resources */,
@@ -918,28 +944,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		286DED45BEC942B8FFED64F7 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo-resources.sh",
-				"${PODS_ROOT}/BLExtension/BLExtension/BLExtension/Extensions/BLExtension.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/DoraemonKit/DoraemonKit.bundle",
-				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/BLExtension.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DoraemonKit.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -979,6 +983,7 @@
 				84F8420E224A206800D60C76 /* IRCodeBrandInfo.m in Sources */,
 				02AE9DAF2058BDD10054677B /* GeneralTimerControlView.m in Sources */,
 				70503DB31FDBE4D6002D3371 /* IRCodeTestViewController.m in Sources */,
+				848C781622AFA22700E464F2 /* IRCodeLocationInfo.m in Sources */,
 				84BACDE02236476500C1E5DA /* SceneListController.m in Sources */,
 				84EE08DE221CFF140088EDE8 /* BLSInvitedQrcodeResult.m in Sources */,
 				70503DAD1FDBE4D5002D3371 /* DNAControlViewController.m in Sources */,
@@ -988,17 +993,21 @@
 				84BACDE32236555F00C1E5DA /* SceneAddController.m in Sources */,
 				3AFC6D7820EB7278003404E6 /* UIImage+BDL.m in Sources */,
 				842C9611221E7AAC00B3A1A6 /* RoomListViewController.m in Sources */,
+				8468350222B1E9A3001FA64D /* SMCallTraceTimeCostModel.m in Sources */,
 				84F84217224A3E8A00D60C76 /* IRCodeModel.m in Sources */,
 				70503DAB1FDBE4D5002D3371 /* DeviceMainViewController.m in Sources */,
 				3A9B60E02100377D0048540B /* JoinFamilyViewController.m in Sources */,
 				3AFC6D7520EB6063003404E6 /* Tools.m in Sources */,
 				8414253F22545CCB00E8A7C8 /* MatchTreeController.m in Sources */,
+				8468350922B1E9A3001FA64D /* SMCallTrace.m in Sources */,
 				3ACDE3C120EC9CF00016461D /* ModifyPhoneViewController.m in Sources */,
 				70503DB81FDBE4D6002D3371 /* FamilyDetailViewController.m in Sources */,
 				025A168720E33CBC00D75DAB /* RestPasswordViewController.m in Sources */,
+				8468350B22B1E9A3001FA64D /* SMCallLib.m in Sources */,
 				70503DA21FDBE4D5002D3371 /* CreateFamilyViewController.m in Sources */,
 				70503DA01FDBE4D5002D3371 /* LoginsTableViewController.m in Sources */,
 				0261054220E21AE400883EFC /* BLLoadingButton.m in Sources */,
+				8468350022B1E9A3001FA64D /* SMCallTraceCore.c in Sources */,
 				70503DA81FDBE4D5002D3371 /* RegisterViewController.m in Sources */,
 				3AEF737022253B2C00F2376A /* BLDeviceConfigureInfo.m in Sources */,
 				0244948B20AEC26D0056FB10 /* UserViewController.m in Sources */,

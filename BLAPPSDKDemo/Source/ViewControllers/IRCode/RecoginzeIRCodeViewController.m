@@ -38,7 +38,7 @@
     if (![BLCommonTools isEmpty:self.downloadinfo.name]) {
         self.title = self.downloadinfo.name;
     } else {
-        self.title = [NSString stringWithFormat:@"%ld", self.downloadinfo.ircodeid];
+        self.title = self.downloadinfo.ircodeid;
     }
 }
 
@@ -48,15 +48,9 @@
 }
 
 - (IBAction)downLoadIRCodeScript:(id)sender {
-    
-    if (![BLCommonTools isEmpty:self.downloadinfo.downloadurl]) {
-        self.downloadinfo.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:self.downloadinfo.name];
-        [self downloadIRCodeScript:self.downloadinfo.downloadurl savePath:self.downloadinfo.savePath randkey:self.downloadinfo.key];
-    } else {
-        NSString *ircodeid = [NSString stringWithFormat:@"%ld", self.downloadinfo.ircodeid];
-        self.downloadinfo.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:ircodeid];
-        [self downloadIRCodeScript:ircodeid savePath:self.downloadinfo.savePath];
-    }
+    NSString *ircodeid = self.downloadinfo.ircodeid;
+    self.downloadinfo.savePath = [self.blcontroller.queryIRCodeScriptPath stringByAppendingPathComponent:ircodeid];
+    [self downloadIRCodeScript:ircodeid savePath:self.downloadinfo.savePath];
 }
 
 - (IBAction)getIRCodeBaseInfo:(id)sender {
@@ -97,10 +91,14 @@
 }
 
 - (void)downloadIRCodeScript:(NSString *)ircodeid savePath:(NSString *_Nonnull)path {
+    NSString *mtag = @"";
+    if (self.downloadinfo.devtype == BL_IRCODE_DEVICE_AC) {
+        mtag = @"gz";
+    }
+    
     [self showIndicatorOnWindow];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSLog(@"download url:%@", [[BLApiUrls sharedApiUrl] iRCodeDownloadUrl]);
-        [self.blircode downloadIRCodeScriptWithIRCodeid:ircodeid mtag:@"" savePath:path completionHandler:^(BLDownloadResult * _Nonnull result) {
+        [self.blircode downloadIRCodeScriptWithIRCodeid:ircodeid mtag:mtag savePath:path completionHandler:^(BLDownloadResult * _Nonnull result) {
             NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
             [self hideIndicatorOnWindow];
             if ([result succeed]) {
@@ -119,6 +117,9 @@
 }
 
 - (void)queryIRCodeScriptInfoSavePath:(NSString *)savePath randkey:(NSString *)randkey deviceType:(NSInteger)devicetype {
+    
+//    BLController *blcontroller = [BLLet sharedLet].controller;
+//    NSString *path = [[blcontroller queryIRCodeScriptPath] stringByAppendingPathComponent:@"奥克斯_5935"];
     
     BLIRCodeInfoResult *result = [self.blircode queryIRCodeInfomationWithScript:savePath deviceType:devicetype];
     NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);

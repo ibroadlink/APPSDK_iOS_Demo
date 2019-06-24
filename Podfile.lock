@@ -14,127 +14,64 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - BLExtension (0.0.1)
-  - BLLetAccount (2.10.0):
-    - BLLetBase (~> 2.10)
-  - BLLetBase (2.10.1):
+  - BLLet (2.11.2):
+    - BLLet/BLLetAccount (= 2.11.2)
+    - BLLet/BLLetBase (= 2.11.2)
+    - BLLet/BLLetCore (= 2.11.2)
+    - BLLet/BLLetFamily (= 2.11.2)
+    - BLLet/BLLetIRCode (= 2.11.2)
+    - BLLet/BLLetPlugins (= 2.11.2)
+  - BLLet/BLLetAccount (2.11.2):
+    - BLLet/BLLetBase
+  - BLLet/BLLetBase (2.11.2):
     - AFNetworking
-  - BLLetCore (2.10.0):
-    - BLLetBase (~> 2.10)
-  - BLLetFamily (2.10.0):
-    - BLLetBase (~> 2.10)
-  - BLLetIRCode (2.10.4):
-    - BLLetCore (~> 2.10.0)
-  - BLLetPlugins (2.10.0):
-    - BLLetBase (~> 2.10)
-  - BSBacktraceLogger (0.0.1)
-  - CocoaLumberjack (3.5.2):
-    - CocoaLumberjack/Core (= 3.5.2)
-  - CocoaLumberjack/Core (3.5.2)
+  - BLLet/BLLetCore (2.11.2):
+    - BLLet/BLLetBase
+  - BLLet/BLLetFamily (2.11.2):
+    - BLLet/BLLetBase
+  - BLLet/BLLetIRCode (2.11.2):
+    - BLLet/BLLetBase
+    - BLLet/BLLetCore
+  - BLLet/BLLetPlugins (2.11.2):
+    - BLLet/BLLetBase
   - Cordova (4.4.0)
-  - DoraemonKit/Core (1.1.6):
-    - BSBacktraceLogger
-    - fishhook
-    - PNChart
-    - "UITextView+Placeholder"
-  - DoraemonKit/WithLogger (1.1.6):
-    - BSBacktraceLogger
-    - CocoaLumberjack
-    - DoraemonKit/Core
-    - fishhook
-    - PNChart
-    - "UITextView+Placeholder"
-  - fishhook (0.2)
-  - Masonry (0.6.4)
   - MBProgressHUD (1.1.0)
-  - PNChart (0.8.9):
-    - UICountingLabel (~> 1.2.0)
   - SDWebImage (4.4.6):
     - SDWebImage/Core (= 4.4.6)
   - SDWebImage/Core (4.4.6)
   - SSZipArchive (2.1.4)
-  - SVProgressHUD (2.2.5)
-  - UICountingLabel (1.2.0)
-  - "UITextView+Placeholder (1.2.1)"
   - YYCategories (1.0.4):
     - YYCategories/no-arc (= 1.0.4)
   - YYCategories/no-arc (1.0.4)
 
 DEPENDENCIES:
-  - BLExtension (~> 0.0.1)
-  - BLLetAccount (from `../../Gitlab/BLLetSDK/iOS/BLLetAccount`)
-  - BLLetBase (from `../../Gitlab/BLLetSDK/iOS/BLLetBase`)
-  - BLLetCore (from `../../Gitlab/BLLetSDK/iOS/BLLetCore`)
-  - BLLetFamily (from `../../Gitlab/BLLetSDK/iOS/BLLetFamily`)
-  - BLLetIRCode (from `../../Gitlab/BLLetSDK/iOS/BLLetIRCode`)
-  - BLLetPlugins (from `../../Gitlab/BLLetSDK/iOS/BLLetPlugins`)
+  - BLLet (~> 2.11.2)
   - Cordova (~> 4.4.0)
-  - DoraemonKit/Core (~> 1.1.6)
-  - DoraemonKit/WithLogger (~> 1.1.6)
-  - Masonry (~> 0.6.2)
   - MBProgressHUD (~> 1.1.0)
   - SDWebImage (~> 4.4.6)
   - SSZipArchive (~> 2.1.1)
-  - SVProgressHUD
   - YYCategories (~> 1.0.4)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
-    - BLExtension
-    - BSBacktraceLogger
-    - CocoaLumberjack
     - Cordova
-    - DoraemonKit
-    - fishhook
-    - Masonry
     - MBProgressHUD
-    - PNChart
     - SDWebImage
     - SSZipArchive
-    - SVProgressHUD
-    - UICountingLabel
-    - "UITextView+Placeholder"
     - YYCategories
-
-EXTERNAL SOURCES:
-  BLLetAccount:
-    :path: "../../Gitlab/BLLetSDK/iOS/BLLetAccount"
-  BLLetBase:
-    :path: "../../Gitlab/BLLetSDK/iOS/BLLetBase"
-  BLLetCore:
-    :path: "../../Gitlab/BLLetSDK/iOS/BLLetCore"
-  BLLetFamily:
-    :path: "../../Gitlab/BLLetSDK/iOS/BLLetFamily"
-  BLLetIRCode:
-    :path: "../../Gitlab/BLLetSDK/iOS/BLLetIRCode"
-  BLLetPlugins:
-    :path: "../../Gitlab/BLLetSDK/iOS/BLLetPlugins"
+  https://github.com/ibroadlink/BLLibSpecs.git:
+    - BLLet
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  BLExtension: 397cb05b32940fe0ce3467821ce56817c7f8bba8
-  BLLetAccount: 4d5c600790f39b79813befda220397f2873cdf25
-  BLLetBase: 4eafe51bdaffcc187edefff14e4dc6589f38fb20
-  BLLetCore: 4b991e57d6dec2f78b56f175d3d4e4af879fc1a3
-  BLLetFamily: cc7a1cede3bab532bac3a18ce005dd8f8e9288af
-  BLLetIRCode: e79c71e463d32dbd38403db5301bdf93b7a1ecc6
-  BLLetPlugins: 0c2d7f234b9fb2458b15d79d20066b79827c3052
-  BSBacktraceLogger: 06b983ee93a9f87d957960e9c73d660d5966b447
-  CocoaLumberjack: 118bf4a820efc641f79fa487b75ed928dccfae23
+  BLLet: 42b0104919d92dc880a36dce5bdca05a00ade6d9
   Cordova: 561576155c420c54441d99b855de12c6e7b51088
-  DoraemonKit: 309c42d828dffb8149942afcfa2af84d8f44bad1
-  fishhook: ea19933abfe8f2f52c55fd8b6e2718467d3ebc89
-  Masonry: 281802d04d787ea2973179ee8bcb50500579ede2
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
-  PNChart: 84774d225c2126ded6c93d4dbe6ae98c3a73c2d2
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
-  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
-  UICountingLabel: 1db4e7d023e1762171eb226d6dff47a7a84f27aa
-  "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
 
-PODFILE CHECKSUM: a966491d6c70ce575100b4b5b666647661b6217c
+PODFILE CHECKSUM: ff0fd43344c2529186bd59611d0d8e6edb86d790
 
-COCOAPODS: 1.7.0.beta.2
+COCOAPODS: 1.7.2

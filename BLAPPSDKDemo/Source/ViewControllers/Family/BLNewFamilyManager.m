@@ -31,24 +31,6 @@
     [BLConfigParam sharedConfigParam].familyId = familyid;
 }
 
-- (NSDictionary *)generateHttpHead {
-    
-    NSMutableDictionary *headDic = [NSMutableDictionary dictionaryWithCapacity:5];
-    if (self.userid)
-        [headDic setObject:self.userid forKey:@"userid"];
-    
-    if (self.loginsession)
-        [headDic setObject:self.loginsession forKey:@"loginsession"];
-    
-    if (self.licenseid)
-        [headDic setObject:self.licenseid forKey:@"licenseid"];
-    
-    if (self.familyid)
-        [headDic setObject:self.familyid forKey:@"familyid"];
-    
-    return [headDic copy];
-}
-
 - (void)createDefaultFamilyWithInfo:(nonnull NSString *)name country:(nullable NSString *)country province:(nullable NSString *)province city:(nullable NSString *)city completionHandler:(nullable void (^)(BLSFamilyCreateResult * __nonnull result))completionHandler {
     
     BLSFamilyInfo *info = [[BLSFamilyInfo alloc] init];
@@ -59,11 +41,10 @@
     
     NSData *jsondata = [info BLS_modelToJSONData];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyCreate];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLSFamilyCreateResult *result = [[BLSFamilyCreateResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -82,11 +63,10 @@
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyDelete];
     self.familyid = familyid;
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLBaseResult *result = [[BLBaseResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -113,11 +93,10 @@
     NSData *jsondata = [info BLS_modelToJSONData];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyModilyInfo];
     self.familyid = info.familyid;
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLBaseResult *result = [[BLBaseResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -149,11 +128,10 @@
     }
     
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyModilyIcon];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
 
-    [httpAccessor multipartPost:url head:head data:postDic timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor multipartPost:url head:nil data:postDic timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLSFamilyIconResult *result = [[BLSFamilyIconResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -171,11 +149,10 @@
     NSDictionary *body = @{};
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyList];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLSFamilyListResult *result = [[BLSFamilyListResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -193,11 +170,10 @@
     NSDictionary *body = @{};
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyMemberReqQrcode];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLSInvitedQrcodeResult *result = [[BLSInvitedQrcodeResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -223,11 +199,10 @@
     NSDictionary *body = @{@"qrcode":qrcode};
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyMemberScanQrcode];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLSFamilyInfoResult *result = [[BLSFamilyInfoResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -254,11 +229,10 @@
     NSDictionary *body = @{@"qrcode":qrcode};
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyMemberJoin];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLSFamilyInfoResult *result = [[BLSFamilyInfoResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -276,11 +250,10 @@
     NSDictionary *body = @{};
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyMemberList];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLSFamilyMembersResult *result = [[BLSFamilyMembersResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -307,11 +280,10 @@
     NSDictionary *body = @{@"familymember":userids};
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyMemberDelete];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLBaseResult *result = [[BLBaseResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -330,11 +302,10 @@
     NSDictionary *body = @{};
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyMemberQuite];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLBaseResult *result = [[BLBaseResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -361,11 +332,10 @@
     NSDictionary *body = @{@"newmaster":userid};
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyMemberTransfermaster];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLBaseResult *result = [[BLBaseResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -384,11 +354,10 @@
     NSDictionary *body = @{};
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyRoomList];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLSManageRoomResult *result = [[BLSManageRoomResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -424,11 +393,10 @@
     
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyRoomManage];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLSManageRoomResult *result = [[BLSManageRoomResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -447,11 +415,10 @@
     NSDictionary *body = @{};
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyDeviceList];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLSQueryEndpointsResult *result = [[BLSQueryEndpointsResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -489,11 +456,10 @@
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *path = [kFamilyDeviceManage stringByAppendingString:@"?operation=add"];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:path];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLBaseResult *result = [[BLBaseResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -524,11 +490,10 @@
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *path = [kFamilyDeviceManage stringByAppendingString:@"?operation=del"];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:path];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLBaseResult *result = [[BLBaseResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -559,11 +524,10 @@
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *path = [kFamilyDeviceManage stringByAppendingString:@"?operation=update"];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:path];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLBaseResult *result = [[BLBaseResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -597,11 +561,10 @@
     
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyDeviceUpdateAttribute];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLBaseResult *result = [[BLBaseResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -619,11 +582,10 @@
     NSDictionary *body = @{};
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilySceneList];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLSQueryScenesResult *result = [[BLSQueryScenesResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -652,11 +614,10 @@
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *path = [kFamilySceneManage stringByAppendingString:@"?operation=add"];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:path];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLSAddSceneResult *result = [[BLSAddSceneResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -685,11 +646,10 @@
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *path = [kFamilySceneManage stringByAppendingString:@"?operation=del"];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:path];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLBaseResult *result = [[BLBaseResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -717,11 +677,10 @@
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *path = [kFamilySceneManage stringByAppendingString:@"?operation=update"];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:path];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLBaseResult *result = [[BLBaseResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -754,11 +713,10 @@
     
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilySceneUpdateAttribute];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLBaseResult *result = [[BLBaseResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -789,11 +747,10 @@
     
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:body options:0 error:nil];
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyAddAuth];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLSAddAuthResult *result = [[BLSAddAuthResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -808,11 +765,10 @@
 
 - (void)delAuthWithAuthid:(nonnull NSString *)authid completionHandler:(nullable void (^)(BLBaseResult * __nonnull result))completionHandler {
     NSString *url = [NSString stringWithFormat:@"%@?authid=%@",[[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyDelAuth],authid];
-    NSDictionary *head = [self generateHttpHead];
     
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor get:url head:head timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor get:url head:nil timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLBaseResult *result = [[BLBaseResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;
@@ -832,11 +788,10 @@
     } else {
         url = [NSString stringWithFormat:@"%@?ticket=%@",[[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:kFamilyQueryAuth],ticket];
     }
-    NSDictionary *head = [self generateHttpHead];
     NSData *jsondata = [NSJSONSerialization dataWithJSONObject:@{} options:0 error:nil];
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
-    [httpAccessor post:url head:head data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
+    [httpAccessor post:url head:nil data:jsondata timeout:3000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
         if (error || data == nil) {
             BLBaseBodyResult *result = [[BLBaseBodyResult alloc] init];
             result.status = BL_APPSDK_HTTP_REQUEST_ERR;

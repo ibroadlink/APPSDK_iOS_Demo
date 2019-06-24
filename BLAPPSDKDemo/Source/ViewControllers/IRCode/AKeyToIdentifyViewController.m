@@ -33,7 +33,8 @@
     [self.recoginzeTxt resignFirstResponder];
     BLIRCode *blircode = [BLIRCode sharedIrdaCode];
     
-    [blircode recognizeIRCodeWithHexString:_recoginzeTxt.text completionHandler:^(BLBaseBodyResult * _Nonnull result) {
+    //采用V3接口
+    [blircode recognizeV3IRCodeWithHexString:_recoginzeTxt.text completionHandler:^(BLBaseBodyResult * _Nonnull result) {
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
 

@@ -49,7 +49,7 @@
     if (self.devtype == BL_IRCODE_DEVICE_AC || self.devtype == BL_IRCODE_DEVICE_TV) {
         [self queryIRCodeBrands];
     } else if(self.devtype == BL_IRCODE_DEVICE_TV_BOX){
-        [self querySTBProvider];
+        [self querySTBProvider_V3];
     }
 }
 
@@ -82,16 +82,16 @@
     
 }
 
-- (void)querySTBProvider {
+- (void)querySTBProvider_V3 {
     
-    [self.blircode requestSTBProviderWithLocateid:self.subAreainfo.locateid completionHandler:^(BLBaseBodyResult * _Nonnull result) {
-        NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
+    [self.blircode requestV3STBProviderWithCountrycode:self.currentLocation.countryCode provincecode:self.currentLocation.provinceCode citycode:self.currentLocation.cityCode completionHandler:^(BLBaseBodyResult * _Nonnull result) {
+
         if ([result succeed]) {
             [self.brandInfos removeAllObjects];
 
             if (result.respbody) {
                 NSArray *providers = result.respbody[@"providerinfo"];
-                
+
                 if (![BLCommonTools isEmptyArray:providers]) {
                     for (NSDictionary *dic in providers) {
                         IRCodeProviderInfo *info = [IRCodeProviderInfo BLS_modelWithDictionary:dic];
@@ -99,7 +99,7 @@
                     }
                 }
             }
-            
+
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
             });
@@ -109,6 +109,7 @@
             });
         }
     }];
+    
 }
 
 #pragma mark - Table view data source
@@ -148,7 +149,6 @@
         vc.brandInfo = self.brandInfos[indexPath.row];
     }else if(self.devtype == BL_IRCODE_DEVICE_TV_BOX){
         IRCodeProviderInfo *provider = self.brandInfos[indexPath.row];
-        provider.locateid = self.subAreainfo.locateid;
         vc.provider = provider;
     }
     

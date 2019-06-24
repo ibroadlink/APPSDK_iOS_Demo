@@ -1,6 +1,6 @@
 {
   "name": "BLLetIRCode",
-  "version": "2.10.2",
+  "version": "2.11.1",
   "summary": "A short description of BLLetIRCode.",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "http://gitlab.broadlink.com.cn/appsdk",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "git@gitlab.broadlink.com.cn:appsdk/BLLetIRCode.git",
-    "tag": "2.10.2"
+    "tag": "2.11.1"
   },
   "platforms": {
     "ios": "8.0"
@@ -22,7 +22,7 @@
   "vendored_libraries": "BLLetIRCode/Classes/Library/*.{a}",
   "dependencies": {
     "BLLetCore": [
-      "~> 2.10"
+
     ]
   }
 }

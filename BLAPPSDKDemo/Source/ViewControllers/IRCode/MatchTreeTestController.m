@@ -102,7 +102,7 @@
             [self.navigationController pushViewController:vc animated:YES];
         } else {
             IRCodeDownloadInfo *info = [[IRCodeDownloadInfo alloc] init];
-            info.ircodeid = [ircodeid integerValue];
+            info.ircodeid = ircodeid;
             info.devtype = self.devtype;
             
             RecoginzeIRCodeViewController *vc = [RecoginzeIRCodeViewController viewController];

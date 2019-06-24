@@ -131,7 +131,7 @@
     NSString *ircodeid = self.hotIRCodes[indexPath.row];
     
     IRCodeDownloadInfo *info = [[IRCodeDownloadInfo alloc] init];
-    info.ircodeid = [ircodeid integerValue];
+    info.ircodeid = ircodeid;
     info.devtype = self.devtype;
     
     RecoginzeIRCodeViewController *vc = [RecoginzeIRCodeViewController viewController];

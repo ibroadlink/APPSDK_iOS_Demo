@@ -42,7 +42,7 @@
 }
 
 - (void)getKeyList {
-    BLProfileStringResult *result = [[BLLet sharedLet].controller queryProfile:self.device.did];
+    BLProfileStringResult *result = [[BLLet sharedLet].controller queryProfileByPid:self.device.pid];
     NSString *profileStr = [result getProfile];
     NSData *data = [profileStr dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *profileDic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
@@ -287,34 +287,34 @@
         [alertController addAction:[UIAlertAction actionWithTitle:param style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self.stdData setValue:@"" forParam:param];
             
-            NSDictionary *valueDic = [paramDic objectForKey:param][0];
-            NSMutableArray *parameterList = [NSMutableArray arrayWithArray:valueDic[@"in"]];
-            
-            //动作类型act
-            NSInteger act = [valueDic[@"act"] integerValue];
-            NSString *actFunction = nil;
-            if (act == 1) {
-                actFunction = @"only suppot get";
-            }else if (act == 2) {
-                actFunction = @"only suppot set";
-            }else {
-                actFunction = @"suppot get and set";
-            }
-            
-            //第一个元素表示参数格式,1 表示枚举型,2 表示连续型,3 表示简单类型
-            NSInteger parameterformat = [parameterList.firstObject integerValue];
-            NSString *parameterType = nil;
-            
-            [parameterList removeObjectAtIndex:0];
-            if (parameterformat == 1) {
-                parameterType = [NSString stringWithFormat:@"Enumerate type : %@",[BLCommonTools serializeMessage:parameterList]];
-            }else if (parameterformat == 2) {
-                parameterType = [NSString stringWithFormat:@"Continuous type : [min:%@,max:%@,step:%@,multiple:%@] ", parameterList[0],parameterList[1],parameterList[2],parameterList[3]];
-            }else {
-                parameterType = @"Other type : String";
-            }
-            
-            self.resultText = [NSString stringWithFormat:@"%@",@[param,actFunction,parameterType]];
+//            NSDictionary *valueDic = [paramDic objectForKey:param][0];
+//            NSMutableArray *parameterList = [NSMutableArray arrayWithArray:valueDic[@"in"]];
+//
+//            //动作类型act
+//            NSInteger act = [valueDic[@"act"] integerValue];
+//            NSString *actFunction = nil;
+//            if (act == 1) {
+//                actFunction = @"only suppot get";
+//            }else if (act == 2) {
+//                actFunction = @"only suppot set";
+//            }else {
+//                actFunction = @"suppot get and set";
+//            }
+//
+//            //第一个元素表示参数格式,1 表示枚举型,2 表示连续型,3 表示简单类型
+//            NSInteger parameterformat = [parameterList.firstObject integerValue];
+//            NSString *parameterType = nil;
+//
+//            [parameterList removeObjectAtIndex:0];
+//            if (parameterformat == 1) {
+//                parameterType = [NSString stringWithFormat:@"Enumerate type : %@",[BLCommonTools serializeMessage:parameterList]];
+//            }else if (parameterformat == 2) {
+//                parameterType = [NSString stringWithFormat:@"Continuous type : [min:%@,max:%@,step:%@,multiple:%@] ", parameterList[0],parameterList[1],parameterList[2],parameterList[3]];
+//            }else {
+//                parameterType = @"Other type : String";
+//            }
+//
+//            self.resultText = [NSString stringWithFormat:@"%@",@[param,actFunction,parameterType]];
             [self.tableView reloadData];
         }]];
     }
@@ -390,35 +390,36 @@
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    NSString *param = textField.placeholder;
-    NSMutableArray *parameterList = [NSMutableArray arrayWithCapacity:0];
-    for (NSDictionary *paramDic in self.keyList) {
-        if ([paramDic.allKeys[0] isEqualToString:param]) {
-            NSDictionary *valueDic = [paramDic objectForKey:param][0];
-            parameterList = [NSMutableArray arrayWithArray:valueDic[@"in"]];
-        }
-    }
-    NSInteger parameterformat = [parameterList.firstObject integerValue];
-    [parameterList removeObjectAtIndex:0];
-    if (parameterformat == 1) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Select one value" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        for (NSString *value in parameterList) {
-            [alertController addAction:[UIAlertAction actionWithTitle:[NSString stringWithFormat:@"%@",value] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                textField.text = [NSString stringWithFormat:@"%@",value];
-                [self.tableView reloadData];
-            }]];
-        }
-        [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-        [self presentViewController:alertController animated:YES completion:nil];
-        return NO;
-    }else if (parameterformat == 2) {
-        
-        return YES;
-    }else {
-        
-        return YES;
-    }
+//    NSString *param = textField.placeholder;
+//    NSMutableArray *parameterList = [NSMutableArray arrayWithCapacity:0];
+//    for (NSDictionary *paramDic in self.keyList) {
+//        if ([paramDic.allKeys[0] isEqualToString:param]) {
+//            NSDictionary *valueDic = [paramDic objectForKey:param][0];
+//            parameterList = [NSMutableArray arrayWithArray:valueDic[@"in"]];
+//        }
+//    }
+//    NSInteger parameterformat = [parameterList.firstObject integerValue];
+//    [parameterList removeObjectAtIndex:0];
+//    if (parameterformat == 1) {
+//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Select one value" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+//        for (NSString *value in parameterList) {
+//            [alertController addAction:[UIAlertAction actionWithTitle:[NSString stringWithFormat:@"%@",value] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                textField.text = [NSString stringWithFormat:@"%@",value];
+//                [self.tableView reloadData];
+//            }]];
+//        }
+//        [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+//        [self presentViewController:alertController animated:YES completion:nil];
+//        return NO;
+//    }else if (parameterformat == 2) {
+//
+//        return YES;
+//    }else {
+//
+//        return YES;
+//    }
     
+    return YES;
 }
 
 #pragma mark - UITableViewDelegate

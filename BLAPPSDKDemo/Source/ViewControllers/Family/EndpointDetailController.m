@@ -98,22 +98,22 @@
     
     BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
     [self showIndicatorOnWindow];
-    
+
     [manager delEndpoint:self.endpoint.endpointId completionHandler:^(BLBaseResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideIndicatorOnWindow];
         });
-        
+
         if ([result succeed]) {
             BLDNADevice *device = [self.endpoint toDNADevice];
-            
+
             if (![BLCommonTools isEmpty:device.pDid]) {
                 //子设备需要从网关里删除信息
                 BLSubdevBaseResult *baseResult = [[BLLet sharedLet].controller subDevDelWithDid:device.pDid subDevDid:device.did];
                 NSLog(@"subDevDel Code:%ld MSG:%@", (long)baseResult.status, baseResult.msg);
             }
             [[BLDeviceService sharedDeviceService] removeDevice:device.did];
-            
+
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.navigationController popViewControllerAnimated:YES];
             });
