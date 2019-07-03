@@ -111,8 +111,17 @@
 		8468350B22B1E9A3001FA64D /* SMCallLib.m in Sources */ = {isa = PBXBuildFile; fileRef = 846834FA22B1E9A3001FA64D /* SMCallLib.m */; };
 		846CA92D2248BBA200884421 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846CA92C2248BBA200884421 /* MainViewController.m */; };
 		846CA9302248CDB900884421 /* ModifyEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846CA92F2248CDB900884421 /* ModifyEmailViewController.m */; };
+		8479705122C9DD78006112D9 /* BLESMDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8479705022C9DD78006112D9 /* BLESMDataParser.m */; };
+		8479705422C9FB1C006112D9 /* RechargeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8479705322C9FB1C006112D9 /* RechargeInfo.m */; };
+		8479705722C9FD26006112D9 /* BalanceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8479705622C9FD26006112D9 /* BalanceInfo.m */; };
+		8479705A22CA0617006112D9 /* MeterInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8479705922CA0617006112D9 /* MeterInfo.m */; };
+		8479705D22CAF6B0006112D9 /* BLESMDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8479705C22CAF6B0006112D9 /* BLESMDeviceViewController.m */; };
+		8479706022CB29B6006112D9 /* AddressInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8479705F22CB29B6006112D9 /* AddressInfo.m */; };
 		847A640A2269CFD300DAABA0 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 847A64082269CFD300DAABA0 /* GCDAsyncUdpSocket.m */; };
+		8482D00B22C2253F00A4B630 /* BLEViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482D00A22C2253F00A4B630 /* BLEViewController.m */; };
+		8482D00E22C225B700A4B630 /* BLE.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8482D00D22C225B700A4B630 /* BLE.storyboard */; };
 		848C781622AFA22700E464F2 /* IRCodeLocationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 848C781522AFA22700E464F2 /* IRCodeLocationInfo.m */; };
+		849C806922C344B900FF45A4 /* BLEDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849C806822C344B900FF45A4 /* BLEDeviceViewController.m */; };
 		84BACDE02236476500C1E5DA /* SceneListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BACDDF2236476500C1E5DA /* SceneListController.m */; };
 		84BACDE32236555F00C1E5DA /* SceneAddController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BACDE22236555F00C1E5DA /* SceneAddController.m */; };
 		84E246C2226EEB3A0042BB48 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E246C1226EEB3A0042BB48 /* ExternalAccessory.framework */; };
@@ -337,11 +346,28 @@
 		846CA92C2248BBA200884421 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		846CA92E2248CDB900884421 /* ModifyEmailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyEmailViewController.h; sourceTree = "<group>"; };
 		846CA92F2248CDB900884421 /* ModifyEmailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModifyEmailViewController.m; sourceTree = "<group>"; };
+		8479704F22C9DD78006112D9 /* BLESMDataParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLESMDataParser.h; sourceTree = "<group>"; };
+		8479705022C9DD78006112D9 /* BLESMDataParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLESMDataParser.m; sourceTree = "<group>"; };
+		8479705222C9FB1C006112D9 /* RechargeInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RechargeInfo.h; sourceTree = "<group>"; };
+		8479705322C9FB1C006112D9 /* RechargeInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RechargeInfo.m; sourceTree = "<group>"; };
+		8479705522C9FD26006112D9 /* BalanceInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BalanceInfo.h; sourceTree = "<group>"; };
+		8479705622C9FD26006112D9 /* BalanceInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BalanceInfo.m; sourceTree = "<group>"; };
+		8479705822CA0617006112D9 /* MeterInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeterInfo.h; sourceTree = "<group>"; };
+		8479705922CA0617006112D9 /* MeterInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeterInfo.m; sourceTree = "<group>"; };
+		8479705B22CAF6B0006112D9 /* BLESMDeviceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLESMDeviceViewController.h; sourceTree = "<group>"; };
+		8479705C22CAF6B0006112D9 /* BLESMDeviceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLESMDeviceViewController.m; sourceTree = "<group>"; };
+		8479705E22CB29B6006112D9 /* AddressInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressInfo.h; sourceTree = "<group>"; };
+		8479705F22CB29B6006112D9 /* AddressInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressInfo.m; sourceTree = "<group>"; };
 		847A64082269CFD300DAABA0 /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
 		847A64092269CFD300DAABA0 /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
+		8482D00922C2253F00A4B630 /* BLEViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLEViewController.h; sourceTree = "<group>"; };
+		8482D00A22C2253F00A4B630 /* BLEViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLEViewController.m; sourceTree = "<group>"; };
+		8482D00D22C225B700A4B630 /* BLE.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BLE.storyboard; sourceTree = "<group>"; };
 		848C781422AFA22700E464F2 /* IRCodeLocationInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCodeLocationInfo.h; sourceTree = "<group>"; };
 		848C781522AFA22700E464F2 /* IRCodeLocationInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRCodeLocationInfo.m; sourceTree = "<group>"; };
 		84906B632260893400FBA364 /* libz.1.2.11.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.11.tbd; path = usr/lib/libz.1.2.11.tbd; sourceTree = SDKROOT; };
+		849C806722C344B900FF45A4 /* BLEDeviceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLEDeviceViewController.h; sourceTree = "<group>"; };
+		849C806822C344B900FF45A4 /* BLEDeviceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLEDeviceViewController.m; sourceTree = "<group>"; };
 		84BACDDE2236476500C1E5DA /* SceneListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneListController.h; sourceTree = "<group>"; };
 		84BACDDF2236476500C1E5DA /* SceneListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneListController.m; sourceTree = "<group>"; };
 		84BACDE12236555F00C1E5DA /* SceneAddController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneAddController.h; sourceTree = "<group>"; };
@@ -655,6 +681,7 @@
 		70503D5A1FDBE4D5002D3371 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				8482D00822C224DA00A4B630 /* BLE */,
 				840F55C3223116D80026D3BE /* Push */,
 				3A44F4AB2223E1D400936AFF /* Product */,
 				02B42DA320B2A14B00700177 /* Account */,
@@ -831,6 +858,23 @@
 			path = SMLagMonitor;
 			sourceTree = "<group>";
 		};
+		8479704E22C9DD34006112D9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8479704F22C9DD78006112D9 /* BLESMDataParser.h */,
+				8479705022C9DD78006112D9 /* BLESMDataParser.m */,
+				8479705E22CB29B6006112D9 /* AddressInfo.h */,
+				8479705F22CB29B6006112D9 /* AddressInfo.m */,
+				8479705222C9FB1C006112D9 /* RechargeInfo.h */,
+				8479705322C9FB1C006112D9 /* RechargeInfo.m */,
+				8479705522C9FD26006112D9 /* BalanceInfo.h */,
+				8479705622C9FD26006112D9 /* BalanceInfo.m */,
+				8479705822CA0617006112D9 /* MeterInfo.h */,
+				8479705922CA0617006112D9 /* MeterInfo.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		847A64072269CFC200DAABA0 /* UDP */ = {
 			isa = PBXGroup;
 			children = (
@@ -838,6 +882,29 @@
 				847A64082269CFD300DAABA0 /* GCDAsyncUdpSocket.m */,
 			);
 			path = UDP;
+			sourceTree = "<group>";
+		};
+		8482D00822C224DA00A4B630 /* BLE */ = {
+			isa = PBXGroup;
+			children = (
+				8479704E22C9DD34006112D9 /* Model */,
+				8482D00C22C2254B00A4B630 /* View */,
+				8482D00922C2253F00A4B630 /* BLEViewController.h */,
+				8482D00A22C2253F00A4B630 /* BLEViewController.m */,
+				849C806722C344B900FF45A4 /* BLEDeviceViewController.h */,
+				849C806822C344B900FF45A4 /* BLEDeviceViewController.m */,
+				8479705B22CAF6B0006112D9 /* BLESMDeviceViewController.h */,
+				8479705C22CAF6B0006112D9 /* BLESMDeviceViewController.m */,
+			);
+			path = BLE;
+			sourceTree = "<group>";
+		};
+		8482D00C22C2254B00A4B630 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8482D00D22C225B700A4B630 /* BLE.storyboard */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		84F84208224A099E00D60C76 /* Models */ = {
@@ -948,6 +1015,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8482D00E22C225B700A4B630 /* BLE.storyboard in Resources */,
 				02B415FD2008603300329783 /* config.xml in Resources */,
 				705B09641D4F1C5B00805109 /* LaunchScreen.storyboard in Resources */,
 				02B89AD62047A540004E0088 /* logo.png in Resources */,
@@ -998,9 +1066,11 @@
 				8414253C2254538F00E8A7C8 /* BrandSelectController.m in Sources */,
 				70503DB61FDBE4D6002D3371 /* DataPassthoughViewController.m in Sources */,
 				70503DAA1FDBE4D5002D3371 /* MyDeviceListViewController.m in Sources */,
+				8479705A22CA0617006112D9 /* MeterInfo.m in Sources */,
 				3AEF737322253BDE00F2376A /* BLDeviceConfigIntroduction.m in Sources */,
 				3A39D67E223751EC008C8C9C /* BLSAddAuthResult.m in Sources */,
 				3A44F4B42225146300936AFF /* BLProductCategoryModel.m in Sources */,
+				8479705D22CAF6B0006112D9 /* BLESMDeviceViewController.m in Sources */,
 				3AFC6D6F20EB59E5003404E6 /* BLUserHeadImageCell.m in Sources */,
 				70503DBA1FDBE4D6002D3371 /* BLUserDefaults.m in Sources */,
 				70503DA71FDBE4D5002D3371 /* OperateViewController.m in Sources */,
@@ -1029,11 +1099,13 @@
 				70503DAD1FDBE4D5002D3371 /* DNAControlViewController.m in Sources */,
 				70503DBC1FDBE4D6002D3371 /* BLStatusBar.m in Sources */,
 				70503DB91FDBE4D6002D3371 /* DeviceWebControlViewController.m in Sources */,
+				8479706022CB29B6006112D9 /* AddressInfo.m in Sources */,
 				84EE08EA221D33730088EDE8 /* BLSEndpointInfo.m in Sources */,
 				84BACDE32236555F00C1E5DA /* SceneAddController.m in Sources */,
 				3AFC6D7820EB7278003404E6 /* UIImage+BDL.m in Sources */,
 				842C9611221E7AAC00B3A1A6 /* RoomListViewController.m in Sources */,
 				8468350222B1E9A3001FA64D /* SMCallTraceTimeCostModel.m in Sources */,
+				8479705722C9FD26006112D9 /* BalanceInfo.m in Sources */,
 				84F84217224A3E8A00D60C76 /* IRCodeModel.m in Sources */,
 				70503DAB1FDBE4D5002D3371 /* DeviceMainViewController.m in Sources */,
 				3A9B60E02100377D0048540B /* JoinFamilyViewController.m in Sources */,
@@ -1046,6 +1118,7 @@
 				70503DB81FDBE4D6002D3371 /* FamilyDetailViewController.m in Sources */,
 				025A168720E33CBC00D75DAB /* RestPasswordViewController.m in Sources */,
 				8468350B22B1E9A3001FA64D /* SMCallLib.m in Sources */,
+				8479705122C9DD78006112D9 /* BLESMDataParser.m in Sources */,
 				70503DA21FDBE4D5002D3371 /* CreateFamilyViewController.m in Sources */,
 				70503DA01FDBE4D5002D3371 /* LoginsTableViewController.m in Sources */,
 				0261054220E21AE400883EFC /* BLLoadingButton.m in Sources */,
@@ -1076,12 +1149,14 @@
 				840F55C62231171C0026D3BE /* BLSNotificationService.m in Sources */,
 				70503DAF1FDBE4D5002D3371 /* RecoginzeIRCodeViewController.m in Sources */,
 				70DDAEF91DC73D4A005E4278 /* main.m in Sources */,
+				8479705422C9FB1C006112D9 /* RechargeInfo.m in Sources */,
 				70503DB51FDBE4D6002D3371 /* ACControlViewController.m in Sources */,
 				846CA92D2248BBA200884421 /* MainViewController.m in Sources */,
 				022D7AFD20BBDBFB00689F93 /* DropDownList.m in Sources */,
 				70503DA41FDBE4D5002D3371 /* LoginViewController.m in Sources */,
 				84F8420B224A09BF00D60C76 /* IRCodeSubAreaInfo.m in Sources */,
 				70503D561FDBE37A002D3371 /* BLDeviceService.m in Sources */,
+				8482D00B22C2253F00A4B630 /* BLEViewController.m in Sources */,
 				3AEF73792226645500F2376A /* BLDeviceResetViewController.m in Sources */,
 				8405E12F225485ED00DC73D1 /* IRCodeMatchTreeInfo.m in Sources */,
 				842C960E221E3D0500B3A1A6 /* MemberListViewController.m in Sources */,
@@ -1092,6 +1167,7 @@
 				70503DAC1FDBE4D5002D3371 /* ProductModelsTableViewController.m in Sources */,
 				84F84214224A2FA200D60C76 /* IRCodeDownloadInfo.m in Sources */,
 				70503DAE1FDBE4D5002D3371 /* RMViewController.m in Sources */,
+				849C806922C344B900FF45A4 /* BLEDeviceViewController.m in Sources */,
 				84449FD1221BB176006D2A10 /* BLSFamilyInfoResult.m in Sources */,
 				84EE08ED221D3CD60088EDE8 /* BLSQueryScenesResult.m in Sources */,
 				3AEF737C222670BD00F2376A /* BLAddDeviceListViewController.m in Sources */,

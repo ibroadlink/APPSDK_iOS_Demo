@@ -182,6 +182,7 @@
         self.let = [BLLet sharedLetWithLicense:SDK_LICENSE];                        // Init APPSDK
     }
     
+    [BLConfigParam sharedConfigParam].httpTimeout = 10*1000;
     [BLConfigParam sharedConfigParam].controllerLocalTimeout = 5000;                // 局域网控制超时时间
     [BLConfigParam sharedConfigParam].controllerRemoteTimeout = 8000;               // 远程控制超时时间
     [BLConfigParam sharedConfigParam].controllerSendCount = 2;                      // 控制重试次数

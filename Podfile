@@ -9,7 +9,7 @@ target 'BLAPPSDKDemo' do
   # use_frameworks!
 
   # Pods for BLAPPSDKDemo
-  pod 'BLLet', '~> 2.11.2'
+  pod 'BLLet', '~> 2.11'
 
 	pod 'Cordova', '~> 4.4.0'
 	pod 'SSZipArchive', '~> 2.1.1'

@@ -45,7 +45,7 @@ PODS:
   - YYCategories/no-arc (1.0.4)
 
 DEPENDENCIES:
-  - BLLet (~> 2.11.2)
+  - BLLet (~> 2.11)
   - Cordova (~> 4.4.0)
   - MBProgressHUD (~> 1.1.0)
   - SDWebImage (~> 4.4.6)
@@ -72,6 +72,6 @@ SPEC CHECKSUMS:
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
 
-PODFILE CHECKSUM: dc9b3f41ce9d950786d685b47d99064ab7a77b18
+PODFILE CHECKSUM: 6833ccf5ffb116cffc9ae285d567eb1c1ca59819
 
 COCOAPODS: 1.7.2

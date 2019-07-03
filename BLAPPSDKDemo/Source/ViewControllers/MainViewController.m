@@ -14,6 +14,7 @@
 #import "IRCodeTestViewController.h"
 #import "ProductListViewController.h"
 #import "PushViewController.h"
+#import "BLEViewController.h"
 
 #import "BLUserDefaults.h"
 #import "BLStatusBar.h"
@@ -53,6 +54,8 @@
         case 105:
             [self gotoPushViewController];
             break;
+        case 106:
+            [self gotoBLEViewController];
         default:
             break;
     }
@@ -107,6 +110,11 @@
     } else {
         [BLStatusBar showTipMessageWithStatus:@"Please login first!!!"];
     }
+}
+
+- (void)gotoBLEViewController {
+    BLEViewController *vc = [BLEViewController viewController];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (BOOL)hasBeenLogined {
