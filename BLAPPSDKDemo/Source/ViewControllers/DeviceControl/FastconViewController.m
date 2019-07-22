@@ -119,10 +119,7 @@
             self.resultView.text = result;
             NSLog(@"fastcon_no_config_result:%@",result);
         });
-        
     });
-    
-    
 }
 
 #pragma mark - tabel delegate

@@ -14,26 +14,16 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - BLLet (2.11.2):
-    - BLLet/BLLetAccount (= 2.11.2)
-    - BLLet/BLLetBase (= 2.11.2)
-    - BLLet/BLLetCore (= 2.11.2)
-    - BLLet/BLLetFamily (= 2.11.2)
-    - BLLet/BLLetIRCode (= 2.11.2)
-    - BLLet/BLLetPlugins (= 2.11.2)
-  - BLLet/BLLetAccount (2.11.2):
-    - BLLet/BLLetBase
-  - BLLet/BLLetBase (2.11.2):
+  - BLLetAccount (2.11.0):
+    - BLLetBase
+  - BLLetBase (2.11.3):
     - AFNetworking
-  - BLLet/BLLetCore (2.11.2):
-    - BLLet/BLLetBase
-  - BLLet/BLLetFamily (2.11.2):
-    - BLLet/BLLetBase
-  - BLLet/BLLetIRCode (2.11.2):
-    - BLLet/BLLetBase
-    - BLLet/BLLetCore
-  - BLLet/BLLetPlugins (2.11.2):
-    - BLLet/BLLetBase
+  - BLLetCore (2.11.1):
+    - BLLetBase (~> 2.11)
+  - BLLetIRCode (2.11.1):
+    - BLLetCore
+  - BLLetPlugins (2.11.0):
+    - BLLetBase
   - Cordova (4.4.0)
   - MBProgressHUD (1.1.0)
   - SDWebImage (4.4.6):
@@ -45,7 +35,11 @@ PODS:
   - YYCategories/no-arc (1.0.4)
 
 DEPENDENCIES:
-  - BLLet (~> 2.11)
+  - BLLetAccount (from `../../Gitlab/BLLetSDK/iOS/BLLetAccount`)
+  - BLLetBase (from `../../Gitlab/BLLetSDK/iOS/BLLetBase`)
+  - BLLetCore (from `../../Gitlab/BLLetSDK/iOS/BLLetCore`)
+  - BLLetIRCode (from `../../Gitlab/BLLetSDK/iOS/BLLetIRCode`)
+  - BLLetPlugins (from `../../Gitlab/BLLetSDK/iOS/BLLetPlugins`)
   - Cordova (~> 4.4.0)
   - MBProgressHUD (~> 1.1.0)
   - SDWebImage (~> 4.4.6)
@@ -60,18 +54,32 @@ SPEC REPOS:
     - SDWebImage
     - SSZipArchive
     - YYCategories
-  https://github.com/ibroadlink/BLLibSpecs.git:
-    - BLLet
+
+EXTERNAL SOURCES:
+  BLLetAccount:
+    :path: "../../Gitlab/BLLetSDK/iOS/BLLetAccount"
+  BLLetBase:
+    :path: "../../Gitlab/BLLetSDK/iOS/BLLetBase"
+  BLLetCore:
+    :path: "../../Gitlab/BLLetSDK/iOS/BLLetCore"
+  BLLetIRCode:
+    :path: "../../Gitlab/BLLetSDK/iOS/BLLetIRCode"
+  BLLetPlugins:
+    :path: "../../Gitlab/BLLetSDK/iOS/BLLetPlugins"
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  BLLet: 42b0104919d92dc880a36dce5bdca05a00ade6d9
+  BLLetAccount: 626f4bec66d4172c5d0478ddefe662e3cbafcc96
+  BLLetBase: f191ba1c8325efdcf4041aafd8c663e9219a01a7
+  BLLetCore: a9c672cba2f7361d5e67e19fd0b7159777c18ded
+  BLLetIRCode: 72178c898c657ad2339c64ed01bacfa05cb9fce4
+  BLLetPlugins: b38ec04a452c5a4106454db1d94faf70511e357d
   Cordova: 561576155c420c54441d99b855de12c6e7b51088
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
 
-PODFILE CHECKSUM: 6833ccf5ffb116cffc9ae285d567eb1c1ca59819
+PODFILE CHECKSUM: f2674efdc308458e090158b385fa13a7199c8b91
 
 COCOAPODS: 1.7.2

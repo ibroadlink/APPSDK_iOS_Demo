@@ -888,6 +888,7 @@
                         <segue destination="P0c-LM-2jf" kind="push" identifier="generalTimerControlView" id="sbR-Gh-uHk"/>
                         <segue destination="7kN-Fi-hyy" kind="push" identifier="fastconControlView" id="Hxw-ze-eEW"/>
                         <segue destination="Beq-bO-hbe" kind="push" identifier="rmDeviceController" id="9HU-k1-akq"/>
+                        <segue destination="EC5-yk-svK" kind="show" id="5sq-GQ-w3F"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yOb-U6-6J3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3125,7 +3126,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qm4-3P-BYB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5129" y="4606"/>
+            <point key="canvasLocation" x="-8951" y="5120"/>
         </scene>
         <!--RoomList-->
         <scene sceneID="WWj-hR-aIT">
@@ -4393,7 +4394,102 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0PR-ma-5cY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6580" y="1431"/>
+            <point key="canvasLocation" x="6580" y="1458"/>
+        </scene>
+        <!--Light Device Control Controller-->
+        <scene sceneID="rZ5-qa-cqa">
+            <objects>
+                <viewController storyboardIdentifier="LightDeviceControlController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="EC5-yk-svK" customClass="LightDeviceControlController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2BQ-SS-dxr"/>
+                        <viewControllerLayoutGuide type="bottom" id="MXJ-Q5-G5X"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="iTH-qx-PMD">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前亮度：20" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Oq-QB-qan">
+                                <rect key="frame" x="10" y="164" width="107" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="60O-bV-i1y">
+                                <rect key="frame" x="43" y="353" width="324" height="31"/>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="亮度调节" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyo-XJ-a8H">
+                                <rect key="frame" x="10" y="304" width="70" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BKV-ew-A50">
+                                <rect key="frame" x="52" y="479" width="0.0" height="0.0"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                            </button>
+                            <button opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dFo-dz-5ki">
+                                <rect key="frame" x="10" y="353" width="30" height="30"/>
+                                <state key="normal" title="➖"/>
+                                <connections>
+                                    <action selector="buttonClick:" destination="EC5-yk-svK" eventType="touchUpInside" id="fSK-9w-BXx"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k1B-GY-A8G">
+                                <rect key="frame" x="373" y="353" width="30" height="30"/>
+                                <state key="normal" title="➕"/>
+                                <connections>
+                                    <action selector="buttonClick:" destination="EC5-yk-svK" eventType="touchUpInside" id="jas-3b-SnO"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="发包间隔时间:50ms" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bD7-le-aIo">
+                                <rect key="frame" x="10" y="91" width="171" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="171" id="BVF-Bq-FgR"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1z4-hY-mXe">
+                                <rect key="frame" x="201" y="91" width="71" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="71" id="vih-4x-5Pt"/>
+                                </constraints>
+                                <state key="normal" title="确认"/>
+                                <connections>
+                                    <action selector="buttonClick:" destination="EC5-yk-svK" eventType="touchUpInside" id="STK-ue-1i1"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="60O-bV-i1y" firstAttribute="centerY" secondItem="dFo-dz-5ki" secondAttribute="centerY" id="8DO-LJ-7jA"/>
+                            <constraint firstItem="7Oq-QB-qan" firstAttribute="leading" secondItem="iTH-qx-PMD" secondAttribute="leading" constant="10" id="ENY-XM-pNF"/>
+                            <constraint firstItem="1z4-hY-mXe" firstAttribute="leading" secondItem="bD7-le-aIo" secondAttribute="trailing" constant="20" id="KdQ-4E-NBi"/>
+                            <constraint firstItem="wyo-XJ-a8H" firstAttribute="leading" secondItem="7Oq-QB-qan" secondAttribute="leading" id="NwP-lB-aXP"/>
+                            <constraint firstItem="bD7-le-aIo" firstAttribute="top" secondItem="2BQ-SS-dxr" secondAttribute="bottom" constant="27" id="P45-Aa-Na2"/>
+                            <constraint firstItem="k1B-GY-A8G" firstAttribute="leading" secondItem="60O-bV-i1y" secondAttribute="trailing" constant="8" id="XbM-x4-8PV"/>
+                            <constraint firstItem="1z4-hY-mXe" firstAttribute="centerY" secondItem="bD7-le-aIo" secondAttribute="centerY" id="Zfi-Qg-8WU"/>
+                            <constraint firstItem="60O-bV-i1y" firstAttribute="top" secondItem="wyo-XJ-a8H" secondAttribute="bottom" constant="28" id="aDs-bh-eKg"/>
+                            <constraint firstAttribute="trailing" secondItem="k1B-GY-A8G" secondAttribute="trailing" constant="11" id="jZA-qw-1tO"/>
+                            <constraint firstItem="60O-bV-i1y" firstAttribute="centerY" secondItem="iTH-qx-PMD" secondAttribute="centerY" id="jeo-jN-cHh"/>
+                            <constraint firstItem="7Oq-QB-qan" firstAttribute="top" secondItem="2BQ-SS-dxr" secondAttribute="bottom" constant="100" id="jkp-qB-g62"/>
+                            <constraint firstItem="60O-bV-i1y" firstAttribute="leading" secondItem="dFo-dz-5ki" secondAttribute="trailing" constant="5" id="lO6-xr-bIv"/>
+                            <constraint firstItem="dFo-dz-5ki" firstAttribute="leading" secondItem="iTH-qx-PMD" secondAttribute="leading" constant="10" id="n7W-SL-B9l"/>
+                            <constraint firstItem="k1B-GY-A8G" firstAttribute="centerY" secondItem="dFo-dz-5ki" secondAttribute="centerY" id="nYO-hl-TOv"/>
+                            <constraint firstItem="bD7-le-aIo" firstAttribute="leading" secondItem="iTH-qx-PMD" secondAttribute="leading" constant="10" id="qwu-1I-Jau"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="currentValueLabel" destination="7Oq-QB-qan" id="DKs-kv-C3r"/>
+                        <outlet property="lightControlSlider" destination="60O-bV-i1y" id="p9U-Cv-A8q"/>
+                        <outlet property="timeField" destination="bD7-le-aIo" id="fbv-NN-Lgj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yc7-Nm-fuk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6579.7101449275369" y="2212.5"/>
         </scene>
         <!--RM Contorl-->
         <scene sceneID="inA-Sm-yla">
@@ -4836,7 +4932,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BIT-Eq-nqM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4368" y="1431"/>
+            <point key="canvasLocation" x="4309" y="1458"/>
         </scene>
         <!--General Timer Control View-->
         <scene sceneID="KD1-Zw-LtJ">
@@ -5951,8 +6047,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="g4G-6j-sfv"/>
-        <segue reference="B3Y-Hw-nwy"/>
-        <segue reference="cre-Xs-Zgj"/>
+        <segue reference="2sW-XN-sZD"/>
+        <segue reference="9HU-k1-akq"/>
         <segue reference="JdS-Wy-Cgc"/>
         <segue reference="mHH-2Y-6o4"/>
     </inferredMetricsTieBreakers>

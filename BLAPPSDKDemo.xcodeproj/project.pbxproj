@@ -124,6 +124,7 @@
 		849C806922C344B900FF45A4 /* BLEDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849C806822C344B900FF45A4 /* BLEDeviceViewController.m */; };
 		84BACDE02236476500C1E5DA /* SceneListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BACDDF2236476500C1E5DA /* SceneListController.m */; };
 		84BACDE32236555F00C1E5DA /* SceneAddController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BACDE22236555F00C1E5DA /* SceneAddController.m */; };
+		84D2F83B22D5BABF002B8064 /* LightDeviceControlController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D2F83A22D5BABF002B8064 /* LightDeviceControlController.m */; };
 		84E246C2226EEB3A0042BB48 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E246C1226EEB3A0042BB48 /* ExternalAccessory.framework */; };
 		84EE08DB221CFB0C0088EDE8 /* BLSFamilyIconResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EE08DA221CFB0C0088EDE8 /* BLSFamilyIconResult.m */; };
 		84EE08DE221CFF140088EDE8 /* BLSInvitedQrcodeResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EE08DD221CFF140088EDE8 /* BLSInvitedQrcodeResult.m */; };
@@ -372,6 +373,8 @@
 		84BACDDF2236476500C1E5DA /* SceneListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneListController.m; sourceTree = "<group>"; };
 		84BACDE12236555F00C1E5DA /* SceneAddController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneAddController.h; sourceTree = "<group>"; };
 		84BACDE22236555F00C1E5DA /* SceneAddController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneAddController.m; sourceTree = "<group>"; };
+		84D2F83922D5BABF002B8064 /* LightDeviceControlController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LightDeviceControlController.h; sourceTree = "<group>"; };
+		84D2F83A22D5BABF002B8064 /* LightDeviceControlController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LightDeviceControlController.m; sourceTree = "<group>"; };
 		84E246C1226EEB3A0042BB48 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		84EE08D9221CFB0C0088EDE8 /* BLSFamilyIconResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLSFamilyIconResult.h; sourceTree = "<group>"; };
 		84EE08DA221CFB0C0088EDE8 /* BLSFamilyIconResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSFamilyIconResult.m; sourceTree = "<group>"; };
@@ -552,6 +555,8 @@
 				3AB87FC722154DF200B97D38 /* FastconViewController.m */,
 				8405E137225C3B6000DC73D1 /* DeviceStressTestController.h */,
 				8405E138225C3B6000DC73D1 /* DeviceStressTestController.m */,
+				84D2F83922D5BABF002B8064 /* LightDeviceControlController.h */,
+				84D2F83A22D5BABF002B8064 /* LightDeviceControlController.m */,
 			);
 			path = DeviceControl;
 			sourceTree = "<group>";
@@ -1111,6 +1116,7 @@
 				3A9B60E02100377D0048540B /* JoinFamilyViewController.m in Sources */,
 				3AFC6D7520EB6063003404E6 /* Tools.m in Sources */,
 				8414253F22545CCB00E8A7C8 /* MatchTreeController.m in Sources */,
+				84D2F83B22D5BABF002B8064 /* LightDeviceControlController.m in Sources */,
 				8468350922B1E9A3001FA64D /* SMCallTrace.m in Sources */,
 				3ACDE3C120EC9CF00016461D /* ModifyPhoneViewController.m in Sources */,
 				3A4580AF227E792C00283A17 /* BLLinkageTemplate.m in Sources */,

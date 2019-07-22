@@ -7,6 +7,7 @@
 //
 #import "OperateViewController.h"
 #import "GeneralTimerControlView.h"
+#import "LightDeviceControlController.h"
 
 #import "AppMacro.h"
 #import "BLStatusBar.h"
@@ -54,11 +55,12 @@
                                 @"Fastcon Functions",
                                 @"Device Firmware Query",
                                 @"Device Firmware Upgrade",
+                                @"Start Log Redirect",
+                                @"Stop Log Redirect",
                                 @"RM Device Demo",
                                 @"SP Device Demo",
                                 @"A1 Device Demo",
-                                @"Start Log Redirect",
-                                @"Stop Log Redirect"
+                                @"Light Device Demo"
                                 ];
     
     self.operateTableView.delegate = self;
@@ -132,19 +134,22 @@
             [self upgradeFirmVersion];
             break;
         case 9:
-            [self rmDeviceController];
+            [self startDeviceLogRedirect];
             break;
         case 10:
-            [self SPControl];
+            [self stopDeviceLogRedirect];
             break;
         case 11:
-            [self A1Control];
+            [self rmDeviceController];
             break;
         case 12:
-            [self startDeviceLogRedirect];
+            [self SPControl];
         break;
         case 13:
-            [self stopDeviceLogRedirect];
+            [self A1Control];
+            break;
+        case 14:
+            [self lightDeviceControl];
             break;
         default:
             break;
@@ -255,6 +260,15 @@
         }else{
             [BLStatusBar showTipMessageWithStatus:@"Not SP device"];
         }
+    }
+}
+
+- (void)lightDeviceControl {
+    if ([self isDownloadScript]) {
+        LightDeviceControlController *vc = [LightDeviceControlController viewController];
+        vc.device = self.device;
+        
+        [self.navigationController pushViewController:vc animated:NO];
     }
 }
 

@@ -72,23 +72,6 @@ uint16_t gen_crc16(uint8_t *cp, int16_t len) {
     return [BLCommonTools hexString2Bytes:addr];
 }
 
-//uint16_t gen_crc16(const uint8_t *data, uint16_t size) {
-//    uint16_t crc = 0;
-//    uint8_t i;
-//    for (; size > 0; size--) {
-//        crc = crc ^ (*data++ <<8);
-//        for (i = 0; i < 8; i++) {
-//            if (crc & 0X8000) {
-//                crc = (crc << 1) ^ PLOY;
-//            }else {
-//                crc <<= 1;
-//            }
-//        }
-//        crc &= 0XFFFF;
-//    }
-//    return crc;
-//}
-
 int bytes2Int(Byte bytes[4]) {
     int ret = (bytes[0] & 0xff)
         | ((bytes[1] & 0xff) << 8)

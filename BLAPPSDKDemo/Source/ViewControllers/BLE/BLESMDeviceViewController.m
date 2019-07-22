@@ -13,6 +13,8 @@
 #import "BLStatusBar.h"
 #import "AppMacro.h"
 
+#define NOTIFY_MTU 150
+
 @interface BLESMDeviceViewController () <CBPeripheralDelegate, UITextViewDelegate>
 
 // 充值Token
@@ -27,12 +29,21 @@
 // 读特征
 @property (nonatomic, strong) CBCharacteristic *readCharacteristic;
 
+// 发送数据Index
+@property (nonatomic, assign) NSInteger sendDataIndex;
+// 需要发送的数据
+@property (nonatomic, strong) NSData *dataToSend;
+// 发送是否成功
+@property (nonatomic, assign) BOOL didSendSuccess;
+
 @property (weak, nonatomic) IBOutlet UITextView *resultTextView;
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
 
 @end
 
-@implementation BLESMDeviceViewController
+@implementation BLESMDeviceViewController {
+    dispatch_semaphore_t sem;
+}
 
 + (instancetype)viewController {
     BLESMDeviceViewController *vc = [[UIStoryboard storyboardWithName:@"BLE" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
@@ -43,15 +54,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    sem = dispatch_semaphore_create(0);
+    
     self.title = self.currentPeripheral.name;
     self.address = self.currentPeripheral.name;
     self.currentPeripheral.delegate = self;
     
     // 扫描外设的服务
     /**
-     --     外设的服务、特征、描述等方法是CBPeripheralDelegate的内容，所以要先设置代理peripheral.delegate = self
-     --     参数表示你关心的服务的UUID，比如我关心的是"49535343-FE7D-4AE5-8FA9-9FAFD205E455",参数就可以为@[[CBUUID UUIDWithString:@"49535343-FE7D-4AE5-8FA9-9FAFD205E455"]].那么didDiscoverServices方法回调内容就只有这两个UUID的服务，不会有其他多余的内容，提高效率。nil表示扫描所有服务
-     --     成功发现服务，回调didDiscoverServices
+     外设的服务、特征、描述等方法是CBPeripheralDelegate的内容，所以要先设置代理peripheral.delegate = self
+     参数表示你关心的服务的UUID，比如我关心的是"49535343-FE7D-4AE5-8FA9-9FAFD205E455",参数就可以为 @[[CBUUID UUIDWithString:@"49535343-FE7D-4AE5-8FA9-9FAFD205E455"]].那么didDiscoverServices方法回调内容就只有这两个UUID的服务，不会有其他多余的内容，提高效率。nil表示扫描所有服务
+     成功发现服务，回调didDiscoverServices
      */
     [self.currentPeripheral discoverServices:@[[CBUUID UUIDWithString:BLE_SERVICE_UUID]]];
 }
@@ -71,9 +84,25 @@
         case 103:
             [self smDeviceAddress];
             break;
+        case 104:
+            [self sendFileToBLE];
+            break;
         default:
             break;
     }
+}
+
+// 发送文件到蓝牙
+- (void)sendFileToBLE {
+    
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
+    
+    NSFileManager* fm = [NSFileManager defaultManager];
+    NSData* data = [[NSData alloc] init];
+    data = [fm contentsAtPath:path];
+    NSLog(@"%@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+    
+    [self writeToPeripheralWithData:data];
 }
 
 // 获取表号
@@ -129,8 +158,56 @@
     NSString *hex = [BLCommonTools data2hexString:data];
     NSLog(@"Write: %@", hex);
     
-    [self.currentPeripheral writeValue:data forCharacteristic:self.characteristic type:CBCharacteristicWriteWithoutResponse];
+    self.sendDataIndex = 0;
+    self.dataToSend = data;
+    self.didSendSuccess = YES;
+    
+    [self showIndicatorOnWindowWithMessage:@"正在发送数据..."];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self _sendData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideIndicatorOnWindow];
+        });
+    });
+
+//    [self.currentPeripheral writeValue:data forCharacteristic:self.characteristic type:CBCharacteristicWriteWithoutResponse];
 }
+
+
+/**
+ * Sends the next amount of data to the connected central
+ */
+- (void)_sendData {
+    
+    // There's data left, so send until the callback fails, or we're done.
+    
+    while (self.didSendSuccess) {
+        // Work out how big it should be
+        NSInteger amountToSend = self.dataToSend.length - self.sendDataIndex;
+        
+        // Can't be longer than 150 bytes
+        if (amountToSend > NOTIFY_MTU) amountToSend = NOTIFY_MTU;
+        
+        // Copy out the data we want
+        NSData *chunk = [NSData dataWithBytes:self.dataToSend.bytes+self.sendDataIndex length:amountToSend];
+        
+        NSString *hex = [BLCommonTools data2hexString:chunk];
+        NSLog(@"Send %ld: %@", (long)self.sendDataIndex, hex);
+        
+        // Send it
+        [self.currentPeripheral writeValue:chunk forCharacteristic:self.characteristic type:CBCharacteristicWriteWithResponse];
+        dispatch_semaphore_wait(sem, dispatch_time(DISPATCH_TIME_NOW, 1000*NSEC_PER_MSEC));
+        
+        // It did send, so update our index
+        self.sendDataIndex += amountToSend;
+        
+        // Was it the last one?
+        if (self.sendDataIndex >= self.dataToSend.length) {
+            return;
+        }
+    }
+}
+
 
 #pragma mark - CBPeripheralDelegate
 
@@ -268,6 +345,20 @@
         NSLog(@"Notification stopped on %@.  Disconnecting", characteristic);
         NSLog(@"%@", characteristic);
     }
+}
+
+// 写入函数回调
+- (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(nullable NSError *)error {
+    
+    dispatch_semaphore_signal(sem);
+    
+    NSLog(@"didWriteValueForCharacteristic:%@", [characteristic.UUID UUIDString]);
+    
+    if (error) {
+        self.didSendSuccess = NO;
+        NSLog(@"didWriteValueForCharacteristic error：%@",[error localizedDescription]);
+    }
+    
 }
 
 - (NSMutableArray *)characteristics {
