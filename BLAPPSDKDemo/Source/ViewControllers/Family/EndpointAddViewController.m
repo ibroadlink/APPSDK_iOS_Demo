@@ -7,8 +7,8 @@
 //
 
 #import "EndpointAddViewController.h"
-#import "BLNewFamilyManager.h"
-
+#import "BLFamilyDefult.h"
+#import <BLSFamily/BLSFamily.h>
 #import "AppMacro.h"
 #import "DeviceDB.h"
 #import <BLLetCore/BLLetCore.h>
@@ -74,13 +74,13 @@
         [BLStatusBar showTipMessageWithStatus:@"Please select device first!!!"];
         return;
     }
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
     BLSEndpointInfo *info = [[BLSEndpointInfo alloc] initWithBLDevice:self.selectDevice];
     info.friendlyName = self.nameField.text;
 
-    if (![BLCommonTools isEmptyArray:manager.roomList]) {
+    if (![BLCommonTools isEmptyArray:familyDefult.roomList]) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"选择房间" message:@"请选择要添加的房间" preferredStyle:UIAlertControllerStyleActionSheet];
-        for (BLSRoomInfo *room in manager.roomList) {
+        for (BLSRoomInfo *room in familyDefult.roomList) {
             UIAlertAction *action = [UIAlertAction actionWithTitle:room.name style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 info.roomId = room.roomid;
                 [self addEndpointToFamily:info];
@@ -97,7 +97,7 @@
 
 - (void)addEndpointToFamily:(BLSEndpointInfo *)info {
     
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     NSArray *infos = @[info];
     
     [self showIndicatorOnWindow];

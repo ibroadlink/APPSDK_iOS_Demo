@@ -186,7 +186,7 @@
 - (void)addLinkageWithTemplate:(BLTemplateElement *)template
                    module:(NSDictionary *)module
                  CompletionHandler:(void (^)(BLBaseResult *result))completionHandler {
-    __block BLLinkage *info = [[BLLinkage alloc] init];
+    __block Linkage *info = [[Linkage alloc] init];
     info.familyid = @"016b134aaacecae761d4e621a40ea1d9";
     info.ruletype = 1;
     info.rulename = @"RuleEcho";
@@ -197,7 +197,7 @@
     info.subscribe = @[];
     info.linkEnable = true;
     
-    BLLinkagedevices *linkageDevices = [[BLLinkagedevices alloc]init];
+    Linkagedevices *linkageDevices = [[Linkagedevices alloc]init];
     NSMutableArray *actionArray = [[NSMutableArray alloc] init];
     for (BLAction *action in template.action) {
         NSDictionary *contentDic = @{@"devname" : module[@"name"]?:@""};
@@ -248,7 +248,7 @@
 
  @param completionHandler completionHandler description
  */
-- (void)queryLinkageInfoWithCompletionHandler:(void (^)(BLLinkageTemplate *linkageTemplate))completionHandler{
+- (void)queryLinkageInfoWithCompletionHandler:(void (^)(LinkageTemplate *linkageTemplate))completionHandler{
     NSDictionary *bodyDic = @{};
     NSData *data = [NSJSONSerialization dataWithJSONObject:bodyDic options:0 error:nil];
     
@@ -258,7 +258,7 @@
     BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
     
     [httpAccessor post:url head:head data:data timeout:60000 completionHandler:^(NSData * _Nullable data, NSError * _Nullable error) {
-        BLLinkageTemplate *linkageTemplate = [BLLinkageTemplate BLS_modelWithJSON:data];
+        LinkageTemplate *linkageTemplate = [LinkageTemplate BLS_modelWithJSON:data];
         completionHandler(linkageTemplate);
     }];
 }

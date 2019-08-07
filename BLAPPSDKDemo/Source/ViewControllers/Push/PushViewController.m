@@ -10,7 +10,7 @@
 #import "BLSNotificationService.h"
 #import "BLDeviceService.h"
 #import "BLTemplate.h"
-#import "BLLinkageTemplate.h"
+#import "LinkageTemplate.h"
 
 @interface PushViewController () <UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITextView *deviceInfoView;
@@ -163,7 +163,7 @@
 }
 
 - (void)queryLinkageList {
-    [[BLSNotificationService sharedInstance] queryLinkageInfoWithCompletionHandler:^(BLLinkageTemplate * _Nonnull linkageTemplate) {
+    [[BLSNotificationService sharedInstance] queryLinkageInfoWithCompletionHandler:^(LinkageTemplate * _Nonnull linkageTemplate) {
         if (linkageTemplate.status == 0) {
             self.linkages = linkageTemplate.linkages;
             self.isTemplates = NO;
@@ -201,7 +201,7 @@
         BLTemplateElement *template = self.templates[indexPath.row];
         cell.textLabel.text = template.templatename[0].name;
     }else {
-        BLLinkage *linkage = self.linkages[indexPath.row];
+        Linkage *linkage = self.linkages[indexPath.row];
         cell.textLabel.text = linkage.rulename;
     }
     
@@ -228,7 +228,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (!self.isTemplates) {
-        BLLinkage *linkage = self.linkages[indexPath.row];
+        Linkage *linkage = self.linkages[indexPath.row];
         [[BLSNotificationService sharedInstance] deleteLinkageInfoWithRuleid:linkage.ruleid CompletionHandler:^(BLBaseResult * _Nonnull result) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.resultTextView.text = [result BLS_modelToJSONString];

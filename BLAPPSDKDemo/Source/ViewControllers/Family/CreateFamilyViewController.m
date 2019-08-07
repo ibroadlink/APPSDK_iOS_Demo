@@ -9,7 +9,7 @@
 #import "CreateFamilyViewController.h"
 #import "BLStatusBar.h"
 #import "AppDelegate.h"
-#import "BLNewFamilyManager.h"
+#import "BLSFamilyManager.h"
 
 @interface CreateFamilyViewController () <UITextFieldDelegate>
 
@@ -36,7 +36,7 @@
     NSLog(@"create family");
     [self.familyNameField resignFirstResponder];
     
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     
     [self showIndicatorOnWindow];
     [manager createDefaultFamilyWithInfo:self.familyNameField.text country:@"China" province:@"ZheJiang" city:@"HangZhou" completionHandler:^(BLSFamilyCreateResult * _Nonnull result) {

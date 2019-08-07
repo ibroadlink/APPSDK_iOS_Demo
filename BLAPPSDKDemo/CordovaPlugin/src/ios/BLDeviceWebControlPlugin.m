@@ -8,7 +8,7 @@
 
 #import "BLDeviceWebControlPlugin.h"
 #import "BLDeviceService.h"
-#import "BLNewFamilyManager.h"
+#import "BLFamilyDefult.h"
 #import "BLUserDefaults.h"
 #import "AppMacro.h"
 
@@ -20,6 +20,7 @@
 
 #import <BLLetAccount/BLLetAccount.h>
 #import <BLLetCore/BLLetCore.h>
+#import <BLSFamily/BLSFamily.h>
 
 @implementation BLDeviceWebControlPlugin
 
@@ -38,8 +39,8 @@
 - (void)getFamilyInfo:(CDVInvokedUrlCommand *)command {
     NSLog(@"BLDeviceWebControlPlugin method: %@", command.methodName);
     
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
-    BLSFamilyInfo *familyInfo = manager.currentFamilyInfo;
+    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
+    BLSFamilyInfo *familyInfo = familyDefult.currentFamilyInfo;
     
     NSDictionary *currentFamilyInfoIDic = @{};
     if (familyInfo) {
@@ -62,7 +63,7 @@
 - (void)getFamilySceneList:(CDVInvokedUrlCommand *)command {
     NSLog(@"BLDeviceWebControlPlugin method: %@", command.methodName);
     
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     [manager getScenesWithCompletionHandler:^(BLSQueryScenesResult * _Nonnull result) {
         NSMutableArray *scenesList = [NSMutableArray arrayWithCapacity:0];
         
@@ -89,9 +90,10 @@
     NSString *did = dic[@"did"];
     NSDictionary *resultDic = @{};
     
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
+    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
     
-    if (!manager.roomList) {
+    if (!familyDefult.roomList) {
         //获取一次房间列表
         dispatch_group_t group = dispatch_group_create();  //创建信号量
         dispatch_group_enter(group);  //在此发送信号量
@@ -101,10 +103,10 @@
         dispatch_group_wait(group, dispatch_time(DISPATCH_TIME_NOW, 30 * NSEC_PER_SEC));  //关键点，在此等待信号量
     }
     
-    for (BLSEndpointInfo *info in manager.endpointList) {
+    for (BLSEndpointInfo *info in familyDefult.endpointList) {
         if ([info.endpointId isEqualToString:did]) {
 
-            for (BLSRoomInfo *room in manager.roomList) {
+            for (BLSRoomInfo *room in familyDefult.roomList) {
                 if ([info.roomId isEqualToString:room.roomid]) {
                     resultDic = @{
                                   @"id"   :   room.roomid,
@@ -516,11 +518,11 @@
     NSLog(@"BLDeviceWebControlPlugin method: %@", command.methodName);
     
     NSMutableArray *deviceArray = [NSMutableArray arrayWithCapacity:0];
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
-    NSArray *endpointList = manager.endpointList;
+    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
+    NSArray *endpointList = familyDefult.endpointList;
     
     for (BLSEndpointInfo *info in endpointList) {
-        BLDNADevice *device = [info toDNADevice];
+        BLSDNADevice *device = [info toDNADevice];
         [deviceArray addObject:[device BLS_modelToJSONObject]];
     }
     
@@ -580,9 +582,10 @@
                 
                 NSString *did = subDevice.did;
                 
-                BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+                BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
+                BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
                 
-                if (!manager.roomList) {
+                if (!familyDefult.roomList) {
                     //获取一次房间列表
                     dispatch_group_t group = dispatch_group_create();  //创建信号量
                     dispatch_group_enter(group);  //在此发送信号量
@@ -592,10 +595,10 @@
                     dispatch_group_wait(group, dispatch_time(DISPATCH_TIME_NOW, 30 * NSEC_PER_SEC));  //关键点，在此等待信号量
                 }
                 
-                for (BLSEndpointInfo *info in manager.endpointList) {
+                for (BLSEndpointInfo *info in familyDefult.endpointList) {
                     if ([info.endpointId isEqualToString:did]) {
                         
-                        for (BLSRoomInfo *room in manager.roomList) {
+                        for (BLSRoomInfo *room in familyDefult.roomList) {
                             if ([info.roomId isEqualToString:room.roomid]) {
                                 NSDictionary *subDeviceInfo = @{
                                                                 @"did"      :   subDevice.did,
@@ -644,12 +647,12 @@
 }
 
 - (void)openDeviceViewWithSdid:(NSString *)sdid {
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
-    NSArray *endpointList = manager.endpointList;
+    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
+    NSArray *endpointList = familyDefult.endpointList;
     
     for (BLSEndpointInfo *info in endpointList) {
         if ([info.endpointId isEqualToString:sdid]) {
-            manager.currentEndpointInfo = info;
+            familyDefult.currentEndpointInfo = info;
             BLDNADevice *device = [info toDNADevice];
             [[BLLet sharedLet].controller addDevice:device];
             
@@ -802,7 +805,7 @@
     
     NSArray *dids = param[@"dids"];
     NSArray *sdids = param[@"sdids"];
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     [manager delEndpoint:dids[0] completionHandler:nil];
     [manager delEndpoint:sdids[0] completionHandler:nil];
     NSDictionary *dic = @{@"status":@(0), @"msg":@"ok"};
@@ -814,23 +817,24 @@
 - (void)openDevicePropertyPage:(CDVInvokedUrlCommand *)command {
     NSDictionary *param = [self parseArguments:command.arguments.firstObject];
     NSLog(@"BLDeviceWebControlPlugin method: %@, param: %@", command.methodName, param);
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
+    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
 
     NSString *did = param[@"did"];
     
     if ([BLCommonTools isEmpty:did]) {
         EndpointDetailController* vc = [EndpointDetailController viewController];
         vc.isNeedDeviceControl = NO;
-        vc.endpoint = manager.currentEndpointInfo;
+        vc.endpoint = familyDefult.currentEndpointInfo;
         
         [self.viewController.navigationController pushViewController:vc animated:YES];
         
     } else {
-        NSArray *endpointList = manager.endpointList;
+        NSArray *endpointList = familyDefult.endpointList;
         
         for (BLSEndpointInfo *info in endpointList) {
             if ([info.endpointId isEqualToString:did]) {
-                manager.currentEndpointInfo = info;
+                familyDefult.currentEndpointInfo = info;
 
                 BLDNADevice *device = [info toDNADevice];
                 [[BLLet sharedLet].controller addDevice:device];
@@ -876,13 +880,9 @@
     BLDeviceService *deviceService = [BLDeviceService sharedDeviceService];
     BLDNADevice *selectDevice = deviceService.selectDevice;
     
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
-    [manager addAuthWithDid:selectDevice param:param completionHandler:^(BLSAddAuthResult * _Nonnull result) {
-        NSDictionary *dic = @{@"did":[selectDevice getDid], @"ticket":result.ticket?:@"", @"authid":result.authid?:@"", @"status":@(result.status)};
-        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-        
-    }];
+    NSDictionary *dic = @{@"did":[selectDevice getDid], @"ticket":@"", @"authid":@"", @"status":@0};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self p_toJsonString:dic]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)checkDeviceAuth:(CDVInvokedUrlCommand *)command {

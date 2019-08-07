@@ -9,7 +9,7 @@
 #import "GateWayViewController.h"
 #import "DeviceWebControlViewController.h"
 
-#import "BLNewFamilyManager.h"
+#import "BLSFamilyManager.h"
 #import "BLDeviceService.h"
 #import "BLStatusBar.h"
 #import "SSZipArchive.h"
@@ -46,7 +46,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
-    [BLConfigParam sharedConfigParam].familyId = @"016b134aaacecae761d4e621a40ea1d9";
+    [BLConfigParam sharedConfigParam].familyId = @"0173f6a4afd455ef1b1b5da86b36c35f";
     
     [self write];
 }

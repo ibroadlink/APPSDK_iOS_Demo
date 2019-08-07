@@ -7,8 +7,8 @@
 //
 
 #import "SceneAddController.h"
-#import "BLNewFamilyManager.h"
-
+#import "BLFamilyDefult.h"
+#import <BLSFamily/BLSFamily.h>
 #import "BLStatusBar.h"
 
 @interface SceneAddController () <UITableViewDelegate, UITableViewDataSource>
@@ -61,11 +61,12 @@
 }
 
 - (void)addScene:(NSString *)name {
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
+    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
     
     BLSSceneInfo *info = [[BLSSceneInfo alloc] init];
     info.friendlyName = name;
-    info.familyId = manager.currentFamilyInfo.familyid;
+    info.familyId = familyDefult.currentFamilyInfo.familyid;
     info.extend = @"";
     info.order = 1;
     info.scenedev = [self.selectDevListList copy];
@@ -86,7 +87,7 @@
 
 - (void)getFamilyEndpoints {
     
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     [self showIndicatorOnWindow];
     
     [manager getEndpointsWithCompletionHandler:^(BLSQueryEndpointsResult * _Nonnull result) {

@@ -77,7 +77,7 @@
                           };
     NSArray *attributes = @[dic];
     
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     [self showIndicatorOnWindow];
 
     [manager modifyEndpoint:self.endpoint.endpointId attributes:attributes completionHandler:^(BLBaseResult * _Nonnull result) {
@@ -96,7 +96,7 @@
 
 - (void)deleteEndpoint {
     
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     [self showIndicatorOnWindow];
 
     [manager delEndpoint:self.endpoint.endpointId completionHandler:^(BLBaseResult * _Nonnull result) {

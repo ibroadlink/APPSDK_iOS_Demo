@@ -1,6 +1,6 @@
 // BLLinkageTemplate.m
 
-#import "BLLinkageTemplate.h"
+#import "LinkageTemplate.h"
 
 
 
@@ -9,24 +9,24 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Private model interfaces
 
 
-@implementation BLLinkageTemplate
+@implementation LinkageTemplate
 
 + (NSDictionary *)BLS_modelContainerPropertyGenericClass {
     
     return @{
-             @"linkages":[BLLinkage class]
+             @"linkages":[Linkage class]
              };
 }
 
 @end
 
-@implementation BLLinkage
+@implementation Linkage
 
 
 
 @end
 
-@implementation BLLinkagedevices
+@implementation Linkagedevices
 
 + (NSDictionary *)BLS_modelCustomPropertyMapper {
     
