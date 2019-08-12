@@ -9,7 +9,7 @@
 #import "GateWayViewController.h"
 #import "DeviceWebControlViewController.h"
 
-#import "BLSFamilyManager.h"
+#import "BLNewFamilyManager.h"
 #import "BLDeviceService.h"
 #import "BLStatusBar.h"
 #import "SSZipArchive.h"

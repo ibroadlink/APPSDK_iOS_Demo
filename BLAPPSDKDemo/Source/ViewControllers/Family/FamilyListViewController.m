@@ -10,7 +10,7 @@
 #import "FamilyDetailViewController.h"
 #import "BLStatusBar.h"
 #import "DropDownList.h"
-#import "BLSFamilyManager.h"
+#import "BLNewFamilyManager.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -95,7 +95,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         BLSFamilyInfo *familyInfo = self.familyInfos[indexPath.row];
-        BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
+        BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
         
         [self showIndicatorOnWindow];
         [manager delFamilyWithFamilyid:familyInfo.familyid completionHandler:^(BLBaseResult * _Nonnull result) {
@@ -121,7 +121,7 @@
     [self showIndicatorOnWindow];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
-        BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
+        BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
         [manager queryFamilyBaseInfoListWithCompletionHandler:^(BLSFamilyListResult * _Nonnull result) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self hideIndicatorOnWindow];
@@ -164,7 +164,7 @@
     if ([segue.identifier isEqualToString:@"FamilyDetailView"]) {
         UIViewController *target = segue.destinationViewController;
         if ([target isKindOfClass:[FamilyDetailViewController class]]) {
-            [BLSFamilyManager sharedFamily].familyid = ((BLSFamilyInfo *)sender).familyid;
+            [BLNewFamilyManager sharedFamily].familyid = ((BLSFamilyInfo *)sender).familyid;
 
             FamilyDetailViewController* vc = (FamilyDetailViewController *)target;
             vc.familyInfo = (BLSFamilyInfo *)sender;

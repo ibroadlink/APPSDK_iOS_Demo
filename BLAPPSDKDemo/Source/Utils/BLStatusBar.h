@@ -15,4 +15,7 @@
 
 +(void)showTipMessageWithStatus:(NSString* )message andImage:(UIImage* )image andTipIsBottom:(BOOL)isBottom;
 
++ (void)showIndicatorOnWindowWithMessage:(NSString *)message;
+
++ (void)hideIndicatorOnWindow;
 @end

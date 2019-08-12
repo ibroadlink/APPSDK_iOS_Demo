@@ -7,7 +7,7 @@
 //
 
 #import "RoomListViewController.h"
-#import "BLSFamilyManager.h"
+#import "BLNewFamilyManager.h"
 
 #import "BLStatusBar.h"
 
@@ -57,7 +57,7 @@
 
 - (void)getFamilyRooms {
     
-    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
+    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
     [self showIndicatorOnWindow];
     
     [manager getFamilyRoomsWithCompletionHandler:^(BLSManageRoomResult * _Nonnull result) {
@@ -77,7 +77,7 @@
 - (void)manageRoom:(BLSRoomInfo *)info {
     
     NSArray *infos = @[info];
-    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
+    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
     [self showIndicatorOnWindow];
     
     [manager manageRooms:infos completionHandler:^(BLSManageRoomResult * _Nonnull result) {

@@ -8,7 +8,7 @@
 
 #import "EndpointListViewController.h"
 #import "EndpointDetailController.h"
-#import "BLSFamilyManager.h"
+#import "BLNewFamilyManager.h"
 
 #import "BLStatusBar.h"
 #import <SDWebImage/UIImageView+WebCache.h>
@@ -40,7 +40,7 @@
 
 - (void)getFamilyEndpoints {
     
-    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
+    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
     [self showIndicatorOnWindow];
     
     [manager getEndpointsWithCompletionHandler:^(BLSQueryEndpointsResult * _Nonnull result) {

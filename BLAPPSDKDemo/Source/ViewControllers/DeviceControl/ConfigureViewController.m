@@ -10,14 +10,16 @@
 #import "BLStatusBar.h"
 #import "AppDelegate.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
+#import "APConfigTableViewController.h"
 
-@implementation ConfigureViewController
+@implementation ConfigureViewController 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.ssidNameField.delegate = self;
     self.passwordField.delegate = self;
+    [self locatemap];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -38,8 +40,9 @@
     
 
    
-    [self showIndicatorOnWindowWithMessage:@"Configuring..."];
+    
     if (sender.tag == 101) {
+        [self showIndicatorOnWindowWithMessage:@"Configuring..."];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSDate *date = [NSDate date];
             NSLog(@"====Start Config===");
@@ -58,6 +61,7 @@
             });
         });
     }else if (sender.tag == 102) {
+        [self showIndicatorOnWindowWithMessage:@"Configuring..."];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSDate *date = [NSDate date];
             NSLog(@"====Start Config===");
@@ -74,6 +78,14 @@
                 }
             });
         });
+    }else if (sender.tag == 103) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Make sure you have connect to the device's Ap (maybe like \"BroadlinkProv\")" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+            [self performSegueWithIdentifier:@"APconfigView" sender:nil];
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:NULL]];
+        [self presentViewController:alertController animated:YES completion:nil];
+        
     }
     
 }
@@ -100,4 +112,18 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [textField resignFirstResponder];
 }
+
+- (void)locatemap{
+    CLLocationManager *locationManager = [[CLLocationManager alloc]init];
+    if ([CLLocationManager locationServicesEnabled]) {
+        locationManager.delegate = self;
+        [locationManager requestAlwaysAuthorization];
+        [locationManager requestWhenInUseAuthorization];
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        locationManager.distanceFilter = 5.0;
+        [locationManager startUpdatingLocation];
+    }
+}
+
+
 @end

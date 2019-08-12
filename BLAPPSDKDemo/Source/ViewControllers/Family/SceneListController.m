@@ -7,7 +7,7 @@
 //
 
 #import "SceneListController.h"
-#import <BLSFamily/BLSFamily.h>
+#import "BLNewFamilyManager.h"
 #import "BLSQueryScenesResult.h"
 
 #import "BLStatusBar.h"
@@ -38,7 +38,7 @@
 }
 
 - (void)queryAllSceneList {
-    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
+    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
     
     [self showIndicatorOnWindow];
     [manager getScenesWithCompletionHandler:^(BLSQueryScenesResult * _Nonnull result) {
@@ -56,7 +56,7 @@
 }
 
 - (void)delScene:(BLSSceneInfo *)info {
-    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
+    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
     
     [self showIndicatorOnWindow];
     [manager delScene:info.sceneId completionHandler:^(BLBaseResult * _Nonnull result) {
@@ -122,43 +122,43 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    BLSSceneInfo *info = self.sceneList[indexPath.row];
-    BLLinkagedevices *linkagedevices = [[BLLinkagedevices alloc] init];
-    BLDev *dev = [[BLDev alloc] init];
-    BLSSceneDev *sceneDev = info.scenedev[0];
-    dev.endpointID = sceneDev.endpointId;
-    dev.gatewayID = @"";
-    dev.order = 1;
-    dev.content = @"";
-    linkagedevices.devs = @[dev];
-    linkagedevices.name = @"123";
-    linkagedevices.linkagedevicesExtern = @"";
-    linkagedevices.linkagetype = @"1";
-    BLSubscribe *subscribe = [[BLSubscribe alloc] init];
-    subscribe.endpointID = sceneDev.endpointId;
-    
-    
-    BLLinkageInfo *linkageInfo = [[BLLinkageInfo alloc]init];
-    linkageInfo.rulename = info.friendlyName;
-    linkageInfo.ruletype = 1;
-    linkageInfo.enable = 1;
-    linkageInfo.locationinfo = @"";
-    linkageInfo.characteristicinfo = @"{}";
-    linkageInfo.familyid = info.familyId;
-    linkageInfo.sceneIDS = @[info.sceneId];
-    linkageInfo.linkagedevices = linkagedevices;
-    linkageInfo.subscribe = @[subscribe];
-    linkageInfo.source = @"";
-    linkageInfo.delay = 1;
-    
-    [[BLSFamilyManager sharedFamily] addCloudLinkage:linkageInfo completionHandler:^(BLBaseResult * _Nonnull result) {
-        
-    }];
-    
-    [[BLSFamilyManager sharedFamily] queryCloudLinkageInfoWithCompletionHandler:^(BLBaseResult * _Nonnull result) {
-        
-    }];
-}
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//    BLSSceneInfo *info = self.sceneList[indexPath.row];
+//    BLLinkagedevices *linkagedevices = [[BLLinkagedevices alloc] init];
+//    BLDev *dev = [[BLDev alloc] init];
+//    BLSSceneDev *sceneDev = info.scenedev[0];
+//    dev.endpointID = sceneDev.endpointId;
+//    dev.gatewayID = @"";
+//    dev.order = 1;
+//    dev.content = @"";
+//    linkagedevices.devs = @[dev];
+//    linkagedevices.name = @"123";
+//    linkagedevices.linkagedevicesExtern = @"";
+//    linkagedevices.linkagetype = @"1";
+//    BLSubscribe *subscribe = [[BLSubscribe alloc] init];
+//    subscribe.endpointID = sceneDev.endpointId;
+//    
+//    
+//    BLLinkageInfo *linkageInfo = [[BLLinkageInfo alloc]init];
+//    linkageInfo.rulename = info.friendlyName;
+//    linkageInfo.ruletype = 1;
+//    linkageInfo.enable = 1;
+//    linkageInfo.locationinfo = @"";
+//    linkageInfo.characteristicinfo = @"{}";
+//    linkageInfo.familyid = info.familyId;
+//    linkageInfo.sceneIDS = @[info.sceneId];
+//    linkageInfo.linkagedevices = linkagedevices;
+//    linkageInfo.subscribe = @[subscribe];
+//    linkageInfo.source = @"";
+//    linkageInfo.delay = 1;
+//    
+//    [[BLNewFamilyManager sharedFamily] addCloudLinkage:linkageInfo completionHandler:^(BLBaseResult * _Nonnull result) {
+//        
+//    }];
+//    
+//    [[BLNewFamilyManager sharedFamily] queryCloudLinkageInfoWithCompletionHandler:^(BLBaseResult * _Nonnull result) {
+//        
+//    }];
+//}
 
 @end

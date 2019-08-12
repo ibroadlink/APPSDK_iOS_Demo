@@ -10,7 +10,7 @@
 #import "OperateViewController.h"
 #import "ACControlViewController.h"
 
-#import <BLSFamily/BLSFamily.h>
+#import "BLNewFamilyManager.h"
 #import "BLFamilyDefult.h"
 
 #import "BLStatusBar.h"
@@ -109,7 +109,7 @@
         info.name = name;
         
         [self showIndicatorOnWindow];
-        BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
+        BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
         [manager modifyFamilyInfo:info completionHandler:^(BLBaseResult * _Nonnull result) {
             if ([result succeed]) {
                 self.familyInfo.name = name;
@@ -127,7 +127,7 @@
 }
 
 - (void)queryRoomList {
-    [[BLSFamilyManager sharedFamily] getFamilyRoomsWithCompletionHandler:^(BLSManageRoomResult * _Nonnull result) {
+    [[BLNewFamilyManager sharedFamily] getFamilyRoomsWithCompletionHandler:^(BLSManageRoomResult * _Nonnull result) {
         NSLog(@"Query Rooms Msg: %@", result.msg);
     }];
 }

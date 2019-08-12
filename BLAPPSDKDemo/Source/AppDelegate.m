@@ -10,7 +10,7 @@
 
 #import "DeviceMainViewController.h"
 #import "BLUserDefaults.h"
-#import "BLSFamilyManager.h"
+#import "BLNewFamilyManager.h"
 #import "BLDeviceService.h"
 
 #ifndef DISABLE_PUSH_NOTIFICATIONS
@@ -209,8 +209,12 @@
     
     [[BLDeviceService sharedDeviceService] startDeviceManagment];
     
+    [BLNewFamilyManager sharedFamily].licenseid = [BLConfigParam sharedConfigParam].licenseId;
+    
     //本地登录 获取账号管理对象
     if ([userDefault getUserId] && [userDefault getSessionId]) {
+        [BLNewFamilyManager sharedFamily].userid = [userDefault getUserId];
+        [BLNewFamilyManager sharedFamily].loginsession = [userDefault getSessionId];
         [account localLoginWithUsrid:[userDefault getUserId] session:[userDefault getSessionId] completionHandler:^(BLLoginResult * _Nonnull result) {
             if ([result succeed]) {
                 NSLog(@"Login success!");

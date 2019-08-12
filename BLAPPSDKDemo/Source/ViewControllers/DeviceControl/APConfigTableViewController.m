@@ -9,6 +9,7 @@
 #import "APConfigTableViewController.h"
 #import "AppDelegate.h"
 #import "BLStatusBar.h"
+#import "MBProgressHUD.h"
 
 @interface APConfigTableViewController (){
     BLController *_controller;
@@ -22,18 +23,27 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.apListArray = [NSArray array];
+    [self refresh];
 }
 - (IBAction)refresh:(id)sender {
+    [self refresh];
+}
+
+- (void)refresh {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSLog(@"apconfigResult start");
+        NSLog(@"deviceAPList start");
         BLGetAPListResult *apconfigResult = [[BLLet sharedLet].controller deviceAPList:7000];
-        NSLog(@"easyconfigResult: %@", apconfigResult);
+        NSLog(@"deviceAPList: %@", apconfigResult);
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             if ([apconfigResult succeed]) {
                 self.apListArray = apconfigResult.list;
                 NSLog(@"_apListArray: %@", self.apListArray);
                 [self.tableView reloadData];
+            }else {
+                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"deviceAPList staus:%ld,msg:%@",(long)apconfigResult.status,apconfigResult.msg]];
             }
         });
     });
@@ -78,7 +88,7 @@
     }];
     
     [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.text = @"12345678";
+        textField.text = @"";
     }];
     
     [alertController addAction:[UIAlertAction actionWithTitle:acceptTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
@@ -86,12 +96,14 @@
         UITextField *passwordtxt = alertController.textFields.lastObject;
 
         NSLog(@"apconfigResult start");
-
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         BLAPConfigResult *apconfigResult = [[BLLet sharedLet].controller deviceAPConfig:ssidtxt.text password:passwordtxt.text type:APinfo.type];
-        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         if ([apconfigResult succeed]) {
             NSLog(@"apconfig success:did--%@,pid--%@,ssid--%@,devkey--%@",apconfigResult.did,apconfigResult.pid,apconfigResult.ssid,apconfigResult.devkey);
-            [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"apconfig success:did--%@,pid--%@,ssid--%@,devkey--%@",apconfigResult.did,apconfigResult.pid,apconfigResult.ssid,apconfigResult.devkey]];
+            [self viewBack];
+        }else {
+            [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"deviceAPConfig staus:%ld,msg:%@",(long)apconfigResult.status,apconfigResult.msg]];
         }
     }]];
     
@@ -99,5 +111,11 @@
     
     [self presentViewController:alertController animated:YES completion:nil];
 }
+
+- (void)viewBack {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+}
+
 
 @end

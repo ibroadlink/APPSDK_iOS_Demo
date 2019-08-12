@@ -8,7 +8,7 @@
 
 #import "BLDeviceWebControlPlugin.h"
 #import "BLDeviceService.h"
-#import "BLFamilyDefult.h"
+#import "BLNewFamilyManager.h"
 #import "BLUserDefaults.h"
 #import "AppMacro.h"
 
@@ -20,7 +20,6 @@
 
 #import <BLLetAccount/BLLetAccount.h>
 #import <BLLetCore/BLLetCore.h>
-#import <BLSFamily/BLSFamily.h>
 
 @implementation BLDeviceWebControlPlugin
 
@@ -39,7 +38,7 @@
 - (void)getFamilyInfo:(CDVInvokedUrlCommand *)command {
     NSLog(@"BLDeviceWebControlPlugin method: %@", command.methodName);
     
-    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
+    BLNewFamilyManager *familyDefult = [BLNewFamilyManager sharedFamily];
     BLSFamilyInfo *familyInfo = familyDefult.currentFamilyInfo;
     
     NSDictionary *currentFamilyInfoIDic = @{};
@@ -63,7 +62,7 @@
 - (void)getFamilySceneList:(CDVInvokedUrlCommand *)command {
     NSLog(@"BLDeviceWebControlPlugin method: %@", command.methodName);
     
-    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
+    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
     [manager getScenesWithCompletionHandler:^(BLSQueryScenesResult * _Nonnull result) {
         NSMutableArray *scenesList = [NSMutableArray arrayWithCapacity:0];
         
@@ -90,8 +89,8 @@
     NSString *did = dic[@"did"];
     NSDictionary *resultDic = @{};
     
-    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
-    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
+    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLNewFamilyManager *familyDefult = [BLNewFamilyManager sharedFamily];
     
     if (!familyDefult.roomList) {
         //获取一次房间列表
@@ -518,11 +517,11 @@
     NSLog(@"BLDeviceWebControlPlugin method: %@", command.methodName);
     
     NSMutableArray *deviceArray = [NSMutableArray arrayWithCapacity:0];
-    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
+    BLNewFamilyManager *familyDefult = [BLNewFamilyManager sharedFamily];
     NSArray *endpointList = familyDefult.endpointList;
     
     for (BLSEndpointInfo *info in endpointList) {
-        BLSDNADevice *device = [info toDNADevice];
+        BLDNADevice *device = [info toDNADevice];
         [deviceArray addObject:[device BLS_modelToJSONObject]];
     }
     
@@ -582,8 +581,8 @@
                 
                 NSString *did = subDevice.did;
                 
-                BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
-                BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
+                BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+                BLNewFamilyManager *familyDefult = [BLNewFamilyManager sharedFamily];
                 
                 if (!familyDefult.roomList) {
                     //获取一次房间列表
@@ -647,7 +646,7 @@
 }
 
 - (void)openDeviceViewWithSdid:(NSString *)sdid {
-    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
+    BLNewFamilyManager *familyDefult = [BLNewFamilyManager sharedFamily];
     NSArray *endpointList = familyDefult.endpointList;
     
     for (BLSEndpointInfo *info in endpointList) {
@@ -805,7 +804,7 @@
     
     NSArray *dids = param[@"dids"];
     NSArray *sdids = param[@"sdids"];
-    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
+    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
     [manager delEndpoint:dids[0] completionHandler:nil];
     [manager delEndpoint:sdids[0] completionHandler:nil];
     NSDictionary *dic = @{@"status":@(0), @"msg":@"ok"};
@@ -817,8 +816,8 @@
 - (void)openDevicePropertyPage:(CDVInvokedUrlCommand *)command {
     NSDictionary *param = [self parseArguments:command.arguments.firstObject];
     NSLog(@"BLDeviceWebControlPlugin method: %@, param: %@", command.methodName, param);
-    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
-    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
+    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLNewFamilyManager *familyDefult = [BLNewFamilyManager sharedFamily];
 
     NSString *did = param[@"did"];
     

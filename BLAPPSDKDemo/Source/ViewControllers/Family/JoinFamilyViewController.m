@@ -8,7 +8,7 @@
 
 #import "JoinFamilyViewController.h"
 
-#import "BLSFamilyManager.h"
+#import "BLNewFamilyManager.h"
 #import "BLStatusBar.h"
 
 @interface JoinFamilyViewController () <UITextFieldDelegate>
@@ -30,7 +30,7 @@
 - (IBAction)joinBtn:(id)sender {
     [self.familyCodeField resignFirstResponder];
     
-    BLSFamilyManager *familyManager = [BLSFamilyManager sharedFamily];
+    BLNewFamilyManager *familyManager = [BLNewFamilyManager sharedFamily];
     
     [familyManager joinFamilyWithQrcode:self.familyCodeField.text completionHandler:^(BLSFamilyInfoResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
