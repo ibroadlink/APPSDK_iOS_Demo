@@ -15,14 +15,15 @@
     BLController *_controller;
     
 }
-@property (nonatomic,strong)NSArray *apListArray;
+
+@property (nonatomic,strong)NSMutableDictionary *apDict;
 @end
 
 @implementation APConfigTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.apListArray = [NSArray array];
+    self.apDict = [NSMutableDictionary dictionary];
     [self refresh];
 }
 - (IBAction)refresh:(id)sender {
@@ -39,8 +40,12 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             if ([apconfigResult succeed]) {
-                self.apListArray = apconfigResult.list;
-                NSLog(@"_apListArray: %@", self.apListArray);
+                NSArray *apList = apconfigResult.list;
+                
+                for (BLAPInfo *info in apList) {
+                    [self.apDict setObject:info forKey:info.ssid];
+                }
+
                 [self.tableView reloadData];
             }else {
                 [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"deviceAPList staus:%ld,msg:%@",(long)apconfigResult.status,apconfigResult.msg]];
@@ -57,7 +62,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.apListArray.count;
+    return self.apDict.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -67,7 +72,9 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     
-    BLAPInfo *APinfo = self.apListArray[indexPath.row];
+    NSArray *apListArray = [self.apDict allValues];
+    BLAPInfo *APinfo = apListArray[indexPath.row];
+    
     NSString *ssidtxt = APinfo.ssid;
     NSInteger ssidType = APinfo.type;
     cell.textLabel.text = ssidtxt;
@@ -80,7 +87,10 @@
     NSString *title = @"APConfig";
     NSString *acceptTitle = @"Config";
     NSString *cancelTitle = @"Cancel";
-    BLAPInfo *APinfo = self.apListArray[indexPath.row];
+    
+    NSArray *apListArray = [self.apDict allValues];
+    BLAPInfo *APinfo = apListArray[indexPath.row];
+    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
     
     [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
