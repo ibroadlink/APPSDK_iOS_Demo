@@ -12,6 +12,12 @@
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "APConfigTableViewController.h"
 
+@interface ConfigureViewController ()
+
+@property (nonatomic, strong)CLLocationManager *locationManager;
+
+@end
+
 @implementation ConfigureViewController 
 
 - (void)viewDidLoad {
@@ -114,14 +120,10 @@
 }
 
 - (void)locatemap{
-    CLLocationManager *locationManager = [[CLLocationManager alloc]init];
+    _locationManager = [[CLLocationManager alloc]init];
     if ([CLLocationManager locationServicesEnabled]) {
-        locationManager.delegate = self;
-        [locationManager requestAlwaysAuthorization];
-        [locationManager requestWhenInUseAuthorization];
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        locationManager.distanceFilter = 5.0;
-        [locationManager startUpdatingLocation];
+        [_locationManager requestAlwaysAuthorization];
+        [_locationManager requestWhenInUseAuthorization];
     }
 }
 

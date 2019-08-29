@@ -7,7 +7,7 @@
 //
 
 #import "ShareFamilyViewController.h"
-#import "BLNewFamilyManager.h"
+#import "BLSFamilyManager.h"
 
 @interface ShareFamilyViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *qCodeImageView;
@@ -25,7 +25,7 @@
 
 - (void)getFamilyMemberInviteQrcode {
     
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     [self showIndicatorOnWindow];
     [manager getFamilyInvitedQrcodeWithCompletionHandler:^(BLSInvitedQrcodeResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{

@@ -7,7 +7,8 @@
 //
 
 #import "EndpointAddViewController.h"
-#import "BLNewFamilyManager.h"
+#import "BLSFamilyManager.h"
+#import "BLFamilyDefult.h"
 #import "AppMacro.h"
 #import "DeviceDB.h"
 #import <BLLetCore/BLLetCore.h>
@@ -73,7 +74,7 @@
         [BLStatusBar showTipMessageWithStatus:@"Please select device first!!!"];
         return;
     }
-    BLNewFamilyManager *familyDefult = [BLNewFamilyManager sharedFamily];
+    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
     BLSEndpointInfo *info = [[BLSEndpointInfo alloc] initWithBLDevice:self.selectDevice];
     info.friendlyName = self.nameField.text;
 
@@ -96,7 +97,7 @@
 
 - (void)addEndpointToFamily:(BLSEndpointInfo *)info {
     
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     NSArray *infos = @[info];
     
     [self showIndicatorOnWindow];

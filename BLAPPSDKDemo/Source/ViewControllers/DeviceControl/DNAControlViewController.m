@@ -13,6 +13,7 @@
 #import "DropDownList.h"
 #import "SSZipArchive.h"
 #import "AppMacro.h"
+#import <BLLetPlugins/BLLetPlugins.h>
 
 @interface DNAControlViewController ()<UITextFieldDelegate>
 
@@ -33,6 +34,10 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    if ([BLDeviceService sharedDeviceService].gatewayDevice) {
+        [BLDeviceService sharedDeviceService].selectDevice = [BLDeviceService sharedDeviceService].gatewayDevice;
+        [BLDeviceService sharedDeviceService].gatewayDevice = nil;
+    }
     [super viewWillDisappear:animated];
 }
 
@@ -137,6 +142,7 @@
 }
 
 - (void)getUIVersion {
+    [[BLPicker sharedPicker] trackEvent:@"123"];
     BLQueryResourceVersionResult *result = [[BLLet sharedLet].controller queryUIVersion:[self.device getPid]];
     self.resultText = [result BLS_modelToJSONString];
     
@@ -190,18 +196,6 @@
         vc.selectDevice = _device;
         [self.navigationController pushViewController:vc animated:YES];
     }
-}
-
-
-
-- (void)bindDeviceToServer {
-    BLBindDeviceResult *result = [[BLLet sharedLet].controller bindDeviceWithServer:_device];
-    if ([result succeed]) {
-        self.resultText = [NSString stringWithFormat:@"BindMap : %@", [result getBindmap]];
-    } else {
-        self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-    }
-    [self.tableView reloadData];
 }
 
 - (void)queryTaskList {

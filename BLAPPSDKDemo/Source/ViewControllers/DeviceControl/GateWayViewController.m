@@ -9,7 +9,7 @@
 #import "GateWayViewController.h"
 #import "DeviceWebControlViewController.h"
 
-#import "BLNewFamilyManager.h"
+#import "BLSFamilyManager.h"
 #import "BLDeviceService.h"
 #import "BLStatusBar.h"
 #import "SSZipArchive.h"
@@ -74,7 +74,7 @@
     if (self.isAdd) {
         [self addSubDev:subDevice];
     } else {
-        
+        [[BLLet sharedLet].controller addDevice:subDevice];
         [self showIndicatorOnWindowWithMessage:@"Download Script and UI..."];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSString *scriptFile = [[BLLet sharedLet].controller queryScriptFileName:subDevice.pid];
@@ -219,7 +219,7 @@
         }
         
         if (self.subDevicelist.count < result.total) {
-            [self subDevListQuery:++index];
+            [self subDevNewListQuery:++index];
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self hideIndicatorOnWindow];

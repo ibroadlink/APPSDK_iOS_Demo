@@ -7,7 +7,7 @@
 //
 
 #import "SceneListController.h"
-#import "BLNewFamilyManager.h"
+#import "BLSFamilyManager.h"
 #import "BLSQueryScenesResult.h"
 
 #import "BLStatusBar.h"
@@ -38,7 +38,7 @@
 }
 
 - (void)queryAllSceneList {
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     
     [self showIndicatorOnWindow];
     [manager getScenesWithCompletionHandler:^(BLSQueryScenesResult * _Nonnull result) {
@@ -56,7 +56,7 @@
 }
 
 - (void)delScene:(BLSSceneInfo *)info {
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     
     [self showIndicatorOnWindow];
     [manager delScene:info.sceneId completionHandler:^(BLBaseResult * _Nonnull result) {
@@ -152,11 +152,11 @@
 //    linkageInfo.source = @"";
 //    linkageInfo.delay = 1;
 //    
-//    [[BLNewFamilyManager sharedFamily] addCloudLinkage:linkageInfo completionHandler:^(BLBaseResult * _Nonnull result) {
+//    [[BLSFamilyManager sharedFamily] addCloudLinkage:linkageInfo completionHandler:^(BLBaseResult * _Nonnull result) {
 //        
 //    }];
 //    
-//    [[BLNewFamilyManager sharedFamily] queryCloudLinkageInfoWithCompletionHandler:^(BLBaseResult * _Nonnull result) {
+//    [[BLSFamilyManager sharedFamily] queryCloudLinkageInfoWithCompletionHandler:^(BLBaseResult * _Nonnull result) {
 //        
 //    }];
 //}

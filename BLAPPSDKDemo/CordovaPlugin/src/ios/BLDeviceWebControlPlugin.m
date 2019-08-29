@@ -8,7 +8,8 @@
 
 #import "BLDeviceWebControlPlugin.h"
 #import "BLDeviceService.h"
-#import "BLNewFamilyManager.h"
+#import "BLSFamilyManager.h"
+#import "BLFamilyDefult.h"
 #import "BLUserDefaults.h"
 #import "AppMacro.h"
 
@@ -38,7 +39,7 @@
 - (void)getFamilyInfo:(CDVInvokedUrlCommand *)command {
     NSLog(@"BLDeviceWebControlPlugin method: %@", command.methodName);
     
-    BLNewFamilyManager *familyDefult = [BLNewFamilyManager sharedFamily];
+    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
     BLSFamilyInfo *familyInfo = familyDefult.currentFamilyInfo;
     
     NSDictionary *currentFamilyInfoIDic = @{};
@@ -62,7 +63,7 @@
 - (void)getFamilySceneList:(CDVInvokedUrlCommand *)command {
     NSLog(@"BLDeviceWebControlPlugin method: %@", command.methodName);
     
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     [manager getScenesWithCompletionHandler:^(BLSQueryScenesResult * _Nonnull result) {
         NSMutableArray *scenesList = [NSMutableArray arrayWithCapacity:0];
         
@@ -89,8 +90,8 @@
     NSString *did = dic[@"did"];
     NSDictionary *resultDic = @{};
     
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
-    BLNewFamilyManager *familyDefult = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
+    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
     
     if (!familyDefult.roomList) {
         //获取一次房间列表
@@ -517,11 +518,11 @@
     NSLog(@"BLDeviceWebControlPlugin method: %@", command.methodName);
     
     NSMutableArray *deviceArray = [NSMutableArray arrayWithCapacity:0];
-    BLNewFamilyManager *familyDefult = [BLNewFamilyManager sharedFamily];
+    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
     NSArray *endpointList = familyDefult.endpointList;
     
     for (BLSEndpointInfo *info in endpointList) {
-        BLDNADevice *device = [info toDNADevice];
+        BLSDNADevice *device = [info toDNADevice];
         [deviceArray addObject:[device BLS_modelToJSONObject]];
     }
     
@@ -581,8 +582,8 @@
                 
                 NSString *did = subDevice.did;
                 
-                BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
-                BLNewFamilyManager *familyDefult = [BLNewFamilyManager sharedFamily];
+                BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
+                BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
                 
                 if (!familyDefult.roomList) {
                     //获取一次房间列表
@@ -646,7 +647,7 @@
 }
 
 - (void)openDeviceViewWithSdid:(NSString *)sdid {
-    BLNewFamilyManager *familyDefult = [BLNewFamilyManager sharedFamily];
+    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
     NSArray *endpointList = familyDefult.endpointList;
     
     for (BLSEndpointInfo *info in endpointList) {
@@ -804,7 +805,7 @@
     
     NSArray *dids = param[@"dids"];
     NSArray *sdids = param[@"sdids"];
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     [manager delEndpoint:dids[0] completionHandler:nil];
     [manager delEndpoint:sdids[0] completionHandler:nil];
     NSDictionary *dic = @{@"status":@(0), @"msg":@"ok"};
@@ -816,8 +817,7 @@
 - (void)openDevicePropertyPage:(CDVInvokedUrlCommand *)command {
     NSDictionary *param = [self parseArguments:command.arguments.firstObject];
     NSLog(@"BLDeviceWebControlPlugin method: %@, param: %@", command.methodName, param);
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
-    BLNewFamilyManager *familyDefult = [BLNewFamilyManager sharedFamily];
+    BLFamilyDefult *familyDefult = [BLFamilyDefult sharedFamily];
 
     NSString *did = param[@"did"];
     

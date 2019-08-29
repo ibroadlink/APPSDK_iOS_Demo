@@ -10,7 +10,7 @@
 
 #import "DeviceMainViewController.h"
 #import "BLUserDefaults.h"
-#import "BLNewFamilyManager.h"
+#import "BLSFamilyManager.h"
 #import "BLDeviceService.h"
 
 #ifndef DISABLE_PUSH_NOTIFICATIONS
@@ -187,6 +187,7 @@
     [BLConfigParam sharedConfigParam].controllerSendCount = 2;                      // 控制重试次数
     [BLConfigParam sharedConfigParam].controllerQueryCount = 8;                     // 设备批量查询设备个数
     [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;          // 脚本下载平台
+    [[BLPicker sharedPicker] startPick];
     
     // 使用云端集群
     // [BLConfigParam sharedConfigParam].appServiceEnable = 1;
@@ -197,7 +198,7 @@
             [BLConfigParam sharedConfigParam].appServiceHost = cloudClusterHost;
         }
     }
-    
+
     [self.let setDebugLog:BL_LEVEL_DEBUG];                                            // Set APPSDK debug log level
     [self.let.controller setSDKRawDebugLevel:BL_LEVEL_DEBUG];                       // Set DNASDK debug log level
     
@@ -208,13 +209,10 @@
     [ircode startRMSubDeviceWork];
     
     [[BLDeviceService sharedDeviceService] startDeviceManagment];
-    
-    [BLNewFamilyManager sharedFamily].licenseid = [BLConfigParam sharedConfigParam].licenseId;
-    
+        
     //本地登录 获取账号管理对象
     if ([userDefault getUserId] && [userDefault getSessionId]) {
-        [BLNewFamilyManager sharedFamily].userid = [userDefault getUserId];
-        [BLNewFamilyManager sharedFamily].loginsession = [userDefault getSessionId];
+
         [account localLoginWithUsrid:[userDefault getUserId] session:[userDefault getSessionId] completionHandler:^(BLLoginResult * _Nonnull result) {
             if ([result succeed]) {
                 NSLog(@"Login success!");

@@ -41,7 +41,7 @@
     
     NSDictionary *bodyDic = @{
                               @"userid" : userID,
-                              @"touser" : _deviceToken,
+                              @"touser" : _deviceToken ? _deviceToken : @"",
                               @"tousertype" : @"app"
                               };
     NSArray *manageInfoArray = [NSArray arrayWithObject:bodyDic];
@@ -63,7 +63,7 @@
             if (status == 0) {
                 [self setAllPushState:YES];
             }
-            [result setObject:self.deviceToken forKey:@"Token"];
+            [result setObject:self.deviceToken ? self.deviceToken : @"" forKey:@"Token"];
             completionHandler([BLCommonTools serializeMessage:result]);
         }
     }];

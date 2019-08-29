@@ -7,7 +7,7 @@
 //
 
 #import "MemberListViewController.h"
-#import "BLNewFamilyManager.h"
+#import "BLSFamilyManager.h"
 #import "ShareFamilyViewController.h"
 #import <BLLetAccount/BLLetAccount.h>
 #import <SDWebImage/UIImageView+WebCache.h>
@@ -52,7 +52,7 @@
 }
 
 - (void)getFamilyMemberList {
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     [self showIndicatorOnWindow];
     [manager getFamilyMembersWithCompletionHandler:^(BLSFamilyMembersResult * _Nonnull result) {
         if ([result succeed]) {
@@ -82,7 +82,7 @@
 
 - (void)getFamilyMemberInviteQrcode {
     
-    BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+    BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     [self showIndicatorOnWindow];
     [manager getFamilyInvitedQrcodeWithCompletionHandler:^(BLSInvitedQrcodeResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -145,7 +145,7 @@
         BLSFamilyMember *member = self.memberList[indexPath.row];
         NSArray *userids = @[member.userid];
         
-        BLNewFamilyManager *manager = [BLNewFamilyManager sharedFamily];
+        BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
         [self showIndicatorOnWindow];
         
         [manager deleteFamilyMembersWithUserids:userids completionHandler:^(BLBaseResult * _Nonnull result) {

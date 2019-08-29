@@ -7,7 +7,7 @@
 //
 
 #import "BaseViewController.h"
-#import "BLNewFamilyManager.h"
+#import "BLSFamilyManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -26,6 +26,7 @@
     [super viewDidLoad];
     self.packNameLabel.delegate = self;
     self.LicenseLabel.delegate = self;
+    self.cloudClusterHostField.delegate = self;
     self.packNameLabel.text = [BLConfigParam sharedConfigParam].packName;
     self.LicenseLabel.text = [BLConfigParam sharedConfigParam].sdkLicense;
     self.cloudClusterHostField.text = [BLConfigParam sharedConfigParam].appServiceHost;

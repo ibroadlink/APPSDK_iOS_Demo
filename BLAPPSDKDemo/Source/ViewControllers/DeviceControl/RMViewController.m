@@ -65,6 +65,9 @@
         NSDictionary *dic = [[irdaResult getData] toDictionary];
         if ([dic[@"vals"] count] != 0) {
             self.irdaCodeStr = dic[@"vals"][0][0][@"val"];
+            UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
+            pasteBoard.string = self.irdaCodeStr;
+            [BLStatusBar showTipMessageWithStatus:@"Has been copied to the clipboard!"];
         } else {
             self.IrdaCode.text = @"No ircode getted, please click again!";
         }

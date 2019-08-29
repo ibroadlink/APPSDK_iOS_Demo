@@ -7,6 +7,7 @@
 //
 #import "OperateViewController.h"
 #import "GeneralTimerControlView.h"
+#import "FastconGroupDeviceViewController.h"
 
 #import "AppMacro.h"
 #import "BLStatusBar.h"
@@ -58,7 +59,8 @@
                                 @"SP Device Demo",
                                 @"A1 Device Demo",
                                 @"Start Log Redirect",
-                                @"Stop Log Redirect"
+                                @"Stop Log Redirect",
+                                @"FastconGroupDevice"
                                 ];
     
     self.operateTableView.delegate = self;
@@ -145,6 +147,9 @@
         break;
         case 13:
             [self stopDeviceLogRedirect];
+            break;
+        case 14:
+            [self fastconGroupDevice];
             break;
         default:
             break;
@@ -542,5 +547,7 @@
 //    [udpSocket sendData:data toAddress:address withTimeout:-1 tag:0];
 }
 
-
+- (void)fastconGroupDevice {
+    [self performSegueWithIdentifier:@"FastconGroupDeviceViewController" sender:nil];
+}
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "BLUserDefaults.h"
-#import "BLNewFamilyManager.h"
+#import "BLSFamilyManager.h"
 
 @implementation BLUserDefaults {
     NSUserDefaults *userDefaults ;
@@ -42,7 +42,6 @@
 - (void) setUserId: (NSString *)userId {
     [userDefaults setObject:userId forKey:@"userId"];
     [userDefaults synchronize];
-    [BLNewFamilyManager sharedFamily].userid = userId;
 }
 - (NSString *) getUserId {
     return [userDefaults objectForKey:@"userId"];
@@ -50,7 +49,6 @@
 
 // Get/Set sessionId
 - (void) setSessionId: (NSString *)sessionId {
-    [BLNewFamilyManager sharedFamily].loginsession = sessionId;
     [userDefaults setObject:sessionId forKey:@"sessionId"];
     [userDefaults synchronize];
     

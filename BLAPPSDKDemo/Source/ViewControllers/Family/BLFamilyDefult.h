@@ -1,5 +1,5 @@
 //
-//  BLNewFamilyManager.h
+//  BLSFamilyManager.h
 //  BLAPPSDKDemo
 //
 //  Created by admin on 2019/2/19.
