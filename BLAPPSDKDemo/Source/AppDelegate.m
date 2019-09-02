@@ -10,7 +10,7 @@
 
 #import "DeviceMainViewController.h"
 #import "BLUserDefaults.h"
-#import "BLSFamilyManager.h"
+#import <BLSFamily/BLSFamily.h>
 #import "BLDeviceService.h"
 
 #ifndef DISABLE_PUSH_NOTIFICATIONS

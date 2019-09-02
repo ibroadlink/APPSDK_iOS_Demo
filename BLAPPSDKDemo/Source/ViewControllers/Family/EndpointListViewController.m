@@ -8,7 +8,7 @@
 
 #import "EndpointListViewController.h"
 #import "EndpointDetailController.h"
-#import "BLSFamilyManager.h"
+#import <BLSFamily/BLSFamily.h>
 
 #import "BLStatusBar.h"
 #import <SDWebImage/UIImageView+WebCache.h>

@@ -7,7 +7,7 @@
 //
 
 #import "BLUserDefaults.h"
-#import "BLSFamilyManager.h"
+#import <BLSFamily/BLSFamily.h>
 
 @implementation BLUserDefaults {
     NSUserDefaults *userDefaults ;

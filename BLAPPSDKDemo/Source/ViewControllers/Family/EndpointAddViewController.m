@@ -7,7 +7,7 @@
 //
 
 #import "EndpointAddViewController.h"
-#import "BLSFamilyManager.h"
+#import <BLSFamily/BLSFamily.h>
 #import "BLFamilyDefult.h"
 #import "AppMacro.h"
 #import "DeviceDB.h"

@@ -10,7 +10,7 @@
 #import "OperateViewController.h"
 #import "ACControlViewController.h"
 
-#import "BLSFamilyManager.h"
+#import <BLSFamily/BLSFamily.h>
 #import "BLFamilyDefult.h"
 
 #import "BLStatusBar.h"
@@ -85,6 +85,9 @@
         case 104:
             [self showSceneListView];
             break;
+        case 105:
+            [self showGroupDeviceView];
+            break;
         default:
             break;
     }
@@ -146,6 +149,10 @@
 
 - (void)showSceneListView {
     [self performSegueWithIdentifier:@"SceneListView" sender:nil];
+}
+
+- (void) showGroupDeviceView{
+    [self performSegueWithIdentifier:@"GroupDeviceView" sender:nil];
 }
 
 - (void)setFamilyInfo:(BLSFamilyInfo *)familyInfo {

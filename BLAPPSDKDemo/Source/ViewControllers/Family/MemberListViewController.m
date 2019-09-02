@@ -7,7 +7,7 @@
 //
 
 #import "MemberListViewController.h"
-#import "BLSFamilyManager.h"
+#import <BLSFamily/BLSFamily.h>
 #import "ShareFamilyViewController.h"
 #import <BLLetAccount/BLLetAccount.h>
 #import <SDWebImage/UIImageView+WebCache.h>

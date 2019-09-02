@@ -7,8 +7,7 @@
 //
 
 #import "SceneListController.h"
-#import "BLSFamilyManager.h"
-#import "BLSQueryScenesResult.h"
+#import <BLSFamily/BLSFamily.h>
 
 #import "BLStatusBar.h"
 #import <SDWebImage/UIImageView+WebCache.h>

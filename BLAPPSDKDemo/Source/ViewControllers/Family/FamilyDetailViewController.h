@@ -7,7 +7,7 @@
 //
 
 #import "BaseViewController.h"
-#import "BLSFamilyInfo.h"
+#import <BLSFamily/BLSFamily.h>
 
 @interface FamilyDetailViewController : BaseViewController
 

@@ -48,6 +48,7 @@
 		3AEF73792226645500F2376A /* BLDeviceResetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF73782226645500F2376A /* BLDeviceResetViewController.m */; };
 		3AEF737C222670BD00F2376A /* BLAddDeviceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF737B222670BD00F2376A /* BLAddDeviceListViewController.m */; };
 		3AF900C4227008BF00F57E9B /* BLSMediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF900C3227008BF00F57E9B /* BLSMediator.m */; };
+		3AF9B6382317A0EC00E8A6D9 /* GroupDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9B6372317A0EC00E8A6D9 /* GroupDeviceViewController.m */; };
 		3AFC6D6F20EB59E5003404E6 /* BLUserHeadImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC6D6E20EB59E5003404E6 /* BLUserHeadImageCell.m */; };
 		3AFC6D7220EB5DDC003404E6 /* BLSystemImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC6D7020EB5DDB003404E6 /* BLSystemImage.m */; };
 		3AFC6D7520EB6063003404E6 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC6D7420EB6063003404E6 /* Tools.m */; };
@@ -193,6 +194,8 @@
 		3AEF737B222670BD00F2376A /* BLAddDeviceListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLAddDeviceListViewController.m; sourceTree = "<group>"; };
 		3AF900C2227008BF00F57E9B /* BLSMediator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLSMediator.h; sourceTree = "<group>"; };
 		3AF900C3227008BF00F57E9B /* BLSMediator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSMediator.m; sourceTree = "<group>"; };
+		3AF9B6362317A0EC00E8A6D9 /* GroupDeviceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupDeviceViewController.h; sourceTree = "<group>"; };
+		3AF9B6372317A0EC00E8A6D9 /* GroupDeviceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupDeviceViewController.m; sourceTree = "<group>"; };
 		3AFC6D6E20EB59E5003404E6 /* BLUserHeadImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUserHeadImageCell.m; sourceTree = "<group>"; };
 		3AFC6D7020EB5DDB003404E6 /* BLSystemImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLSystemImage.m; sourceTree = "<group>"; };
 		3AFC6D7120EB5DDC003404E6 /* BLSystemImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLSystemImage.h; sourceTree = "<group>"; };
@@ -404,6 +407,8 @@
 				84BACDE22236555F00C1E5DA /* SceneAddController.m */,
 				3A1C7A9422816026007E120A /* QRCodeViewController.h */,
 				3A1C7A9522816026007E120A /* QRCodeViewController.m */,
+				3AF9B6362317A0EC00E8A6D9 /* GroupDeviceViewController.h */,
+				3AF9B6372317A0EC00E8A6D9 /* GroupDeviceViewController.m */,
 			);
 			path = Family;
 			sourceTree = "<group>";
@@ -945,6 +950,7 @@
 				70503DB81FDBE4D6002D3371 /* FamilyDetailViewController.m in Sources */,
 				025A168720E33CBC00D75DAB /* RestPasswordViewController.m in Sources */,
 				70503DA21FDBE4D5002D3371 /* CreateFamilyViewController.m in Sources */,
+				3AF9B6382317A0EC00E8A6D9 /* GroupDeviceViewController.m in Sources */,
 				70503DA01FDBE4D5002D3371 /* LoginsTableViewController.m in Sources */,
 				0261054220E21AE400883EFC /* BLLoadingButton.m in Sources */,
 				70503DA81FDBE4D5002D3371 /* RegisterViewController.m in Sources */,

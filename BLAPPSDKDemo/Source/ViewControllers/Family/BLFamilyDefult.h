@@ -7,17 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BLSFamilyInfoResult.h"
-#import "BLSFamilyCreateResult.h"
-#import "BLSFamilyListResult.h"
-#import "BLSFamilyIconResult.h"
-#import "BLSInvitedQrcodeResult.h"
-#import "BLSFamilyMembersResult.h"
-#import "BLSManageRoomResult.h"
-#import "BLSQueryEndpointsResult.h"
-#import "BLSQueryScenesResult.h"
-#import "BLSAddSceneResult.h"
-#import "BLSAddAuthResult.h"
+#import <BLSFamily/BLSFamily.h>
+
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -9,7 +9,7 @@
 #import "CreateFamilyViewController.h"
 #import "BLStatusBar.h"
 #import "AppDelegate.h"
-#import "BLSFamilyManager.h"
+#import <BLSFamily/BLSFamily.h>
 
 @interface CreateFamilyViewController () <UITextFieldDelegate>
 

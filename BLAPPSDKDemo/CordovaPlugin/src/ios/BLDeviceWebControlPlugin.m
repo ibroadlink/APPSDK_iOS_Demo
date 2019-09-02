@@ -8,7 +8,7 @@
 
 #import "BLDeviceWebControlPlugin.h"
 #import "BLDeviceService.h"
-#import "BLSFamilyManager.h"
+#import <BLSFamily/BLSFamily.h>
 #import "BLFamilyDefult.h"
 #import "BLUserDefaults.h"
 #import "AppMacro.h"

@@ -10,7 +10,7 @@
 #import "FamilyDetailViewController.h"
 #import "BLStatusBar.h"
 #import "DropDownList.h"
-#import "BLSFamilyManager.h"
+#import <BLSFamily/BLSFamily.h>
 
 #import <SDWebImage/UIImageView+WebCache.h>
 

@@ -7,7 +7,7 @@
 //
 
 #import "ShareFamilyViewController.h"
-#import "BLSFamilyManager.h"
+#import <BLSFamily/BLSFamily.h>
 
 @interface ShareFamilyViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *qCodeImageView;
