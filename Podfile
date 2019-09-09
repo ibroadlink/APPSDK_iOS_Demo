@@ -10,6 +10,7 @@ target 'BLAPPSDKDemo' do
 
   # Pods for BLAPPSDKDemo
   pod 'BLLet'
+  pod 'BLSFamily'
 
 	pod 'Cordova', '~> 4.4.0'
 	pod 'SSZipArchive', '~> 2.1.1'
