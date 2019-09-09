@@ -1,0 +1,1 @@
+../../../../../../Gitlab/BLLetIRCode/BLLetIRCode/Classes/Results/BLLocateInfoResult.h

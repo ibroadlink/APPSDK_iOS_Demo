@@ -1,0 +1,27 @@
+{
+  "name": "BLLetFamily",
+  "version": "2.11.1",
+  "summary": "A short description of BLLetFamily.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "http://gitlab.broadlink.com.cn/appsdk",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zjjllj@gmail.com": "junjie.zhu@broadlink.com.cn"
+  },
+  "source": {
+    "git": "git@gitlab.broadlink.com.cn:appsdk/BLLetFamily.git",
+    "tag": "2.11.1"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "BLLetFamily/Classes/**/*",
+  "dependencies": {
+    "BLLetBase": [
+
+    ]
+  }
+}

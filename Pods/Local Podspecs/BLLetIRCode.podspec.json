@@ -1,0 +1,28 @@
+{
+  "name": "BLLetIRCode",
+  "version": "2.11.5",
+  "summary": "A short description of BLLetIRCode.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "http://gitlab.broadlink.com.cn/appsdk",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zjjllj@gmail.com": "junjie.zhu@broadlink.com.cn"
+  },
+  "source": {
+    "git": "git@gitlab.broadlink.com.cn:appsdk/BLLetIRCode.git",
+    "tag": "2.11.5"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "BLLetIRCode/Classes/**/*",
+  "vendored_libraries": "BLLetIRCode/Classes/Library/*.{a}",
+  "dependencies": {
+    "BLLetCore": [
+
+    ]
+  }
+}

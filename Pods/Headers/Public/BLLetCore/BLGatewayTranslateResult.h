@@ -1,0 +1,1 @@
+../../../../../../Gitlab/BLLetCore/BLLetCore/Classes/Results/BLGatewayTranslateResult.h

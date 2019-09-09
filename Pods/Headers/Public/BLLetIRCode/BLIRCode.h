@@ -1,0 +1,1 @@
+../../../../../../Gitlab/BLLetIRCode/BLLetIRCode/Classes/IRCode/BLIRCode.h

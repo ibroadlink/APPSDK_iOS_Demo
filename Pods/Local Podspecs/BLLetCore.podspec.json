@@ -1,0 +1,29 @@
+{
+  "name": "BLLetCore",
+  "version": "2.12.2",
+  "summary": "A short description of BLLetCore.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "http://gitlab.broadlink.com.cn/appsdk",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zjjllj@gmail.com": "junjie.zhu@broadlink.com.cn"
+  },
+  "source": {
+    "git": "git@gitlab.broadlink.com.cn:appsdk/BLLetCore.git",
+    "tag": "2.12.2"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "BLLetCore/Classes/**/*",
+  "libraries": "z",
+  "vendored_libraries": "BLLetCore/Classes/Library/*.{a}",
+  "dependencies": {
+    "BLLetBase": [
+      "~> 2.12"
+    ]
+  }
+}
