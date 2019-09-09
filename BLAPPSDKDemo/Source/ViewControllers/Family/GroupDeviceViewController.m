@@ -81,6 +81,7 @@
                 BLSEndpointInfo *info = [[BLSEndpointInfo alloc] initWithBLDevice:device];
                 info.friendlyName = @"VirtualDevice";
                 info.endpointId = result.endpointId;
+                info.devicetypeFlag = 2;
                 [[BLSFamilyManager sharedFamily] addEndpoints:@[info] completionHandler:^(BLBaseResult * _Nonnull result) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"%@",[result BLS_modelToJSONString]]];

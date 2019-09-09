@@ -50,7 +50,8 @@
             if ([result succeed]) {
                 self.endpointList = result.endpoints;
                 for (BLSEndpointInfo *info in self.endpointList) {
-                    [[BLLet sharedLet].controller addDevice:[info toDNADevice]];
+                    BLDNADevice *device = [info toDNADevice];
+                    [[BLLet sharedLet].controller addDevice:device];
                 }
                 
                 [self.endpointListTable reloadData];
