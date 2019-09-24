@@ -6,8 +6,8 @@
 //  Copyright © 2017年 BroadLink Co., Ltd. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
-@interface APConfigTableViewController : UITableViewController
+@interface APConfigTableViewController : BaseViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
 @end

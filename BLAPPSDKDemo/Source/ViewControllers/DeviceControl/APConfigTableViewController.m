@@ -7,38 +7,67 @@
 //
 
 #import "APConfigTableViewController.h"
-#import "AppDelegate.h"
 #import "BLStatusBar.h"
-#import "MBProgressHUD.h"
 
-@interface APConfigTableViewController (){
-    BLController *_controller;
-    
-}
+@interface APConfigTableViewController ()
+
+@property (weak, nonatomic) IBOutlet UITextField *pubkeyTextField;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic,strong)NSMutableDictionary *apDict;
+
 @end
 
 @implementation APConfigTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.apDict = [NSMutableDictionary dictionary];
-    [self refresh];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.pubkeyTextField.delegate = self;
+    
+    self.apDict = [NSMutableDictionary dictionaryWithCapacity:0];
 }
-- (IBAction)refresh:(id)sender {
-    [self refresh];
+
+- (IBAction)buttonClick:(id)sender {
+    
+    UIButton *button = (UIButton *)sender;
+    switch (button.tag) {
+        case 100: {
+            [self getDeviceAPPubkey];
+        } break;
+        case 101: {
+            [self refresh];
+        } break;
+        default:
+            break;
+    }
+    
+}
+
+- (void)getDeviceAPPubkey {
+    [self showIndicatorOnWindow];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BLAPConfigPubkeyResult *result = [[BLLet sharedLet].controller deviceAPConfigPubkey];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideIndicatorOnWindow];
+            if ([result succeed]) {
+                self.pubkeyTextField.text = result.pubkey;
+            }else {
+                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"getDeviceAPPubkey staus:%ld,msg:%@",(long)result.status,result.msg]];
+            }
+        });
+    });
 }
 
 - (void)refresh {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [self showIndicatorOnWindow];
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSLog(@"deviceAPList start");
         BLGetAPListResult *apconfigResult = [[BLLet sharedLet].controller deviceAPList:7000];
-        NSLog(@"deviceAPList: %@", apconfigResult);
-        
         dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [self hideIndicatorOnWindow];
             if ([apconfigResult succeed]) {
                 NSArray *apList = apconfigResult.list;
                 
@@ -47,7 +76,7 @@
                 }
 
                 [self.tableView reloadData];
-            }else {
+            } else {
                 [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"deviceAPList staus:%ld,msg:%@",(long)apconfigResult.status,apconfigResult.msg]];
             }
         });
@@ -105,16 +134,36 @@
         UITextField *ssidtxt = alertController.textFields.firstObject;
         UITextField *passwordtxt = alertController.textFields.lastObject;
 
-        NSLog(@"apconfigResult start");
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        BLAPConfigResult *apconfigResult = [[BLLet sharedLet].controller deviceAPConfig:ssidtxt.text password:passwordtxt.text type:APinfo.type];
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        if ([apconfigResult succeed]) {
-            NSLog(@"apconfig success:did--%@,pid--%@,ssid--%@,devkey--%@",apconfigResult.did,apconfigResult.pid,apconfigResult.ssid,apconfigResult.devkey);
-            [self viewBack];
-        }else {
-            [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"deviceAPConfig staus:%ld,msg:%@",(long)apconfigResult.status,apconfigResult.msg]];
+        BLAPConfigProtocolEnum protocol = BL_AP_CONFIG_DEFAULT;
+        NSString *pubkey = self.pubkeyTextField.text;
+//        NSString *pubkey = @"2fe57da347cd62431528daac5fbb290730fff684afc4cfc2ed90995f58cb3b74";
+        if (pubkey.length > 0) {
+            protocol = BL_AP_CONFIG_ENCRYPT;
         }
+        
+        NSLog(@"apconfigResult start");
+        [self showIndicatorOnWindow];
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            BLAPConfigResult *apconfigResult;
+
+            if (protocol == BL_AP_CONFIG_ENCRYPT) {
+                apconfigResult = [[BLLet sharedLet].controller deviceAPConfig:ssidtxt.text password:passwordtxt.text type:APinfo.type timeout:10*1000 protocol:protocol pubkey:pubkey desc:nil];
+            } else {
+                apconfigResult = [[BLLet sharedLet].controller deviceAPConfig:ssidtxt.text password:passwordtxt.text type:APinfo.type];
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideIndicatorOnWindow];
+                
+                if ([apconfigResult succeed]) {
+                    NSLog(@"apconfig success:did--%@,pid--%@,devkey--%@",apconfigResult.did,apconfigResult.pid,apconfigResult.devkey);
+                    [self viewBack];
+                } else {
+                    [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"deviceAPConfig staus:%ld,msg:%@",(long)apconfigResult.status,apconfigResult.msg]];
+                }
+            });
+        });
     }]];
     
     [alertController addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:NULL]];
