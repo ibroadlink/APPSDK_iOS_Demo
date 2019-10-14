@@ -185,12 +185,9 @@
     [BLConfigParam sharedConfigParam].controllerLocalTimeout = 5000;                // 局域网控制超时时间
     [BLConfigParam sharedConfigParam].controllerRemoteTimeout = 8000;               // 远程控制超时时间
     [BLConfigParam sharedConfigParam].controllerSendCount = 2;                      // 控制重试次数
-    [BLConfigParam sharedConfigParam].controllerQueryCount = 8;                     // 设备批量查询设备个数
     [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;          // 脚本下载平台
-    [[BLPicker sharedPicker] startPick];
-    
+
     // 使用云端集群
-    // [BLConfigParam sharedConfigParam].appServiceEnable = 1;
     [BLConfigParam sharedConfigParam].appServiceEnable = [userDefault getAppServiceEnable];
     if ([BLConfigParam sharedConfigParam].appServiceEnable > 0) {
         NSString *cloudClusterHost = [userDefault getAppServiceHost];
@@ -198,7 +195,10 @@
             [BLConfigParam sharedConfigParam].appServiceHost = cloudClusterHost;
         }
     }
-
+    
+//    [BLConfigParam sharedConfigParam].appServiceEnable = 1;
+//    [BLConfigParam sharedConfigParam].appServiceHost = @"https://app-service-deu-f0e9ebbb.aux-home.com";
+    
     [self.let setDebugLog:BL_LEVEL_DEBUG];                                            // Set APPSDK debug log level
     [self.let.controller setSDKRawDebugLevel:BL_LEVEL_DEBUG];                       // Set DNASDK debug log level
     
