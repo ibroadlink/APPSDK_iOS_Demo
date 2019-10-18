@@ -41,7 +41,7 @@
 
 - (void)queryDeviceVersionWithTypeId:(NSInteger)typeId brandId:(NSInteger)brandId {
     
-    [self.blircode requestIRCodeV3ScriptDownloadUrlWithType:typeId brand:brandId version:0 completionHandler:^(BLBaseBodyResult * _Nonnull result) {
+    [self.blircode requestIRCodeScriptDownloadUrlWithType:typeId brand:brandId version:0 completionHandler:^(BLBaseBodyResult * _Nonnull result) {
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
             [self.modelsArray removeAllObjects];

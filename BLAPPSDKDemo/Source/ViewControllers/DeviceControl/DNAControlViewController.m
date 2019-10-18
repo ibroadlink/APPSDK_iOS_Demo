@@ -456,7 +456,6 @@
         
         paramTextView.text = param;
         valTextView.placeholder = param;
-        [valTextView setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
         return cell;
     }else if (indexPath.section == 1) {
         cellIdentifier = @"SELECT_PARAMS_CELL";

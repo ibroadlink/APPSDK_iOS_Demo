@@ -93,6 +93,7 @@
     }
 
     BLDNADevice *device = self.showDevices[indexPath.row];
+    
     UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
     titleLabel.text = [device getName];
     
@@ -101,6 +102,13 @@
     
     UILabel *typeLabel = (UILabel *)[cell viewWithTag:103];
     typeLabel.text = [NSString stringWithFormat:@"Type:%ld", (long)[device getType]];
+    
+    if (device.lock) {
+        titleLabel.textColor = [UIColor redColor];
+        macLabel.textColor = [UIColor redColor];
+        typeLabel.text = [NSString stringWithFormat:@"lock:%hhu", [device getLock]];
+        typeLabel.textColor = [UIColor redColor];
+    }
     
     return cell;
 }

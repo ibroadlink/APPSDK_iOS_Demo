@@ -12,6 +12,7 @@
 #import "BLUserDefaults.h"
 #import <BLSFamily/BLSFamily.h>
 #import "BLDeviceService.h"
+#import <BLApprelayScoket/BLApprelayScoket.h>
 
 #ifndef DISABLE_PUSH_NOTIFICATIONS
 #import "BLSNotificationService.h"
@@ -22,7 +23,7 @@
 #import <UserNotifications/UserNotifications.h>
 #endif
 
-@interface AppDelegate () <UNUserNotificationCenterDelegate>
+@interface AppDelegate () <UNUserNotificationCenterDelegate,BLWebSocketDelegate>
 
 /*push message*/
 @property (nonatomic, strong) NSDictionary *pushMessageDic;
@@ -190,7 +191,8 @@
     [[BLPicker sharedPicker] startPick];
     
     // 使用云端集群
-    // [BLConfigParam sharedConfigParam].appServiceEnable = 1;
+//     [BLConfigParam sharedConfigParam].appServiceEnable = 0;
+//    [BLConfigParam sharedConfigParam].licenseId = @"7a95f1a878e81f7573953696377d8b63";
     [BLConfigParam sharedConfigParam].appServiceEnable = [userDefault getAppServiceEnable];
     if ([BLConfigParam sharedConfigParam].appServiceEnable > 0) {
         NSString *cloudClusterHost = [userDefault getAppServiceHost];
@@ -219,6 +221,20 @@
             }
         }];
     }
+    
+    // 使用WebSocket连接
+    BLApprealyUrlResult *urlResult = [[WebSocketManager shareManager] apprelayGetUrl];
+    NSString *urlPath = urlResult.url;
+    [[WebSocketManager shareManager] connectWebSocket:@"ws://121.40.165.18:8800"];
+    [WebSocketManager shareManager].delegate = self;
+    // 发送消息
+    [[WebSocketManager shareManager] sendMsg:@"一条消息"];
 }
 
+- (void)didReceiveMessage:(id)message {
+    if ([message isKindOfClass:[NSString class]]) {
+        NSDictionary *dict = [message BLS_modelToJSONObject];
+        NSLog(@"messagedict:%@",dict);
+    }
+}
 @end

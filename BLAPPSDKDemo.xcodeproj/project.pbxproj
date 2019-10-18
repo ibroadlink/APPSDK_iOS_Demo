@@ -28,6 +28,7 @@
 		3A1C7A9622816026007E120A /* QRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1C7A9522816026007E120A /* QRCodeViewController.m */; };
 		3A1D47A52275973100B8CA34 /* PushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1D47A42275973100B8CA34 /* PushViewController.m */; };
 		3A3444BF222D2C1500356241 /* ResetSDKInitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3444BD222D2C1500356241 /* ResetSDKInitViewController.m */; };
+		3A3582FC2330DED00020B6C0 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A3582FB2330DED00020B6C0 /* ExternalAccessory.framework */; };
 		3A44F4AE2223F03800936AFF /* ProductListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4AD2223F03800936AFF /* ProductListViewController.m */; };
 		3A44F4B12224ECA800936AFF /* BLProductCategoryList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4B02224ECA800936AFF /* BLProductCategoryList.m */; };
 		3A44F4B42225146300936AFF /* BLProductCategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4B32225146300936AFF /* BLProductCategoryModel.m */; };
@@ -109,7 +110,6 @@
 		848C781622AFA22700E464F2 /* IRCodeLocationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 848C781522AFA22700E464F2 /* IRCodeLocationInfo.m */; };
 		84BACDE02236476500C1E5DA /* SceneListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BACDDF2236476500C1E5DA /* SceneListController.m */; };
 		84BACDE32236555F00C1E5DA /* SceneAddController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BACDE22236555F00C1E5DA /* SceneAddController.m */; };
-		84E246C2226EEB3A0042BB48 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E246C1226EEB3A0042BB48 /* ExternalAccessory.framework */; };
 		84F84207224A068A00D60C76 /* TVBoxAreaSelectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F84206224A068A00D60C76 /* TVBoxAreaSelectController.m */; };
 		84F8420B224A09BF00D60C76 /* IRCodeSubAreaInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F8420A224A09BF00D60C76 /* IRCodeSubAreaInfo.m */; };
 		84F8420E224A206800D60C76 /* IRCodeBrandInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F8420D224A206800D60C76 /* IRCodeBrandInfo.m */; };
@@ -153,6 +153,7 @@
 		3A1D47A42275973100B8CA34 /* PushViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PushViewController.m; sourceTree = "<group>"; };
 		3A3444BD222D2C1500356241 /* ResetSDKInitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetSDKInitViewController.m; sourceTree = "<group>"; };
 		3A3444BE222D2C1500356241 /* ResetSDKInitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetSDKInitViewController.h; sourceTree = "<group>"; };
+		3A3582FB2330DED00020B6C0 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		3A3D7EB72140FB7200BF9D3D /* BLAPPSDKDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BLAPPSDKDemo.entitlements; sourceTree = "<group>"; };
 		3A44F4AC2223F03800936AFF /* ProductListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProductListViewController.h; sourceTree = "<group>"; };
 		3A44F4AD2223F03800936AFF /* ProductListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProductListViewController.m; sourceTree = "<group>"; };
@@ -317,7 +318,6 @@
 		84BACDDF2236476500C1E5DA /* SceneListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneListController.m; sourceTree = "<group>"; };
 		84BACDE12236555F00C1E5DA /* SceneAddController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneAddController.h; sourceTree = "<group>"; };
 		84BACDE22236555F00C1E5DA /* SceneAddController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneAddController.m; sourceTree = "<group>"; };
-		84E246C1226EEB3A0042BB48 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		84F84205224A068A00D60C76 /* TVBoxAreaSelectController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TVBoxAreaSelectController.h; sourceTree = "<group>"; };
 		84F84206224A068A00D60C76 /* TVBoxAreaSelectController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TVBoxAreaSelectController.m; sourceTree = "<group>"; };
 		84F84209224A09BF00D60C76 /* IRCodeSubAreaInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCodeSubAreaInfo.h; sourceTree = "<group>"; };
@@ -340,7 +340,7 @@
 			files = (
 				3AD8B31D22FD22EF0046A9BF /* CoreLocation.framework in Frameworks */,
 				02AE62F3200713A700847CE5 /* libsqlite3.0.tbd in Frameworks */,
-				84E246C2226EEB3A0042BB48 /* ExternalAccessory.framework in Frameworks */,
+				3A3582FC2330DED00020B6C0 /* ExternalAccessory.framework in Frameworks */,
 				AADA6EE36D3CC88AD40F195C /* libPods-BLAPPSDKDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -713,8 +713,8 @@
 		70AE16E81DB8B1A8002FF319 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3A3582FB2330DED00020B6C0 /* ExternalAccessory.framework */,
 				3AD8B31C22FD22EF0046A9BF /* CoreLocation.framework */,
-				84E246C1226EEB3A0042BB48 /* ExternalAccessory.framework */,
 				84906B632260893400FBA364 /* libz.1.2.11.tbd */,
 				02AE62F2200713A700847CE5 /* libsqlite3.0.tbd */,
 				02AE62F02007139B00847CE5 /* libz.1.2.5.tbd */,
@@ -1185,7 +1185,7 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BLAPPSDKDemo/BLAPPSDKDemo.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Broadlink Co.,Ltd";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5YQ85Q9UV8;
