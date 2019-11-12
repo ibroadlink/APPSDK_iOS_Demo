@@ -184,7 +184,7 @@
     }
     
     [BLConfigParam sharedConfigParam].controllerLocalTimeout = 5000;                // 局域网控制超时时间
-    [BLConfigParam sharedConfigParam].controllerRemoteTimeout = 8000;               // 远程控制超时时间
+    [BLConfigParam sharedConfigParam].controllerRemoteTimeout = 15000;               // 远程控制超时时间
     [BLConfigParam sharedConfigParam].controllerSendCount = 2;                      // 控制重试次数
     [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;          // 脚本下载平台
 
@@ -224,12 +224,12 @@
     }
     
     // 使用WebSocket连接
-    BLApprealyUrlResult *urlResult = [[WebSocketManager shareManager] apprelayGetUrl];
-    NSString *urlPath = urlResult.url;
-    [[WebSocketManager shareManager] connectWebSocket:@"ws://121.40.165.18:8800"];
-    [WebSocketManager shareManager].delegate = self;
+//    BLApprealyUrlResult *urlResult = [[WebSocketManager shareManager] apprelayGetUrl];
+//    NSString *urlPath = urlResult.url;
+//    [[WebSocketManager shareManager] connectWebSocket:@"ws://121.40.165.18:8800"];
+//    [WebSocketManager shareManager].delegate = self;
     // 发送消息
-    [[WebSocketManager shareManager] sendMsg:@"一条消息"];
+//    [[WebSocketManager shareManager] sendMsg:@"一条消息"];
 }
 
 - (void)didReceiveMessage:(id)message {

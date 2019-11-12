@@ -8,6 +8,7 @@
 #import "OperateViewController.h"
 #import "GeneralTimerControlView.h"
 #import "FastconGroupDeviceViewController.h"
+#import "FastconTopologyViewController.h"
 
 #import "AppMacro.h"
 #import "BLStatusBar.h"
@@ -60,7 +61,8 @@
                                 @"A1 Device Demo",
                                 @"Start Log Redirect",
                                 @"Stop Log Redirect",
-                                @"FastconGroupDevice"
+                                @"FastconGroupDevice",
+                                @"Fastcon Topology"
                                 ];
     
     self.operateTableView.delegate = self;
@@ -150,6 +152,9 @@
             break;
         case 14:
             [self fastconGroupDevice];
+            break;
+        case 15:
+            [self fastconTopology];
             break;
         default:
             break;
@@ -549,5 +554,10 @@
 
 - (void)fastconGroupDevice {
     [self performSegueWithIdentifier:@"FastconGroupDeviceViewController" sender:nil];
+}
+
+- (void)fastconTopology {
+    FastconTopologyViewController *vc = [FastconTopologyViewController viewController];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 @end

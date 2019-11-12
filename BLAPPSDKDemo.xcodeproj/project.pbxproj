@@ -27,6 +27,8 @@
 		3A1809B9230F914F006E7975 /* FastconGroupDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1809B8230F914F006E7975 /* FastconGroupDeviceViewController.m */; };
 		3A1C7A9622816026007E120A /* QRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1C7A9522816026007E120A /* QRCodeViewController.m */; };
 		3A1D47A52275973100B8CA34 /* PushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1D47A42275973100B8CA34 /* PushViewController.m */; };
+		3A2C867A236028BD00724D80 /* JYEqualCellSpaceFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C8679236028BD00724D80 /* JYEqualCellSpaceFlowLayout.m */; };
+		3A2C867D236059A500724D80 /* HeaderCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C867C236059A500724D80 /* HeaderCollectionReusableView.m */; };
 		3A3444BF222D2C1500356241 /* ResetSDKInitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3444BD222D2C1500356241 /* ResetSDKInitViewController.m */; };
 		3A3582FC2330DED00020B6C0 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A3582FB2330DED00020B6C0 /* ExternalAccessory.framework */; };
 		3A44F4AE2223F03800936AFF /* ProductListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F4AD2223F03800936AFF /* ProductListViewController.m */; };
@@ -41,6 +43,7 @@
 		3AAC2A2A20EB250D00031DEC /* BLUserSaftyInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC2A2920EB250D00031DEC /* BLUserSaftyInfoCell.m */; };
 		3AAC2A2D20EB252200031DEC /* BLUserLogoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC2A2C20EB252200031DEC /* BLUserLogoutCell.m */; };
 		3AB87FC822154DF200B97D38 /* FastconViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB87FC722154DF200B97D38 /* FastconViewController.m */; };
+		3AC93174235EA29E00B5EA7F /* FastconTopologyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC93173235EA29E00B5EA7F /* FastconTopologyViewController.m */; };
 		3ACDE3C120EC9CF00016461D /* ModifyPhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACDE3C020EC9CF00016461D /* ModifyPhoneViewController.m */; };
 		3AD8B31D22FD22EF0046A9BF /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD8B31C22FD22EF0046A9BF /* CoreLocation.framework */; };
 		3AEF737022253B2C00F2376A /* BLDeviceConfigureInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF736F22253B2C00F2376A /* BLDeviceConfigureInfo.m */; };
@@ -151,6 +154,10 @@
 		3A1C7A9522816026007E120A /* QRCodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QRCodeViewController.m; sourceTree = "<group>"; };
 		3A1D47A32275973100B8CA34 /* PushViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PushViewController.h; sourceTree = "<group>"; };
 		3A1D47A42275973100B8CA34 /* PushViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PushViewController.m; sourceTree = "<group>"; };
+		3A2C8678236028BD00724D80 /* JYEqualCellSpaceFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JYEqualCellSpaceFlowLayout.h; sourceTree = "<group>"; };
+		3A2C8679236028BD00724D80 /* JYEqualCellSpaceFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JYEqualCellSpaceFlowLayout.m; sourceTree = "<group>"; };
+		3A2C867B236059A500724D80 /* HeaderCollectionReusableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeaderCollectionReusableView.h; sourceTree = "<group>"; };
+		3A2C867C236059A500724D80 /* HeaderCollectionReusableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeaderCollectionReusableView.m; sourceTree = "<group>"; };
 		3A3444BD222D2C1500356241 /* ResetSDKInitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetSDKInitViewController.m; sourceTree = "<group>"; };
 		3A3444BE222D2C1500356241 /* ResetSDKInitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetSDKInitViewController.h; sourceTree = "<group>"; };
 		3A3582FB2330DED00020B6C0 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
@@ -180,6 +187,8 @@
 		3AAC2A2C20EB252200031DEC /* BLUserLogoutCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLUserLogoutCell.m; sourceTree = "<group>"; };
 		3AB87FC622154DF200B97D38 /* FastconViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FastconViewController.h; sourceTree = "<group>"; };
 		3AB87FC722154DF200B97D38 /* FastconViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FastconViewController.m; sourceTree = "<group>"; };
+		3AC93172235EA29E00B5EA7F /* FastconTopologyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FastconTopologyViewController.h; sourceTree = "<group>"; };
+		3AC93173235EA29E00B5EA7F /* FastconTopologyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FastconTopologyViewController.m; sourceTree = "<group>"; };
 		3ACDE3BF20EC9CF00016461D /* ModifyPhoneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyPhoneViewController.h; sourceTree = "<group>"; };
 		3ACDE3C020EC9CF00016461D /* ModifyPhoneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModifyPhoneViewController.m; sourceTree = "<group>"; };
 		3AD8B31C22FD22EF0046A9BF /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -484,6 +493,10 @@
 				3A1809B8230F914F006E7975 /* FastconGroupDeviceViewController.m */,
 				3A076F1E2313D6340011789F /* FastconGroupDeviceEditViewController.h */,
 				3A076F1F2313D6340011789F /* FastconGroupDeviceEditViewController.m */,
+				3AC93172235EA29E00B5EA7F /* FastconTopologyViewController.h */,
+				3AC93173235EA29E00B5EA7F /* FastconTopologyViewController.m */,
+				3A2C867B236059A500724D80 /* HeaderCollectionReusableView.h */,
+				3A2C867C236059A500724D80 /* HeaderCollectionReusableView.m */,
 			);
 			path = DeviceControl;
 			sourceTree = "<group>";
@@ -633,6 +646,8 @@
 		70503D951FDBE4D5002D3371 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				3A2C8678236028BD00724D80 /* JYEqualCellSpaceFlowLayout.h */,
+				3A2C8679236028BD00724D80 /* JYEqualCellSpaceFlowLayout.m */,
 				022D7AFB20BBDBFA00689F93 /* DropDownList.h */,
 				022D7AFC20BBDBFB00689F93 /* DropDownList.m */,
 				0261054020E21AE300883EFC /* BLLoadingButton.h */,
@@ -933,6 +948,7 @@
 				84F8420E224A206800D60C76 /* IRCodeBrandInfo.m in Sources */,
 				02AE9DAF2058BDD10054677B /* GeneralTimerControlView.m in Sources */,
 				70503DB31FDBE4D6002D3371 /* IRCodeTestViewController.m in Sources */,
+				3AC93174235EA29E00B5EA7F /* FastconTopologyViewController.m in Sources */,
 				848C781622AFA22700E464F2 /* IRCodeLocationInfo.m in Sources */,
 				84BACDE02236476500C1E5DA /* SceneListController.m in Sources */,
 				70503DAD1FDBE4D5002D3371 /* DNAControlViewController.m in Sources */,
@@ -965,6 +981,7 @@
 				70503D9D1FDBE4D5002D3371 /* A1ViewController.m in Sources */,
 				3A44F4B12224ECA800936AFF /* BLProductCategoryList.m in Sources */,
 				3AF900C4227008BF00F57E9B /* BLSMediator.m in Sources */,
+				3A2C867D236059A500724D80 /* HeaderCollectionReusableView.m in Sources */,
 				8405E1322254BE4E00DC73D1 /* MatchTreeTestController.m in Sources */,
 				70503DB71FDBE4D6002D3371 /* SPViewController.m in Sources */,
 				842C9614221E850300B3A1A6 /* EndpointListViewController.m in Sources */,
@@ -989,6 +1006,7 @@
 				3A7C339A22EEEB7D0021322F /* BLTemplate.m in Sources */,
 				3A076F202313D6340011789F /* FastconGroupDeviceEditViewController.m in Sources */,
 				70DDAEF51DC73D4A005E4278 /* AppDelegate.m in Sources */,
+				3A2C867A236028BD00724D80 /* JYEqualCellSpaceFlowLayout.m in Sources */,
 				70503DAC1FDBE4D5002D3371 /* ProductModelsTableViewController.m in Sources */,
 				3A7C339B22EEEB7D0021322F /* LinkageTemplate.m in Sources */,
 				84F84214224A2FA200D60C76 /* IRCodeDownloadInfo.m in Sources */,

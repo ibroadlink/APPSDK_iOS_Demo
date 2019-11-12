@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="KGF-lZ-YF7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="KGF-lZ-YF7">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -882,6 +883,7 @@
                         <segue destination="7kN-Fi-hyy" kind="push" identifier="fastconControlView" id="Hxw-ze-eEW"/>
                         <segue destination="Beq-bO-hbe" kind="push" identifier="rmDeviceController" id="9HU-k1-akq"/>
                         <segue destination="nUr-AG-mmR" kind="push" identifier="FastconGroupDeviceViewController" id="edK-m1-dbn"/>
+                        <segue destination="85G-zo-VXD" kind="push" identifier="FastconTopologyViewController" id="eHx-V2-HY9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yOb-U6-6J3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1234,6 +1236,79 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uQR-3k-cKE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4307.2463768115949" y="-2102.445652173913"/>
+        </scene>
+        <!--Fastcon Topology View Controller-->
+        <scene sceneID="fwu-KC-GUm">
+            <objects>
+                <viewController storyboardIdentifier="FastconTopologyViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="85G-zo-VXD" customClass="FastconTopologyViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qTd-Lp-TEj"/>
+                        <viewControllerLayoutGuide type="bottom" id="x1M-cB-u70"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ynn-dI-JVE">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="W5B-AB-1rv">
+                                <rect key="frame" x="0.0" y="44" width="414" height="692"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="C0X-QJ-bLl">
+                                    <size key="itemSize" width="96" height="98"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" multipleTouchEnabled="YES" alpha="0.0" contentMode="center" reuseIdentifier="deviceidCell" id="adq-9B-0Ib">
+                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="RJE-qY-ML3">
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="101" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HZS-2Q-jEf">
+                                                    <rect key="frame" x="20" y="8.0000000000000036" width="60" height="60.333333333333343"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NlG-98-uNp">
+                                                    <rect key="frame" x="2" y="76.333333333333329" width="96" height="8.6666666666666714"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="7"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="NlG-98-uNp" secondAttribute="bottom" constant="15" id="13y-E5-vCT"/>
+                                                <constraint firstItem="NlG-98-uNp" firstAttribute="top" secondItem="HZS-2Q-jEf" secondAttribute="bottom" constant="8" id="7vf-Ud-1WK"/>
+                                                <constraint firstItem="HZS-2Q-jEf" firstAttribute="top" secondItem="RJE-qY-ML3" secondAttribute="top" constant="8" id="984-hI-iU3"/>
+                                                <constraint firstAttribute="trailing" secondItem="NlG-98-uNp" secondAttribute="trailing" constant="2" id="C5q-G4-x6z"/>
+                                                <constraint firstItem="HZS-2Q-jEf" firstAttribute="leading" secondItem="RJE-qY-ML3" secondAttribute="leading" constant="20" id="HiU-vC-zXj"/>
+                                                <constraint firstAttribute="trailing" secondItem="HZS-2Q-jEf" secondAttribute="trailing" constant="20" id="cnO-hW-pjF"/>
+                                                <constraint firstItem="NlG-98-uNp" firstAttribute="leading" secondItem="RJE-qY-ML3" secondAttribute="leading" constant="2" id="uZO-GD-v9m"/>
+                                            </constraints>
+                                        </collectionViewCellContentView>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                        <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
+                                        <size key="customSize" width="100" height="100"/>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="W5B-AB-1rv" secondAttribute="trailing" id="BV7-Di-yZd"/>
+                            <constraint firstItem="W5B-AB-1rv" firstAttribute="leading" secondItem="Ynn-dI-JVE" secondAttribute="leading" id="PYi-uS-gjD"/>
+                            <constraint firstItem="W5B-AB-1rv" firstAttribute="top" secondItem="qTd-Lp-TEj" secondAttribute="bottom" id="S4D-90-yYg"/>
+                            <constraint firstItem="x1M-cB-u70" firstAttribute="top" secondItem="W5B-AB-1rv" secondAttribute="bottom" id="iVk-FK-YK0"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="E4r-Rq-nR4"/>
+                    <connections>
+                        <outlet property="collectionView" destination="W5B-AB-1rv" id="BGS-bn-JOO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y5j-Tt-HZc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4307.2463768115949" y="-3426.358695652174"/>
         </scene>
         <!--Data Passthough-->
         <scene sceneID="TQW-Go-0bm">
@@ -6324,8 +6399,8 @@
     <inferredMetricsTieBreakers>
         <segue reference="g4G-6j-sfv"/>
         <segue reference="B3Y-Hw-nwy"/>
-        <segue reference="9HU-k1-akq"/>
-        <segue reference="qnv-S2-KhI"/>
+        <segue reference="cre-Xs-Zgj"/>
+        <segue reference="nbL-CB-lMq"/>
         <segue reference="JdS-Wy-Cgc"/>
         <segue reference="QGS-Lq-5qG"/>
     </inferredMetricsTieBreakers>
