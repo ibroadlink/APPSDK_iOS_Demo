@@ -46,8 +46,9 @@
                 NSArray *downloadInfos = [result.respbody objectForKey:@"downloadinfo"];
                 if (![BLCommonTools isEmptyArray:downloadInfos]) {
                     
-                    self.randkey = downloadInfos[0][@"fixkey"];
+                    self.randkey = downloadInfos[0][@"randkey"];
                     self.downloadUrl = downloadInfos[0][@"downloadurl"];
+                    self.ircodeid = downloadInfos[0][@"ircodeid"];
                     NSString *name = downloadInfos[0][@"name"];
                     
                     BLController *blcontroller = [BLLet sharedLet].controller;
@@ -62,12 +63,12 @@
 
 - (IBAction)downLoadIRCodeScript:(id)sender {
     [self.recoginzeTxt resignFirstResponder];
-    [self downloadIRCodeScript:self.downloadUrl savePath:self.savePath randkey:self.randkey];
+    [self downloadIRCodeWithIRCodeid:self.ircodeid savePath:self.savePath];
 }
 
 - (IBAction)getIRCodeBaseInfo:(id)sender {
     [self.recoginzeTxt resignFirstResponder];
-    [self queryIRCodeScriptInfoSavePath:self.savePath randkey:nil deviceType:BL_IRCODE_DEVICE_AC];
+    [self queryIRCodeScriptInfoSavePath:self.savePath randkey:self.randkey deviceType:BL_IRCODE_DEVICE_AC];
 }
 
 - (IBAction)getIRCodeData:(id)sender {
@@ -111,10 +112,9 @@
     
 }
 
-- (void)downloadIRCodeScript:(NSString *_Nonnull)urlString savePath:(NSString *_Nonnull)path randkey:(NSString *_Nullable)randkey {
+- (void)downloadIRCodeWithIRCodeid:(NSString *_Nonnull)IRCodeid savePath:(NSString *_Nonnull)path {
     BLIRCode *blircode = [BLIRCode sharedIrdaCode];
-
-    [blircode downloadIRCodeScriptWithUrl:urlString savePath:path randkey:randkey completionHandler:^(BLDownloadResult * _Nonnull result) {
+    [blircode downloadIRCodeScriptWithIRCodeid:IRCodeid mtag:@"gz" savePath:path completionHandler:^(BLDownloadResult * _Nonnull result) {
         NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
             NSLog(@"savepath:%@", result.savePath);
@@ -125,7 +125,6 @@
         }else{
             [BLStatusBar showTipMessageWithStatus:result.msg];
         }
-
     }];
 }
 
