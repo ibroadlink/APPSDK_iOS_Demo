@@ -39,6 +39,9 @@
 		3A7C339422EEC9A80021322F /* BLFamilyDefult.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7C339222EEC9A70021322F /* BLFamilyDefult.m */; };
 		3A7C339A22EEEB7D0021322F /* BLTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7C339622EEEB7D0021322F /* BLTemplate.m */; };
 		3A7C339B22EEEB7D0021322F /* LinkageTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7C339822EEEB7D0021322F /* LinkageTemplate.m */; };
+		3A84278023837E3400E65B5C /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A84277F23837E3400E65B5C /* NotificationCenter.framework */; };
+		3A84278423837E3400E65B5C /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A84278323837E3400E65B5C /* TodayViewController.m */; };
+		3A84278B23837E3400E65B5C /* wideget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3A84277E23837E3400E65B5C /* wideget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3A9B60E02100377D0048540B /* JoinFamilyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9B60DF2100377D0048540B /* JoinFamilyViewController.m */; };
 		3AAC2A2A20EB250D00031DEC /* BLUserSaftyInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC2A2920EB250D00031DEC /* BLUserSaftyInfoCell.m */; };
 		3AAC2A2D20EB252200031DEC /* BLUserLogoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC2A2C20EB252200031DEC /* BLUserLogoutCell.m */; };
@@ -119,8 +122,33 @@
 		84F84214224A2FA200D60C76 /* IRCodeDownloadInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F84213224A2FA200D60C76 /* IRCodeDownloadInfo.m */; };
 		84F84217224A3E8A00D60C76 /* IRCodeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F84216224A3E8A00D60C76 /* IRCodeModel.m */; };
 		84F84219224A416900D60C76 /* IRCodeProviderInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F84218224A416900D60C76 /* IRCodeProviderInfo.m */; };
+		A3BDAC9C1901AC086B5C9344 /* libPods-wideget.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 60D5C70C6305901CF5B98BB5 /* libPods-wideget.a */; };
 		AADA6EE36D3CC88AD40F195C /* libPods-BLAPPSDKDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D118C5D79AEB44CD00AD9904 /* libPods-BLAPPSDKDemo.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3A84278923837E3400E65B5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 705B09491D4F1C5B00805109 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3A84277D23837E3400E65B5C;
+			remoteInfo = wideget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3A84278C23837E3400E65B5C /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				3A84278B23837E3400E65B5C /* wideget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		022D7AFB20BBDBFA00689F93 /* DropDownList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownList.h; sourceTree = "<group>"; };
@@ -146,6 +174,7 @@
 		02B89ACD2047A53F004E0088 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		02B89ACE2047A53F004E0088 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		02B89AD02047A53F004E0088 /* index.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
+		17E0A3C1B971BF43B2BAC61B /* Pods-wideget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wideget.release.xcconfig"; path = "Pods/Target Support Files/Pods-wideget/Pods-wideget.release.xcconfig"; sourceTree = "<group>"; };
 		3A076F1E2313D6340011789F /* FastconGroupDeviceEditViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FastconGroupDeviceEditViewController.h; sourceTree = "<group>"; };
 		3A076F1F2313D6340011789F /* FastconGroupDeviceEditViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FastconGroupDeviceEditViewController.m; sourceTree = "<group>"; };
 		3A1809B7230F914F006E7975 /* FastconGroupDeviceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FastconGroupDeviceViewController.h; sourceTree = "<group>"; };
@@ -178,6 +207,14 @@
 		3A7C339722EEEB7D0021322F /* LinkageTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkageTemplate.h; sourceTree = "<group>"; };
 		3A7C339822EEEB7D0021322F /* LinkageTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinkageTemplate.m; sourceTree = "<group>"; };
 		3A7C339922EEEB7D0021322F /* BLTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLTemplate.h; sourceTree = "<group>"; };
+		3A84277E23837E3400E65B5C /* wideget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = wideget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A84277F23837E3400E65B5C /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		3A84278223837E3400E65B5C /* TodayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TodayViewController.h; sourceTree = "<group>"; };
+		3A84278323837E3400E65B5C /* TodayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TodayViewController.m; sourceTree = "<group>"; };
+		3A84278823837E3400E65B5C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3A84279023838B0300E65B5C /* libBLLetBase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libBLLetBase.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A84279123838B0300E65B5C /* libBLLetCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libBLLetCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A8427962383B36100E65B5C /* wideget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wideget.entitlements; sourceTree = "<group>"; };
 		3A9B60DE2100377C0048540B /* JoinFamilyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoinFamilyViewController.h; sourceTree = "<group>"; };
 		3A9B60DF2100377D0048540B /* JoinFamilyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JoinFamilyViewController.m; sourceTree = "<group>"; };
 		3AAC2A2520EB24C600031DEC /* BLUserHeadImageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUserHeadImageCell.h; sourceTree = "<group>"; };
@@ -213,7 +250,9 @@
 		3AFC6D7420EB6063003404E6 /* Tools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		3AFC6D7620EB7278003404E6 /* UIImage+BDL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+BDL.h"; sourceTree = "<group>"; };
 		3AFC6D7720EB7278003404E6 /* UIImage+BDL.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+BDL.m"; sourceTree = "<group>"; };
+		3C504C7051DD67EF0BA71849 /* Pods-wideget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wideget.debug.xcconfig"; path = "Pods/Target Support Files/Pods-wideget/Pods-wideget.debug.xcconfig"; sourceTree = "<group>"; };
 		496EDC6DADF2CEDFD1420839 /* Pods-BLAPPSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLAPPSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
+		60D5C70C6305901CF5B98BB5 /* libPods-wideget.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wideget.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		70503D521FDBE37A002D3371 /* BLDeviceService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLDeviceService.m; sourceTree = "<group>"; };
 		70503D531FDBE37A002D3371 /* BLDeviceWebControlPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLDeviceWebControlPlugin.m; sourceTree = "<group>"; };
 		70503D541FDBE37A002D3371 /* BLDeviceService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLDeviceService.h; sourceTree = "<group>"; };
@@ -343,6 +382,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3A84277B23837E3400E65B5C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3A84278023837E3400E65B5C /* NotificationCenter.framework in Frameworks */,
+				A3BDAC9C1901AC086B5C9344 /* libPods-wideget.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		705B094E1D4F1C5B00805109 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -584,6 +632,17 @@
 			path = Linkage;
 			sourceTree = "<group>";
 		};
+		3A84278123837E3400E65B5C /* wideget */ = {
+			isa = PBXGroup;
+			children = (
+				3A8427962383B36100E65B5C /* wideget.entitlements */,
+				3A84278223837E3400E65B5C /* TodayViewController.h */,
+				3A84278323837E3400E65B5C /* TodayViewController.m */,
+				3A84278823837E3400E65B5C /* Info.plist */,
+			);
+			path = wideget;
+			sourceTree = "<group>";
+		};
 		3AAC2A2E20EB597C00031DEC /* UserCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -677,6 +736,7 @@
 				02B415FC2008603300329783 /* config.xml */,
 				70503D4F1FDBE37A002D3371 /* CordovaPlugin */,
 				705B09531D4F1C5B00805109 /* BLAPPSDKDemo */,
+				3A84278123837E3400E65B5C /* wideget */,
 				705B09521D4F1C5B00805109 /* Products */,
 				70AE16E81DB8B1A8002FF319 /* Frameworks */,
 				D26DB6AD14549547CD634236 /* Pods */,
@@ -687,6 +747,7 @@
 			isa = PBXGroup;
 			children = (
 				705B09511D4F1C5B00805109 /* BLAPPSDKDemo.app */,
+				3A84277E23837E3400E65B5C /* wideget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -728,12 +789,16 @@
 		70AE16E81DB8B1A8002FF319 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3A84279023838B0300E65B5C /* libBLLetBase.a */,
+				3A84279123838B0300E65B5C /* libBLLetCore.a */,
 				3A3582FB2330DED00020B6C0 /* ExternalAccessory.framework */,
 				3AD8B31C22FD22EF0046A9BF /* CoreLocation.framework */,
 				84906B632260893400FBA364 /* libz.1.2.11.tbd */,
 				02AE62F2200713A700847CE5 /* libsqlite3.0.tbd */,
 				02AE62F02007139B00847CE5 /* libz.1.2.5.tbd */,
 				D118C5D79AEB44CD00AD9904 /* libPods-BLAPPSDKDemo.a */,
+				3A84277F23837E3400E65B5C /* NotificationCenter.framework */,
+				60D5C70C6305901CF5B98BB5 /* libPods-wideget.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -787,6 +852,8 @@
 			children = (
 				72367507CB38F6AA480979FA /* Pods-BLAPPSDKDemo.debug.xcconfig */,
 				496EDC6DADF2CEDFD1420839 /* Pods-BLAPPSDKDemo.release.xcconfig */,
+				3C504C7051DD67EF0BA71849 /* Pods-wideget.debug.xcconfig */,
+				17E0A3C1B971BF43B2BAC61B /* Pods-wideget.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -794,6 +861,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3A84277D23837E3400E65B5C /* wideget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3A84278F23837E3400E65B5C /* Build configuration list for PBXNativeTarget "wideget" */;
+			buildPhases = (
+				5AE7CD1BA6FDB5CEA2412D56 /* [CP] Check Pods Manifest.lock */,
+				3A84277A23837E3400E65B5C /* Sources */,
+				3A84277B23837E3400E65B5C /* Frameworks */,
+				3A84277C23837E3400E65B5C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = wideget;
+			productName = wideget;
+			productReference = 3A84277E23837E3400E65B5C /* wideget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		705B09501D4F1C5B00805109 /* BLAPPSDKDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 705B09681D4F1C5B00805109 /* Build configuration list for PBXNativeTarget "BLAPPSDKDemo" */;
@@ -802,10 +887,12 @@
 				705B094D1D4F1C5B00805109 /* Sources */,
 				705B094E1D4F1C5B00805109 /* Frameworks */,
 				705B094F1D4F1C5B00805109 /* Resources */,
+				3A84278C23837E3400E65B5C /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3A84278A23837E3400E65B5C /* PBXTargetDependency */,
 			);
 			name = BLAPPSDKDemo;
 			productName = BLAPPSDKDemo;
@@ -821,6 +908,11 @@
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = BroadLink;
 				TargetAttributes = {
+					3A84277D23837E3400E65B5C = {
+						CreatedOnToolsVersion = 11.2.1;
+						DevelopmentTeam = 5YQ85Q9UV8;
+						ProvisioningStyle = Automatic;
+					};
 					705B09501D4F1C5B00805109 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 5YQ85Q9UV8;
@@ -869,11 +961,19 @@
 			projectRoot = "";
 			targets = (
 				705B09501D4F1C5B00805109 /* BLAPPSDKDemo */,
+				3A84277D23837E3400E65B5C /* wideget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3A84277C23837E3400E65B5C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		705B094F1D4F1C5B00805109 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -914,9 +1014,39 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		5AE7CD1BA6FDB5CEA2412D56 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-wideget-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3A84277A23837E3400E65B5C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3A84278423837E3400E65B5C /* TodayViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		705B094D1D4F1C5B00805109 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1023,6 +1153,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		3A84278A23837E3400E65B5C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3A84277D23837E3400E65B5C /* wideget */;
+			targetProxy = 3A84278923837E3400E65B5C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		705B095D1D4F1C5B00805109 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -1043,6 +1181,59 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		3A84278D23837E3400E65B5C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3C504C7051DD67EF0BA71849 /* Pods-wideget.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = wideget/wideget.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5YQ85Q9UV8;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = wideget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.com.broadlink.blappsdkdemo.baihk.wideget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3A84278E23837E3400E65B5C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 17E0A3C1B971BF43B2BAC61B /* Pods-wideget.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = wideget/wideget.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5YQ85Q9UV8;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = wideget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.com.broadlink.blappsdkdemo.baihk.wideget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		705B09661D4F1C5B00805109 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1244,6 +1435,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3A84278F23837E3400E65B5C /* Build configuration list for PBXNativeTarget "wideget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A84278D23837E3400E65B5C /* Debug */,
+				3A84278E23837E3400E65B5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		705B094C1D4F1C5B00805109 /* Build configuration list for PBXProject "BLAPPSDKDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

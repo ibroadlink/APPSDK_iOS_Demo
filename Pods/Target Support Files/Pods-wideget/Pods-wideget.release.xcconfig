@@ -1,0 +1,9 @@
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/BLApprelayScoket" "${PODS_ROOT}/Headers/Public/BLLetAccount" "${PODS_ROOT}/Headers/Public/BLLetBase" "${PODS_ROOT}/Headers/Public/BLLetCore" "${PODS_ROOT}/Headers/Public/BLLetFamily" "${PODS_ROOT}/Headers/Public/BLLetIRCode" "${PODS_ROOT}/Headers/Public/BLLetPlugins" "${PODS_ROOT}/Headers/Public/BLSFamily" "${PODS_ROOT}/Headers/Public/Cordova" "${PODS_ROOT}/Headers/Public/MBProgressHUD" "${PODS_ROOT}/Headers/Public/SDWebImage" "${PODS_ROOT}/Headers/Public/SSZipArchive" "${PODS_ROOT}/Headers/Public/SocketRocket" "${PODS_ROOT}/Headers/Public/YYCategories"
+LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/AFNetworking" "${PODS_CONFIGURATION_BUILD_DIR}/BLLetBase" "${PODS_CONFIGURATION_BUILD_DIR}/BLLetCore" "${PODS_ROOT}/../../../Gitlab/BLLetCore/BLLetCore/Classes/Library"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"AFNetworking" -l"BLLetBase" -l"BLLetCore" -l"NetworkAPI" -l"z" -framework "CoreGraphics" -framework "MobileCoreServices" -framework "Security" -framework "SystemConfiguration"
+PODS_BUILD_DIR = ${BUILD_DIR}
+PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+PODS_PODFILE_DIR_PATH = ${SRCROOT}/.
+PODS_ROOT = ${SRCROOT}/Pods
+USE_RECURSIVE_SCRIPT_INPUTS_IN_SCRIPT_PHASES = YES

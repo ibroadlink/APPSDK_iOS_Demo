@@ -218,18 +218,25 @@
 
         [account localLoginWithUsrid:[userDefault getUserId] session:[userDefault getSessionId] completionHandler:^(BLLoginResult * _Nonnull result) {
             if ([result succeed]) {
+                NSUserDefaults *shareData = [[NSUserDefaults alloc] initWithSuiteName:@"group.cn.com.broadlink"];
+                [shareData setValue:[userDefault getUserId] forKey:@"userid"];
+                [shareData setValue:[userDefault getSessionId] forKey:@"loginSession"];
+                [shareData setValue:[BLConfigParam sharedConfigParam].packName forKey:@"packName"];
+                [shareData setValue:[BLConfigParam sharedConfigParam].sdkLicense forKey:@"sdkLicense"];
+                [shareData synchronize];
                 NSLog(@"Login success!");
             }
         }];
     }
     
-    // 使用WebSocket连接
-//    BLApprealyUrlResult *urlResult = [[WebSocketManager shareManager] apprelayGetUrl];
-//    NSString *urlPath = urlResult.url;
-//    [[WebSocketManager shareManager] connectWebSocket:@"ws://121.40.165.18:8800"];
-//    [WebSocketManager shareManager].delegate = self;
-    // 发送消息
-//    [[WebSocketManager shareManager] sendMsg:@"一条消息"];
+//     使用WebSocket连接
+    [WebSocketManager shareManager].domain = @"https://app-service-chn-f05bd82f.ibroadlink.com";
+    BLApprealyUrlResult *urlResult = [[WebSocketManager shareManager] apprelayGetUrl];
+    NSString *urlPath = urlResult.data.url[0];
+    [[WebSocketManager shareManager] connectWebSocket:urlPath];
+    [WebSocketManager shareManager].delegate = self;
+
+    [[WebSocketManager shareManager] sendMsg:@"一条消息"];
 }
 
 - (void)didReceiveMessage:(id)message {

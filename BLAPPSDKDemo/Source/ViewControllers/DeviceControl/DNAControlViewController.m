@@ -112,6 +112,10 @@
         NSDictionary *dic = [[result getData] toDictionary];
         NSString *result = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dic options:0 error:nil] encoding:NSUTF8StringEncoding];
         self.resultText = result;
+        //给widget使用
+        NSUserDefaults *shareData = [[NSUserDefaults alloc] initWithSuiteName:@"group.cn.com.broadlink"];
+        [shareData setValue:[self.device toJsonString] forKey:@"widgetDevice"];
+        [shareData synchronize];
     } else {
         self.resultText = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
     }
