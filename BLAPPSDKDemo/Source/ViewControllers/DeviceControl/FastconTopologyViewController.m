@@ -11,14 +11,15 @@
 #import "BLDeviceService.h"
 #import "JYEqualCellSpaceFlowLayout.h"
 #import "HeaderCollectionReusableView.h"
+#import "BLTopologyModel.h"
 
 @interface FastconTopologyViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
 @property (strong, nonatomic) BLDNADevice *device;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (strong,nonatomic) NSMutableArray *subdeviceArray;
-@property (strong,nonatomic) NSMutableArray *secondSubdeviceArray;
-@property (strong,nonatomic) NSDictionary *allDeviceDic;
-@property (strong,nonatomic) NSString *secondSubdeviceMac;
+@property (strong,nonatomic) BLTopologyModel *topologyModel;
+@property (strong,nonatomic) BLTopologyDevice *selectTopologyDevice;
+@property (strong,nonatomic) NSMutableArray *allDeviceList;
+@property (strong,nonatomic) NSMutableArray *needShowDeviceList;
 @end
 
 @implementation FastconTopologyViewController
@@ -28,19 +29,57 @@
     // Do any additional setup after loading the view.
     [self viewInit];
     self.device = [BLDeviceService sharedDeviceService].selectDevice;
-    self.allDeviceDic = @{
-                        @"c8:f7:42:81:f7:4e":@[@"b4:43:0d:12:13:14",@"b4:43:0d:12:13:15",@"b4:43:0d:12:13:16",@"b4:43:0d:12:13:17"],
-                        @"b4:43:0d:12:13:14":@[@"b4:43:0d:12:13:18"],
-                        @"b4:43:0d:12:13:15":@[@"b4:43:0d:12:13:19",@"b4:43:0d:12:13:20"],
-                        @"b4:43:0d:12:13:16":@[@"b4:43:0d:12:13:21",@"b4:43:0d:12:13:22",@"b4:43:0d:12:13:23"],
-                        @"b4:43:0d:12:13:17":@[@"b4:43:0d:12:13:24",@"b4:43:0d:12:13:25",@"b4:43:0d:12:13:26",@"b4:43:0d:12:13:27",@"b4:43:0d:12:13:28"],
-                        };
+//    NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.did subDevDid:nil dataStr:@"{}" command:@"device_fastcon_bridge_devices" scriptPath:nil];
+//    NSLog(@"result:%@",result);
+//    NSDictionary *allDeviceDic = [BLCommonTools deserializeMessageJSON:result];
+    NSDictionary *allDeviceDic = @{
+        @"status": @0,
+        @"msg": @"success",
+        @"data": @{
+            @"count": @6,
+            @"deviceList": @[@{
+                @"mac": @"c8:f7:42:fe:2b:a2",
+                @"rssi": @0,
+                @"parentIndex": @65535
+            }, @{
+                @"mac": @"c8:f7:42:fe:2b:a1",
+                @"rssi": @-46,
+                @"parentIndex": @0
+            }, @{
+                @"mac": @"78:0f:77:e6:78:3b",
+                @"rssi": @-63,
+                @"parentIndex": @3
+            }, @{
+                @"mac": @"78:0f:77:e6:77:eb",
+                @"rssi": @-59,
+                @"parentIndex": @1
+            }, @{
+                @"mac": @"34:ea:34:18:9d:2b",
+                @"rssi": @-49,
+                @"parentIndex": @3
+            }, @{
+                @"mac": @"78:0f:77:b3:e5:0b",
+                @"rssi": @-61,
+                @"parentIndex": @4
+            }]
+        }
+    };
+    self.topologyModel = [BLTopologyModel BLS_modelWithJSON:allDeviceDic];
+    NSMutableOrderedSet  *set = [NSMutableOrderedSet  orderedSet];
+    [self.topologyModel.deviceList enumerateObjectsUsingBlock:^(BLTopologyDevice *obj, NSUInteger idx, BOOL *stop) {
+        [set addObject:@(obj.parentIndex)];//利用set不重复的特性,得到有多少组,根据数组中的MeasureType字段
+    }];
+    [set enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"parentIndex = %@", obj];//创建谓词筛选器
+        NSArray *group = [self.topologyModel.deviceList filteredArrayUsingPredicate:predicate];//用数组的过滤方法得到新的数组,在添加的最终的数组_slices中<br>
+        [self.allDeviceList addObject:group];
+    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self getDeviceTopologyList];
+    [self getDeviceTopologyList:65535];
 }
 
 - (void)viewInit {
@@ -58,12 +97,20 @@
     return vc;
 }
 
-- (void)getDeviceTopologyList {
+- (void)getDeviceTopologyList:(NSInteger)parentIndex {
     [self showIndicatorOnWindow];
-    //搜索子设备
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        sleep(1);
-        self.subdeviceArray = [self.allDeviceDic objectForKey:self.device.mac];
+        [self.allDeviceList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSArray *group = obj;
+            for (BLTopologyDevice *topologyDevice in group) {
+                if (topologyDevice.parentIndex == parentIndex) {
+                    [self.needShowDeviceList addObject:group];
+                    *stop = YES;
+                    return;
+                }
+            }
+        }];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideIndicatorOnWindow];
             [self.collectionView reloadData];
@@ -76,34 +123,21 @@
 #pragma mark --- UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        [self showIndicatorOnWindow];
-        //搜索子设备
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            sleep(1);
-            self.subdeviceArray = [self.allDeviceDic objectForKey:self.device.mac];
-            [self.secondSubdeviceArray removeAllObjects];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self hideIndicatorOnWindow];
-                [self.collectionView reloadData];
-            });
-        });
-        
-        
-    } else if (indexPath.section == 1) {
-        self.secondSubdeviceMac = self.subdeviceArray[indexPath.row];
-        [self showIndicatorOnWindow];
-        //搜索二级子设备
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            sleep(1);
-            [self.secondSubdeviceArray setArray:[self.allDeviceDic objectForKey:self.secondSubdeviceMac]];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self hideIndicatorOnWindow];
-                [self.collectionView reloadData];
-            });
-        });
-        
+    [self showIndicatorOnWindow];
+//    NSLog(@"section:%ld,row:%ld",(long)indexPath.section,(long)indexPath.row);
+    BLTopologyDevice *topologyDevice = self.needShowDeviceList[indexPath.section][indexPath.row];
+    NSInteger index = [self.topologyModel.deviceList indexOfObject:topologyDevice];
+    if (self.needShowDeviceList.count > indexPath.section + 1) {
+        [self.needShowDeviceList removeObjectsInRange:NSMakeRange(indexPath.section + 1, self.needShowDeviceList.count - indexPath.section - 1)];
     }
+    
+    [self getDeviceTopologyList:index];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideIndicatorOnWindow];
+            [self.collectionView reloadData];
+        });
+    });
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -112,39 +146,21 @@
     UIImageView *imageView = [cell viewWithTag:101];
     UILabel *label = [cell viewWithTag:102];
     cell.layer.borderWidth = 1 / [UIScreen mainScreen].scale;
-    if (indexPath.section == 0) {
-        cell.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
-        [imageView sd_setImageWithURL:[NSURL URLWithString:@""] placeholderImage:[UIImage imageNamed:@"default_module_icon"]];
-        label.text = self.device.mac;
-    }else if (indexPath.section == 1){
-        cell.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
-        [imageView sd_setImageWithURL:[NSURL URLWithString:@""] placeholderImage:[UIImage imageNamed:@"default_module_icon"]];
-        label.text = self.subdeviceArray[indexPath.row];
-    }else {
-        cell.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-        [imageView sd_setImageWithURL:[NSURL URLWithString:@""] placeholderImage:[UIImage imageNamed:@"default_module_icon"]];
-        label.text = self.secondSubdeviceArray[indexPath.row];
-    }
+    cell.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:@""] placeholderImage:[UIImage imageNamed:@"default_module_icon"]];
+    BLTopologyDevice *topologyDevice = self.needShowDeviceList[indexPath.section][indexPath.row];
+    label.text = topologyDevice.mac;
     return cell;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    if (!self.secondSubdeviceArray.count) {
-        return 2;
-    }else {
-        return 3;
-    }
+    return self.needShowDeviceList.count;
     
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if (section == 0) {
-        return 1;
-    }else if (section == 1) {
-        return self.subdeviceArray.count;
-    }else {
-        return self.secondSubdeviceArray.count;
-    }
+    NSArray *array = self.needShowDeviceList[section];
+    return array.count;
     
 }
 
@@ -167,50 +183,43 @@
 }
 
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"kind:%@",kind);
-    NSLog(@"section:%ld,row:%ld",(long)indexPath.section,(long)indexPath.row);
+
     UICollectionReusableView *reusableview = nil;
     if (kind == UICollectionElementKindSectionHeader){
-        if (indexPath.section == 1) {
-            HeaderCollectionReusableView * headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerIdentifier" forIndexPath:indexPath];
-            headerView.label.text = [NSString stringWithFormat:@"%@的子设备",self.device.mac];;
-            headerView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
-            reusableview = headerView;
-        }else {
-            HeaderCollectionReusableView * headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerIdentifier" forIndexPath:indexPath];
-            headerView.label.text = [NSString stringWithFormat:@"%@的子设备",self.secondSubdeviceMac];
-            headerView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-            reusableview = headerView;
-        }
-        
-        
+        HeaderCollectionReusableView * headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerIdentifier" forIndexPath:indexPath];
+        BLTopologyDevice *topologyDevice = self.needShowDeviceList[indexPath.section - 1][indexPath.row];
+        headerView.label.text = [NSString stringWithFormat:@"%@的子设备",topologyDevice.mac];
+        NSLog(@"section:%ld,row:%ld,mac:%@",(long)indexPath.section,(long)indexPath.row,topologyDevice.mac);
+        headerView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+        reusableview = headerView;
+
+
     }else if (kind == UICollectionElementKindSectionFooter){
         HeaderCollectionReusableView * headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerIdentifier" forIndexPath:indexPath];
         headerView.backgroundColor = [UIColor whiteColor];
         reusableview = headerView;
     }
-    
+
     return reusableview;
 }
 
-- (NSMutableArray *)subdeviceArray {
-    if (!_subdeviceArray) {
-        _subdeviceArray = [NSMutableArray array];
+- (NSMutableArray *)needShowDeviceList {
+    if (!_needShowDeviceList) {
+        _needShowDeviceList = [NSMutableArray array];
     }
-    return _subdeviceArray;
+    return _needShowDeviceList;
 }
 
-- (NSMutableArray *)secondSubdeviceArray {
-    if (!_secondSubdeviceArray) {
-        _secondSubdeviceArray = [NSMutableArray array];
+- (NSMutableArray *)allDeviceList {
+    if (!_allDeviceList) {
+        _allDeviceList = [NSMutableArray array];
     }
-    return _secondSubdeviceArray;
+    return _allDeviceList;
 }
 
-- (NSDictionary *)allDeviceDic {
-    if (!_allDeviceDic) {
-        _allDeviceDic = [NSDictionary dictionary];
-    }
-    return _allDeviceDic;
-}
 @end
+
+
+
+
+

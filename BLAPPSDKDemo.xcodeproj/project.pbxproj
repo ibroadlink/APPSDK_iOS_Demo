@@ -48,7 +48,9 @@
 		3AB87FC822154DF200B97D38 /* FastconViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB87FC722154DF200B97D38 /* FastconViewController.m */; };
 		3AC93174235EA29E00B5EA7F /* FastconTopologyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC93173235EA29E00B5EA7F /* FastconTopologyViewController.m */; };
 		3ACDE3C120EC9CF00016461D /* ModifyPhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACDE3C020EC9CF00016461D /* ModifyPhoneViewController.m */; };
+		3AD256C62384D46E009DF3BD /* WebSocketManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD256C52384D46E009DF3BD /* WebSocketManagerViewController.m */; };
 		3AD8B31D22FD22EF0046A9BF /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD8B31C22FD22EF0046A9BF /* CoreLocation.framework */; };
+		3AE476EF2387B93000FD27FC /* BLTopologyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE476EE2387B93000FD27FC /* BLTopologyModel.m */; };
 		3AEF737022253B2C00F2376A /* BLDeviceConfigureInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF736F22253B2C00F2376A /* BLDeviceConfigureInfo.m */; };
 		3AEF737322253BDE00F2376A /* BLDeviceConfigIntroduction.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF737222253BDE00F2376A /* BLDeviceConfigIntroduction.m */; };
 		3AEF73762226325A00F2376A /* BLConfigureStartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF73752226325A00F2376A /* BLConfigureStartViewController.m */; };
@@ -228,7 +230,11 @@
 		3AC93173235EA29E00B5EA7F /* FastconTopologyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FastconTopologyViewController.m; sourceTree = "<group>"; };
 		3ACDE3BF20EC9CF00016461D /* ModifyPhoneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyPhoneViewController.h; sourceTree = "<group>"; };
 		3ACDE3C020EC9CF00016461D /* ModifyPhoneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModifyPhoneViewController.m; sourceTree = "<group>"; };
+		3AD256C42384D46E009DF3BD /* WebSocketManagerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebSocketManagerViewController.h; sourceTree = "<group>"; };
+		3AD256C52384D46E009DF3BD /* WebSocketManagerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebSocketManagerViewController.m; sourceTree = "<group>"; };
 		3AD8B31C22FD22EF0046A9BF /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		3AE476ED2387B93000FD27FC /* BLTopologyModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLTopologyModel.h; sourceTree = "<group>"; };
+		3AE476EE2387B93000FD27FC /* BLTopologyModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLTopologyModel.m; sourceTree = "<group>"; };
 		3AEF736E22253B2C00F2376A /* BLDeviceConfigureInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLDeviceConfigureInfo.h; sourceTree = "<group>"; };
 		3AEF736F22253B2C00F2376A /* BLDeviceConfigureInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLDeviceConfigureInfo.m; sourceTree = "<group>"; };
 		3AEF737122253BDE00F2376A /* BLDeviceConfigIntroduction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLDeviceConfigIntroduction.h; sourceTree = "<group>"; };
@@ -503,6 +509,7 @@
 		02B42DA620B2A16D00700177 /* DeviceControl */ = {
 			isa = PBXGroup;
 			children = (
+				3AE476EC2387B90900FD27FC /* Models */,
 				70503D541FDBE37A002D3371 /* BLDeviceService.h */,
 				70503D521FDBE37A002D3371 /* BLDeviceService.m */,
 				70503D831FDBE4D5002D3371 /* APConfigTableViewController.h */,
@@ -545,6 +552,8 @@
 				3AC93173235EA29E00B5EA7F /* FastconTopologyViewController.m */,
 				3A2C867B236059A500724D80 /* HeaderCollectionReusableView.h */,
 				3A2C867C236059A500724D80 /* HeaderCollectionReusableView.m */,
+				3AD256C42384D46E009DF3BD /* WebSocketManagerViewController.h */,
+				3AD256C52384D46E009DF3BD /* WebSocketManagerViewController.m */,
 			);
 			path = DeviceControl;
 			sourceTree = "<group>";
@@ -654,6 +663,15 @@
 				3AAC2A2C20EB252200031DEC /* BLUserLogoutCell.m */,
 			);
 			path = UserCell;
+			sourceTree = "<group>";
+		};
+		3AE476EC2387B90900FD27FC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3AE476ED2387B93000FD27FC /* BLTopologyModel.h */,
+				3AE476EE2387B93000FD27FC /* BLTopologyModel.m */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		70503D4F1FDBE37A002D3371 /* CordovaPlugin */ = {
@@ -1137,10 +1155,12 @@
 				3A076F202313D6340011789F /* FastconGroupDeviceEditViewController.m in Sources */,
 				70DDAEF51DC73D4A005E4278 /* AppDelegate.m in Sources */,
 				3A2C867A236028BD00724D80 /* JYEqualCellSpaceFlowLayout.m in Sources */,
+				3AE476EF2387B93000FD27FC /* BLTopologyModel.m in Sources */,
 				70503DAC1FDBE4D5002D3371 /* ProductModelsTableViewController.m in Sources */,
 				3A7C339B22EEEB7D0021322F /* LinkageTemplate.m in Sources */,
 				84F84214224A2FA200D60C76 /* IRCodeDownloadInfo.m in Sources */,
 				70503DAE1FDBE4D5002D3371 /* RMViewController.m in Sources */,
+				3AD256C62384D46E009DF3BD /* WebSocketManagerViewController.m in Sources */,
 				3AEF737C222670BD00F2376A /* BLAddDeviceListViewController.m in Sources */,
 				70503DA91FDBE4D5002D3371 /* DeviceListViewController.m in Sources */,
 				3A1809B9230F914F006E7975 /* FastconGroupDeviceViewController.m in Sources */,

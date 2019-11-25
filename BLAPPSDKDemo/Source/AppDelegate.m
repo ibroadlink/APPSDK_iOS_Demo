@@ -12,7 +12,7 @@
 #import "BLUserDefaults.h"
 #import <BLSFamily/BLSFamily.h>
 #import "BLDeviceService.h"
-#import <BLApprelayScoket/BLApprelayScoket.h>
+
 
 #ifndef DISABLE_PUSH_NOTIFICATIONS
 #import "BLSNotificationService.h"
@@ -23,7 +23,7 @@
 #import <UserNotifications/UserNotifications.h>
 #endif
 
-@interface AppDelegate () <UNUserNotificationCenterDelegate,BLWebSocketDelegate>
+@interface AppDelegate () <UNUserNotificationCenterDelegate>
 
 /*push message*/
 @property (nonatomic, strong) NSDictionary *pushMessageDic;
@@ -200,7 +200,7 @@
     }
     
 //    [BLConfigParam sharedConfigParam].appServiceEnable = 1;
-//    [BLConfigParam sharedConfigParam].appServiceHost = @"https://app-service-deu-f0e9ebbb.aux-home.com";
+    [BLConfigParam sharedConfigParam].appServiceHost = @"https://app-service-chn-0335e1f2.ibroadlink.com";
     
     [self.let setDebugLog:BL_LEVEL_DEBUG];                                            // Set APPSDK debug log level
     [self.let.controller setSDKRawDebugLevel:BL_LEVEL_DEBUG];                       // Set DNASDK debug log level
@@ -229,20 +229,8 @@
         }];
     }
     
-//     使用WebSocket连接
-    [WebSocketManager shareManager].domain = @"https://app-service-chn-f05bd82f.ibroadlink.com";
-    BLApprealyUrlResult *urlResult = [[WebSocketManager shareManager] apprelayGetUrl];
-    NSString *urlPath = urlResult.data.url[0];
-    [[WebSocketManager shareManager] connectWebSocket:urlPath];
-    [WebSocketManager shareManager].delegate = self;
 
-    [[WebSocketManager shareManager] sendMsg:@"一条消息"];
 }
 
-- (void)didReceiveMessage:(id)message {
-    if ([message isKindOfClass:[NSString class]]) {
-        NSDictionary *dict = [message BLS_modelToJSONObject];
-        NSLog(@"messagedict:%@",dict);
-    }
-}
+
 @end
