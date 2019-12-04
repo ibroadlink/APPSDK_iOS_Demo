@@ -46,19 +46,19 @@
 }
 
 - (void)getDeviceAPPubkey {
-    [self showIndicatorOnWindow];
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        BLAPConfigPubkeyResult *result = [[BLLet sharedLet].controller deviceAPConfigPubkey];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideIndicatorOnWindow];
-            if ([result succeed]) {
-                self.pubkeyTextField.text = result.pubkey;
-            }else {
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"getDeviceAPPubkey staus:%ld,msg:%@",(long)result.status,result.msg]];
-            }
-        });
-    });
+//    [self showIndicatorOnWindow];
+//
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        BLAPConfigPubkeyResult *result = [[BLLet sharedLet].controller deviceAPConfigPubkey];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self hideIndicatorOnWindow];
+//            if ([result succeed]) {
+//                self.pubkeyTextField.text = result.pubkey;
+//            }else {
+//                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"getDeviceAPPubkey staus:%ld,msg:%@",(long)result.status,result.msg]];
+//            }
+//        });
+//    });
 }
 
 - (void)refresh {
@@ -134,24 +134,13 @@
         UITextField *ssidtxt = alertController.textFields.firstObject;
         UITextField *passwordtxt = alertController.textFields.lastObject;
 
-        BLAPConfigProtocolEnum protocol = BL_AP_CONFIG_DEFAULT;
-        NSString *pubkey = self.pubkeyTextField.text;
-//        NSString *pubkey = @"2fe57da347cd62431528daac5fbb290730fff684afc4cfc2ed90995f58cb3b74";
-        if (pubkey.length > 0) {
-            protocol = BL_AP_CONFIG_ENCRYPT;
-        }
-        
         NSLog(@"apconfigResult start");
         [self showIndicatorOnWindow];
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             BLAPConfigResult *apconfigResult;
 
-            if (protocol == BL_AP_CONFIG_ENCRYPT) {
-                apconfigResult = [[BLLet sharedLet].controller deviceAPConfig:ssidtxt.text password:passwordtxt.text type:APinfo.type timeout:10*1000 protocol:protocol pubkey:pubkey desc:nil];
-            } else {
-                apconfigResult = [[BLLet sharedLet].controller deviceAPConfig:ssidtxt.text password:passwordtxt.text type:APinfo.type];
-            }
+            apconfigResult = [[BLLet sharedLet].controller deviceAPConfig:ssidtxt.text password:passwordtxt.text type:APinfo.type];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self hideIndicatorOnWindow];

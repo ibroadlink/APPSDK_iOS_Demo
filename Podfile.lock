@@ -14,18 +14,26 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - BLLetAccount (2.11.2):
-    - BLLetBase
-  - BLLetBase (2.12.0):
+  - BLLet (2.11.11):
+    - BLLet/BLLetAccount (= 2.11.11)
+    - BLLet/BLLetBase (= 2.11.11)
+    - BLLet/BLLetCore (= 2.11.11)
+    - BLLet/BLLetFamily (= 2.11.11)
+    - BLLet/BLLetIRCode (= 2.11.11)
+    - BLLet/BLLetPlugins (= 2.11.11)
+  - BLLet/BLLetAccount (2.11.11):
+    - BLLet/BLLetBase
+  - BLLet/BLLetBase (2.11.11):
     - AFNetworking
-  - BLLetCore (2.12.3):
-    - BLLetBase (~> 2.12)
-  - BLLetIRCode (2.12.0):
-    - BLLetCore
-  - BLLetPlugins (2.11.0):
-    - BLLetBase
-  - BLSFamily (2.11.7):
-    - BLLetBase
+  - BLLet/BLLetCore (2.11.11):
+    - BLLet/BLLetBase
+  - BLLet/BLLetFamily (2.11.11):
+    - BLLet/BLLetBase
+  - BLLet/BLLetIRCode (2.11.11):
+    - BLLet/BLLetBase
+    - BLLet/BLLetCore
+  - BLLet/BLLetPlugins (2.11.11):
+    - BLLet/BLLetBase
   - Cordova (4.4.0)
   - MBProgressHUD (1.1.0)
   - SDWebImage (4.4.7):
@@ -37,12 +45,7 @@ PODS:
   - YYCategories/no-arc (1.0.4)
 
 DEPENDENCIES:
-  - BLLetAccount (from `../../Gitlab/BLLetSDK/iOS/BLLetAccount`)
-  - BLLetBase (from `../../Gitlab/BLLetSDK/iOS/BLLetBase`)
-  - BLLetCore (from `../../Gitlab/BLLetSDK/iOS/BLLetCore`)
-  - BLLetIRCode (from `../../Gitlab/BLLetSDK/iOS/BLLetIRCode`)
-  - BLLetPlugins (from `../../Gitlab/BLLetSDK/iOS/BLLetPlugins`)
-  - BLSFamily (from `../../Gitlab/BLLetSDK/iOS/BLSFamily`)
+  - BLLet
   - Cordova (~> 4.4.0)
   - MBProgressHUD (~> 1.1.0)
   - SDWebImage (~> 4.4.6)
@@ -50,42 +53,25 @@ DEPENDENCIES:
   - YYCategories (~> 1.0.4)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - AFNetworking
     - Cordova
     - MBProgressHUD
     - SDWebImage
     - SSZipArchive
     - YYCategories
-
-EXTERNAL SOURCES:
-  BLLetAccount:
-    :path: "../../Gitlab/BLLetSDK/iOS/BLLetAccount"
-  BLLetBase:
-    :path: "../../Gitlab/BLLetSDK/iOS/BLLetBase"
-  BLLetCore:
-    :path: "../../Gitlab/BLLetSDK/iOS/BLLetCore"
-  BLLetIRCode:
-    :path: "../../Gitlab/BLLetSDK/iOS/BLLetIRCode"
-  BLLetPlugins:
-    :path: "../../Gitlab/BLLetSDK/iOS/BLLetPlugins"
-  BLSFamily:
-    :path: "../../Gitlab/BLLetSDK/iOS/BLSFamily"
+  https://github.com/ibroadlink/BLLibSpecs.git:
+    - BLLet
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  BLLetAccount: 2bf4819483c8e7afe1c14ac658f560d91638a17c
-  BLLetBase: 1b903627be6ce9a5d33b77966e617e7d043633ed
-  BLLetCore: ae54ecfc13fbd73895ce1596ebb2da601a3ebfab
-  BLLetIRCode: 2dbd9f3b17254746d85f641e6a78c0a27c997307
-  BLLetPlugins: b38ec04a452c5a4106454db1d94faf70511e357d
-  BLSFamily: 772b3a8dfcc377ad2e7c94b873d67e55dbff9449
+  BLLet: da5087da83daeaeca1ebb73b696870f83541deea
   Cordova: 561576155c420c54441d99b855de12c6e7b51088
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   SDWebImage: c10d14a8883ebd89664f02a422006f66a85c0c5d
   SSZipArchive: cefe1364104a0231268a5deb8495bdf2861f52f0
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
 
-PODFILE CHECKSUM: 5d1ba20c71710291fc22af9fb72b47280a068e02
+PODFILE CHECKSUM: d213c936bdcaee46f0adcee72b315ef5f1cc71a8
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.3

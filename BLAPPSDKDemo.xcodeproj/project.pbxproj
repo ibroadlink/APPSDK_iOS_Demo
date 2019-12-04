@@ -106,8 +106,13 @@
 		8430DCC32228CDB10048DCA7 /* EndpointDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8430DCC22228CDB10048DCA7 /* EndpointDetailController.m */; };
 		846CA92D2248BBA200884421 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846CA92C2248BBA200884421 /* MainViewController.m */; };
 		846CA9302248CDB900884421 /* ModifyEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846CA92F2248CDB900884421 /* ModifyEmailViewController.m */; };
-		847A640A2269CFD300DAABA0 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 847A64082269CFD300DAABA0 /* GCDAsyncUdpSocket.m */; };
 		848C781622AFA22700E464F2 /* IRCodeLocationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 848C781522AFA22700E464F2 /* IRCodeLocationInfo.m */; };
+		84A29D932397FFFE00CEBCBB /* BLSFamily.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A29D862397FFFE00CEBCBB /* BLSFamily.framework */; };
+		84A29D942397FFFE00CEBCBB /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A29D882397FFFE00CEBCBB /* GCDAsyncUdpSocket.m */; };
+		84A29D952397FFFE00CEBCBB /* SMCallTraceTimeCostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A29D8D2397FFFE00CEBCBB /* SMCallTraceTimeCostModel.m */; };
+		84A29D962397FFFE00CEBCBB /* SMCallTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A29D8F2397FFFE00CEBCBB /* SMCallTrace.m */; };
+		84A29D972397FFFE00CEBCBB /* SMCallTraceCore.c in Sources */ = {isa = PBXBuildFile; fileRef = 84A29D902397FFFE00CEBCBB /* SMCallTraceCore.c */; };
+		84A29D982397FFFE00CEBCBB /* SMCallLib.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A29D912397FFFE00CEBCBB /* SMCallLib.m */; };
 		84BACDE02236476500C1E5DA /* SceneListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BACDDF2236476500C1E5DA /* SceneListController.m */; };
 		84BACDE32236555F00C1E5DA /* SceneAddController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BACDE22236555F00C1E5DA /* SceneAddController.m */; };
 		84F84207224A068A00D60C76 /* TVBoxAreaSelectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F84206224A068A00D60C76 /* TVBoxAreaSelectController.m */; };
@@ -309,11 +314,20 @@
 		846CA92C2248BBA200884421 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		846CA92E2248CDB900884421 /* ModifyEmailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyEmailViewController.h; sourceTree = "<group>"; };
 		846CA92F2248CDB900884421 /* ModifyEmailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModifyEmailViewController.m; sourceTree = "<group>"; };
-		847A64082269CFD300DAABA0 /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
-		847A64092269CFD300DAABA0 /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
 		848C781422AFA22700E464F2 /* IRCodeLocationInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCodeLocationInfo.h; sourceTree = "<group>"; };
 		848C781522AFA22700E464F2 /* IRCodeLocationInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRCodeLocationInfo.m; sourceTree = "<group>"; };
 		84906B632260893400FBA364 /* libz.1.2.11.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.11.tbd; path = usr/lib/libz.1.2.11.tbd; sourceTree = SDKROOT; };
+		84A29D862397FFFE00CEBCBB /* BLSFamily.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BLSFamily.framework; sourceTree = "<group>"; };
+		84A29D882397FFFE00CEBCBB /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
+		84A29D892397FFFE00CEBCBB /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
+		84A29D8B2397FFFE00CEBCBB /* SMCallTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCallTrace.h; sourceTree = "<group>"; };
+		84A29D8C2397FFFE00CEBCBB /* SMCallTraceCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCallTraceCore.h; sourceTree = "<group>"; };
+		84A29D8D2397FFFE00CEBCBB /* SMCallTraceTimeCostModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCallTraceTimeCostModel.m; sourceTree = "<group>"; };
+		84A29D8E2397FFFE00CEBCBB /* SMCallLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCallLib.h; sourceTree = "<group>"; };
+		84A29D8F2397FFFE00CEBCBB /* SMCallTrace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCallTrace.m; sourceTree = "<group>"; };
+		84A29D902397FFFE00CEBCBB /* SMCallTraceCore.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SMCallTraceCore.c; sourceTree = "<group>"; };
+		84A29D912397FFFE00CEBCBB /* SMCallLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCallLib.m; sourceTree = "<group>"; };
+		84A29D922397FFFE00CEBCBB /* SMCallTraceTimeCostModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCallTraceTimeCostModel.h; sourceTree = "<group>"; };
 		84BACDDE2236476500C1E5DA /* SceneListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneListController.h; sourceTree = "<group>"; };
 		84BACDDF2236476500C1E5DA /* SceneListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneListController.m; sourceTree = "<group>"; };
 		84BACDE12236555F00C1E5DA /* SceneAddController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneAddController.h; sourceTree = "<group>"; };
@@ -342,6 +356,7 @@
 				02AE62F3200713A700847CE5 /* libsqlite3.0.tbd in Frameworks */,
 				3A3582FC2330DED00020B6C0 /* ExternalAccessory.framework in Frameworks */,
 				AADA6EE36D3CC88AD40F195C /* libPods-BLAPPSDKDemo.a in Frameworks */,
+				84A29D932397FFFE00CEBCBB /* BLSFamily.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,7 +715,7 @@
 		705B096B1D4F28DA00805109 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				847A64072269CFC200DAABA0 /* UDP */,
+				84A29D852397FFFE00CEBCBB /* Library */,
 				70503D951FDBE4D5002D3371 /* Utils */,
 				70503D5A1FDBE4D5002D3371 /* ViewControllers */,
 				70DDAEE81DC73D4A005E4278 /* AppDelegate.h */,
@@ -737,13 +752,39 @@
 			path = Push;
 			sourceTree = "<group>";
 		};
-		847A64072269CFC200DAABA0 /* UDP */ = {
+		84A29D852397FFFE00CEBCBB /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				847A64092269CFD300DAABA0 /* GCDAsyncUdpSocket.h */,
-				847A64082269CFD300DAABA0 /* GCDAsyncUdpSocket.m */,
+				84A29D862397FFFE00CEBCBB /* BLSFamily.framework */,
+				84A29D872397FFFE00CEBCBB /* UDP */,
+				84A29D8A2397FFFE00CEBCBB /* SMLagMonitor */,
+			);
+			name = Library;
+			path = Source/Library;
+			sourceTree = "<group>";
+		};
+		84A29D872397FFFE00CEBCBB /* UDP */ = {
+			isa = PBXGroup;
+			children = (
+				84A29D882397FFFE00CEBCBB /* GCDAsyncUdpSocket.m */,
+				84A29D892397FFFE00CEBCBB /* GCDAsyncUdpSocket.h */,
 			);
 			path = UDP;
+			sourceTree = "<group>";
+		};
+		84A29D8A2397FFFE00CEBCBB /* SMLagMonitor */ = {
+			isa = PBXGroup;
+			children = (
+				84A29D8B2397FFFE00CEBCBB /* SMCallTrace.h */,
+				84A29D8C2397FFFE00CEBCBB /* SMCallTraceCore.h */,
+				84A29D8D2397FFFE00CEBCBB /* SMCallTraceTimeCostModel.m */,
+				84A29D8E2397FFFE00CEBCBB /* SMCallLib.h */,
+				84A29D8F2397FFFE00CEBCBB /* SMCallTrace.m */,
+				84A29D902397FFFE00CEBCBB /* SMCallTraceCore.c */,
+				84A29D912397FFFE00CEBCBB /* SMCallLib.m */,
+				84A29D922397FFFE00CEBCBB /* SMCallTraceTimeCostModel.h */,
+			);
+			path = SMLagMonitor;
 			sourceTree = "<group>";
 		};
 		84F84208224A099E00D60C76 /* Models */ = {
@@ -906,7 +947,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				847A640A2269CFD300DAABA0 /* GCDAsyncUdpSocket.m in Sources */,
 				3AFC6D7220EB5DDC003404E6 /* BLSystemImage.m in Sources */,
 				8414253C2254538F00E8A7C8 /* BrandSelectController.m in Sources */,
 				70503DB61FDBE4D6002D3371 /* DataPassthoughViewController.m in Sources */,
@@ -936,9 +976,12 @@
 				848C781622AFA22700E464F2 /* IRCodeLocationInfo.m in Sources */,
 				84BACDE02236476500C1E5DA /* SceneListController.m in Sources */,
 				70503DAD1FDBE4D5002D3371 /* DNAControlViewController.m in Sources */,
+				84A29D952397FFFE00CEBCBB /* SMCallTraceTimeCostModel.m in Sources */,
 				70503DBC1FDBE4D6002D3371 /* BLStatusBar.m in Sources */,
 				70503DB91FDBE4D6002D3371 /* DeviceWebControlViewController.m in Sources */,
 				84BACDE32236555F00C1E5DA /* SceneAddController.m in Sources */,
+				84A29D972397FFFE00CEBCBB /* SMCallTraceCore.c in Sources */,
+				84A29D942397FFFE00CEBCBB /* GCDAsyncUdpSocket.m in Sources */,
 				3AFC6D7820EB7278003404E6 /* UIImage+BDL.m in Sources */,
 				842C9611221E7AAC00B3A1A6 /* RoomListViewController.m in Sources */,
 				84F84217224A3E8A00D60C76 /* IRCodeModel.m in Sources */,
@@ -956,6 +999,7 @@
 				70503DA81FDBE4D5002D3371 /* RegisterViewController.m in Sources */,
 				3AEF737022253B2C00F2376A /* BLDeviceConfigureInfo.m in Sources */,
 				0244948B20AEC26D0056FB10 /* UserViewController.m in Sources */,
+				84A29D962397FFFE00CEBCBB /* SMCallTrace.m in Sources */,
 				3A76A15022278AF7007DF83A /* BLWebViewController.m in Sources */,
 				3A3444BF222D2C1500356241 /* ResetSDKInitViewController.m in Sources */,
 				3A44F4AE2223F03800936AFF /* ProductListViewController.m in Sources */,
@@ -988,6 +1032,7 @@
 				3A1D47A52275973100B8CA34 /* PushViewController.m in Sources */,
 				3A7C339A22EEEB7D0021322F /* BLTemplate.m in Sources */,
 				3A076F202313D6340011789F /* FastconGroupDeviceEditViewController.m in Sources */,
+				84A29D982397FFFE00CEBCBB /* SMCallLib.m in Sources */,
 				70DDAEF51DC73D4A005E4278 /* AppDelegate.m in Sources */,
 				70503DAC1FDBE4D5002D3371 /* ProductModelsTableViewController.m in Sources */,
 				3A7C339B22EEEB7D0021322F /* LinkageTemplate.m in Sources */,
@@ -1147,6 +1192,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/BLAPPSDKDemo/Source/AppSdk",
 					"$(PROJECT_DIR)/BLAPPSDKDemo/BLLet",
+					"$(PROJECT_DIR)/BLAPPSDKDemo/Source/Library",
 				);
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1194,6 +1240,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/BLAPPSDKDemo/Source/AppSdk",
 					"$(PROJECT_DIR)/BLAPPSDKDemo/BLLet",
+					"$(PROJECT_DIR)/BLAPPSDKDemo/Source/Library",
 				);
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (

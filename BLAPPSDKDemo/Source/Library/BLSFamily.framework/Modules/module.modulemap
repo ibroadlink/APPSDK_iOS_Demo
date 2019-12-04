@@ -1,0 +1,6 @@
+framework module BLSFamily {
+  umbrella header "BLSFamily.h"
+
+  export *
+  module * { export * }
+}
