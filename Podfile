@@ -10,7 +10,7 @@ target 'BLAPPSDKDemo' do
 
   # Pods for BLAPPSDKDemo
   pod 'BLLet'
-#  pod 'BLSFamily'
+  pod 'BLSFamily'
 
 #  pod 'BLLetBase', :path => '../../Gitlab/BLLetSDK/iOS/BLLetBase'
 #  pod 'BLLetCore', :path => '../../Gitlab/BLLetSDK/iOS/BLLetCore'

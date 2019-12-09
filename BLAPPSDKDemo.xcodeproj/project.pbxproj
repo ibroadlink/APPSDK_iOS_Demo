@@ -107,7 +107,6 @@
 		846CA92D2248BBA200884421 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846CA92C2248BBA200884421 /* MainViewController.m */; };
 		846CA9302248CDB900884421 /* ModifyEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846CA92F2248CDB900884421 /* ModifyEmailViewController.m */; };
 		848C781622AFA22700E464F2 /* IRCodeLocationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 848C781522AFA22700E464F2 /* IRCodeLocationInfo.m */; };
-		84A29D932397FFFE00CEBCBB /* BLSFamily.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A29D862397FFFE00CEBCBB /* BLSFamily.framework */; };
 		84A29D942397FFFE00CEBCBB /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A29D882397FFFE00CEBCBB /* GCDAsyncUdpSocket.m */; };
 		84A29D952397FFFE00CEBCBB /* SMCallTraceTimeCostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A29D8D2397FFFE00CEBCBB /* SMCallTraceTimeCostModel.m */; };
 		84A29D962397FFFE00CEBCBB /* SMCallTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A29D8F2397FFFE00CEBCBB /* SMCallTrace.m */; };
@@ -317,7 +316,6 @@
 		848C781422AFA22700E464F2 /* IRCodeLocationInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCodeLocationInfo.h; sourceTree = "<group>"; };
 		848C781522AFA22700E464F2 /* IRCodeLocationInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRCodeLocationInfo.m; sourceTree = "<group>"; };
 		84906B632260893400FBA364 /* libz.1.2.11.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.11.tbd; path = usr/lib/libz.1.2.11.tbd; sourceTree = SDKROOT; };
-		84A29D862397FFFE00CEBCBB /* BLSFamily.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BLSFamily.framework; sourceTree = "<group>"; };
 		84A29D882397FFFE00CEBCBB /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
 		84A29D892397FFFE00CEBCBB /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
 		84A29D8B2397FFFE00CEBCBB /* SMCallTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCallTrace.h; sourceTree = "<group>"; };
@@ -356,7 +354,6 @@
 				02AE62F3200713A700847CE5 /* libsqlite3.0.tbd in Frameworks */,
 				3A3582FC2330DED00020B6C0 /* ExternalAccessory.framework in Frameworks */,
 				AADA6EE36D3CC88AD40F195C /* libPods-BLAPPSDKDemo.a in Frameworks */,
-				84A29D932397FFFE00CEBCBB /* BLSFamily.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -755,7 +752,6 @@
 		84A29D852397FFFE00CEBCBB /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				84A29D862397FFFE00CEBCBB /* BLSFamily.framework */,
 				84A29D872397FFFE00CEBCBB /* UDP */,
 				84A29D8A2397FFFE00CEBCBB /* SMLagMonitor */,
 			);
