@@ -50,15 +50,18 @@
     BLProfileStringResult *result = [[BLLet sharedLet].controller queryProfileByPid:self.device.pid];
     NSString *profileStr = [result getProfile];
     NSData *data = [profileStr dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *profileDic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-    NSDictionary *intfsDic = [[[profileDic valueForKey:@"suids"] objectAtIndex:0] valueForKey:@"intfs"];
-    NSMutableArray *keyArray = [NSMutableArray arrayWithCapacity:0];
-    [intfsDic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        NSMutableDictionary *keyDic = [NSMutableDictionary dictionaryWithCapacity:0];
-        [keyDic setValue:obj forKey:key];
-        [keyArray addObject:keyDic];
-    }];
-    self.keyList = [NSArray arrayWithArray:keyArray];
+    if (data != nil) {
+        NSDictionary *profileDic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        NSDictionary *intfsDic = [[[profileDic valueForKey:@"suids"] objectAtIndex:0] valueForKey:@"intfs"];
+        NSMutableArray *keyArray = [NSMutableArray arrayWithCapacity:0];
+        [intfsDic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+            NSMutableDictionary *keyDic = [NSMutableDictionary dictionaryWithCapacity:0];
+            [keyDic setValue:obj forKey:key];
+            [keyArray addObject:keyDic];
+        }];
+        self.keyList = [NSArray arrayWithArray:keyArray];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -157,7 +160,7 @@
     [self showIndicatorOnWindowWithMessage:@"Script Downloading..."];
     NSLog(@"Start downloadScript");
     NSString *pid = self.device.pid;
-    
+//    NSString *pid = @"00000000000000000000000038270000";
     [[BLLet sharedLet].controller downloadScript:pid completionHandler:^(BLDownloadResult * _Nonnull result) {
         NSLog(@"End downloadScript");
         if ([result succeed]) {

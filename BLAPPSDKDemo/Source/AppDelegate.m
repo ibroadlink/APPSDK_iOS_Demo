@@ -200,7 +200,7 @@
     }
     
 //    [BLConfigParam sharedConfigParam].appServiceEnable = 1;
-    [BLConfigParam sharedConfigParam].appServiceHost = @"https://app-service-chn-0335e1f2.ibroadlink.com";
+//    [BLConfigParam sharedConfigParam].appServiceHost = @"https://app-service-chn-f05bd82f.ibroadlink.com";
     
     [self.let setDebugLog:BL_LEVEL_DEBUG];                                            // Set APPSDK debug log level
     [self.let.controller setSDKRawDebugLevel:BL_LEVEL_DEBUG];                       // Set DNASDK debug log level
