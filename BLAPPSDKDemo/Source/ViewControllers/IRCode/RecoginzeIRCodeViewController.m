@@ -119,7 +119,8 @@
 - (void)queryIRCodeScriptInfoSavePath:(NSString *)savePath randkey:(NSString *)randkey deviceType:(NSInteger)devicetype {
     
 //    BLController *blcontroller = [BLLet sharedLet].controller;
-//    NSString *path = [[blcontroller queryIRCodeScriptPath] stringByAppendingPathComponent:@"奥克斯_5935"];
+//    NSString *path = [[blcontroller queryIRCodeScriptPath] stringByAppendingPathComponent:@"5817.gz"];
+//    savePath = path;
     
     BLIRCodeInfoResult *result = [self.blircode queryIRCodeInfomationWithScript:savePath deviceType:devicetype];
     NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);

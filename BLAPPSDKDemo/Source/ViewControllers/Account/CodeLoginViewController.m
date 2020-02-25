@@ -54,7 +54,7 @@
     
     __weak typeof(self) weakSelf = self;
     [self showIndicatorOnWindowWithMessage:@"Logging..."];
-    [_account fastLoginWithPhoneOrEmail:self.phoneNumtxt.text countrycode:@"0086" vcode:self.passwordtxt.text completionHandler:^(BLLoginResult * _Nonnull result) {
+    [_account fastLoginWithPhoneOrEmail:self.phoneNumtxt.text countrycode:@"0086" vcode:self.passwordtxt.text logintry:@"true" completionHandler:^(BLLoginResult * _Nonnull result) {
         if ([result succeed]) {
             BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
             [userDefault setUserName:self.phoneNumtxt.text];
