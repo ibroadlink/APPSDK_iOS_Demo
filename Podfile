@@ -12,12 +12,12 @@ target 'BLAPPSDKDemo' do
   pod 'BLLet'
   pod 'BLSFamily'
 
-#  pod 'BLLetBase', :path => '../../Gitlab/BLLetSDK/iOS/BLLetBase'
-#  pod 'BLLetCore', :path => '../../Gitlab/BLLetSDK/iOS/BLLetCore'
-#  pod 'BLLetAccount', :path => '../../Gitlab/BLLetSDK/iOS/BLLetAccount'
-#  pod 'BLLetIRCode', :path => '../../Gitlab/BLLetSDK/iOS/BLLetIRCode'
-#  pod 'BLLetPlugins', :path => '../../Gitlab/BLLetSDK/iOS/BLLetPlugins'
-#  pod 'BLSFamily', :path => '../../Gitlab/BLLetSDK/iOS/BLSFamily'
+#  pod 'BLLetBase', :path => '../../Gitlab/BLLetBase'
+#  pod 'BLLetCore', :path => '../../Gitlab/BLLetCore'
+#  pod 'BLLetAccount', :path => '../../Gitlab/BLLetAccount'
+#  pod 'BLLetIRCode', :path => '../../Gitlab/BLLetIRCode'
+#  pod 'BLLetPlugins', :path => '../../Gitlab/BLLetPlugins'
+#  pod 'BLSFamily', :path => '../../Gitlab/BLSFamily'
 
 	pod 'Cordova', '~> 4.4.0'
 	pod 'SSZipArchive', '~> 2.1.1'

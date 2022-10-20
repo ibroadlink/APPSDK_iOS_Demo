@@ -186,6 +186,7 @@
     [BLConfigParam sharedConfigParam].controllerRemoteTimeout = 8000;               // 远程控制超时时间
     [BLConfigParam sharedConfigParam].controllerSendCount = 2;                      // 控制重试次数
     [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;          // 脚本下载平台
+    [BLConfigParam sharedConfigParam].httpCommonHeader = @{@"NewHeader": @"Test"};  //自定义header
 
     // 使用云端集群
     [BLConfigParam sharedConfigParam].appServiceEnable = [userDefault getAppServiceEnable];
@@ -196,8 +197,8 @@
         }
     }
     
-    [self.let setDebugLog:BL_LEVEL_DEBUG];                                            // Set APPSDK debug log level
-    [self.let.controller setSDKRawDebugLevel:BL_LEVEL_DEBUG];                       // Set DNASDK debug log level
+    [self.let setDebugLog:BL_LEVEL_ALL];                                            // Set APPSDK debug log level
+    [self.let.controller setSDKRawDebugLevel:BL_LEVEL_ALL];                       // Set DNASDK debug log level
     
     // 相关模块必须先初始化
     BLAccount *account = [BLAccount sharedAccount];

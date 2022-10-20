@@ -122,7 +122,7 @@ static BLDeviceService *_deviceService = nil;
 - (void)onDeviceUpdate:(BLDNADevice *)device isNewDevice:(Boolean)isNewDevice {
     //Only device reset, newconfig=1
     //Not all device support this.
-    //NSLog(@"=====probe device did(%@) newconfig(%hhu)====", device.did, device.newConfig);
+    NSLog(@"=====probe device did(%@) newconfig(%hhu)====", device.did, device.newConfig);
     
     if (device.did) {
         [self.scanDevices setObject:device forKey:device.did];

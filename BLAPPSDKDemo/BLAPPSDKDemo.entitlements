@@ -8,5 +8,7 @@
 	<true/>
 	<key>com.apple.external-accessory.wireless-configuration</key>
 	<true/>
+    <key>com.apple.developer.networking.multicast</key>
+    <true/>
 </dict>
 </plist>

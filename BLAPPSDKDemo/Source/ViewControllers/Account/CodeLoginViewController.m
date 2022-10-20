@@ -54,28 +54,28 @@
     
     __weak typeof(self) weakSelf = self;
     [self showIndicatorOnWindowWithMessage:@"Logging..."];
-    [_account fastLoginWithPhoneOrEmail:self.phoneNumtxt.text countrycode:@"0086" vcode:self.passwordtxt.text completionHandler:^(BLLoginResult * _Nonnull result) {
-        if ([result succeed]) {
-            BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
-            [userDefault setUserName:self.phoneNumtxt.text];
-            [userDefault setUserId:[result getUserid]];
-            [userDefault setSessionId:[result getLoginsession]];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-
-                [weakSelf hideIndicatorOnWindow];
-                
-                UserViewController *vc = [UserViewController viewController];
-                [self.navigationController pushViewController:vc animated:YES];
-                
-            });
-        }else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf hideIndicatorOnWindow];
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
-            });
-        }
-    }];
+//    [_account fastLoginWithPhoneOrEmail:self.phoneNumtxt.text countrycode:@"0086" vcode:self.passwordtxt.text completionHandler:^(BLLoginResult * _Nonnull result) {
+//        if ([result succeed]) {
+//            BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
+//            [userDefault setUserName:self.phoneNumtxt.text];
+//            [userDefault setUserId:[result getUserid]];
+//            [userDefault setSessionId:[result getLoginsession]];
+//            
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//
+//                [weakSelf hideIndicatorOnWindow];
+//                
+//                UserViewController *vc = [UserViewController viewController];
+//                [self.navigationController pushViewController:vc animated:YES];
+//                
+//            });
+//        }else {
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [weakSelf hideIndicatorOnWindow];
+//                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
+//            });
+//        }
+//    }];
 }
 
 #pragma mark - text field delegate

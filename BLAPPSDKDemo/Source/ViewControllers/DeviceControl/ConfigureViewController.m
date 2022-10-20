@@ -71,6 +71,7 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSDate *date = [NSDate date];
             NSLog(@"====Start Config===");
+            BLAPConfigResult *apconfigResult = [[BLLet sharedLet].controller deviceAPConfig:@"12345678901234567890123456789012" password:password type:3];
             BLDeviceConfigResult *result = [[BLLet sharedLet].controller deviceConfig:ssidName password:password version:3 timeout:60];
             NSLog(@"====Config over! Spends(%fs)", [date timeIntervalSinceNow]);
             dispatch_async(dispatch_get_main_queue(), ^{

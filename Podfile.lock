@@ -1,46 +1,46 @@
 PODS:
-  - AFNetworking (3.2.1):
-    - AFNetworking/NSURLSession (= 3.2.1)
-    - AFNetworking/Reachability (= 3.2.1)
-    - AFNetworking/Security (= 3.2.1)
-    - AFNetworking/Serialization (= 3.2.1)
-    - AFNetworking/UIKit (= 3.2.1)
-  - AFNetworking/NSURLSession (3.2.1):
+  - AFNetworking (4.0.1):
+    - AFNetworking/NSURLSession (= 4.0.1)
+    - AFNetworking/Reachability (= 4.0.1)
+    - AFNetworking/Security (= 4.0.1)
+    - AFNetworking/Serialization (= 4.0.1)
+    - AFNetworking/UIKit (= 4.0.1)
+  - AFNetworking/NSURLSession (4.0.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.2.1)
-  - AFNetworking/Security (3.2.1)
-  - AFNetworking/Serialization (3.2.1)
-  - AFNetworking/UIKit (3.2.1):
+  - AFNetworking/Reachability (4.0.1)
+  - AFNetworking/Security (4.0.1)
+  - AFNetworking/Serialization (4.0.1)
+  - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
-  - BLLet (2.11.11):
-    - BLLet/BLLetAccount (= 2.11.11)
-    - BLLet/BLLetBase (= 2.11.11)
-    - BLLet/BLLetCore (= 2.11.11)
-    - BLLet/BLLetFamily (= 2.11.11)
-    - BLLet/BLLetIRCode (= 2.11.11)
-    - BLLet/BLLetPlugins (= 2.11.11)
-  - BLLet/BLLetAccount (2.11.11):
+  - BLLet (2.17.7):
+    - BLLet/BLLetAccount (= 2.17.7)
+    - BLLet/BLLetBase (= 2.17.7)
+    - BLLet/BLLetCore (= 2.17.7)
+    - BLLet/BLLetFamily (= 2.17.7)
+    - BLLet/BLLetIRCode (= 2.17.7)
+    - BLLet/BLLetPlugins (= 2.17.7)
+  - BLLet/BLLetAccount (2.17.7):
     - BLLet/BLLetBase
-  - BLLet/BLLetBase (2.11.11):
+  - BLLet/BLLetBase (2.17.7):
     - AFNetworking
-  - BLLet/BLLetCore (2.11.11):
+  - BLLet/BLLetCore (2.17.7):
     - BLLet/BLLetBase
-  - BLLet/BLLetFamily (2.11.11):
+  - BLLet/BLLetFamily (2.17.7):
     - BLLet/BLLetBase
-  - BLLet/BLLetIRCode (2.11.11):
+  - BLLet/BLLetIRCode (2.17.7):
     - BLLet/BLLetBase
     - BLLet/BLLetCore
-  - BLLet/BLLetPlugins (2.11.11):
+  - BLLet/BLLetPlugins (2.17.7):
     - BLLet/BLLetBase
-  - BLSFamily (0.1.8):
-    - BLLet/BLLetBase (~> 2.11.5)
+  - BLSFamily (0.1.9):
+    - BLLet/BLLetBase (~> 2.17.3)
   - Cordova (4.4.0)
   - MBProgressHUD (1.1.0)
-  - SDWebImage (4.4.7):
-    - SDWebImage/Core (= 4.4.7)
-  - SDWebImage/Core (4.4.7)
+  - SDWebImage (4.4.8):
+    - SDWebImage/Core (= 4.4.8)
+  - SDWebImage/Core (4.4.8)
   - SSZipArchive (2.1.5)
   - YYCategories (1.0.4):
     - YYCategories/no-arc (= 1.0.4)
@@ -68,15 +68,15 @@ SPEC REPOS:
     - BLSFamily
 
 SPEC CHECKSUMS:
-  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  BLLet: da5087da83daeaeca1ebb73b696870f83541deea
-  BLSFamily: 85386521cdf89d630937ca5053025de5169d9a46
+  AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
+  BLLet: 26633b4c95bc30970bbd8bbfdd9b90b74fc82a98
+  BLSFamily: 48fb3ab739c71853d453ba471fe1a947efa2be9b
   Cordova: 561576155c420c54441d99b855de12c6e7b51088
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
-  SDWebImage: c10d14a8883ebd89664f02a422006f66a85c0c5d
+  SDWebImage: 783af2c3fa36291a250030c4752ee370a9a51d13
   SSZipArchive: cefe1364104a0231268a5deb8495bdf2861f52f0
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
 
-PODFILE CHECKSUM: ddc3b37deae0fc4ab541682a3fc60222459220af
+PODFILE CHECKSUM: 7660ff815e447df37ec72f7d474eb81f90fcb989
 
-COCOAPODS: 1.8.0.beta.2
+COCOAPODS: 1.11.3

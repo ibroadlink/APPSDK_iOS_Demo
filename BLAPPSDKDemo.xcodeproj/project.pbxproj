@@ -845,7 +845,7 @@
 				TargetAttributes = {
 					705B09501D4F1C5B00805109 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 5YQ85Q9UV8;
+						DevelopmentTeam = U546APCTMY;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.AccessWiFi = {
@@ -1182,7 +1182,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5YQ85Q9UV8;
+				DEVELOPMENT_TEAM = U546APCTMY;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1211,7 +1211,7 @@
 				NEW_SETTING = "";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.com.broadlink.blappsdkdemo.baihk;
+				PRODUCT_BUNDLE_IDENTIFIER = com.broadlink.namolc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1230,7 +1230,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5YQ85Q9UV8;
+				DEVELOPMENT_TEAM = U546APCTMY;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1259,7 +1259,7 @@
 				NEW_SETTING = "";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.com.broadlink.blappsdkdemo.baihk;
+				PRODUCT_BUNDLE_IDENTIFIER = com.broadlink.namolc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

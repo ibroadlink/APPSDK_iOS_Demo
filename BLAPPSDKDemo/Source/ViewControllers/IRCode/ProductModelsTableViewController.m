@@ -41,31 +41,31 @@
 
 - (void)queryDeviceVersionWithTypeId:(NSInteger)typeId brandId:(NSInteger)brandId {
     
-    [self.blircode requestIRCodeV3ScriptDownloadUrlWithType:typeId brand:brandId version:0 completionHandler:^(BLBaseBodyResult * _Nonnull result) {
-        NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
-        if ([result succeed]) {
-            [self.modelsArray removeAllObjects];
-            
-            if (result.respbody) {
-                NSArray *downloadInfos = result.respbody[@"downloadinfo"];
-
-                if (![BLCommonTools isEmptyArray:downloadInfos]) {
-                    for (NSDictionary *pdic in downloadInfos) {
-                        IRCodeDownloadInfo *downloadinfo = [IRCodeDownloadInfo BLS_modelWithDictionary:pdic];
-                        [self.modelsArray addObject: downloadinfo];
-                    }
-                }
-            }
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
-            });
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [BLStatusBar showTipMessageWithStatus:result.msg];
-            });
-        }
-    }];
+//    [self.blircode requestIRCodeV3ScriptDownloadUrlWithType:typeId brand:brandId version:0 completionHandler:^(BLBaseBodyResult * _Nonnull result) {
+//        NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
+//        if ([result succeed]) {
+//            [self.modelsArray removeAllObjects];
+//            
+//            if (result.respbody) {
+//                NSArray *downloadInfos = result.respbody[@"downloadinfo"];
+//
+//                if (![BLCommonTools isEmptyArray:downloadInfos]) {
+//                    for (NSDictionary *pdic in downloadInfos) {
+//                        IRCodeDownloadInfo *downloadinfo = [IRCodeDownloadInfo BLS_modelWithDictionary:pdic];
+//                        [self.modelsArray addObject: downloadinfo];
+//                    }
+//                }
+//            }
+//            
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self.tableView reloadData];
+//            });
+//        } else {
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [BLStatusBar showTipMessageWithStatus:result.msg];
+//            });
+//        }
+//    }];
 }
 
 - (void)querySTBIRCodeDownloadUrl:(IRCodeProviderInfo *)provider {
