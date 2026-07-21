@@ -1,39 +1,25 @@
 PODS:
-  - AFNetworking (4.0.1):
-    - AFNetworking/NSURLSession (= 4.0.1)
-    - AFNetworking/Reachability (= 4.0.1)
-    - AFNetworking/Security (= 4.0.1)
-    - AFNetworking/Serialization (= 4.0.1)
-    - AFNetworking/UIKit (= 4.0.1)
-  - AFNetworking/NSURLSession (4.0.1):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/Reachability (4.0.1)
-  - AFNetworking/Security (4.0.1)
-  - AFNetworking/Serialization (4.0.1)
-  - AFNetworking/UIKit (4.0.1):
-    - AFNetworking/NSURLSession
-  - BLLet (2.18.2):
-    - BLLet/BLLetAccount (= 2.18.2)
-    - BLLet/BLLetBase (= 2.18.2)
-    - BLLet/BLLetCore (= 2.18.2)
-    - BLLet/BLLetFamily (= 2.18.2)
-    - BLLet/BLLetIRCode (= 2.18.2)
-    - BLLet/BLLetPlugins (= 2.18.2)
-  - BLLet/BLLetAccount (2.18.2):
+  - BLLet (2.20.2):
+    - BLLet/BLLetAccount (= 2.20.2)
+    - BLLet/BLLetBase (= 2.20.2)
+    - BLLet/BLLetCore (= 2.20.2)
+    - BLLet/BLLetFamily (= 2.20.2)
+    - BLLet/BLLetIRCode (= 2.20.2)
+    - BLLet/BLLetPlugins (= 2.20.2)
+  - BLLet/BLLetAccount (2.20.2):
     - BLLet/BLLetBase
-  - BLLet/BLLetBase (2.18.2):
-    - AFNetworking
-  - BLLet/BLLetCore (2.18.2):
+  - BLLet/BLLetBase (2.20.2)
+  - BLLet/BLLetCore (2.20.2):
     - BLLet/BLLetBase
-  - BLLet/BLLetFamily (2.18.2):
+  - BLLet/BLLetFamily (2.20.2):
     - BLLet/BLLetBase
-  - BLLet/BLLetIRCode (2.18.2):
+  - BLLet/BLLetIRCode (2.20.2):
     - BLLet/BLLetBase
     - BLLet/BLLetCore
-  - BLLet/BLLetPlugins (2.18.2):
+  - BLLet/BLLetPlugins (2.20.2):
     - BLLet/BLLetBase
+  - BLSFamily (0.2.1):
+    - BLLet/BLLetBase (~> 2.20.1)
   - Cordova (4.4.0)
   - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
@@ -46,7 +32,8 @@ PODS:
   - YYCategories/no-arc (1.0.4)
 
 DEPENDENCIES:
-  - BLLet
+  - BLLet (= 2.20.2)
+  - BLSFamily (= 0.2.1)
   - Cordova
   - Masonry
   - MBProgressHUD
@@ -57,8 +44,8 @@ DEPENDENCIES:
 SPEC REPOS:
   "git@github.com:ibroadlink/BLLibSpecs.git":
     - BLLet
+    - BLSFamily
   trunk:
-    - AFNetworking
     - Cordova
     - Masonry
     - MBProgressHUD
@@ -67,8 +54,8 @@ SPEC REPOS:
     - YYCategories
 
 SPEC CHECKSUMS:
-  AFNetworking: 3bd23d814e976cd148d7d44c3ab78017b744cd58
-  BLLet: e7659462da9389bdf4e79ed95d1f0771df8b2d5b
+  BLLet: aa8491972258abb196fe8a31e98f2fc1e59221c7
+  BLSFamily: 955307612bcd07719b008cabe26832eebeddf846
   Cordova: 561576155c420c54441d99b855de12c6e7b51088
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
@@ -76,6 +63,6 @@ SPEC CHECKSUMS:
   SSZipArchive: cefe1364104a0231268a5deb8495bdf2861f52f0
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
 
-PODFILE CHECKSUM: e1dbf9f8a024a4478b0ca3b146a5bcc246f53d16
+PODFILE CHECKSUM: 5cd49a5a826d95c2d01ef5881ef3923c83299803
 
 COCOAPODS: 1.16.2

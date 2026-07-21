@@ -2,7 +2,7 @@
 //  AKeyToIdentifyViewController.m
 //  BLAPPSDKDemo
 //
-//  Created by 白洪坤 on 2017/8/15.
+//  Created by admin on 2017/8/15.
 //  Copyright © 2017年 BroadLink. All rights reserved.
 //
 
@@ -35,7 +35,7 @@
     BLIRCode *blircode = [BLIRCode sharedIrdaCode];
     
     //采用V3接口
-    [blircode recognizeIRCodeWithHexString:_recoginzeTxt.text completionHandler:^(BLBaseBodyResult * _Nonnull result) {
+    [blircode recognizeIRCodeWithHexString:_recoginzeTxt.text mtag:nil completionHandler:^(BLBaseBodyResult * _Nonnull result) {
         if ([result succeed]) {
 
             if (result.respbody) {

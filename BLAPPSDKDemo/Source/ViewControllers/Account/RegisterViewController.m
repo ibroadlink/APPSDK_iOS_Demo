@@ -46,13 +46,22 @@
 - (IBAction)verificationCodeButtonClick:(UIButton *)sender {
     [self.editField resignFirstResponder];
     
+    NSString *phoneHead = self.phoneHeadField.text;
     NSString *phoneBody = self.phoneBodyField.text;
     __weak typeof(self) weakSelf = self;
-    [self.account sendRegVCode:phoneBody completionHandler:^(BLBaseResult * _Nonnull result) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf showSDKResult:result successMessage:@"Verification code has been sent"];
-        });
-    }];
+    if (phoneHead.length > 0) {
+        [self.account sendRegVCode:phoneBody countryCode:phoneHead completionHandler:^(BLBaseResult * _Nonnull result) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf showSDKResult:result successMessage:@"Verification code has been sent"];
+            });
+        }];
+    } else {
+        [self.account sendRegVCode:phoneBody completionHandler:^(BLBaseResult * _Nonnull result) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf showSDKResult:result successMessage:@"Verification code has been sent"];
+            });
+        }];
+    }
 }
 
 - (IBAction)registerButtonClick:(UIButton *)sender {
@@ -66,8 +75,16 @@
     
     __weak typeof(self) weakSelf = self;
     [self showIndicatorOnWindow];
-    [self.account regist:phoneBody password:password nickname:nickName vcode:vCode sex:BL_ACCOUNT_MALE birthday:nil countryCode:phoneHead iconPath:nil
-completionHandler:^(BLLoginResult * _Nonnull result) {
+    [self.account regist:phoneBody
+                password:password
+                nickname:nickName
+                   vcode:vCode
+                     sex:BL_ACCOUNT_MALE
+                birthday:nil
+             countryCode:phoneHead
+                 country:nil
+                iconPath:nil
+       completionHandler:^(BLLoginResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf hideIndicatorOnWindow];
             if ([result succeed]) {
