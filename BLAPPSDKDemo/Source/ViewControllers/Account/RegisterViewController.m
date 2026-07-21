@@ -12,7 +12,6 @@
 #import <BLLetAccount/BLLetAccount.h>
 
 #import "BLUserDefaults.h"
-#import "BLStatusBar.h"
 #import "BLTheme.h"
 
 @interface RegisterViewController () <UITextFieldDelegate>
@@ -41,55 +40,19 @@
     for (UITextField *field in fields) {
         [BLTheme styleTextField:field];
     }
-    [self styleButtonsInView:self.view];
-}
-
-- (void)styleButtonsInView:(UIView *)view {
-    for (UIView *subview in view.subviews) {
-        if ([subview isKindOfClass:[UIButton class]]) {
-            UIButton *button = (UIButton *)subview;
-            NSString *title = [[button titleForState:UIControlStateNormal] lowercaseString] ?: @"";
-            if ([title containsString:@"register"] || [title containsString:@"注册"] || [title containsString:@"sign"]) {
-                [BLTheme stylePrimaryButton:button];
-            } else {
-                [BLTheme styleSecondaryButton:button];
-            }
-        } else {
-            [self styleButtonsInView:subview];
-        }
-    }
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [BLTheme styleButtonsInView:self.view];
 }
 
 - (IBAction)verificationCodeButtonClick:(UIButton *)sender {
     [self.editField resignFirstResponder];
     
-    NSString *phoneHead = self.phoneHeadField.text;
     NSString *phoneBody = self.phoneBodyField.text;
-    
+    __weak typeof(self) weakSelf = self;
     [self.account sendRegVCode:phoneBody completionHandler:^(BLBaseResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([result succeed]) {
-                [BLStatusBar showTipMessageWithStatus:@"Verification code has been sent"];
-            } else {
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
-            }
+            [weakSelf showSDKResult:result successMessage:@"Verification code has been sent"];
         });
     }];
-    
-//    [self.account sendRegVCode:phoneBody countryCode:phoneHead completionHandler:^(BLBaseResult * _Nonnull result) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            if ([result succeed]) {
-//                [BLStatusBar showTipMessageWithStatus:@"Verification code has been sent"];
-//            } else {
-//                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
-//            }
-//        });
-//    }];
 }
 
 - (IBAction)registerButtonClick:(UIButton *)sender {
@@ -110,15 +73,15 @@ completionHandler:^(BLLoginResult * _Nonnull result) {
             if ([result succeed]) {
                 //Regist Success => Login Success
                 BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
-                [userDefault setUserName:nickName];
-                [userDefault setUserId:[result getUserid]];
-                [userDefault setSessionId:[result getLoginsession]];
-                [BLStatusBar showTipMessageWithStatus:@"Regist Success"];
+                [userDefault applyLoginWithUserName:nickName
+                                             userId:[result getUserid]
+                                          sessionId:[result getLoginsession]];
+                [weakSelf showSDKResult:result successMessage:@"Regist Success"];
                 
                 UserViewController *vc = [UserViewController viewController];
-                [self.navigationController pushViewController:vc animated:YES];
+                [weakSelf.navigationController pushViewController:vc animated:YES];
             } else {
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
+                [weakSelf showSDKResult:result successMessage:nil];
             }
         });
   }];

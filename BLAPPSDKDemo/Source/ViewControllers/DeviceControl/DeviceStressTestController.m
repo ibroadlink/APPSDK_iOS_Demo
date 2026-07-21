@@ -10,6 +10,7 @@
 
 #import "BLStatusBar.h"
 #import "BLDeviceService.h"
+#import "Tools.h"
 
 @interface DeviceStressTestController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -28,8 +29,7 @@
 @implementation DeviceStressTestController
 
 + (instancetype)viewController {
-    DeviceStressTestController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (void)viewDidLoad {
@@ -99,6 +99,9 @@
     NSString *input = [NSString stringWithFormat:@"%@ :\n %@\n\n\n", dateStr, log];
     
     NSFileHandle *outFile = [NSFileHandle fileHandleForWritingAtPath:self.logfile];
+    if (!outFile) {
+        return;
+    }
     [outFile seekToEndOfFile];
     [outFile writeData:[input dataUsingEncoding:NSUTF8StringEncoding]];
     [outFile closeFile];
@@ -153,12 +156,12 @@
                 continue;
             }
             
-            NSString *gatewayDid = device.ownerId ? device.deviceId : device.did;
+            NSString *gatewayDid = [Tools controlDidForDevice:device];
             NSString *subDeviceDid;
             if (![BLCommonTools isEmpty:device.pDid]) {
                 BLDNADevice *fDevice = [[BLLet sharedLet].controller getDevice:[NSString stringWithFormat:@"%@++%@", device.pDid, device.ownerId]];
-                gatewayDid = device.ownerId ? fDevice.deviceId : device.pDid;
-                subDeviceDid = device.ownerId ? device.deviceId : device.did;
+                gatewayDid = [Tools controlDidForDevice:fDevice];
+                subDeviceDid = [Tools controlDidForDevice:device];
                 
                 BLDNADevice *gatewayDevice = [deviceService.manageDevices objectForKey:gatewayDid];
                 if (!gatewayDevice) {

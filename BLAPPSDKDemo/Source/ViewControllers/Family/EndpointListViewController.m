@@ -56,7 +56,7 @@
                 
                 [self.endpointListTable reloadData];
             } else {
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Get Family Endpoints Failed. Code:%ld MSG:%@", (long)result.status, result.msg]];
+                [self showErrorCode:result.status msg:result.msg];
             }
         });
     }];

@@ -11,6 +11,7 @@
 
 #import "BLDeviceService.h"
 #import "BLStatusBar.h"
+#import "Tools.h"
 #import <BLLetIRCode/BLLetIRCode.h>
 
 @interface AKeyToIdentifyViewController ()<UITextViewDelegate>
@@ -35,7 +36,6 @@
     
     //采用V3接口
     [blircode recognizeIRCodeWithHexString:_recoginzeTxt.text completionHandler:^(BLBaseBodyResult * _Nonnull result) {
-        NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
 
             if (result.respbody) {
@@ -55,7 +55,7 @@
                 }
             }
         }else{
-            [BLStatusBar showTipMessageWithStatus:result.msg];
+            [self showErrorCode:result.error msg:result.msg];
         }
     }];
 }
@@ -89,7 +89,7 @@
     //进入学习模式
     BLStdData *stdStudyData = [[BLStdData alloc] init];
     [stdStudyData setValue:nil forParam:@"irdastudy"];
-    BLStdControlResult *studyResult = [blcontroller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdStudyData action:@"get"];
+    BLStdControlResult *studyResult = [blcontroller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdStudyData action:@"get"];
     if ([studyResult succeed]) {
         for (int i = 0; i < 10; i++) {
             sleep(3);
@@ -115,15 +115,13 @@
     BLIRCode *blircode = [BLIRCode sharedIrdaCode];
 
     [blircode downloadIRCodeScriptWithUrl:urlString savePath:path randkey:randkey completionHandler:^(BLDownloadResult * _Nonnull result) {
-        NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
-            NSLog(@"savepath:%@", result.savePath);
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.resultTxt.text = result.savePath;
             });
             
         }else{
-            [BLStatusBar showTipMessageWithStatus:result.msg];
+            [self showErrorCode:result.error msg:result.msg];
         }
 
     }];
@@ -133,15 +131,13 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BLIRCode *blircode = [BLIRCode sharedIrdaCode];
         BLIRCodeInfoResult *result = [blircode queryIRCodeInfomationWithScript:savePath deviceType:devicetype];
-        NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
-            NSLog(@"info:%@", result.infomation);
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.resultTxt.text = result.infomation;
             });
             
         }else{
-            [BLStatusBar showTipMessageWithStatus:result.msg];
+            [self showErrorCode:result.error msg:result.msg];
         }
     });
     

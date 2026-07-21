@@ -10,6 +10,7 @@
 
 #import "BLDeviceService.h"
 #import "BLStatusBar.h"
+#import "Tools.h"
 
 @interface SPViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *timerTableView;
@@ -30,11 +31,6 @@
     self.timerTableView.dataSource = self;
     [self GetTimerList];
    
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
@@ -63,7 +59,7 @@
 - (void)GetTimerList{
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setParams:@[@"tmrtsk",@"pertsk",@"cyctsk",@"randtsk"] values:@[@[@{@"val":@"", @"idx":@(1)}],@[@{ @"val":@"", @"idx":@(1)}],@[@{ @"val":@"", @"idx":@(1)}],@[@{ @"val":@"", @"idx":@(1)}]]];
-    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"get"];
+    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdData action:@"get"];
     if ([result succeed]) {
         NSDictionary *dic = [[result getData] toDictionary];
         NSArray *dicArray = dic[@"vals"];
@@ -102,9 +98,9 @@
     UIAlertAction *tmrtskAction = [UIAlertAction actionWithTitle:@"单次定时" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         BLStdData *stdData = [[BLStdData alloc] init];
         [stdData setParams:@[@"tmrtsk"] values:@[@[@{@"val":@"+0800@20180911-151426|1@null|0",@"idx":@(1)}]]];
-        BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"set"];
+        BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdData action:@"set"];
         if ([result succeed]) {
-            BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"get"];
+            BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdData action:@"get"];
             if ([result succeed]) {
                 NSDictionary *dic = [[result getData] toDictionary];
                 NSString *switchResult = dic[@"vals"][0][0][@"val"];
@@ -118,9 +114,9 @@
     UIAlertAction *pertskAction = [UIAlertAction actionWithTitle:@"周期定时" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         BLStdData *stdData = [[BLStdData alloc] init];
         [stdData setParams:@[@"pertsk"] values:@[@[@{@"val":@"1|+0800-095700@null|null|0|0",@"idx":@(1)},@{@"val":@"1|+0800-164420@null|null|0|0", @"idx":@(1)}]]];
-        BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[self.device getDid] stdData:stdData action:@"set"];
+        BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdData action:@"set"];
         if ([result succeed]) {
-            BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[self.device getDid] stdData:stdData action:@"get"];
+            BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdData action:@"get"];
             if ([result succeed]) {
                 NSDictionary *dic = [[result getData] toDictionary];
                 NSString *switchResult = dic[@"vals"][0][0][@"val"];
@@ -134,9 +130,9 @@
     UIAlertAction *cyctskAction = [UIAlertAction actionWithTitle:@"循环定时" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         BLStdData *stdData = [[BLStdData alloc] init];
         [stdData setParams:@[@"cyctsk"] values:@[@[@{@"val":@"1|+0800-183037@183537|300|300|null",@"idx":@(1)}]]];
-        BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[self.device getDid] stdData:stdData action:@"set"];
+        BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdData action:@"set"];
         if ([result succeed]) {
-            BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[self.device getDid] stdData:stdData action:@"get"];
+            BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdData action:@"get"];
             if ([result succeed]) {
                 NSDictionary *dic = [[result getData] toDictionary];
                 NSString *switchResult = dic[@"vals"][0][0][@"val"];
@@ -150,9 +146,9 @@
     UIAlertAction *randtskAction = [UIAlertAction actionWithTitle:@"防盗定时" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         BLStdData *stdData = [[BLStdData alloc] init];
         [stdData setParams:@[@"randtsk"] values:@[@[@{@"val":@"1|+0800-000000@235901|10|12347",@"idx":@(1)}]]];
-        BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[self.device getDid] stdData:stdData action:@"set"];
+        BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdData action:@"set"];
         if ([result succeed]) {
-            BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[self.device getDid] stdData:stdData action:@"get"];
+            BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdData action:@"get"];
             if ([result succeed]) {
                 NSDictionary *dic = [[result getData] toDictionary];
                 NSString *switchResult = dic[@"vals"][0][0][@"val"];
@@ -176,7 +172,7 @@
         [stdData setValue:val forParam:param];
         
         
-        BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:action];
+        BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdData action:action];
 
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([result succeed]) {

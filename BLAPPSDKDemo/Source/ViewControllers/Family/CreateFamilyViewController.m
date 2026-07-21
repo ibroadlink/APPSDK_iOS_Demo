@@ -23,17 +23,11 @@
     self.familyNameField.delegate = self;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (void)goBack {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)createBtnClick:(UIButton *)sender {
-    NSLog(@"create family");
     [self.familyNameField resignFirstResponder];
     
     BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
@@ -42,9 +36,6 @@
     [manager createDefaultFamilyWithInfo:self.familyNameField.text country:@"China" province:@"ZheJiang" city:@"HangZhou" completionHandler:^(BLSFamilyCreateResult * _Nonnull result) {
         
         if ([result succeed]) {
-            BLSFamilyInfo *familyInfo = result.data;
-            NSLog(@"familyID:%@ Name:%@ Description:%@", familyInfo.familyid, familyInfo.name, familyInfo.desc);
-            
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self hideIndicatorOnWindow];
                 [BLStatusBar showTipMessageWithStatus:@"Create Family success!"];
@@ -52,11 +43,9 @@
             });
             
         } else {
-            NSLog(@"ERROR :%@", result.msg);
-            
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self hideIndicatorOnWindow];
-                [BLStatusBar showTipMessageWithStatus:[@"Create Family failed! " stringByAppendingString:result.msg]];
+                [self showErrorCode:result.error msg:result.msg];
             });
             
         }

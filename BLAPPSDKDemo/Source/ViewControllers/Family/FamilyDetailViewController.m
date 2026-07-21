@@ -46,11 +46,6 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (void)initSubViews {
     
     if (self.familyInfo) {
@@ -114,13 +109,14 @@
         [self showIndicatorOnWindow];
         BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
         [manager modifyFamilyInfo:info completionHandler:^(BLBaseResult * _Nonnull result) {
-            if ([result succeed]) {
-                self.familyInfo.name = name;
-            }
-            
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self hideIndicatorOnWindow];
-                [self initSubViews];
+                if ([result succeed]) {
+                    self.familyInfo.name = name;
+                    [self initSubViews];
+                } else {
+                    [self showErrorCode:result.error msg:result.msg];
+                }
             });
         }];
         
@@ -131,7 +127,9 @@
 
 - (void)queryRoomList {
     [[BLSFamilyManager sharedFamily] getFamilyRoomsWithCompletionHandler:^(BLSManageRoomResult * _Nonnull result) {
-        NSLog(@"Query Rooms Msg: %@", result.msg);
+        if (![result succeed]) {
+            [self showErrorCode:result.error msg:result.msg];
+        }
     }];
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import "PushViewController.h"
+#import "Tools.h"
 #import "BLSNotificationService.h"
 #import "BLDeviceService.h"
 #import "BLTemplate.h"
@@ -36,31 +37,12 @@
     self.tableView.separatorColor = [BLTheme separatorColor];
     [BLTheme styleResultTextView:self.deviceInfoView];
     [BLTheme styleResultTextView:self.resultTextView];
-    [self stylePushButtonsInView:self.view];
+    [BLTheme styleButtonsInView:self.view];
     self.isTemplates = YES;
 }
 
-- (void)stylePushButtonsInView:(UIView *)view {
-    for (UIView *subview in view.subviews) {
-        if ([subview isKindOfClass:[UIButton class]]) {
-            UIButton *button = (UIButton *)subview;
-            button.backgroundColor = [BLTheme primaryColor];
-            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [button setBackgroundImage:nil forState:UIControlStateNormal];
-            button.layer.cornerRadius = 10;
-            button.layer.masksToBounds = YES;
-            button.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightSemibold];
-            button.contentEdgeInsets = UIEdgeInsetsZero;
-        } else if (![subview isKindOfClass:[UITableView class]] &&
-                   ![subview isKindOfClass:[UITextView class]]) {
-            [self stylePushButtonsInView:subview];
-        }
-    }
-}
-
 + (instancetype)viewController {
-    PushViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (IBAction)buttonClick:(UIButton *)sender {

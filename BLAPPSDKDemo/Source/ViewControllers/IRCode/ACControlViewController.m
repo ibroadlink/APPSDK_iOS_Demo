@@ -10,6 +10,7 @@
 
 #import "BLDeviceService.h"
 #import "BLStatusBar.h"
+#import "Tools.h"
 #import <BLLetCore/BLLetCore.h>
 #import <BLLetIRCode/BLLetIRCode.h>
 
@@ -29,8 +30,7 @@
 @implementation ACControlViewController
 
 + (instancetype)viewController {
-    ACControlViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (void)viewDidLoad {
@@ -77,10 +77,10 @@
     
     BLIRCode *blircode = [BLIRCode sharedIrdaCode];
     BLIRCodeDataResult *result = [blircode queryACIRCodeDataWithScript:self.savePath params:params];
-    NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
     if ([result succeed]) {
-        NSLog(@"data:%@", result.ircode);
         self.resultText.text = result.ircode;
+    } else {
+        [self showErrorCode:result.error msg:result.msg];
     }
 }
 
@@ -97,7 +97,6 @@
     NSString *unitCode = [blircode waveCodeChangeToUnitCode:waveCode];
     
     if (unitCode) {
-        NSLog(@"unitCode:%@", unitCode);
         self.resultText.text = unitCode;
     } else {
         self.resultText.text = @"Change Wave Code To Unit Code Failed!";
@@ -147,13 +146,13 @@
     
     BLController *blcontroller = [BLLet sharedLet].controller;
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        BLStdControlResult *studyResult = [blcontroller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdStudyData action:@"set"];
+        BLStdControlResult *studyResult = [blcontroller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdStudyData action:@"set"];
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([studyResult succeed]) {
                 
                 [BLStatusBar showTipMessageWithStatus:@"Send success!"];
             } else {
-                [BLStatusBar showTipMessageWithStatus:studyResult.msg];
+                [self showErrorCode:studyResult.error msg:studyResult.msg];
             }
         });
         

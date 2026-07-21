@@ -9,6 +9,7 @@
 #import "RecoginzeIRCodeViewController.h"
 #import "ACControlViewController.h"
 #import "TVControllTableViewController.h"
+#import "Tools.h"
 
 #import <BLLetCore/BLLetCore.h>
 #import <BLLetIRCode/BLLetIRCode.h>
@@ -25,8 +26,7 @@
 @implementation RecoginzeIRCodeViewController
 
 + (instancetype)viewController {
-    RecoginzeIRCodeViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (void)viewDidLoad {
@@ -40,11 +40,6 @@
     } else {
         self.title = self.downloadinfo.ircodeid;
     }
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (IBAction)downLoadIRCodeScript:(id)sender {
@@ -74,16 +69,16 @@
     [self showIndicatorOnWindow];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self.blircode downloadIRCodeScriptWithUrl:urlString savePath:path randkey:randkey completionHandler:^(BLDownloadResult * _Nonnull result) {
-            NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
-            [self hideIndicatorOnWindow];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideIndicatorOnWindow];
+            });
             if ([result succeed]) {
-                NSLog(@"savepath:%@", result.savePath);
                 dispatch_async(dispatch_get_main_queue(), ^{
                     self.ResultTxt.text = result.savePath;
                 });
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.ResultTxt.text = [NSString stringWithFormat:@"Download failed:%ld \nMsg:%@", (long)result.status, result.msg];
+                    self.ResultTxt.text = [Tools messageForError:result.error msg:result.msg];
                 });
             }
         }];
@@ -99,16 +94,16 @@
     [self showIndicatorOnWindow];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self.blircode downloadIRCodeScriptWithIRCodeid:ircodeid mtag:mtag savePath:path completionHandler:^(BLDownloadResult * _Nonnull result) {
-            NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
-            [self hideIndicatorOnWindow];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideIndicatorOnWindow];
+            });
             if ([result succeed]) {
-                NSLog(@"savepath:%@", result.savePath);
                 dispatch_async(dispatch_get_main_queue(), ^{
                     self.ResultTxt.text = result.savePath;
                 });
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.ResultTxt.text = [NSString stringWithFormat:@"Download failed:%ld \nMsg:%@", (long)result.status, result.msg];
+                    self.ResultTxt.text = [Tools messageForError:result.error msg:result.msg];
                 });
             }
         }];
@@ -122,15 +117,13 @@
 //    NSString *path = [[blcontroller queryIRCodeScriptPath] stringByAppendingPathComponent:@"奥克斯_5935"];
     
     BLIRCodeInfoResult *result = [self.blircode queryIRCodeInfomationWithScript:savePath deviceType:devicetype];
-    NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
     if ([result succeed]) {
-        NSLog(@"info:%@", result.infomation);
         dispatch_async(dispatch_get_main_queue(), ^{
             self.ResultTxt.text = result.infomation;
         });
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.ResultTxt.text = [NSString stringWithFormat:@"Query failed:%ld \nMsg:%@", (long)result.status, result.msg];
+            self.ResultTxt.text = [Tools messageForError:result.error msg:result.msg];
         });
     }
 }

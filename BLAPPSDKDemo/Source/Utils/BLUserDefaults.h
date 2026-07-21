@@ -40,4 +40,9 @@
 - (void)setAppServiceHost:(NSString *)host;
 - (NSString *)getAppServiceHost;
 
+/// 登录成功后写入账号会话
+- (void)applyLoginWithUserName:(NSString *)userName userId:(NSString *)userId sessionId:(NSString *)sessionId;
+/// 退出登录清空会话
+- (void)clearLoginSession;
+
 @end

@@ -79,7 +79,7 @@
             if ([result succeed]) {
                 [self.navigationController popViewControllerAnimated:YES];
             } else {
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Get Family Endpoints Failed. Code:%ld MSG:%@", (long)result.status, result.msg]];
+                [self showErrorCode:result.status msg:result.msg];
             }
         });
     }];
@@ -98,7 +98,7 @@
                 self.endpointList = result.endpoints;
                 [self.endpointListTable reloadData];
             } else {
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Get Family Endpoints Failed. Code:%ld MSG:%@", (long)result.status, result.msg]];
+                [self showErrorCode:result.status msg:result.msg];
             }
         });
     }];

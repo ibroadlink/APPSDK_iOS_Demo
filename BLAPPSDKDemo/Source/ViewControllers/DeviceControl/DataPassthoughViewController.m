@@ -8,6 +8,7 @@
 
 #import "DataPassthoughViewController.h"
 #import "BLDeviceService.h"
+#import "Tools.h"
 
 @interface DataPassthoughViewController ()<UITextViewDelegate>
 
@@ -27,27 +28,23 @@
     _dataShowTextView.delegate = self;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (void)datapassthough {
     NSString *srcString = _dataInputTextView.text;
     NSData *srcData = [self hexString2Bytes:srcString];
     
     [self showIndicatorOnWindowWithMessage:@"Data Passthough..."];
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        BLPassthroughResult *result = [[BLLet sharedLet].controller dnaPassthrough:self.device.ownerId ? self.device.deviceId : [self.device getDid] passthroughData:srcData];
-        [self hideIndicatorOnWindow];
+        BLPassthroughResult *result = [[BLLet sharedLet].controller dnaPassthrough:[Tools controlDidForDevice:self.device] passthroughData:srcData];
         if ([result succeed]) {
             NSString *resStr = [self data2hexString:[result getData]];
             dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideIndicatorOnWindow];
                 self.dataShowTextView.text = resStr;
             });
             
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideIndicatorOnWindow];
                 self.dataShowTextView.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
             });
             

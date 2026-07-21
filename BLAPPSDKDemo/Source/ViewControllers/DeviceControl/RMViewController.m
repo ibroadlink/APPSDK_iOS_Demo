@@ -11,6 +11,7 @@
 
 #import "BLDeviceService.h"
 #import "BLStatusBar.h"
+#import "Tools.h"
 
 @interface RMViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -38,17 +39,12 @@
     self.irdaCodeStr = @"26008c00959115351535153515111411141114111411143614361436141114111411141114111436143614361436141114111411141114111411141114111436153515351535150005f295921535153515351510151015101510151015351535153515101510151015101510153515351535153515101510151015101510151015101510153515351535153515000d05000000000000000000000000";
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (IBAction)learnButton:(id)sender {
 
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setValue:nil forParam:@"irdastudy"];
     
-    BLStdControlResult *studyResult = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"get"];
+    BLStdControlResult *studyResult = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdData action:@"get"];
     if ([studyResult succeed]) {
         self.IrdaCode.text = @"Learnning... Please click your remote control button!";
     } else {
@@ -60,7 +56,7 @@
     BLStdData *stdData = [[BLStdData alloc] init];
     [stdData setValue:nil forParam:@"irda"];
     
-    BLStdControlResult *irdaResult = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"get"];
+    BLStdControlResult *irdaResult = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdData action:@"get"];
     if ([irdaResult succeed]) {
         NSDictionary *dic = [[irdaResult getData] toDictionary];
         if ([dic[@"vals"] count] != 0) {
@@ -91,7 +87,7 @@
         [stdData setValue:self.irdaCodeStr forParam:@"irda"];
     }
     
-    BLStdControlResult *sendResult = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"set"];
+    BLStdControlResult *sendResult = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdData action:@"set"];
     if ([sendResult succeed]) {
         self.IrdaCode.text = @"Send ircode success!";
     } else {
@@ -186,7 +182,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self showIndicatorOnWindow];
     });
-    BLStdControlResult *delResult = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"set"];
+    BLStdControlResult *delResult = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdData action:@"set"];
     if ([delResult succeed]) {
         [self queryTimerList:0];
     } else {
@@ -211,7 +207,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self showIndicatorOnWindow];
     });
-    BLStdControlResult *sendResult = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"set"];
+    BLStdControlResult *sendResult = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdData action:@"set"];
     if ([sendResult succeed]) {
         [self queryTimerList:0];
     } else {
@@ -232,7 +228,7 @@
     [stdData setValue:@(0) forParam:@"count"];
     [stdData setValue:@(index) forParam:@"index"];
     
-    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdData action:@"get"];
+    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdData action:@"get"];
     if ([result succeed]) {
         NSDictionary *dic = [result.data toDictionary];
         NSArray *vals = dic[@"vals"][0];

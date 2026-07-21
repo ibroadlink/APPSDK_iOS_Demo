@@ -6,8 +6,8 @@
 //  Copyright © 2018年 BroadLink. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
-@interface RestPasswordViewController : UIViewController
+@interface RestPasswordViewController : BaseViewController
 @property (nonatomic, strong) NSString *accountText;
 @end

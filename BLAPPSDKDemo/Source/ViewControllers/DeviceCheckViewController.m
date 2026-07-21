@@ -9,6 +9,7 @@
 #import "DeviceCheckViewController.h"
 #import "BLCheckDevice.h"
 #import "BLStatusBar.h"
+#import "Tools.h"
 
 @interface DeviceCheckViewController ()
 
@@ -22,8 +23,7 @@
 @implementation DeviceCheckViewController
 
 + (instancetype)viewController {
-    DeviceCheckViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 
@@ -61,24 +61,31 @@
 }
 
 - (void)startDeviceCheck {
+    if (!self.deviceCheck) {
+        [BLStatusBar showTipMessageWithStatus:@"Device check is unavailable."];
+        return;
+    }
     [self.deviceCheck createDeviceCheckSocket];
 }
 
 - (void)queryServiceList {
     NSString *result = [self.deviceCheck queryServerList];
-    NSLog(@"result: %@", result);
-    
-    NSData *data = [result dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
+    NSDictionary *dic = [Tools dictionaryFromJSONString:result];
+    if (![dic isKindOfClass:[NSDictionary class]]) {
+        [BLStatusBar showTipMessageWithStatus:@"Query Service List failed!"];
+        return;
+    }
     
     NSInteger status = [dic[@"status"] integerValue];
-    if (status == 0) {
+    NSArray *main = dic[@"main"];
+    NSArray *back = dic[@"back"];
+    if (status == 0 && [main isKindOfClass:[NSArray class]] && [back isKindOfClass:[NSArray class]]) {
         
         [self.mainServerList removeAllObjects];
         [self.backServerList removeAllObjects];
         
-        [self.mainServerList addObjectsFromArray:dic[@"main"]];
-        [self.backServerList addObjectsFromArray:dic[@"back"]];
+        [self.mainServerList addObjectsFromArray:main];
+        [self.backServerList addObjectsFromArray:back];
         
     } else {
         [BLStatusBar showTipMessageWithStatus:@"Query Service List failed!"];
@@ -87,20 +94,28 @@
 }
 
 - (void)sendHeartBeat {
-    
     if (self.mainServerList.count > 0) {
-        
         NSDictionary *dic = self.mainServerList.firstObject;
+        if (![dic isKindOfClass:[NSDictionary class]]) {
+            [BLStatusBar showTipMessageWithStatus:@"Heartbeat target is invalid."];
+            return;
+        }
         NSString *ipaddr = dic[@"ip"];
         NSUInteger port = [dic[@"port"] unsignedIntegerValue];
-        
-        NSString *result = [self.deviceCheck sendHeartbeatToHostIP:ipaddr port:port];
-        NSLog(@"result: %@", result);
+        if (ipaddr.length == 0 || port == 0 || !self.deviceCheck) {
+            [BLStatusBar showTipMessageWithStatus:@"Heartbeat target is unavailable."];
+            return;
+        }
+        [self.deviceCheck sendHeartbeatToHostIP:ipaddr port:port];
+    } else {
+        [BLStatusBar showTipMessageWithStatus:@"Please query the service list first."];
     }
-    
 }
 
 - (void)closeDeviceCheck {
+    if (!self.deviceCheck) {
+        return;
+    }
     [self.deviceCheck closedDeviceCheckSocket];
     self.deviceCheck = nil;
 }

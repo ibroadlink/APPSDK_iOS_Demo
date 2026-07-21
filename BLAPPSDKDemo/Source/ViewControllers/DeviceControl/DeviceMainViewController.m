@@ -7,6 +7,7 @@
 //
 
 #import "DeviceMainViewController.h"
+#import "Tools.h"
 #import "MyDeviceListViewController.h"
 #import "DeviceStressTestController.h"
 #import "BLTheme.h"
@@ -17,8 +18,7 @@
 @implementation DeviceMainViewController
 
 + (instancetype)viewController {
-    DeviceMainViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (void)viewDidLoad {

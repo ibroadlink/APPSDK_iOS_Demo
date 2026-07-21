@@ -9,7 +9,6 @@
 #import "RestPasswordViewController.h"
 #import <BLLetAccount/BLLetAccount.h>
 
-#import "BLStatusBar.h"
 #import "BLLoadingButton.h"
 #import "LoginViewController.h"
 
@@ -24,7 +23,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     [self viewInit];
 }
 
@@ -34,34 +32,28 @@
     [self.restPasswordButton setTitle:@"修改密码" forState:UIControlStateNormal];
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (IBAction)restPasswordAction:(id)sender {
+    __weak typeof(self) weakSelf = self;
     self.restPasswordButton.isLoading = YES;
     [[BLAccount sharedAccount] retrivePassword:_accountText vcode:self.VCodeTextField.text newPassword:self.passwordTextField.text completionHandler:^(BLLoginResult * _Nonnull result) {
         if ([result succeed]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.restPasswordButton.isLoading = NO;
-                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                weakSelf.restPasswordButton.isLoading = NO;
                 UIViewController *target = nil;
-                for (UIViewController * controller in self.navigationController.viewControllers) { //遍历
-                    if ([controller isKindOfClass:[loginVC class]]) { //这里判断是否为你想要跳转的页面
+                for (UIViewController *controller in weakSelf.navigationController.viewControllers) {
+                    if ([controller isKindOfClass:[LoginViewController class]]) {
                         target = controller;
                     }
                 }
                 if (target) {
-                    [self.navigationController popToViewController:target animated:YES]; //跳转
+                    [weakSelf.navigationController popToViewController:target animated:YES];
                 }
 
             });
         }else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.restPasswordButton.isLoading = NO;
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
+                weakSelf.restPasswordButton.isLoading = NO;
+                [weakSelf showSDKResult:result successMessage:nil];
             });
         }
     }];

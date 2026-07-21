@@ -10,6 +10,7 @@
 #import "OperateViewController.h"
 
 #import "BLDeviceService.h"
+#import "Tools.h"
 
 @implementation MyDeviceListViewController
 
@@ -24,11 +25,6 @@
     [NSTimer scheduledTimerWithTimeInterval:2.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
         [weakSelf.MyDeviceTable reloadData];
     }];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - table delegate
@@ -64,7 +60,7 @@
     typeLabel.text = [NSString stringWithFormat:@"Type:%ld", (long)[device getType]];
     
     UILabel *netstateLabel = (UILabel *)[cell viewWithTag:104];
-    netstateLabel.text = [NSString stringWithFormat:@"NetState:%@", [self getstate:device.ownerId ? device.deviceId : device.did]];
+    netstateLabel.text = [NSString stringWithFormat:@"NetState:%@", [self getstate:[Tools controlDidForDevice:device]]];
     
     return cell;
 }
@@ -72,21 +68,7 @@
 - (NSString *)getstate:(NSString *)did {
     BLDeviceStatusEnum state = [[BLLet sharedLet].controller queryDeviceState:did];
     
-    NSString *stateString = @"State UnKown";
-    switch (state) {
-        case BL_DEVICE_STATE_LAN:
-            stateString = @"LAN";
-            break;
-        case BL_DEVICE_STATE_REMOTE:
-            stateString = @"REMOTE";
-            break;
-        case BL_DEVICE_STATE_OFFLINE:
-            stateString = @"OFFLINE";
-            break;
-        default:
-            break;
-    }
-    return stateString;
+    return [Tools stringForDeviceState:state];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -4,6 +4,7 @@
 //
 
 #import "BLTheme.h"
+#import <Masonry/Masonry.h>
 
 @implementation BLTheme
 
@@ -161,6 +162,17 @@
     textView.editable = NO;
 }
 
++ (void)styleButtonsInView:(UIView *)view {
+    if (!view) { return; }
+    for (UIView *subview in view.subviews) {
+        if ([subview isKindOfClass:[UIButton class]]) {
+            [self stylePrimaryButton:(UIButton *)subview];
+        } else {
+            [self styleButtonsInView:subview];
+        }
+    }
+}
+
 + (UIButton *)menuRowCardWithItem:(NSDictionary *)item target:(id)target action:(SEL)action {
     UIButton *card = [UIButton buttonWithType:UIButtonTypeCustom];
     card.tag = [item[@"tag"] integerValue];
@@ -169,14 +181,12 @@
     card.backgroundColor = [self cardColor];
 
     UIView *iconBg = [[UIView alloc] init];
-    iconBg.translatesAutoresizingMaskIntoConstraints = NO;
     iconBg.userInteractionEnabled = NO;
     iconBg.backgroundColor = [self primaryLightColor];
     iconBg.layer.cornerRadius = 18;
     [card addSubview:iconBg];
 
     UIImageView *iconView = [[UIImageView alloc] init];
-    iconView.translatesAutoresizingMaskIntoConstraints = NO;
     iconView.userInteractionEnabled = NO;
     iconView.tintColor = [self primaryColor];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
@@ -187,7 +197,6 @@
     [iconBg addSubview:iconView];
 
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     titleLabel.userInteractionEnabled = NO;
     titleLabel.text = item[@"title"];
     titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
@@ -195,7 +204,6 @@
     [card addSubview:titleLabel];
 
     UILabel *descLabel = [[UILabel alloc] init];
-    descLabel.translatesAutoresizingMaskIntoConstraints = NO;
     descLabel.userInteractionEnabled = NO;
     descLabel.text = item[@"desc"];
     descLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightRegular];
@@ -204,7 +212,6 @@
     [card addSubview:descLabel];
 
     UIImageView *chevron = [[UIImageView alloc] init];
-    chevron.translatesAutoresizingMaskIntoConstraints = NO;
     chevron.userInteractionEnabled = NO;
     chevron.tintColor = [self subtitleColor];
     if (@available(iOS 13.0, *)) {
@@ -212,30 +219,30 @@
     }
     [card addSubview:chevron];
 
-    [NSLayoutConstraint activateConstraints:@[
-        [iconBg.leadingAnchor constraintEqualToAnchor:card.leadingAnchor constant:16],
-        [iconBg.centerYAnchor constraintEqualToAnchor:card.centerYAnchor],
-        [iconBg.widthAnchor constraintEqualToConstant:40],
-        [iconBg.heightAnchor constraintEqualToConstant:40],
-
-        [iconView.centerXAnchor constraintEqualToAnchor:iconBg.centerXAnchor],
-        [iconView.centerYAnchor constraintEqualToAnchor:iconBg.centerYAnchor],
-        [iconView.widthAnchor constraintEqualToConstant:20],
-        [iconView.heightAnchor constraintEqualToConstant:20],
-
-        [chevron.trailingAnchor constraintEqualToAnchor:card.trailingAnchor constant:-16],
-        [chevron.centerYAnchor constraintEqualToAnchor:card.centerYAnchor],
-        [chevron.widthAnchor constraintEqualToConstant:12],
-        [chevron.heightAnchor constraintEqualToConstant:16],
-
-        [titleLabel.leadingAnchor constraintEqualToAnchor:iconBg.trailingAnchor constant:12],
-        [titleLabel.trailingAnchor constraintEqualToAnchor:chevron.leadingAnchor constant:-8],
-        [titleLabel.topAnchor constraintEqualToAnchor:card.topAnchor constant:18],
-
-        [descLabel.leadingAnchor constraintEqualToAnchor:titleLabel.leadingAnchor],
-        [descLabel.trailingAnchor constraintEqualToAnchor:titleLabel.trailingAnchor],
-        [descLabel.topAnchor constraintEqualToAnchor:titleLabel.bottomAnchor constant:4],
-    ]];
+    [iconBg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(card).offset(16);
+        make.centerY.equalTo(card);
+        make.width.height.mas_equalTo(40);
+    }];
+    [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(iconBg);
+        make.width.height.mas_equalTo(20);
+    }];
+    [chevron mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(card).offset(-16);
+        make.centerY.equalTo(card);
+        make.width.mas_equalTo(12);
+        make.height.mas_equalTo(16);
+    }];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(iconBg.mas_right).offset(12);
+        make.right.equalTo(chevron.mas_left).offset(-8);
+        make.top.equalTo(card).offset(18);
+    }];
+    [descLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(titleLabel);
+        make.top.equalTo(titleLabel.mas_bottom).offset(4);
+    }];
     return card;
 }
 
@@ -256,24 +263,20 @@
 
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.tag = 88001;
-    scrollView.translatesAutoresizingMaskIntoConstraints = NO;
     scrollView.alwaysBounceVertical = YES;
     scrollView.showsVerticalScrollIndicator = NO;
     [hostView addSubview:scrollView];
 
     UIView *content = [[UIView alloc] init];
-    content.translatesAutoresizingMaskIntoConstraints = NO;
     [scrollView addSubview:content];
 
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     titleLabel.text = title;
     titleLabel.font = [UIFont systemFontOfSize:28 weight:UIFontWeightBold];
     titleLabel.textColor = [self titleColor];
     [content addSubview:titleLabel];
 
     UILabel *subtitleLabel = [[UILabel alloc] init];
-    subtitleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     subtitleLabel.text = subtitle;
     subtitleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     subtitleLabel.textColor = [self subtitleColor];
@@ -281,13 +284,11 @@
     [content addSubview:subtitleLabel];
 
     UIView *accentBar = [[UIView alloc] init];
-    accentBar.translatesAutoresizingMaskIntoConstraints = NO;
     accentBar.backgroundColor = [self primaryColor];
     accentBar.layer.cornerRadius = 2;
     [content addSubview:accentBar];
 
     UIStackView *stack = [[UIStackView alloc] init];
-    stack.translatesAutoresizingMaskIntoConstraints = NO;
     stack.axis = UILayoutConstraintAxisVertical;
     stack.spacing = 12;
     [content addSubview:stack];
@@ -295,40 +296,40 @@
     for (NSDictionary *item in items) {
         UIButton *card = [self menuRowCardWithItem:item target:target action:action];
         [stack addArrangedSubview:card];
-        [card.heightAnchor constraintEqualToConstant:76].active = YES;
+        [card mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(76);
+        }];
     }
 
-    UILayoutGuide *safe = hostView.safeAreaLayoutGuide;
-    [NSLayoutConstraint activateConstraints:@[
-        [scrollView.topAnchor constraintEqualToAnchor:safe.topAnchor],
-        [scrollView.leadingAnchor constraintEqualToAnchor:hostView.leadingAnchor],
-        [scrollView.trailingAnchor constraintEqualToAnchor:hostView.trailingAnchor],
-        [scrollView.bottomAnchor constraintEqualToAnchor:hostView.bottomAnchor],
-
-        [content.topAnchor constraintEqualToAnchor:scrollView.contentLayoutGuide.topAnchor],
-        [content.leadingAnchor constraintEqualToAnchor:scrollView.contentLayoutGuide.leadingAnchor],
-        [content.trailingAnchor constraintEqualToAnchor:scrollView.contentLayoutGuide.trailingAnchor],
-        [content.bottomAnchor constraintEqualToAnchor:scrollView.contentLayoutGuide.bottomAnchor],
-        [content.widthAnchor constraintEqualToAnchor:scrollView.frameLayoutGuide.widthAnchor],
-
-        [titleLabel.topAnchor constraintEqualToAnchor:content.topAnchor constant:16],
-        [titleLabel.leadingAnchor constraintEqualToAnchor:content.leadingAnchor constant:20],
-        [titleLabel.trailingAnchor constraintEqualToAnchor:content.trailingAnchor constant:-20],
-
-        [subtitleLabel.topAnchor constraintEqualToAnchor:titleLabel.bottomAnchor constant:6],
-        [subtitleLabel.leadingAnchor constraintEqualToAnchor:titleLabel.leadingAnchor],
-        [subtitleLabel.trailingAnchor constraintEqualToAnchor:titleLabel.trailingAnchor],
-
-        [accentBar.topAnchor constraintEqualToAnchor:subtitleLabel.bottomAnchor constant:12],
-        [accentBar.leadingAnchor constraintEqualToAnchor:titleLabel.leadingAnchor],
-        [accentBar.widthAnchor constraintEqualToConstant:32],
-        [accentBar.heightAnchor constraintEqualToConstant:4],
-
-        [stack.topAnchor constraintEqualToAnchor:accentBar.bottomAnchor constant:20],
-        [stack.leadingAnchor constraintEqualToAnchor:content.leadingAnchor constant:16],
-        [stack.trailingAnchor constraintEqualToAnchor:content.trailingAnchor constant:-16],
-        [stack.bottomAnchor constraintEqualToAnchor:content.bottomAnchor constant:-28],
-    ]];
+    [scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(hostView.mas_safeAreaLayoutGuideTop);
+        make.left.right.bottom.equalTo(hostView);
+    }];
+    [content mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(scrollView);
+        make.width.equalTo(scrollView);
+    }];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(content).offset(16);
+        make.left.equalTo(content).offset(20);
+        make.right.equalTo(content).offset(-20);
+    }];
+    [subtitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(titleLabel.mas_bottom).offset(6);
+        make.left.right.equalTo(titleLabel);
+    }];
+    [accentBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(subtitleLabel.mas_bottom).offset(12);
+        make.left.equalTo(titleLabel);
+        make.width.mas_equalTo(32);
+        make.height.mas_equalTo(4);
+    }];
+    [stack mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(accentBar.mas_bottom).offset(20);
+        make.left.equalTo(content).offset(16);
+        make.right.equalTo(content).offset(-16);
+        make.bottom.equalTo(content).offset(-28);
+    }];
 }
 
 @end

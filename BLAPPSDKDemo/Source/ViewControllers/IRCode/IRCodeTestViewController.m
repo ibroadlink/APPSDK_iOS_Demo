@@ -11,6 +11,7 @@
 #import "CateGoriesTableViewController.h"
 #import "AKeyToIdentifyViewController.h"
 #import "BrandSelectController.h"
+#import "Tools.h"
 
 #import "BLStatusBar.h"
 #import "BLTheme.h"
@@ -23,8 +24,7 @@
 @implementation IRCodeTestViewController
 
 + (instancetype)viewController {
-    IRCodeTestViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (void)viewDidLoad {
@@ -41,11 +41,6 @@
                              items:items
                             target:self
                             action:@selector(button:)];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (IBAction)button:(UIButton *)sender {

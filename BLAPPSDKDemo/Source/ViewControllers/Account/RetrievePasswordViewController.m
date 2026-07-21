@@ -9,7 +9,6 @@
 #import "RetrievePasswordViewController.h"
 #import <BLLetAccount/BLLetAccount.h>
 
-#import "BLStatusBar.h"
 #import "BLLoadingButton.h"
 #import "RestPasswordViewController.h"
 
@@ -30,23 +29,19 @@
     self.accountTextField.delegate = self;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 - (IBAction)nextAction:(id)sender {
     __weak typeof(self) weakSelf = self;
     self.nextButton.isLoading = YES;
     [[BLAccount sharedAccount] sendRetriveVCode:self.accountTextField.text completionHandler:^(BLBaseResult * _Nonnull result) {
         if ([result succeed]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.nextButton.isLoading = NO;
-                [weakSelf performSegueWithIdentifier:@"retrievePassword" sender:self.accountTextField.text];
+                weakSelf.nextButton.isLoading = NO;
+                [weakSelf performSegueWithIdentifier:@"retrievePassword" sender:weakSelf.accountTextField.text];
             });
         }else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.nextButton.isLoading = NO;
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
+                weakSelf.nextButton.isLoading = NO;
+                [weakSelf showSDKResult:result successMessage:nil];
             });
         }
     }];

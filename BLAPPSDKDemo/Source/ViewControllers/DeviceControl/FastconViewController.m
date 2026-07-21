@@ -10,6 +10,7 @@
 
 #import "BLDeviceService.h"
 #import "BLStatusBar.h"
+#import "Tools.h"
 
 @interface FastconViewController ()
 @property (strong, nonatomic) BLDNADevice *device;
@@ -50,14 +51,14 @@
     }
     
     NSDictionary *waitConfigDataDic = @{
-                                        @"did": self.device.did,
+                                        @"did": [Tools controlDidForDevice:self.device],
                                         @"act":@(0),
                                         @"count":@(10),
                                         @"index":@(index),
                                         };
-    NSString *waitConfigDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:waitConfigDataDic options:0 error:nil] encoding:NSUTF8StringEncoding];
-    NSString *waitConfigResult = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did subDevDid:nil dataStr:waitConfigDataStr command:@"fastcon_no_config" scriptPath:nil];
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[waitConfigResult dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
+    NSString *waitConfigDataStr = [Tools jsonStringFromObject:waitConfigDataDic];
+    NSString *waitConfigResult = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] subDevDid:nil dataStr:waitConfigDataStr command:@"fastcon_no_config" scriptPath:nil];
+    NSDictionary *dic = [Tools dictionaryFromJSONString:waitConfigResult];
     if ([dic[@"status"] integerValue] == 0) {
         NSDictionary *data = dic[@"data"];
         NSUInteger total = [data[@"total"] unsignedIntegerValue];
@@ -90,13 +91,13 @@
 //fastcon配网
 - (void)fastconNoConfig:(NSArray *)configArray {
     NSDictionary *configDataDic = @{
-                                    @"did": self.device.did,
+                                    @"did": [Tools controlDidForDevice:self.device],
                                     @"act":@(1),
                                     @"devlist":configArray
                                     };
-    NSString *configDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:configDataDic options:0 error:nil] encoding:NSUTF8StringEncoding];
+    NSString *configDataStr = [Tools jsonStringFromObject:configDataDic];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *configResult = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did subDevDid:nil dataStr:configDataStr command:@"fastcon_no_config" scriptPath:nil];
+        NSString *configResult = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] subDevDid:nil dataStr:configDataStr command:@"fastcon_no_config" scriptPath:nil];
         dispatch_async(dispatch_get_main_queue(), ^{
             self.resultView.text = configResult;
         });
@@ -108,16 +109,15 @@
 //配网结果查询
 - (void)getFastconStatusWithDevList:(NSArray *)configList {
     NSDictionary *dic = @{
-                          @"did": self.device.did,
+                          @"did": [Tools controlDidForDevice:self.device],
                           @"act":@(2),
                           @"devlist":configList
                           };
-    NSString *str = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dic options:0 error:nil] encoding:NSUTF8StringEncoding];
+    NSString *str = [Tools jsonStringFromObject:dic];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did subDevDid:nil dataStr:str command:@"fastcon_no_config" scriptPath:nil];
+        NSString *result = [[BLLet sharedLet].controller dnaControl:[Tools controlDidForDevice:self.device] subDevDid:nil dataStr:str command:@"fastcon_no_config" scriptPath:nil];
         dispatch_async(dispatch_get_main_queue(), ^{
             self.resultView.text = result;
-            NSLog(@"fastcon_no_config_result:%@",result);
         });
         
     });

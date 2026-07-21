@@ -10,6 +10,7 @@
 #import "DNAControlViewController.h"
 #import "BLDeviceService.h"
 #import "BLStatusBar.h"
+#import "Tools.h"
 
 @interface FastconGroupDeviceViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (strong, nonatomic) BLDNADevice *device;
@@ -23,8 +24,7 @@
 @implementation FastconGroupDeviceViewController
 
 + (instancetype)viewController {
-    FastconGroupDeviceViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (void)viewDidLoad {
@@ -47,7 +47,7 @@
     if (index == 0) {
         [self.subDevicelist removeAllObjects];
     }
-   BLSubDevListResult *result = [[BLLet sharedLet].controller subDevListQueryWithDid:self.device.did index:index count:10];
+   BLSubDevListResult *result = [[BLLet sharedLet].controller subDevListQueryWithDid:[Tools controlDidForDevice:self.device] index:index count:10];
      if ([result succeed]) {
          self.resultTextView.text = [result BLS_modelToJSONString];
          __block int n = 0;

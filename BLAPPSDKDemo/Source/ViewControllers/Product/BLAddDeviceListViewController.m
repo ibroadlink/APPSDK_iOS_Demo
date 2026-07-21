@@ -15,6 +15,7 @@
 #import "BLStatusBar.h"
 #import <BLLetAccount/BLLetAccount.h>
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "Tools.h"
 
 @interface BLAddDeviceListViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) NSArray *productCategoryList;
@@ -50,7 +51,7 @@
                                   };
     NSString *url = [NSString stringWithFormat:@"https://%@bizappmanage.ibroadlink.com/ec4/v1/system/resource/productlist",[BLConfigParam sharedConfigParam].licenseId];
     
-    [self generatePost:url head:headers data:parameters timeout:[BLConfigParam sharedConfigParam].httpTimeout completionHandler:^(NSData *data, NSError *error) {
+    [Tools postJSONToURL:url head:headers data:parameters timeout:[BLConfigParam sharedConfigParam].httpTimeout completionHandler:^(NSData *data, NSError *error) {
         if (data) {
             BLProductCategoryList *productCategoryList = [BLProductCategoryList BLS_modelWithJSON:data];
             self.productCategoryList = productCategoryList.productlist;
@@ -60,18 +61,6 @@
         });
         
     }];
-}
-
-- (void)generatePost:(NSString *)url
-                head:(NSDictionary *)head
-                data:(NSDictionary *)data
-             timeout:(NSUInteger)timeout
-   completionHandler:(void (^)(NSData * data, NSError * error))completionHandler
-{
-    BLBaseHttpAccessor *httpAccessor = [[BLBaseHttpAccessor alloc] init];
-    
-    BLLogDebug(@"postData:%@",[BLCommonTools serializeMessage:data]);
-    [httpAccessor post:url head:head data:[NSJSONSerialization dataWithJSONObject:data options:0 error:nil] timeout:timeout completionHandler:completionHandler];
 }
 
 #pragma mark - table delegate

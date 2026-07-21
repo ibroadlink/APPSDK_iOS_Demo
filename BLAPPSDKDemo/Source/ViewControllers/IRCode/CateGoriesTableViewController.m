@@ -8,6 +8,7 @@
 
 #import "CateGoriesTableViewController.h"
 #import "ProductModelsTableViewController.h"
+#import "Tools.h"
 
 #import "BLStatusBar.h"
 #import <BLLetIRCode/BLLetIRCode.h>
@@ -22,8 +23,7 @@
 @implementation CateGoriesTableViewController
 
 + (instancetype)viewController {
-    CateGoriesTableViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (void)viewDidLoad {
@@ -40,11 +40,6 @@
     });
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (void)queryDeviceTypes {
     if (self.devtype == BL_IRCODE_DEVICE_AC || self.devtype == BL_IRCODE_DEVICE_TV) {
         [self queryIRCodeBrands];
@@ -56,7 +51,6 @@
 - (void)queryIRCodeBrands {
     
     [self.blircode requestIRCodeDeviceBrandsWithType:self.devtype completionHandler:^(BLBaseBodyResult * _Nonnull result) {
-        NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
             [self.brandInfos removeAllObjects];
 
@@ -75,7 +69,7 @@
             });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                 [BLStatusBar showTipMessageWithStatus:result.msg];
+                 [self showErrorCode:result.error msg:result.msg];
             });
         }
     }];
@@ -105,7 +99,7 @@
             });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [BLStatusBar showTipMessageWithStatus:result.msg];
+                [self showErrorCode:result.error msg:result.msg];
             });
         }
     }];

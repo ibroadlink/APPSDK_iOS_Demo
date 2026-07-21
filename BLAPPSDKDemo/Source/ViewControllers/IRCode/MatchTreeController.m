@@ -9,6 +9,7 @@
 #import "MatchTreeController.h"
 #import "RecoginzeIRCodeViewController.h"
 #import "MatchTreeTestController.h"
+#import "Tools.h"
 
 #import "BLStatusBar.h"
 #import "IRCodeBrandInfo.h"
@@ -31,8 +32,7 @@
 @implementation MatchTreeController
 
 + (instancetype)viewController {
-    MatchTreeController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (void)viewDidLoad {
@@ -74,7 +74,9 @@
     [self showIndicatorOnWindow];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [ircode getMatchTreeWithCountry:@"1" devtypeid:self.devtype brandid:self.brand.brandid completionHandler:^(BLBaseBodyResult * _Nonnull result) {
-            [self hideIndicatorOnWindow];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideIndicatorOnWindow];
+            });
 
             if ([result succeed]) {
                 [self.hotIRCodes removeAllObjects];
@@ -97,7 +99,7 @@
                 });
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.resultText.text = [NSString stringWithFormat:@"QueryMatchTreeInfos Status:%ld Msg:%@", (long)result.status, result.msg];
+                    self.resultText.text = [Tools messageForError:result.error msg:result.msg];
                 });
             }
         }];

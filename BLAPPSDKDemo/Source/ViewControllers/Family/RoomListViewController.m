@@ -68,7 +68,7 @@
                 self.roomList = result.roomInfos;
                 [self.roomListTable reloadData];
             } else {
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Get Rooms Failed. Code:%ld MSG:%@", result.status, result.msg]];
+                [self showErrorCode:result.status msg:result.msg];
             }
         });
     }];
@@ -87,7 +87,7 @@
             if ([result succeed]) {
                 [self getFamilyRooms];
             } else {
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Manage Room Failed. Code:%ld MSG:%@", result.status, result.msg]];
+                [self showErrorCode:result.status msg:result.msg];
             }
             
         });

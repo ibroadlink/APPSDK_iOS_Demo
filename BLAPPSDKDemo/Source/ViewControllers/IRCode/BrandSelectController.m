@@ -7,6 +7,7 @@
 //
 
 #import "BrandSelectController.h"
+#import "Tools.h"
 #import "MatchTreeController.h"
 
 #import "BLStatusBar.h"
@@ -25,8 +26,7 @@
 @implementation BrandSelectController
 
 + (instancetype)viewController {
-    BrandSelectController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (void)viewDidLoad {
@@ -52,31 +52,7 @@
     [self showIndicatorOnWindow];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [ircode requestIRCodeDeviceBrandsWithType:self.devtype completionHandler:^(BLBaseBodyResult * _Nonnull result) {
-            NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
-            if ([result succeed]) {
-                [self.brandInfos removeAllObjects];
-                
-                if (result.respbody) {
-                    NSArray *brands = result.respbody[@"brand"];
-                    
-                    if (![BLCommonTools isEmptyArray:brands]) {
-                        for (NSDictionary *dic in brands) {
-                            IRCodeBrandInfo *info = [IRCodeBrandInfo BLS_modelWithDictionary:dic];
-                            [self.brandInfos addObject:info];
-                        }
-                    }
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self hideIndicatorOnWindow];
-                    [self.ircodeBrandTable reloadData];
-                });
-            } else {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self hideIndicatorOnWindow];
-                    [BLStatusBar showTipMessageWithStatus:result.msg];
-                });
-            }
+            [self handleBrandQueryResult:result];
         }];
     });
 }
@@ -88,32 +64,27 @@
     [self showIndicatorOnWindow];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [ircode requestSTBBrandsWithCompletionHandler:^(BLBaseBodyResult * _Nonnull result) {
-            NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
-            if ([result succeed]) {
-                [self.brandInfos removeAllObjects];
-                
-                if (result.respbody) {
-                    NSArray *brands = result.respbody[@"brand"];
-                    
-                    if (![BLCommonTools isEmptyArray:brands]) {
-                        for (NSDictionary *dic in brands) {
-                            IRCodeBrandInfo *info = [IRCodeBrandInfo BLS_modelWithDictionary:dic];
-                            [self.brandInfos addObject:info];
-                        }
-                    }
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self hideIndicatorOnWindow];
-                    [self.ircodeBrandTable reloadData];
-                });
-            } else {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self hideIndicatorOnWindow];
-                    [BLStatusBar showTipMessageWithStatus:result.msg];
-                });
-            }
+            [self handleBrandQueryResult:result];
         }];
+    });
+}
+
+- (void)handleBrandQueryResult:(BLBaseBodyResult *)result {
+    if ([result succeed]) {
+        [self.brandInfos removeAllObjects];
+        NSArray *brands = result.respbody[@"brand"];
+        for (NSDictionary *dictionary in brands) {
+            [self.brandInfos addObject:[IRCodeBrandInfo BLS_modelWithDictionary:dictionary]];
+        }
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self hideIndicatorOnWindow];
+        if ([result succeed]) {
+            [self.ircodeBrandTable reloadData];
+        } else {
+            [self showErrorCode:result.error msg:result.msg];
+        }
     });
 }
 

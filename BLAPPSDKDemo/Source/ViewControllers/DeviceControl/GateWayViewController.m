@@ -14,6 +14,8 @@
 #import "BLStatusBar.h"
 #import "SSZipArchive.h"
 #import "AppMacro.h"
+#import "BLFamilyDefult.h"
+#import "Tools.h"
 
 @interface GateWayViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -32,8 +34,7 @@
 @implementation GateWayViewController
 
 + (GateWayViewController *)viewController {
-    GateWayViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"GateWayViewController"];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:[self class]];
 }
 
 - (void)viewDidLoad {
@@ -46,7 +47,10 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
-    [BLConfigParam sharedConfigParam].familyId = @"0173f6a4afd455ef1b1b5da86b36c35f";
+    NSString *familyId = [BLFamilyDefult sharedFamily].currentFamilyInfo.familyid;
+    if (familyId.length > 0) {
+        [BLConfigParam sharedConfigParam].familyId = familyId;
+    }
     
     [self write];
 }
@@ -119,22 +123,22 @@
                     dispatch_group_leave(group);
                 }];
             }
-            dispatch_group_wait(group, dispatch_time(DISPATCH_TIME_NOW, 30 * NSEC_PER_SEC));
-            
-            if (isDownloadScript && isDownloadUI) {
-                dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                if (isDownloadScript && isDownloadUI) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
                     [[BLDeviceService sharedDeviceService] addNewDeivce:subDevice];
-                    if ([self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_JS_FILE]) {
+                    if ([Tools copyCordovaJsNamed:DNAKIT_CORVODA_JS_FILE forPid:subDevice.pid]) {
                         [self performSegueWithIdentifier:@"DeviceWebControlView" sender:subDevice];
                     }
                     [self hideIndicatorOnWindow];
-                });
-            } else {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [BLStatusBar showTipMessageWithStatus:@"Download script or ui failed!!!"];
-                    [self hideIndicatorOnWindow];
-                });
-            }
+                    });
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [BLStatusBar showTipMessageWithStatus:@"Download script or ui failed!!!"];
+                        [self hideIndicatorOnWindow];
+                    });
+                }
+            });
         });
         
     }
@@ -182,7 +186,7 @@
     [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         self.spid = alertController.textFields.firstObject.text;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            BLBaseResult *result = [[BLLet sharedLet].controller subDevScanStartWithDid:self.device.ownerId ? self.device.deviceId : [self.device getDid] subPid:self.spid];
+            BLBaseResult *result = [[BLLet sharedLet].controller subDevScanStartWithDid:[Tools controlDidForDevice:self.device] subPid:self.spid];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
             });
@@ -197,7 +201,7 @@
 
 - (void)subDevStop {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        BLBaseResult *result = [[BLLet sharedLet].controller subDevScanStopWithDid:self.device.ownerId ? self.device.deviceId : [self.device getDid]];
+        BLBaseResult *result = [[BLLet sharedLet].controller subDevScanStopWithDid:[Tools controlDidForDevice:self.device]];
         dispatch_async(dispatch_get_main_queue(), ^{
             [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
         });
@@ -212,7 +216,7 @@
         [self.subDevicelist removeAllObjects];
     }
     
-    BLSubDevListResult *result = [[BLLet sharedLet].controller subDevNewListQueryWithDid:self.device.ownerId ? self.device.deviceId : self.device.did index:index count:10 subPid:self.spid];
+    BLSubDevListResult *result = [[BLLet sharedLet].controller subDevNewListQueryWithDid:[Tools controlDidForDevice:self.device] index:index count:10 subPid:self.spid];
     if ([result succeed]) {
         if (result.list.count > 0) {
             [self.subDevicelist addObjectsFromArray:result.list];
@@ -242,7 +246,7 @@
         [self.subDevicelist removeAllObjects];
     }
     
-    BLSubDevListResult *result = [[BLLet sharedLet].controller subDevListQueryWithDid:self.device.ownerId ? self.device.deviceId : self.device.did index:index count:10];
+    BLSubDevListResult *result = [[BLLet sharedLet].controller subDevListQueryWithDid:[Tools controlDidForDevice:self.device] index:index count:10];
     if ([result succeed]) {
         if (result.list.count > 0) {
             [self.subDevicelist addObjectsFromArray:result.list];
@@ -267,7 +271,7 @@
 }
 
 - (void)addSubDev:(BLDNADevice *)subDevice {
-    BLBaseResult *result = [[BLLet sharedLet].controller subDevAddWithDid:self.device.ownerId ? self.device.deviceId : self.device.did subDevInfo:subDevice];
+    BLBaseResult *result = [[BLLet sharedLet].controller subDevAddWithDid:[Tools controlDidForDevice:self.device] subDevInfo:subDevice];
     if ([result succeed]) {
         [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"AddSubDev:%@ success",subDevice.getDid]];
     } else {
@@ -281,7 +285,7 @@
 }
 
 - (void)deleteSubDev:(BLDNADevice *)subDevice {
-    BLBaseResult *result = [[BLLet sharedLet].controller subDevDelWithDid:self.device.ownerId ? self.device.deviceId : self.device.did subDevDid:subDevice.getDid];
+    BLBaseResult *result = [[BLLet sharedLet].controller subDevDelWithDid:[Tools controlDidForDevice:self.device] subDevDid:subDevice.getDid];
     if ([result succeed]) {
         [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"DeleteSubDev:%@ success",subDevice.getDid]];
     } else {
@@ -293,46 +297,6 @@
         [self subDevListQuery:0];
     });
 }
-
-//{"prop":"stdctrl","srv":"1.10.1","did":"01A703A5D85021ED3AA6B056DF16E2FF","params":["switch_pair_status"],"vals":[[{"val":1,"idx":0}]],"act":"get","password":"ab0d4322"}
-//{"vals":[[{"val":1,"idx":1}]],"did":"00000000000000000000b4430d96b549","password":"ab0d4322","act":"set","prop":"stdctrl","params":["switch_pair"]}
-//- (void)switchPairStatus:(BLDNADevice *)subDevice {
-//    BLStdData *stdData = [[BLStdData alloc] init];
-//    [stdData setValue:@1 forParam:@"rmpanel_pairstatus"];
-//    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[_device getDid] subDevDid:[subDevice getDid] stdData:stdData action:@"set"];
-//    NSDictionary *subdic = [[result getData] toDictionary];
-//    NSLog(@"subDic:%@",subdic);
-//    [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
-//}
-//
-//- (void)switchPair:(BLDNADevice *)subDevice {
-//    BLStdData *stdData = [[BLStdData alloc] init];
-//    [stdData setValue:@1 forParam:@"rmpanel_pair"];
-//    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[_device getDid] subDevDid:[subDevice getDid] stdData:stdData action:@"set"];
-//    NSDictionary *subdic = [[result getData] toDictionary];
-//    NSLog(@"subDic:%@",subdic);
-//    [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
-//}
-//
-//- (void)tCController:(BLDNADevice *)subDevice {
-//    BLStdData *stdData = [[BLStdData alloc] init];
-//    [stdData setValue:@1 forParam:@"pwr"];
-//    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[_device getDid] subDevDid:[subDevice getDid] stdData:stdData action:@"set"];
-//    NSDictionary *subdic = [[result getData] toDictionary];
-//    NSLog(@"subDic:%@",subdic);
-//    [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
-//}
-//
-//
-//- (void)otherButton:(BLDNADevice *)subDevice {
-//    //控制
-//    BLStdData *stdData = [[BLStdData alloc] init];
-//    [stdData setValue:@0 forParam:@"rmpanel_fanoperation"];
-//    BLStdControlResult *result = [[BLLet sharedLet].controller dnaControl:[_device getDid] subDevDid:[subDevice getDid] stdData:stdData action:@"set"];
-//    NSDictionary *subdic = [[result getData] toDictionary];
-//    NSLog(@"subDic:%@",subdic);
-//    [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
-//}
 
 - (void)write{
     
@@ -355,26 +319,6 @@
         
         return NULL;
     }];
-}
-
-- (BOOL)copyCordovaJsToUIPathWithFileName:(NSString*)fileName {
-    NSString *uiPath = [[[BLLet sharedLet].controller queryUIPath:[_device getPid]] stringByDeletingLastPathComponent];  //  ../Let/ui/
-    NSString *fullPathFileName = [uiPath stringByAppendingPathComponent:fileName];  // ../Let/ui/fileName
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:fullPathFileName] == NO) {
-        NSString *path = [[NSBundle mainBundle] pathForResource:fileName ofType:nil];
-        NSError *error;
-        BOOL success = [fileManager copyItemAtPath:path toPath:fullPathFileName error:&error];
-        if (success) {
-            NSLog(@"%@ copy success",fileName);
-            return YES;
-        } else {
-            NSLog(@"%@ copy failed",fileName);
-            return NO;
-        }
-    }
-    
-    return YES;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

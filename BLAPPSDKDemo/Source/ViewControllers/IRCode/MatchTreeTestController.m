@@ -13,6 +13,7 @@
 #import "IRCodeDownloadInfo.h"
 
 #import "BLStatusBar.h"
+#import "Tools.h"
 #import <BLLetCore/BLLetCore.h>
 
 @interface MatchTreeTestController () <UITableViewDelegate, UITableViewDataSource>
@@ -26,8 +27,7 @@
 @implementation MatchTreeTestController
 
 + (instancetype)viewController {
-    MatchTreeTestController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (void)viewDidLoad {
@@ -66,17 +66,16 @@
 }
 
 - (void)sendIRCode:(NSString *)code {
-    NSLog(@"Send IRCode: %@", code);
     //发送红码
     BLStdData *stdStudyData = [[BLStdData alloc] init];
     [stdStudyData setValue:code forParam:@"irda"];
     
     BLController *blcontroller = [BLLet sharedLet].controller;
-    BLStdControlResult *studyResult = [blcontroller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdStudyData action:@"set"];
+    BLStdControlResult *studyResult = [blcontroller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdStudyData action:@"set"];
     if ([studyResult succeed]) {
         [BLStatusBar showTipMessageWithStatus:@"Send Success"];
     } else {
-        [BLStatusBar showTipMessageWithStatus:studyResult.msg];
+        [self showErrorCode:studyResult.error msg:studyResult.msg];
     }
 }
 

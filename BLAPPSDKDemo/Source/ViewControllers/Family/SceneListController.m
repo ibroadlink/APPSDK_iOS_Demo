@@ -47,8 +47,7 @@
                 self.sceneList = result.scenes;
                 [self.sceneListTable reloadData];
             } else {
-                NSLog(@"ERROR :%@", result.msg);
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Get Family SceneList Failed. Code:%ld MSG:%@", (long)result.status, result.msg]];
+                [self showErrorCode:result.status msg:result.msg];
             }
         });
     }];
@@ -61,7 +60,11 @@
     [manager delScene:info.sceneId completionHandler:^(BLBaseResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideIndicatorOnWindow];
-             [self queryAllSceneList];
+            if ([result succeed]) {
+                [self queryAllSceneList];
+            } else {
+                [self showErrorCode:result.error msg:result.msg];
+            }
         });
     }];
 }

@@ -9,6 +9,7 @@
 #import "FastconGroupDeviceEditViewController.h"
 #import "BLDeviceService.h"
 #import "BLStatusBar.h"
+#import "Tools.h"
 
 @interface FastconGroupDeviceEditViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIButton *name;
@@ -83,7 +84,7 @@
 }
 - (IBAction)SaveEdit:(id)sender {
     BLGroupVirtualDeviceInfo *info = [[BLGroupVirtualDeviceInfo alloc] init];
-    info.did = self.device.did;
+    info.did = [Tools controlDidForDevice:self.device];
     info.pid = self.device.pid;
     info.name = self.name.titleLabel.text;
     info.config = self.groupConfigList;
@@ -97,7 +98,7 @@
 }
 
 - (void)queryGroupDeviceBind {
-    BLQueryGroupDeviceResult *result = [[BLLet sharedLet].controller queryFastconGroupDeviceBindInfo:self.device.pDid sdid:self.device.did];
+    BLQueryGroupDeviceResult *result = [[BLLet sharedLet].controller queryFastconGroupDeviceBindInfo:self.device.pDid sdid:[Tools controlDidForDevice:self.device]];
     [self.name setTitle:result.name forState:UIControlStateNormal] ;
     [self.groupConfigList addObjectsFromArray:result.config];
 }

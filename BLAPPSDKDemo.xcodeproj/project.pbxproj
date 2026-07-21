@@ -93,7 +93,6 @@
 		705B09641D4F1C5B00805109 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 705B09621D4F1C5B00805109 /* LaunchScreen.storyboard */; };
 		70DDAEF51DC73D4A005E4278 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 70DDAEE91DC73D4A005E4278 /* AppDelegate.m */; };
 		70DDAEF91DC73D4A005E4278 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 70DDAEF01DC73D4A005E4278 /* main.m */; };
-		A7E91B0624E7A00100B171E1 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E91B0524E7A00100B171E1 /* SceneDelegate.m */; };
 		8405E12F225485ED00DC73D1 /* IRCodeMatchTreeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8405E12E225485ED00DC73D1 /* IRCodeMatchTreeInfo.m */; };
 		8405E1322254BE4E00DC73D1 /* MatchTreeTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8405E1312254BE4E00DC73D1 /* MatchTreeTestController.m */; };
 		8405E139225C3B6000DC73D1 /* DeviceStressTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8405E138225C3B6000DC73D1 /* DeviceStressTestController.m */; };
@@ -123,6 +122,7 @@
 		84F84217224A3E8A00D60C76 /* IRCodeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F84216224A3E8A00D60C76 /* IRCodeModel.m */; };
 		84F84219224A416900D60C76 /* IRCodeProviderInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F84218224A416900D60C76 /* IRCodeProviderInfo.m */; };
 		A7E91B0324E7A00100B171E1 /* BLTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E91B0224E7A00100B171E1 /* BLTheme.m */; };
+		A7E91B0624E7A00100B171E1 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E91B0524E7A00100B171E1 /* SceneDelegate.m */; };
 		C93C2DDCBFA64E0BFCE99E36 /* Pods_BLAPPSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 409A190FC527B889B267E6AE /* Pods_BLAPPSDKDemo.framework */; };
 /* End PBXBuildFile section */
 
@@ -290,8 +290,6 @@
 		70DDAEE81DC73D4A005E4278 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Source/AppDelegate.h; sourceTree = "<group>"; };
 		70DDAEE91DC73D4A005E4278 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Source/AppDelegate.m; sourceTree = "<group>"; };
 		70DDAEF01DC73D4A005E4278 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Source/main.m; sourceTree = "<group>"; };
-		A7E91B0424E7A00100B171E1 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SceneDelegate.h; path = Source/SceneDelegate.h; sourceTree = "<group>"; };
-		A7E91B0524E7A00100B171E1 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SceneDelegate.m; path = Source/SceneDelegate.m; sourceTree = "<group>"; };
 		72367507CB38F6AA480979FA /* Pods-BLAPPSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLAPPSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		8405E12D225485ED00DC73D1 /* IRCodeMatchTreeInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCodeMatchTreeInfo.h; sourceTree = "<group>"; };
 		8405E12E225485ED00DC73D1 /* IRCodeMatchTreeInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRCodeMatchTreeInfo.m; sourceTree = "<group>"; };
@@ -351,6 +349,8 @@
 		84F8421A224A41E100D60C76 /* IRCodeProviderInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRCodeProviderInfo.h; sourceTree = "<group>"; };
 		A7E91B0124E7A00100B171E1 /* BLTheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLTheme.h; sourceTree = "<group>"; };
 		A7E91B0224E7A00100B171E1 /* BLTheme.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLTheme.m; sourceTree = "<group>"; };
+		A7E91B0424E7A00100B171E1 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SceneDelegate.h; path = Source/SceneDelegate.h; sourceTree = "<group>"; };
+		A7E91B0524E7A00100B171E1 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SceneDelegate.m; path = Source/SceneDelegate.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -961,6 +961,7 @@
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/Cordova/Cordova.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
 				"${BUILT_PRODUCTS_DIR}/YYCategories/YYCategories.framework",
@@ -970,6 +971,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cordova.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYCategories.framework",

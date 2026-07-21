@@ -8,6 +8,7 @@
 
 #import "LoginsTableViewController.h"
 #import "BLTheme.h"
+#import "Tools.h"
 
 @implementation LoginsTableViewController
 
@@ -30,8 +31,7 @@
 }
 
 + (instancetype)viewController {
-    LoginsTableViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (void)menuAction:(UIButton *)sender {

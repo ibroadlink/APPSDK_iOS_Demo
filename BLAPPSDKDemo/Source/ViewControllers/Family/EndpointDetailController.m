@@ -11,6 +11,7 @@
 
 #import "BLDeviceService.h"
 #import "BLStatusBar.h"
+#import "Tools.h"
 
 @interface EndpointDetailController () <UITextFieldDelegate>
 
@@ -26,8 +27,7 @@
 @implementation EndpointDetailController
 
 + (EndpointDetailController *)viewController {
-    EndpointDetailController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"EndpointDetailController"];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:[self class]];
 }
 
 - (void)viewDidLoad {
@@ -87,7 +87,7 @@
             if ([result succeed]) {
                 [self.navigationController popViewControllerAnimated:YES];
             } else {
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Modify Endpoint Failed. Code:%ld MSG:%@", (long)result.status, result.msg]];
+                [self showErrorCode:result.status msg:result.msg];
             }
         });
         
@@ -109,8 +109,7 @@
 
             if (![BLCommonTools isEmpty:device.pDid]) {
                 //子设备需要从网关里删除信息
-                BLSubdevBaseResult *baseResult = [[BLLet sharedLet].controller subDevDelWithDid:device.pDid subDevDid:device.did];
-                NSLog(@"subDevDel Code:%ld MSG:%@", (long)baseResult.status, baseResult.msg);
+                [[BLLet sharedLet].controller subDevDelWithDid:device.pDid subDevDid:device.did];
             }
             [[BLDeviceService sharedDeviceService] removeDevice:device.did];
 
@@ -119,7 +118,7 @@
             });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Delete Endpoint Failed. Code:%ld MSG:%@", (long)result.status, result.msg]];
+                [self showErrorCode:result.status msg:result.msg];
             });
         }
     }];

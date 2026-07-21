@@ -11,6 +11,7 @@
 
 #import "BLDeviceService.h"
 #import "BLStatusBar.h"
+#import "Tools.h"
 
 @interface A1ViewController (){
     BLeAirNetWorkDataParser *_a1DataParser;
@@ -53,7 +54,7 @@
 
 - (void)getA1RefreshInfo {
     NSData *data = [_a1DataParser a1RefreshByts];
-    BLPassthroughResult *passThroughResult = [[BLLet sharedLet].controller dnaPassthrough:[_device getDid] passthroughData:data];
+    BLPassthroughResult *passThroughResult = [[BLLet sharedLet].controller dnaPassthrough:[Tools controlDidForDevice:self.device] passthroughData:data];
     BLeAirStatusInfo *a1StatusInfo = [_a1DataParser parseA1RefreshResult:passThroughResult.data];
     
     NSString *temperature = [NSString stringWithFormat:@"温度：%ld.%ld℃",(long)a1StatusInfo.temperature.integer , a1StatusInfo.temperature.decimal ];
@@ -79,7 +80,7 @@
 //结合智慧星APP设置联动，再来获取结果作参考
 - (void)getIFTTT {
     NSData *data = [_a1DataParser getIFTTT];
-    BLPassthroughResult *passThroughResult = [[BLLet sharedLet].controller dnaPassthrough:[_device getDid] passthroughData:data];
+    BLPassthroughResult *passThroughResult = [[BLLet sharedLet].controller dnaPassthrough:[Tools controlDidForDevice:self.device] passthroughData:data];
     BLeAirIFTTTList *a1IFTTTInfo = [_a1DataParser parseIFTTTList:passThroughResult.data];
     NSArray *list = a1IFTTTInfo.list;
     if (![list isKindOfClass:[NSNull class]] && list != nil && list.count != 0) {

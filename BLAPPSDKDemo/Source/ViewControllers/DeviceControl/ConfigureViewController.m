@@ -61,7 +61,7 @@
     self.passwordField.placeholder = self.passwordField.placeholder.length ? self.passwordField.placeholder : @"Wi-Fi Password";
     [self disablePasswordSavePromptForFields];
 
-    [self styleButtonsInView:self.view];
+    [BLTheme styleButtonsInView:self.view];
 }
 
 - (void)disablePasswordSavePromptForFields {
@@ -96,29 +96,6 @@
     // 减少键盘上方快捷栏 / Emoji Search 相关 RTI 开销
     textField.inputAssistantItem.leadingBarButtonGroups = @[];
     textField.inputAssistantItem.trailingBarButtonGroups = @[];
-}
-
-- (void)styleButtonsInView:(UIView *)view {
-    for (UIView *subview in view.subviews) {
-        if ([subview isKindOfClass:[UIButton class]]) {
-            UIButton *button = (UIButton *)subview;
-            if (button.tag == 103) {
-                button.backgroundColor = [BLTheme primaryLightColor];
-                [button setTitleColor:[BLTheme primaryColor] forState:UIControlStateNormal];
-            } else {
-                button.backgroundColor = [BLTheme primaryColor];
-                [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                [button setBackgroundImage:nil forState:UIControlStateNormal];
-                [button setBackgroundImage:nil forState:UIControlStateDisabled];
-            }
-            button.layer.cornerRadius = 10;
-            button.layer.masksToBounds = YES;
-            button.titleLabel.font = [UIFont systemFontOfSize:15 weight:UIFontWeightSemibold];
-            button.contentEdgeInsets = UIEdgeInsetsZero;
-        } else {
-            [self styleButtonsInView:subview];
-        }
-    }
 }
 
 /// Storyboard 把 resultText 顶到底部安全区，键盘弹出时会整页重算导致首点卡顿

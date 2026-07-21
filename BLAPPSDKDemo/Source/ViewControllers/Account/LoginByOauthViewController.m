@@ -7,16 +7,14 @@
 //
 
 #import "LoginByOauthViewController.h"
+#import "Tools.h"
 
 #define OAUTH_SERVER    @"172.16.10.210"
 #define OAUTH_CLIENT_ID @"35b305aeb7abf3ef3847011556045b6e"
 #define OAUTH_CLIENT_SECRET @"a74e73441370e41febe186e7ab3270ae"
 #define OAUTH_REDIRECTURI   @"bl35b305aeb7abf3ef3847011556045b6e://"
 
-#define IOSVersion                              [[[UIDevice currentDevice] systemVersion] floatValue]
-#define IsiOS10Later                            !(IOSVersion < 10.0)
-
-@interface LoginByOauthViewController () <UIWebViewDelegate>
+@interface LoginByOauthViewController ()
 
 @property (nonatomic, strong) NSString *requestUrl;
 
@@ -25,25 +23,20 @@
 @implementation LoginByOauthViewController
 
 + (instancetype)viewController {
-    LoginByOauthViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    [self initContentView];
-    
+    [self openURLString:self.requestUrl];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)initContentView {
-    NSURL *url = [NSURL URLWithString:self.requestUrl];
-    [[UIApplication sharedApplication] openURL:url];
+- (void)openURLString:(NSString *)URLString {
+    NSURL *url = [NSURL URLWithString:URLString];
+    if (!url || ![[UIApplication sharedApplication] canOpenURL:url]) {
+        return;
+    }
+    [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
 }
 
 #pragma mark - getter / setter
@@ -58,10 +51,7 @@
 }
 
 - (void)jumpToOtherAppWithURL:(NSString *)urlString {
-    NSURL *url = [NSURL URLWithString: urlString];
-    if ([[UIApplication sharedApplication] canOpenURL:url]) {
-        [[UIApplication sharedApplication] openURL:url];
-    }
+    [self openURLString:urlString];
 }
 
 @end

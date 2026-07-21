@@ -9,6 +9,7 @@
 
 #import "ProductModelsTableViewController.h"
 #import "RecoginzeIRCodeViewController.h"
+#import "Tools.h"
 
 #import "BLStatusBar.h"
 #import <BLLetIRCode/BLLetIRCode.h>
@@ -23,8 +24,7 @@
 @implementation ProductModelsTableViewController
 
 + (instancetype)viewController {
-    ProductModelsTableViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (void)viewDidLoad {
@@ -42,7 +42,6 @@
 - (void)queryDeviceVersionWithTypeId:(NSInteger)typeId brandId:(NSInteger)brandId {
     
     [self.blircode requestIRCodeScriptDownloadUrlWithType:typeId brand:brandId version:0 completionHandler:^(BLBaseBodyResult * _Nonnull result) {
-        NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
             [self.modelsArray removeAllObjects];
             
@@ -72,7 +71,6 @@
     
     [self.blircode requestSTBIRCodeScriptDownloadUrlWithLocateid:provider.locateid providerid:provider.providerid brandId:0 completionHandler:^(BLBaseBodyResult * _Nonnull result) {
         [self.modelsArray removeAllObjects];
-        NSLog(@"statue:%ld msg:%@", (long)result.error, result.msg);
         if ([result succeed]) {
 
             if (result.respbody) {

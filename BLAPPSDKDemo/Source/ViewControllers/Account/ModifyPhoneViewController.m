@@ -7,8 +7,7 @@
 //
 
 #import "ModifyPhoneViewController.h"
-#import "BLUserDefaults.h"
-#import "BLStatusBar.h"
+#import "Tools.h"
 #import <BLLetAccount/BLLetAccount.h>
 
 @interface ModifyPhoneViewController () <UITextFieldDelegate>
@@ -29,40 +28,25 @@
 
 - (IBAction)next:(id)sender {
     [self sendModifyPhoneVCode:self.phoneField.text countryCode:self.countryField.text];
-
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Please input verification code"
-                                                                   message:nil
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    
-    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"Verification code";
-    }];
-    
-    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"Password";
-    }];
-    
-    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-                                                              NSString *vcode = alert.textFields.firstObject.text;
-                                                              NSString *password = alert.textFields[1].text;
-                                                              [self modifyPhone:self.phoneField.text countryCode:self.countryField.text vcode:vcode password:password];
-                                                          }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}];
-    
-    [alert addAction:defaultAction];
-    [alert addAction:cancelAction];
-    [self presentViewController:alert animated:YES completion:nil];
+    __weak typeof(self) weakSelf = self;
+    [Tools presentAlertOn:self
+                    title:@"Please input verification code"
+                   fields:@[
+                       @{@"placeholder": @"Verification code"},
+                       @{@"placeholder": @"Password", @"secure": @YES}
+                   ]
+                  handler:^(NSArray<UITextField *> *textFields) {
+                      [weakSelf modifyPhone:weakSelf.phoneField.text
+                                countryCode:weakSelf.countryField.text
+                                      vcode:textFields.firstObject.text
+                                   password:textFields[1].text];
+                  }];
 }
 
 - (void)sendModifyPhoneVCode:(NSString *)phone countryCode:(NSString *)countryCode {
     [[BLAccount sharedAccount] sendModifyVCode:phone countryCode:countryCode completionHandler:^(BLBaseResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (result.succeed ) {
-                [BLStatusBar showTipMessageWithStatus:@"Send verification code success!"];
-            } else {
-                [BLStatusBar showTipMessageWithStatus:[result getMsg]?:@""];
-            }
+            [self showSDKResult:result successMessage:@"Send verification code success!"];
         });
     }];
 }
@@ -72,10 +56,10 @@
     [[BLAccount sharedAccount] modifyPhone:phone countryCode:countryCode vcode:vcode password:password newpassword:password completionHandler:^(BLBaseResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (result.succeed ) {
-                [BLStatusBar showTipMessageWithStatus:@"Modify phone number success!"];
+                [self showSDKResult:result successMessage:@"Modify phone number success!"];
                 [self.navigationController popViewControllerAnimated:YES];
             } else {
-                [BLStatusBar showTipMessageWithStatus:[result getMsg]?:@""];
+                [self showSDKResult:result successMessage:nil];
             }
         });
         

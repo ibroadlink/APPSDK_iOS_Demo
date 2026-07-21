@@ -8,7 +8,7 @@
 
 #import "ModifyEmailViewController.h"
 
-#import "BLStatusBar.h"
+#import "Tools.h"
 #import <BLLetAccount/BLLetAccount.h>
 
 @interface ModifyEmailViewController () <UITextFieldDelegate>
@@ -27,42 +27,25 @@
 
 
 - (IBAction)next:(UIButton *)sender {
-    
     [self sendModifyEmailVCode:self.emailField.text];
-    
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Please input verification code"
-                                                                   message:nil
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    
-    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"Verification code";
-    }];
-    
-    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"Password";
-    }];
-    
-    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-                                                              NSString *vcode = alert.textFields.firstObject.text;
-                                                              NSString *password = alert.textFields[1].text;
-                                                              [self modifyEmail:self.emailField.text vcode:vcode password:password];
-                                                          }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}];
-    
-    [alert addAction:defaultAction];
-    [alert addAction:cancelAction];
-    [self presentViewController:alert animated:YES completion:nil];
+    __weak typeof(self) weakSelf = self;
+    [Tools presentAlertOn:self
+                    title:@"Please input verification code"
+                   fields:@[
+                       @{@"placeholder": @"Verification code"},
+                       @{@"placeholder": @"Password", @"secure": @YES}
+                   ]
+                  handler:^(NSArray<UITextField *> *textFields) {
+                      [weakSelf modifyEmail:weakSelf.emailField.text
+                                      vcode:textFields.firstObject.text
+                                   password:textFields[1].text];
+                  }];
 }
 
 - (void)sendModifyEmailVCode:(NSString *)email {
     [[BLAccount sharedAccount] sendModifyVCode:email completionHandler:^(BLBaseResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (result.succeed ) {
-                [BLStatusBar showTipMessageWithStatus:@"Send verification code success!"];
-            } else {
-                [BLStatusBar showTipMessageWithStatus:[result getMsg]?:@""];
-            }
+            [self showSDKResult:result successMessage:@"Send verification code success!"];
         });
     }];
 }
@@ -72,10 +55,10 @@
     [[BLAccount sharedAccount] modifyEmail:email vcode:vcode password:password newpassword:password completionHandler:^(BLBaseResult * _Nonnull result) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (result.succeed ) {
-                [BLStatusBar showTipMessageWithStatus:@"Modify email success!"];
+                [self showSDKResult:result successMessage:@"Modify email success!"];
                 [self.navigationController popViewControllerAnimated:YES];
             } else {
-                [BLStatusBar showTipMessageWithStatus:[result getMsg]?:@""];
+                [self showSDKResult:result successMessage:nil];
             }
         });
     }];

@@ -11,6 +11,7 @@
 
 #import "AppDelegate.h"
 #import "BLStatusBar.h"
+#import "Tools.h"
 @interface TVControllTableViewController ()
 @property (nonatomic, strong) BLController *blcontroller;
 @property (nonatomic, strong) BLIRCode *blircode;
@@ -22,11 +23,6 @@
     [super viewDidLoad];
     self.blcontroller = [BLLet sharedLet].controller;
     self.blircode = [BLIRCode sharedIrdaCode];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -54,17 +50,16 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     //获取的ircode使用RM发射接口发射
     NSString *ircode = [self queryTVIRCodeDataWithScript:self.savePath funcname:self.tvList[indexPath.row]];
-    NSLog(@"ircode: %@", ircode);
     //发送红码
     BLStdData *stdStudyData = [[BLStdData alloc] init];
     [stdStudyData setValue:ircode forParam:@"irda"];
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        BLStdControlResult *studyResult = [self.blcontroller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did stdData:stdStudyData action:@"set"];
+        BLStdControlResult *studyResult = [self.blcontroller dnaControl:[Tools controlDidForDevice:self.device] stdData:stdStudyData action:@"set"];
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([studyResult succeed]) {
                 [BLStatusBar showTipMessageWithStatus:@"Send Success"];
             }else{
-                [BLStatusBar showTipMessageWithStatus:studyResult.msg];
+                [self showErrorCode:studyResult.error msg:studyResult.msg];
             }
         });
         

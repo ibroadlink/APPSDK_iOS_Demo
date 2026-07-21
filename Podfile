@@ -38,9 +38,7 @@ target 'BLAPPSDKDemo' do
 	pod 'Cordova'
 	pod 'SSZipArchive'
 	pod 'MBProgressHUD'
-  pod 'Cordova'
-  pod 'SSZipArchive'
-  pod 'MBProgressHUD'
   pod 'SDWebImage'
   pod 'YYCategories'
+  pod 'Masonry'
 end

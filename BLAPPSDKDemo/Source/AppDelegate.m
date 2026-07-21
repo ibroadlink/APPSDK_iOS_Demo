@@ -221,22 +221,29 @@
     [self.let.controller setSDKRawDebugLevel:BL_LEVEL_ALL];                       // Set DNASDK debug log level
     
     // 相关模块必须先初始化
-    // BLAccount *account = [BLAccount sharedAccount];
+    BLAccount *account = [BLAccount sharedAccount];
     
     BLIRCode *ircode = [BLIRCode sharedIrdaCode];
     [ircode startRMSubDeviceWork];
     
     [[BLDeviceService sharedDeviceService] startDeviceManagment];
         
-    //本地登录 获取账号管理对象
-//    if ([userDefault getUserId] && [userDefault getSessionId]) {
-//
-//        [account localLoginWithUsrid:[userDefault getUserId] session:[userDefault getSessionId] completionHandler:^(BLLoginResult * _Nonnull result) {
-//            if ([result succeed]) {
-//                NSLog(@"Login success!");
-//            }
-//        }];
-//    }
+    // 本地登录：把上次保存的 userid/session 恢复到 SDK 内存，否则重启后接口会报 -30129 登录校验失败
+    NSString *userId = [userDefault getUserId];
+    NSString *sessionId = [userDefault getSessionId];
+    if (userId.length > 0 && sessionId.length > 0) {
+        [account localLoginWithUsrid:userId session:sessionId completionHandler:^(BLLoginResult * _Nonnull result) {
+            if ([result succeed]) {
+                NSLog(@"Local login success!");
+            } else {
+                NSLog(@"Local login failed: Code(%ld) Msg(%@)", (long)result.getError, result.getMsg);
+                // session 失效时清掉本地凭证，避免界面误判已登录
+                if ([account isLoginExpired:result.getError]) {
+                    [userDefault clearLoginSession];
+                }
+            }
+        }];
+    }
 }
 
 - (void)didReceiveMessage:(id)message {

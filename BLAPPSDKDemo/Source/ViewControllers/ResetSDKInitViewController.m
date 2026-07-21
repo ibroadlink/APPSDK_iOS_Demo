@@ -44,10 +44,8 @@
         [userDefault setLicense:self.LicenseLabel.text];
         [userDefault setAppServiceEnable: (self.enableCloudCluster.isOn ? 1 : 0)];
         [userDefault setAppServiceHost:self.cloudClusterHostField.text];
-        
         [userDefault setUserName:nil];
-        [userDefault setUserId:nil];
-        [userDefault setSessionId:nil];
+        [userDefault clearLoginSession];
         
         exit(0);
     }];

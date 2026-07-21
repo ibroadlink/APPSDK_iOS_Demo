@@ -7,14 +7,23 @@
 //
 
 #import "GeneralTimerControlView.h"
-
 #import "BLDeviceService.h"
 #import "BLStatusBar.h"
+#import "Tools.h"
 
-@interface GeneralTimerControlView ()<UITextViewDelegate>
+typedef NS_ENUM(NSInteger, BLTimerAct) {
+    BLTimerActAdd = 0,
+    BLTimerActDelete = 1,
+    BLTimerActUpdate = 2,
+    BLTimerActQuery = 3,
+    BLTimerActEnableType = 4,
+    BLTimerActQueryLimit = 5,
+    BLTimerActSunrise = 6,
+};
+
+@interface GeneralTimerControlView () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *timerList;
-
 @property (strong, nonatomic) NSMutableArray *timeArray;
 @property (assign, nonatomic) NSInteger nextIndex;
 @property (strong, nonatomic) BLDNADevice *device;
@@ -24,16 +33,16 @@
 @implementation GeneralTimerControlView
 
 + (instancetype)viewController {
-    GeneralTimerControlView *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:[self class]];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.device = [BLDeviceService sharedDeviceService].selectDevice;
-    self.timeArray = [NSMutableArray arrayWithCapacity:0];
+    self.timeArray = [NSMutableArray array];
     self.nextIndex = -1;
-    
+    self.timerList.delegate = self;
+    self.timerList.dataSource = self;
     [self setExtraCellLineHidden:self.timerList];
 }
 
@@ -42,210 +51,125 @@
     [self getTimerList];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
+#pragma mark - Helpers
+
+- (NSString *)targetDid {
+    return [Tools timerTargetDidForDevice:self.device sdid:self.sdid];
 }
 
+- (NSString *)controlDid {
+    return [Tools controlDidForDevice:self.device];
+}
+
+- (NSDictionary *)cmdWithParam:(NSString *)params val:(NSInteger)val {
+    return @{@"params": @[params ?: @""], @"vals": @[@[@{@"val": @(val), @"idx": @1}]]};
+}
+
+/// 统一发送定时协议
+- (NSDictionary *)sendTimerAct:(BLTimerAct)act payload:(NSDictionary *)extra {
+    NSMutableDictionary *stdData = [@{@"did": [self targetDid], @"act": @(act)} mutableCopy];
+    if (extra) {
+        [stdData addEntriesFromDictionary:extra];
+    }
+    NSString *stdDataStr = [Tools jsonStringFromObject:stdData];
+    NSString *result = [[BLLet sharedLet].controller dnaControl:[self controlDid]
+                                                      subDevDid:nil
+                                                        dataStr:stdDataStr
+                                                        command:@"dev_subdev_timer"
+                                                     scriptPath:nil];
+    return [Tools dictionaryFromJSONString:result] ?: @{};
+}
+
+- (void)presentFields:(NSArray<NSDictionary *> *)fields title:(NSString *)title handler:(void (^)(NSArray<UITextField *> *fields))handler {
+    [Tools presentAlertOn:self title:title fields:fields handler:handler];
+}
+
+#pragma mark - Actions
+
 - (IBAction)addTimer:(id)sender {
-    //新增普通定时
-    UIAlertController *actionSheetController = [UIAlertController alertControllerWithTitle:@"Selection Mode" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction *commTimerAction = [UIAlertAction actionWithTitle:@"Common Timer" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Common Timer" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"0_1_22_*_*_0,1,3,5_*";
-            textField.placeholder = @"time";
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"pwr";
-            textField.placeholder = @"params";
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"1";
-            textField.placeholder = @"val";
-        }];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSString *timeStr = alertController.textFields.firstObject.text;
-            NSString *params = alertController.textFields[1].text;
-            NSInteger val = [alertController.textFields.lastObject.text integerValue];
-            [self addCommTimerDnaControl:timeStr params:params val:val];
+    UIAlertController *sheet = [UIAlertController alertControllerWithTitle:@"Selection Mode" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+
+    NSArray *simpleTypes = @[
+        @{@"title": @"Common Timer", @"type": @"comm", @"name": @"普通定时"},
+        @{@"title": @"Delay Timer", @"type": @"delay", @"name": @"延时定时"},
+        @{@"title": @"Period Timer", @"type": @"period", @"name": @"周期定时"},
+    ];
+    for (NSDictionary *item in simpleTypes) {
+        [sheet addAction:[UIAlertAction actionWithTitle:item[@"title"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self presentSimpleTimerAlertWithType:item[@"type"] name:item[@"name"] title:item[@"title"]];
         }]];
-        [self presentViewController:alertController animated:YES completion:nil];
+    }
+
+    [sheet addAction:[UIAlertAction actionWithTitle:@"Cycle Timer" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self presentRangeTimerAlertWithType:@"cycle" name:@"循环定时" title:@"Cycle Timer"];
+    }]];
+    [sheet addAction:[UIAlertAction actionWithTitle:@"Random Timer" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self presentRangeTimerAlertWithType:@"rand" name:@"随机定时" title:@"Random Timer"];
+    }]];
+    [sheet addAction:[UIAlertAction actionWithTitle:@"Sunrise Timer" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self presentSunriseAlert];
+    }]];
+    [sheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:sheet animated:YES completion:nil];
+}
+
+- (void)presentSimpleTimerAlertWithType:(NSString *)type name:(NSString *)name title:(NSString *)title {
+    [self presentFields:@[
+        @{@"text": @"0_1_22_*_*_0,1,3,5_*", @"placeholder": @"time"},
+        @{@"text": @"pwr", @"placeholder": @"params"},
+        @{@"text": @"1", @"placeholder": @"val"},
+    ] title:title handler:^(NSArray<UITextField *> *fields) {
+        NSDictionary *cmd = [self cmdWithParam:fields[1].text val:fields[2].text.integerValue];
+        [self addTimerWithType:type name:name time:fields[0].text cmd:cmd];
     }];
-    //新增延时定时
-    UIAlertAction *delayTimerAction = [UIAlertAction actionWithTitle:@"Delay Timer" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Delay Timer" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"0_1_22_*_*_0,1,3,5_*";
-            textField.placeholder = @"time";
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"pwr";
-            textField.placeholder = @"params";
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"1";
-            textField.placeholder = @"val";
-        }];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSString *timeStr = alertController.textFields.firstObject.text;
-            NSString *params = alertController.textFields[1].text;
-            NSInteger val = [alertController.textFields.lastObject.text integerValue];
-            [self addDelayTimerDnaControl:timeStr params:params val:val];
-        }]];
-        [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)presentRangeTimerAlertWithType:(NSString *)type name:(NSString *)name title:(NSString *)title {
+    [self presentFields:@[
+        @{@"text": @"0_1_11_*_*_0,1,3,5_*", @"placeholder": @"stime"},
+        @{@"text": @"0_1_22_*_*_0,1,3,5_*", @"placeholder": @"etime"},
+        @{@"text": @"15", @"placeholder": @"time1"},
+        @{@"text": @"15", @"placeholder": @"time2"},
+        @{@"text": @"pwr", @"placeholder": @"params"},
+    ] title:title handler:^(NSArray<UITextField *> *fields) {
+        [self addRangeTimerWithType:type
+                               name:name
+                              stime:fields[0].text
+                              etime:fields[1].text
+                              time1:fields[2].text.integerValue
+                              time2:fields[3].text.integerValue
+                             params:fields[4].text];
     }];
-    //新增周期定时
-    UIAlertAction *periodTimerAction = [UIAlertAction actionWithTitle:@"Period Timer" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Period Timer" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"0_1_22_*_*_0,1,3,5_*";
-            textField.placeholder = @"time";
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"pwr";
-            textField.placeholder = @"params";
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"1";
-            textField.placeholder = @"val";
-        }];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSString *timeStr = alertController.textFields.firstObject.text;
-            NSString *params = alertController.textFields[1].text;
-            NSInteger val = [alertController.textFields.lastObject.text integerValue];
-            [self addPeriodTimerDnaControl:timeStr params:params val:val];
-        }]];
-        [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)presentSunriseAlert {
+    [self presentFields:@[
+        @{@"text": @"2018", @"placeholder": @"year"},
+        @{@"text": @"120", @"placeholder": @"longitude"},
+        @{@"text": @"30", @"placeholder": @"latitude"},
+    ] title:@"Sunrise Timer" handler:^(NSArray<UITextField *> *fields) {
+        [self addSunriseTime:fields[0].text.integerValue
+                   longitude:fields[1].text.doubleValue
+                    latitude:fields[2].text.doubleValue];
     }];
-    //新增循环定时
-    UIAlertAction *cycleTimerAction = [UIAlertAction actionWithTitle:@"Cycle Timer" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Cycle Timer" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"0_1_11_*_*_0,1,3,5_*";
-            textField.placeholder = @"stime";
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"0_1_22_*_*_0,1,3,5_*";
-            textField.placeholder = @"etime";
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"15";
-            textField.placeholder = @"time1";
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"15";
-            textField.placeholder = @"time2";
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"pwr";
-            textField.placeholder = @"params";
-        }];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSString *stimeStr = alertController.textFields.firstObject.text;
-            NSString *etimeStr = alertController.textFields[1].text;
-            NSInteger time1Int = [alertController.textFields[2].text integerValue];
-            NSInteger time2Int = [alertController.textFields[3].text integerValue];
-            NSString *params = alertController.textFields[4].text;
-            [self addCycleTimerDnaControl:stimeStr etime:etimeStr time1:time1Int time2:time2Int params:params];
-        }]];
-        [self presentViewController:alertController animated:YES completion:nil];
-    }];
-    //新增随机定时
-    UIAlertAction *randTimerAction = [UIAlertAction actionWithTitle:@"Random Timer" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Random Timer" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"0_1_11_*_*_0,1,3,5_*";
-            textField.placeholder = @"stime";
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"0_1_22_*_*_0,1,3,5_*";
-            textField.placeholder = @"etime";
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"15";
-            textField.placeholder = @"time1";
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"15";
-            textField.placeholder = @"time2";
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"pwr";
-            textField.placeholder = @"params";
-        }];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSString *stimeStr = alertController.textFields.firstObject.text;
-            NSString *etimeStr = alertController.textFields[1].text;
-            NSInteger time1Int = [alertController.textFields[2].text integerValue];
-            NSInteger time2Int = [alertController.textFields[3].text integerValue];
-            NSString *params = alertController.textFields[4].text;
-            [self addRandTimerDnaControl:stimeStr etime:etimeStr time1:time1Int time2:time2Int params:params];
-        }]];
-        [self presentViewController:alertController animated:YES completion:nil];
-    }];
-    //配置日出日落信息
-    UIAlertAction *sunriseAction = [UIAlertAction actionWithTitle:@"Sunrise Timer" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Sunrise Timer" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"2018";
-            textField.placeholder = @"year";
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"120";
-            textField.placeholder = @"longitude";
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = @"30";
-            textField.placeholder = @"latitude";
-        }];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSInteger year = [alertController.textFields.firstObject.text integerValue];
-            double longitude = [alertController.textFields[1].text doubleValue];
-            double latitude = [alertController.textFields[2].text doubleValue];
-            [self addSunriseTime:year longitude:longitude latitude:latitude];
-        }]];
-        [self presentViewController:alertController animated:YES completion:nil];
-        
-    }];
-    [actionSheetController addAction:commTimerAction];
-    [actionSheetController addAction:delayTimerAction];
-    [actionSheetController addAction:periodTimerAction];
-    [actionSheetController addAction:cycleTimerAction];
-    [actionSheetController addAction:randTimerAction];
-    [actionSheetController addAction:sunriseAction];
-    [actionSheetController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:actionSheetController animated:YES completion:nil];
-   
 }
 
 - (IBAction)stopTimerType:(id)sender {
-    UIAlertController *timerTypeController = [UIAlertController alertControllerWithTitle:@"StartOrStopTimerType" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    [timerTypeController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"Commen";
+    [self presentFields:@[
+        @{@"placeholder": @"Commen"},
+        @{@"placeholder": @"Delayen"},
+        @{@"placeholder": @"Perioden"},
+        @{@"placeholder": @"Cycleen"},
+        @{@"placeholder": @"Randen"},
+    ] title:@"StartOrStopTimerType" handler:^(NSArray<UITextField *> *fields) {
+        [self sendTimerAct:BLTimerActEnableType payload:@{
+            @"comm_en": @(fields[0].text.integerValue),
+            @"delay_en": @(fields[1].text.integerValue),
+            @"period_en": @(fields[2].text.integerValue),
+            @"cycle_en": @(fields[3].text.integerValue),
+            @"rand_en": @(fields[4].text.integerValue),
+        }];
     }];
-    [timerTypeController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"Delayen";
-    }];
-    [timerTypeController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"Perioden";
-    }];
-    [timerTypeController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"Cycleen";
-    }];
-    [timerTypeController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"Randen";
-    }];
-    [timerTypeController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSInteger CommenStr = [timerTypeController.textFields.firstObject.text integerValue];
-        NSInteger delayenStr = [timerTypeController.textFields[1].text integerValue];
-        NSInteger periodenStr = [timerTypeController.textFields[2].text integerValue];
-        NSInteger cycleenStr = [timerTypeController.textFields[3].text integerValue];
-        NSInteger randenStr = [timerTypeController.textFields.lastObject.text integerValue];
-        [self startOrstopTimerTypeCommen:CommenStr delayen:delayenStr perioden:periodenStr cycleen:cycleenStr randen:randenStr];
-    }]];
-    [timerTypeController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:timerTypeController animated:YES completion:nil];
-    
     [self queryTimeType];
 }
 
@@ -254,7 +178,7 @@
     [self gettimerDnaControl:5 index:self.nextIndex];
 }
 
-#pragma mark - Table view data source
+#pragma mark - Table
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.timeArray.count;
@@ -263,327 +187,151 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *ID = @"timeInfoCellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
-    if (cell == nil) {
+    if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
     }
     NSDictionary *dic = self.timeArray[indexPath.row];
-    
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",dic[@"id"]];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", dic[@"id"]];
     NSString *type = dic[@"type"];
     if ([type isEqualToString:@"comm"] || [type isEqualToString:@"delay"] || [type isEqualToString:@"period"]) {
-        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",dic[@"name"],dic[@"time"]];
-    }else{
-        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@ %@",dic[@"name"],dic[@"stime"],dic[@"etime"]];
+        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", dic[@"name"], dic[@"time"]];
+    } else {
+        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@ %@", dic[@"name"], dic[@"stime"], dic[@"etime"]];
     }
-    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSDictionary *dic = self.timeArray[indexPath.row];
     NSString *timer = [BLCommonTools serializeMessage:dic];
-    UIAlertController *timerTypeController = [UIAlertController alertControllerWithTitle:@"定时信息修改" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    [timerTypeController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.text = timer;
-        textField.placeholder = @"timer";
+    [self presentFields:@[@{@"text": timer ?: @"", @"placeholder": @"timer"}]
+                  title:@"定时信息修改"
+                handler:^(NSArray<UITextField *> *fields) {
+        NSDictionary *timeInfo = [BLCommonTools deserializeMessageJSON:fields.firstObject.text];
+        if (!timeInfo) { return; }
+        [self sendTimerAct:BLTimerActUpdate payload:@{@"timerlist": @[timeInfo]}];
+        [BLStatusBar showTipMessageWithStatus:@"Updated"];
+        [self getTimerList];
     }];
-    [timerTypeController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSString *timerStr = timerTypeController.textFields.firstObject.text;
-        NSDictionary *timeInfo = [BLCommonTools deserializeMessageJSON:timerStr];
-        NSDictionary *stdData = @{
-                                  @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
-                                  @"act":@(2),
-                                  @"timerlist":@[
-                                          timeInfo
-                                          ]
-                                  };
-        NSString *stdDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:stdData options:0 error:nil] encoding:NSUTF8StringEncoding];
-        
-        NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did subDevDid:nil dataStr:stdDataStr command:@"dev_subdev_timer" scriptPath:nil];
-        [BLStatusBar showTipMessageWithStatus:result];
-
-    }]];
-    [timerTypeController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:timerTypeController animated:YES completion:nil];
-    [self getTimerList];
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle != UITableViewCellEditingStyleDelete) { return; }
     NSDictionary *dic = self.timeArray[indexPath.row];
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [self deltimerDnaControl:dic[@"type"] sid:[dic[@"id"] integerValue]];
-        [self.timeArray removeObjectAtIndex:indexPath.row];
-        [self.timerList deleteRowsAtIndexPaths:@[indexPath]  withRowAnimation:UITableViewRowAnimationNone];
-    }
+    [self sendTimerAct:BLTimerActDelete payload:@{
+        @"timerlist": @[@{@"type": dic[@"type"] ?: @"", @"id": dic[@"id"] ?: @0}]
+    }];
+    [self.timeArray removeObjectAtIndex:indexPath.row];
+    [self.timerList deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
-- (void)timerController:(NSString *)time type:(NSString *)type name:(NSString *)name cmd:(NSDictionary *)cmd {
+#pragma mark - Timer API
+
+- (void)addTimerWithType:(NSString *)type name:(NSString *)name time:(NSString *)time cmd:(NSDictionary *)cmd {
     NSDictionary *timeInfo = @{
-                               @"did": [BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
-                               @"type":type,
-                               @"en":@(1),
-                               @"name":name,
-                               @"time":time,
-                               @"cmd":cmd,
-                               };
-    NSDictionary *stdData = @{
-                              @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
-                              @"act":@(0),
-                              @"timerlist":@[
-                                      timeInfo
-                                      ]
-                              };
-    NSString *stdDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:stdData options:0 error:nil] encoding:NSUTF8StringEncoding];
-    
-    NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did subDevDid:nil dataStr:stdDataStr command:@"dev_subdev_timer" scriptPath:nil];
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-    NSLog(@"status%@,did:%@",dic[@"status"],dic[@"did"]);
+        @"did": [self targetDid],
+        @"type": type ?: @"",
+        @"en": @1,
+        @"name": name ?: @"",
+        @"time": time ?: @"",
+        @"cmd": cmd ?: @{},
+    };
+    [self sendTimerAct:BLTimerActAdd payload:@{@"timerlist": @[timeInfo]}];
     [self getTimerList];
 }
 
-//新增普通定时
-- (void)addCommTimerDnaControl:(NSString *)time params:(NSString *)params val:(NSInteger)val {
-    NSDictionary *cmd = @{@"params":@[params],@"vals":@[@[@{@"val":@(val),@"idx":@1}]]};
-    [self timerController:time type:@"comm" name:@"普通定时" cmd:cmd];
-}
-//新增延时定时
-- (void)addDelayTimerDnaControl:(NSString *)time params:(NSString *)params val:(NSInteger)val {
-    NSDictionary *cmd = @{@"params":@[params],@"vals":@[@[@{@"val":@(val),@"idx":@1}]]};
-    [self timerController:time type:@"delay" name:@"延时定时" cmd:cmd];
-}
-//新增周期定时
-- (void)addPeriodTimerDnaControl:(NSString *)time params:(NSString *)params val:(NSInteger)val{
-    NSDictionary *cmd = @{@"params":@[params],@"vals":@[@[@{@"val":@(val),@"idx":@1}]]};
-    [self timerController:time type:@"period" name:@"周期定时" cmd:cmd];
-}
-//新增随机定时
-- (void)addRandTimerDnaControl:(NSString *)stime etime:(NSString *)etime time1:(NSInteger)time1 time2:(NSInteger)time2 params:(NSString *)params {
-    NSDictionary *cmd = @{@"params":@[params],@"vals":@[@[@{@"val":@1,@"idx":@1}]]};
-    NSDictionary *cmd1 = @{@"params":@[params],@"vals":@[@[@{@"val":@0,@"idx":@1}]]};
-    
-    NSDictionary *cycInfo = @{
-                              @"type":@"rand",
-                              @"en":@(1),
-                              @"name":@"随机定时",
-                              @"stime":stime,
-                              @"etime":etime,
-                              @"time1":@(time1),
-                              @"time2":@(time2),
-                              @"cmd1":cmd,
-                              @"cmd2":cmd1
-                              };
-    NSDictionary *stdData = @{
-                              @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
-                              @"act":@(0),
-                              @"timerlist":@[
-                                      cycInfo
-                                      ]
-                              };
-    NSString *stdDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:stdData options:0 error:nil] encoding:NSUTF8StringEncoding];
-    
-    NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did subDevDid:nil dataStr:stdDataStr command:@"dev_subdev_timer" scriptPath:nil];
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-    NSLog(@"status%@,did:%@",dic[@"status"],dic[@"did"]);
+- (void)addRangeTimerWithType:(NSString *)type
+                         name:(NSString *)name
+                        stime:(NSString *)stime
+                        etime:(NSString *)etime
+                        time1:(NSInteger)time1
+                        time2:(NSInteger)time2
+                       params:(NSString *)params {
+    NSDictionary *info = @{
+        @"type": type ?: @"",
+        @"en": @1,
+        @"name": name ?: @"",
+        @"stime": stime ?: @"",
+        @"etime": etime ?: @"",
+        @"time1": @(time1),
+        @"time2": @(time2),
+        @"cmd1": [self cmdWithParam:params val:1],
+        @"cmd2": [self cmdWithParam:params val:0],
+    };
+    [self sendTimerAct:BLTimerActAdd payload:@{@"timerlist": @[info]}];
     [self getTimerList];
-}
-//新增循环定时
-- (void)addCycleTimerDnaControl:(NSString *)stime etime:(NSString *)etime time1:(NSInteger)time1 time2:(NSInteger)time2 params:(NSString *)params{
-    NSDictionary *cmd = @{@"params":@[params],@"vals":@[@[@{@"val":@1,@"idx":@1}]]};
-    NSDictionary *cmd1 = @{@"params":@[params],@"vals":@[@[@{@"val":@0,@"idx":@1}]]};
-
-    NSDictionary *cycInfo = @{
-                              @"type":@"cycle",
-                              @"en":@(1),
-                              @"name":@"循环定时",
-                              @"stime":stime,
-                              @"etime":etime,
-                              @"time1":@(time1),
-                              @"time2":@(time2),
-                              @"cmd1":cmd,
-                              @"cmd2":cmd1
-                              };
-    NSDictionary *stdData = @{
-                              @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
-                              @"act":@(0),
-                              @"timerlist":@[
-                                      cycInfo
-                                      ]
-                              };
-    NSString *stdDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:stdData options:0 error:nil] encoding:NSUTF8StringEncoding];
-    
-    NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did subDevDid:nil dataStr:stdDataStr command:@"dev_subdev_timer" scriptPath:nil];
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-    NSLog(@"status%@,did:%@",dic[@"status"],dic[@"did"]);
-    [self getTimerList];
-}
-//删除定时
-- (void)deltimerDnaControl:(NSString *)type sid:(NSInteger)sid {
-    NSDictionary *timeInfo = @{
-                               @"type":type,
-                               @"id":@(sid)
-                               };
-    NSDictionary *stdData = @{
-                              @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
-                              @"act":@(1),
-                              @"timerlist":@[
-                                      timeInfo
-                                      ]
-                              };
-    NSString *stdDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:stdData options:0 error:nil] encoding:NSUTF8StringEncoding];
-    
-    NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did subDevDid:nil dataStr:stdDataStr command:@"dev_subdev_timer" scriptPath:nil];
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-    NSLog(@"status%@,did:%@",dic[@"status"],dic[@"did"]);
-//    [self gettimerDnaControl];
 }
 
 - (void)getTimerList {
     [self gettimerDnaControl:10 index:0];
 }
 
-//获取定时列表
 - (void)gettimerDnaControl:(NSInteger)count index:(NSInteger)index {
-    NSDictionary *stdData = @{
-                              @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
-                              @"act":@(3),
-                              @"type":@"all",
-                              @"count":@(count),
-                              @"index":@(index)
-                              };
-    NSString *stdDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:stdData options:0 error:nil] encoding:NSUTF8StringEncoding];
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did subDevDid:nil dataStr:stdDataStr command:@"dev_subdev_timer" scriptPath:nil];
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
+        NSDictionary *dic = [self sendTimerAct:BLTimerActQuery payload:@{
+            @"type": @"all",
+            @"count": @(count),
+            @"index": @(index),
+        }];
         NSInteger status = [dic[@"status"] integerValue];
-        if (status == 0) {
-            self.timeArray = dic[@"data"][@"timerlist"];
-            dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (status == 0) {
+                self.timeArray = [dic[@"data"][@"timerlist"] mutableCopy] ?: [NSMutableArray array];
                 [self.timerList reloadData];
-            });
-        } else {
-            NSString *msg = dic[@"msg"];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)status, msg]];
-            });
-        }
+            } else {
+                [self showErrorCode:status msg:dic[@"msg"]];
+            }
+        });
     });
 }
 
-//开启或者禁用某种定时
-- (void)startOrstopTimerTypeCommen:(NSInteger)commen delayen:(NSInteger)delayen perioden:(NSInteger)perioden cycleen:(NSInteger)cycleen randen:(NSInteger)randen  {
-    NSDictionary *stdData = @{
-                              @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
-                              @"act":@(4),
-                              @"comm_en":@(commen),
-                              @"delay_en":@(delayen),
-                              @"period_en":@(perioden),
-                              @"cycle_en":@(cycleen),
-                              @"rand_en":@(randen)
-                              };
-    NSString *stdDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:stdData options:0 error:nil] encoding:NSUTF8StringEncoding];
-    
-    NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did subDevDid:nil dataStr:stdDataStr command:@"dev_subdev_timer" scriptPath:nil];
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-    NSLog(@"status%@,did:%@",dic[@"status"],dic[@"did"]);
-}
-
-//查询定时限制信息
 - (void)queryTimeType {
-    NSDictionary *stdData = @{
-                              @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
-                              @"act":@(5),
-                              @"type":@""
-                              };
-    NSString *stdDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:stdData options:0 error:nil] encoding:NSUTF8StringEncoding];
-    
-    NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did subDevDid:nil dataStr:stdDataStr command:@"dev_subdev_timer" scriptPath:nil];
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-    NSLog(@"status%@,did:%@",dic[@"status"],dic[@"did"]);
+    [self sendTimerAct:BLTimerActQueryLimit payload:@{@"type": @""}];
 }
 
 - (int)setHour:(int)hour {
-    int endHuor = hour + 8;
-    if (endHuor > 24) {
-        endHuor = endHuor - 24;
-    }
-    
-    return endHuor;
+    int endHour = hour + 8;
+    return endHour > 24 ? endHour - 24 : endHour;
 }
 
-//配置日出日落信息
-- (void)addSunriseTime:(NSInteger)year longitude:(double)longitude latitude:(double)latitude  {
-    
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"tableList" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    
+- (void)addSunriseTime:(NSInteger)year longitude:(double)longitude latitude:(double)latitude {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"tableList" message:nil preferredStyle:UIAlertControllerStyleAlert];
     for (int i = 1; i <= 12; i++) {
-        NSMutableArray *tableList = [NSMutableArray array];
-        BLSunriseResult *sunriseResult = [[BLLet sharedLet].controller calulateSunriseTimeWithData:[NSString stringWithFormat:@"%ld-%d-01",(long)year,i] longitude:longitude latitude:latitude];
-        NSString *sunrise = sunriseResult.sunrise;  //01:04:11(UTC)
-        NSString *sunset = sunriseResult.sunset;    //19:01:29(UTC)
-        
-        int sunrise_hour = [[sunrise substringWithRange:NSMakeRange(0,2)] intValue];
-        int sunrise_min = [[sunrise substringWithRange:NSMakeRange(3,2)] intValue];
-        int sunrise_sec = [[sunrise substringWithRange:NSMakeRange(6,2)] intValue];
-        
-        int sunset_hour = [[sunset substringWithRange:NSMakeRange(0,2)] intValue];
-        int sunset_min = [[sunset substringWithRange:NSMakeRange(3,2)] intValue];
-        int sunset_sec = [[sunset substringWithRange:NSMakeRange(6,2)] intValue];
-        
-        sunrise_hour = [self setHour:sunrise_hour];
-        sunset_hour = [self setHour:sunset_hour];
-        
-        [tableList addObject:@(i)];
-        [tableList addObject:@(1)];
-        [tableList addObject:@(sunrise_hour)];
-        [tableList addObject:@(sunrise_min)];
-        [tableList addObject:@(sunrise_sec)];
-        [tableList addObject:@(sunset_hour)];
-        [tableList addObject:@(sunset_min)];
-        [tableList addObject:@(sunset_sec)];
-        
-        NSString *tableListString = [tableList componentsJoinedByString:@","];
-        
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        BLSunriseResult *sunriseResult = [[BLLet sharedLet].controller calulateSunriseTimeWithData:[NSString stringWithFormat:@"%ld-%d-01", (long)year, i]
+                                                                                         longitude:longitude
+                                                                                          latitude:latitude];
+        NSString *sunrise = sunriseResult.sunrise ?: @"00:00:00";
+        NSString *sunset = sunriseResult.sunset ?: @"00:00:00";
+        int sunriseHour = [self setHour:[[sunrise substringWithRange:NSMakeRange(0, 2)] intValue]];
+        int sunsetHour = [self setHour:[[sunset substringWithRange:NSMakeRange(0, 2)] intValue]];
+        NSString *tableListString = [@[
+            @(i), @1,
+            @(sunriseHour), @([[sunrise substringWithRange:NSMakeRange(3, 2)] intValue]), @([[sunrise substringWithRange:NSMakeRange(6, 2)] intValue]),
+            @(sunsetHour), @([[sunset substringWithRange:NSMakeRange(3, 2)] intValue]), @([[sunset substringWithRange:NSMakeRange(6, 2)] intValue]),
+        ] componentsJoinedByString:@","];
+        [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
             textField.text = tableListString;
-            textField.placeholder = @"mon,day,sunrise_hour,sunrise_min,sunrise_sec,sunset_hour,sunset_min,sunset_sec";
+            textField.placeholder = @"mon,day,sunrise...,sunset...";
         }];
     }
-    
-    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSMutableArray  *tableListArray = [NSMutableArray array];
-        for (int i = 0; i < 12; i ++) {
-            NSString *table = alertController.textFields[i].text;
-            NSArray  *tableList = [table componentsSeparatedByString:@","];
-            [tableListArray addObjectsFromArray:tableList];
-        }
-
+    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSMutableArray *tableList = [NSMutableArray array];
-        for (NSString *table in tableListArray) {
-            [tableList addObject:@([table intValue])];
+        for (UITextField *field in alert.textFields) {
+            for (NSString *part in [field.text componentsSeparatedByString:@","]) {
+                [tableList addObject:@([part intValue])];
+            }
         }
-        [self addSunriseTime:year longitude:longitude latitude:latitude table:tableList];
+        [self sendTimerAct:BLTimerActSunrise payload:@{
+            @"year": @(year),
+            @"longitude": [NSString stringWithFormat:@"%f", longitude],
+            @"latitude": [NSString stringWithFormat:@"%f", latitude],
+            @"fmt": @0,
+            @"table": tableList,
+        }];
     }]];
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
-
-- (void)addSunriseTime:(NSInteger)year longitude:(double)longitude latitude:(double)latitude table:(NSArray *)tableList {
-    NSDictionary *stdData = @{
-                              @"did":[BLCommonTools isEmpty:self.sdid] ? self.device.did : self.sdid,
-                              @"act":@(6),
-                              @"year":@(year),
-                              @"longitude":[NSString stringWithFormat:@"%f",longitude],
-                              @"latitude":[NSString stringWithFormat:@"%f",latitude],
-                              @"fmt" :@0,
-                              @"table":tableList
-                              };
-    NSString *stdDataStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:stdData options:0 error:nil] encoding:NSUTF8StringEncoding];
-    
-    NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did subDevDid:nil dataStr:stdDataStr command:@"dev_subdev_timer" scriptPath:nil];
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-    NSLog(@"status%@,did:%@",dic[@"status"],dic[@"did"]);
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 @end

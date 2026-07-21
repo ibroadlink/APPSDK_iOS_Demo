@@ -13,8 +13,25 @@
 #import "BLStatusBar.h"
 #import "SSZipArchive.h"
 #import "BLDeviceService.h"
+#import "Tools.h"
 
-#import "GCDAsyncUdpSocket.h"
+typedef NS_ENUM(NSInteger, OperateAction) {
+    OperateActionDeviceStatus,
+    OperateActionDeviceTime,
+    OperateActionDataPassthrough,
+    OperateActionDNAControl,
+    OperateActionTimer,
+    OperateActionGateway,
+    OperateActionFastcon,
+    OperateActionFirmwareQuery,
+    OperateActionFirmwareUpgrade,
+    OperateActionRM,
+    OperateActionSP,
+    OperateActionA1,
+    OperateActionStartLogRedirect,
+    OperateActionStopLogRedirect,
+    OperateActionFastconGroup,
+};
 
 @interface OperateViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -30,10 +47,7 @@
 
 @end
 
-@implementation OperateViewController {
-    BOOL isRunning;
-    GCDAsyncUdpSocket *udpSocket;
-}
+@implementation OperateViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -71,10 +85,10 @@
     [self.formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"]];
     [self.formatter setDateFormat:@"yyyy-MM-dd_HH:mm:ss"];
     
-    udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
 }
 
@@ -105,50 +119,50 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    switch (indexPath.row) {
-        case 0:
+    switch ((OperateAction)indexPath.row) {
+        case OperateActionDeviceStatus:
             [self getDeviceState];
             break;
-        case 1:
+        case OperateActionDeviceTime:
             [self getServerTime];
             break;
-        case 2:
+        case OperateActionDataPassthrough:
             [self dataPassthough];
             break;
-        case 3:
+        case OperateActionDNAControl:
             [self dnaControl];
             break;
-        case 4:
+        case OperateActionTimer:
             [self generalTimerControl];
             break;
-        case 5:
+        case OperateActionGateway:
             [self gateWayControl];
             break;
-        case 6:
+        case OperateActionFastcon:
             [self fastconNoConfig];
             break;
-        case 7:
+        case OperateActionFirmwareQuery:
             [self getFirmwareVersion];
             break;
-        case 8:
+        case OperateActionFirmwareUpgrade:
             [self upgradeFirmVersion];
             break;
-        case 9:
+        case OperateActionRM:
             [self rmDeviceController];
             break;
-        case 10:
+        case OperateActionSP:
             [self SPControl];
             break;
-        case 11:
+        case OperateActionA1:
             [self A1Control];
             break;
-        case 12:
+        case OperateActionStartLogRedirect:
             [self startDeviceLogRedirect];
         break;
-        case 13:
+        case OperateActionStopLogRedirect:
             [self stopDeviceLogRedirect];
             break;
-        case 14:
+        case OperateActionFastconGroup:
             [self fastconGroupDevice];
             break;
         default:
@@ -159,21 +173,8 @@
 
 #pragma mark - private method
 - (void)networkState {
-    BLDeviceStatusEnum state = [[BLLet sharedLet].controller queryDeviceState:self.device.ownerId ? self.device.deviceId : [self.device getDid]];
-    NSString *stateString = @"State UnKown";
-    switch (state) {
-        case BL_DEVICE_STATE_LAN:
-            stateString = @"LAN";
-            break;
-        case BL_DEVICE_STATE_REMOTE:
-            stateString = @"REMOTE";
-            break;
-        case BL_DEVICE_STATE_OFFLINE:
-            stateString = @"OFFLINE";
-            break;
-        default:
-            break;
-    }
+    BLDeviceStatusEnum state = [[BLLet sharedLet].controller queryDeviceState:[Tools controlDidForDevice:self.device]];
+    NSString *stateString = [Tools stringForDeviceState:state];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         UILabel *netstateLabel = (UILabel *)[self.view viewWithTag:105];
@@ -182,29 +183,14 @@
 }
 
 - (void)getDeviceState {
-    BLDeviceStatusEnum state = [[BLLet sharedLet].controller queryDeviceState:self.device.ownerId ? self.device.deviceId : self.device.did];
-    
-    NSString *stateString = @"State UnKown";
-    switch (state) {
-        case BL_DEVICE_STATE_LAN:
-            stateString = @"LAN";
-            break;
-        case BL_DEVICE_STATE_REMOTE:
-            stateString = @"REMOTE";
-            break;
-        case BL_DEVICE_STATE_OFFLINE:
-            stateString = @"OFFLINE";
-            break;
-        default:
-            break;
-    }
-    
+    BLDeviceStatusEnum state = [[BLLet sharedLet].controller queryDeviceState:[Tools controlDidForDevice:self.device]];
+    NSString *stateString = [Tools stringForDeviceState:state];
     _resultText.text = [NSString stringWithFormat:@"state: %ld - %@", (long)state, stateString];
 }
 
 - (void)getFirmwareVersion {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        BLFirmwareVersionResult *result = [[BLLet sharedLet].controller queryFirmwareVersion:self.device.ownerId ? self.device.deviceId : [self.device getDid]];
+        BLFirmwareVersionResult *result = [[BLLet sharedLet].controller queryFirmwareVersion:[Tools controlDidForDevice:self.device]];
         if ([result succeed]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.resultText.text = [NSString stringWithFormat:@"Firmware Version:%@", [result getVersion]];
@@ -230,7 +216,7 @@
     [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSString *upgradeFirmwareUrl = alertController.textFields.firstObject.text;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            BLBaseResult *result = [[BLLet sharedLet].controller upgradeFirmware:self.device.ownerId ? self.device.deviceId : [self.device getDid] url:upgradeFirmwareUrl];
+            BLBaseResult *result = [[BLLet sharedLet].controller upgradeFirmware:[Tools controlDidForDevice:self.device] url:upgradeFirmwareUrl];
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
             });
@@ -292,7 +278,7 @@
 }
 
 - (void)webViewControl {
-    if ([self copyCordovaJsToUIPathWithFileName:DNAKIT_CORVODA_JS_FILE] ) {
+    if ([Tools copyCordovaJsNamed:DNAKIT_CORVODA_JS_FILE forPid:self.device.pid]) {
         [self performSegueWithIdentifier:@"DeviceWebControlView" sender:nil];
     }
 }
@@ -324,7 +310,7 @@
 
 //查询设备数据上报
 - (void)queryDeviceData {
-    BLBaseBodyResult *result = [[BLLet sharedLet].controller queryDeviceDataWithDid:self.device.ownerId ? self.device.deviceId : [self.device getDid] familyId:@"" startTime:@"2018-03-26_17:00:00" endTime:@"2018-03-27_22:00:00" type:@"fw_spminielec_v1"];
+    BLBaseBodyResult *result = [[BLLet sharedLet].controller queryDeviceDataWithDid:[Tools controlDidForDevice:self.device] familyId:@"" startTime:@"2018-03-26_17:00:00" endTime:@"2018-03-27_22:00:00" type:@"fw_spminielec_v1"];
     if ([result succeed]) {
         _resultText.text = [NSString stringWithFormat:@"responseBody : %@", result.responseBody];
     } else {
@@ -337,7 +323,7 @@
 - (void)getServerTime {
     self.resultText.text = @"Query Device Time .....";
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        BLDeviceTimeResult *result = [[BLLet sharedLet].controller queryDeviceTime:self.device.ownerId ? self.device.deviceId : self.device.did];
+        BLDeviceTimeResult *result = [[BLLet sharedLet].controller queryDeviceTime:[Tools controlDidForDevice:self.device]];
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([result succeed]) {
                 self.resultText.text = [NSString stringWithFormat:@"Time:%@ diff:%ld", result.time, (long)result.difftime];
@@ -351,7 +337,7 @@
 //设备复位
 - (void)deviceReset {
     BLController *controller = [BLLet sharedLet].controller;
-    NSString *result = [controller dnaControl:self.device.ownerId ? self.device.deviceId : self.device.did subDevDid:nil dataStr:@"{}" command:@"dev_reset" scriptPath:nil];
+    NSString *result = [controller dnaControl:[Tools controlDidForDevice:self.device] subDevDid:nil dataStr:@"{}" command:@"dev_reset" scriptPath:nil];
     NSLog(@"result: %@", result);
     
     BLBaseResult *baseResult = [BLBaseResult BLS_modelWithJSON:result];
@@ -369,30 +355,10 @@
 //获取设备连接服务器信息
 - (void)getDeviceServiceConnectInfo {
     BLController *controller = [BLLet sharedLet].controller;
-    BLBaseResult *result = [controller queryDeviceConnectServerInfo:self.device.ownerId ? self.device.deviceId : self.device.did];
+    BLBaseResult *result = [controller queryDeviceConnectServerInfo:[Tools controlDidForDevice:self.device]];
     NSLog(@"result: %ld", (long)result.status);
     
     _resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-}
-
-- (BOOL)copyCordovaJsToUIPathWithFileName:(NSString*)fileName {
-    NSString *uiPath = [[[BLLet sharedLet].controller queryUIPath:[_device getPid]] stringByDeletingLastPathComponent];  //  ../Let/ui/
-    NSString *fullPathFileName = [uiPath stringByAppendingPathComponent:fileName];  // ../Let/ui/fileName
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:fullPathFileName] == NO) {
-        NSString *path = [[NSBundle mainBundle] pathForResource:fileName ofType:nil];
-        NSError *error;
-        BOOL success = [fileManager copyItemAtPath:path toPath:fullPathFileName error:&error];
-        if (success) {
-            NSLog(@"%@ copy success",fileName);
-            return YES;
-        } else {
-            NSLog(@"%@ copy failed",fileName);
-            return NO;
-        }
-    }
-    
-    return YES;
 }
 
 - (NSString *)getDeviceProfile {
@@ -452,6 +418,9 @@
     NSString *input = [NSString stringWithFormat:@"\n%@\n", log];
     
     NSFileHandle *outFile = [NSFileHandle fileHandleForWritingAtPath:self.logfile];
+    if (!outFile) {
+        return;
+    }
     [outFile seekToEndOfFile];
     [outFile writeData:[input dataUsingEncoding:NSUTF8StringEncoding]];
     [outFile closeFile];
@@ -459,92 +428,9 @@
 }
 
 - (void)startDeviceLogRedirect {
-    
-    // START udp echo server
-//    int port = 18880;
-//
-//    NSString *ipaddr = [BLNetworkImp getIPAddress:YES];
-//    NSLog(@"IP:%@ Port:%d", ipaddr, port);
-//    
-//    if (ipaddr && !isRunning) {
-//        NSError *error = nil;
-//        
-//        if (![udpSocket bindToPort:port error:&error])
-//        {
-//            [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Error starting server (bind): %@", error]];
-//            return;
-//        }
-//        if (![udpSocket beginReceiving:&error])
-//        {
-//            [udpSocket close];
-//            
-//            [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Error starting server (recv): %@", error]];
-//            return;
-//        }
-//        
-//        _resultText.text = [NSString stringWithFormat:@"Udp Echo server started on port %hu", [udpSocket localPort]];
-//        isRunning = YES;
-//        
-//        //发送命令给设备
-//        NSDictionary *dic = @{
-//                              @"enable":@(1),
-//                              @"ip":ipaddr,
-//                              @"port":@(port)
-//                              };
-//        NSString *dataStr = [BLCommonTools serializeMessage:dic];
-//        
-//        NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.did subDevDid:nil dataStr:dataStr command:@"device_log_redirect" scriptPath:nil sendcount:1];
-//        
-//        NSLog(@"startDeviceLogRedirect result:%@", result);
-//    }
 }
 
 - (void)stopDeviceLogRedirect {
-    // STOP udp echo server
-//    if (isRunning) {
-//        NSLog(@"Stopped Udp Echo server");
-//
-//        [udpSocket close];
-//        isRunning = false;
-//
-//        int port = 18880;
-//        //发送命令给设备
-//        NSDictionary *dic = @{
-//                              @"enable":@(0),
-//                              @"ip":@"",
-//                              @"port":@(port)
-//                              };
-//        NSString *dataStr = [BLCommonTools serializeMessage:dic];
-//
-//        NSString *result = [[BLLet sharedLet].controller dnaControl:self.device.did subDevDid:nil dataStr:dataStr command:@"device_log_redirect" scriptPath:nil sendcount:1];
-//
-//        NSLog(@"stopDeviceLogRedirect result:%@", result);
-//    }
-}
-
-- (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext
-{
-    if (!isRunning) return;
-    
-    NSString *msg = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    if (msg)
-    {
-        /* If you want to get a display friendly version of the IPv4 or IPv6 address, you could do this:
-         
-         NSString *host = nil;
-         uint16_t port = 0;
-         [GCDAsyncUdpSocket getHost:&host port:&port fromAddress:address];
-         
-         */
-        [self writeDeviceLogToFileWithString:msg];
-    }
-    else
-    {
-        NSString *errmsg = @"Error converting received data into UTF-8 String";
-        [self writeDeviceLogToFileWithString:errmsg];
-    }
-    
-//    [udpSocket sendData:data toAddress:address withTimeout:-1 tag:0];
 }
 
 - (void)fastconGroupDevice {

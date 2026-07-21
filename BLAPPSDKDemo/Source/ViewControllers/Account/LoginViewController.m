@@ -10,7 +10,6 @@
 #import "UserViewController.h"
 
 #import "BLUserDefaults.h"
-#import "BLStatusBar.h"
 #import <BLLetAccount/BLLetAccount.h>
 
 #import "BLLoadingButton.h"
@@ -30,6 +29,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     BLUserDefaults *userDefault = [BLUserDefaults shareUserDefaults];
     self.userNameField.text = [userDefault getUserName];
 }
@@ -70,21 +70,21 @@
 
         if ([result succeed]) {
             BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
-            [userDefault setUserName:userName];
-            [userDefault setUserId:[result getUserid]];
-            [userDefault setSessionId:[result getLoginsession]];
+            [userDefault applyLoginWithUserName:userName
+                                         userId:[result getUserid]
+                                      sessionId:[result getLoginsession]];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.loginButton.isLoading = NO;
+                weakSelf.loginButton.isLoading = NO;
                 
                 UserViewController *vc = [UserViewController viewController];
-                [self.navigationController pushViewController:vc animated:YES];
+                [weakSelf.navigationController pushViewController:vc animated:YES];
             });
             
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.loginButton.isLoading = NO;
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
+                weakSelf.loginButton.isLoading = NO;
+                [weakSelf showSDKResult:result successMessage:nil];
             });
         }
     }];

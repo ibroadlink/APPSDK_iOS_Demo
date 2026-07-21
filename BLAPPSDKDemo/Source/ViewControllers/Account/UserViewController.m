@@ -16,6 +16,7 @@
 #import "BLUserLogoutCell.h"
 #import "BLSystemImage.h"
 #import "BLStatusBar.h"
+#import "Tools.h"
 #import "UIImage+BDL.h"
 #import "BLTheme.h"
 
@@ -50,8 +51,7 @@
 }
 
 + (instancetype)viewController {
-    UserViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (void)viewBack {
@@ -63,9 +63,7 @@
     [self.navigationController popViewControllerAnimated:YES];
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     
-    BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
-    [userDefault setUserId:nil];
-    [userDefault setSessionId:nil];
+    [[BLUserDefaults shareUserDefaults] clearLoginSession];
 }
 
 #pragma mark - UITableViewDataSource
@@ -88,8 +86,6 @@
     if (indexPath.section==0 && indexPath.row == 0) {
         BLUserHeadImageCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BLUserHeadImageCell"];
         cell.titleLabel.text = @"Avatar";
-        cell.titleLabel.textColor = [BLTheme titleColor];
-        cell.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
         cell.IconUrlImageView.layer.cornerRadius = CGRectGetWidth(cell.IconUrlImageView.bounds) > 0 ? CGRectGetWidth(cell.IconUrlImageView.bounds) / 2.0 : 28;
         cell.IconUrlImageView.layer.masksToBounds = YES;
         cell.IconUrlImageView.layer.borderWidth = 2;
@@ -110,10 +106,6 @@
     } else if (indexPath.section == 2) {
         BLUserLogoutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BLUserLogoutCell"];
         cell.titleLabel.text = @"Logout";
-        cell.titleLabel.textColor = [BLTheme dangerColor];
-        cell.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
-        cell.titleLabel.textAlignment = NSTextAlignmentCenter;
-        cell.backgroundColor = [[BLTheme dangerColor] colorWithAlphaComponent:0.08];
         return cell;
     } else {
         BLUserSaftyInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BLUserSaftyInfoCell"];
@@ -198,23 +190,13 @@
         switch (indexPath.section) {
             case 0: {
                 //修改昵称
-                UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Please enter a new nickname"
-                                                                               message:nil
-                                                                        preferredStyle:UIAlertControllerStyleAlert];
-                
-                [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-                    textField.text = self.name;
-                }];
-                
-                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                                      handler:^(UIAlertAction * action) {
-                                                                          [self modifyUserNickname:alert.textFields.firstObject.text];
-                                                                      }];
-                UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}];
-                
-                [alert addAction:defaultAction];
-                [alert addAction:cancelAction];
-                [self presentViewController:alert animated:YES completion:nil];
+                __weak typeof(self) weakSelf = self;
+                [Tools presentAlertOn:self
+                                title:@"Please enter a new nickname"
+                               fields:@[@{@"text": self.name ?: @""}]
+                              handler:^(NSArray<UITextField *> *textFields) {
+                                  [weakSelf modifyUserNickname:textFields.firstObject.text];
+                              }];
                 
                 break;
             }
@@ -232,38 +214,22 @@
                     }
                     case 2: {
                         //修改密码
-                        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Reset Password"
-                                                                                       message:nil
-                                                                                preferredStyle:UIAlertControllerStyleAlert];
-                        
-                        [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-                            textField.placeholder = @"Old Password";
-                        }];
-                        
-                        [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-                            textField.placeholder = @"New Password";
-                        }];
-                        
-                        [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-                            textField.placeholder = @"New Password Again";
-                        }];
-                        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                                              handler:^(UIAlertAction * action) {
-                                                                                  NSString *oldPassword = alert.textFields.firstObject.text;
-                                                                                  NSString *newPassword = alert.textFields[1].text;
-                                                                                  NSString *secondNewPassword = alert.textFields.lastObject.text;
-                                                                                  if ([newPassword isEqualToString:secondNewPassword]) {
-                                                                                      [self modifyPassword:oldPassword newPassword:newPassword];
-                                                                                  }else {
-                                                                                      [BLStatusBar showTipMessageWithStatus:@"Inconsistent password!!"];
-                                                                                  }
-                                                                              }];
-                        
-                        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}];
-                        
-                        [alert addAction:defaultAction];
-                        [alert addAction:cancelAction];
-                        [self presentViewController:alert animated:YES completion:nil];
+                        __weak typeof(self) weakSelf = self;
+                        [Tools presentAlertOn:self
+                                        title:@"Reset Password"
+                                       fields:@[
+                                           @{@"placeholder": @"Old Password", @"secure": @YES},
+                                           @{@"placeholder": @"New Password", @"secure": @YES},
+                                           @{@"placeholder": @"New Password Again", @"secure": @YES}
+                                       ]
+                                      handler:^(NSArray<UITextField *> *textFields) {
+                                          NSString *newPassword = textFields[1].text;
+                                          if ([newPassword isEqualToString:textFields.lastObject.text]) {
+                                              [weakSelf modifyPassword:textFields.firstObject.text newPassword:newPassword];
+                                          } else {
+                                              [BLStatusBar showTipMessageWithStatus:@"Inconsistent password!!"];
+                                          }
+                                      }];
                         break;
                     }
                     case 3: {
@@ -319,7 +285,7 @@
                 [self getUserInfo];
                 [BLStatusBar showTipMessageWithStatus:@"The avatar was successfully modified."];
             } else {
-                [BLStatusBar showTipMessageWithStatus:[result getMsg]?:@""];
+                [BLStatusBar showTipMessageWithStatus:[Tools messageForSDKResult:result]];
             }
         });
     }];
@@ -332,7 +298,7 @@
                 [self getUserInfo];
                 [BLStatusBar showTipMessageWithStatus:@"Nickname modified successfully"];
             } else {
-                [BLStatusBar showTipMessageWithStatus:[result getMsg]?:@""];
+                [BLStatusBar showTipMessageWithStatus:[Tools messageForSDKResult:result]];
             }
         });
     }];
@@ -345,7 +311,7 @@
                 [self getUserInfo];
                 [BLStatusBar showTipMessageWithStatus:@"Password reset complete"];
             } else {
-                [BLStatusBar showTipMessageWithStatus:[result getMsg]?:@""];
+                [BLStatusBar showTipMessageWithStatus:[Tools messageForSDKResult:result]];
             }
         });
     }];

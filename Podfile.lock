@@ -35,6 +35,7 @@ PODS:
   - BLLet/BLLetPlugins (2.18.2):
     - BLLet/BLLetBase
   - Cordova (4.4.0)
+  - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
   - SDWebImage (4.4.7):
     - SDWebImage/Core (= 4.4.7)
@@ -47,6 +48,7 @@ PODS:
 DEPENDENCIES:
   - BLLet
   - Cordova
+  - Masonry
   - MBProgressHUD
   - SDWebImage
   - SSZipArchive
@@ -58,6 +60,7 @@ SPEC REPOS:
   trunk:
     - AFNetworking
     - Cordova
+    - Masonry
     - MBProgressHUD
     - SDWebImage
     - SSZipArchive
@@ -67,11 +70,12 @@ SPEC CHECKSUMS:
   AFNetworking: 3bd23d814e976cd148d7d44c3ab78017b744cd58
   BLLet: e7659462da9389bdf4e79ed95d1f0771df8b2d5b
   Cordova: 561576155c420c54441d99b855de12c6e7b51088
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   SDWebImage: c10d14a8883ebd89664f02a422006f66a85c0c5d
   SSZipArchive: cefe1364104a0231268a5deb8495bdf2861f52f0
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
 
-PODFILE CHECKSUM: 521a29f951940dd4d5ea605be92ba5efad69bc94
+PODFILE CHECKSUM: e1dbf9f8a024a4478b0ca3b146a5bcc246f53d16
 
 COCOAPODS: 1.16.2

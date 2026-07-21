@@ -6,11 +6,11 @@
 //  Copyright © 2018 BroadLink. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ModifyPhoneViewController : UIViewController
+@interface ModifyPhoneViewController : BaseViewController
 
 @end
 

@@ -33,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)styleTextField:(UITextField *)textField;
 + (void)styleCardView:(UIView *)view;
 + (void)styleResultTextView:(UITextView *)textView;
+/// 递归将视图树中的 UIButton 统一为主题主按钮样式
++ (void)styleButtonsInView:(UIView *)view;
 
 /// items: @{ @"title", @"desc", @"symbol", @"tag" }
 + (void)installMenuListOnView:(UIView *)hostView

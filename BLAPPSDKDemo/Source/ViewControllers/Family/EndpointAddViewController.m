@@ -12,8 +12,8 @@
 #import "AppMacro.h"
 #import "DeviceDB.h"
 #import <BLLetCore/BLLetCore.h>
-
 #import "BLStatusBar.h"
+#import "Tools.h"
 
 @interface EndpointAddViewController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
@@ -31,8 +31,7 @@
 @implementation EndpointAddViewController
 
 + (EndpointAddViewController *)viewController {
-    EndpointAddViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"EndpointAddViewController"];
-    return vc;
+    return [Tools viewControllerFromMainStoryboard:[self class]];
 }
 
 - (void)viewDidLoad {
@@ -112,7 +111,7 @@
             });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Add Endpoints Failed. Code:%ld MSG:%@", result.status, result.msg]];
+                [self showErrorCode:result.status msg:result.msg];
             });
         }
     }];

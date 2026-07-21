@@ -24,6 +24,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     self.familyCodeField.text = self.qCode;
 }
 
@@ -38,8 +39,7 @@
                 [BLStatusBar showTipMessageWithStatus:@"Join Family success!"];
                 [self performSelector:@selector(goBack) withObject:nil afterDelay:2.0f];
             } else {
-                NSLog(@"ERROR :%@", result.msg);
-                [BLStatusBar showTipMessageWithStatus:[@"Join Family failed! " stringByAppendingString:result.msg]];
+                [self showErrorCode:result.error msg:result.msg];
             }
         });
     }];
