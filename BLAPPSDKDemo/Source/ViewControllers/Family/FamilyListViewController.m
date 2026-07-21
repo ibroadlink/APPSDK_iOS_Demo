@@ -10,6 +10,7 @@
 #import "FamilyDetailViewController.h"
 #import "BLStatusBar.h"
 #import "DropDownList.h"
+#import "BLTheme.h"
 #import <BLSFamily/BLSFamily.h>
 
 #import <SDWebImage/UIImageView+WebCache.h>
@@ -25,9 +26,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.title = @"Family";
     self.familyInfos = [[NSArray alloc] init];
+    self.view.backgroundColor = [BLTheme backgroundColor];
     self.familyListTableView.delegate = self;
     self.familyListTableView.dataSource = self;
+    self.familyListTableView.backgroundColor = [BLTheme backgroundColor];
+    self.familyListTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.familyListTableView.contentInset = UIEdgeInsetsMake(8, 0, 16, 0);
     [self setExtraCellLineHidden:self.familyListTableView];
 }
 
@@ -61,15 +67,25 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
+    cell.backgroundColor = [BLTheme cardColor];
+    cell.contentView.backgroundColor = [BLTheme cardColor];
+    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+
     BLSFamilyInfo *familyInfo = self.familyInfos[indexPath.section];
     UIImageView *headImageView = (UIImageView *)[cell viewWithTag:100];
+    headImageView.layer.cornerRadius = 8;
+    headImageView.layer.masksToBounds = YES;
     [headImageView sd_setImageWithURL:[NSURL URLWithString:familyInfo.iconpath] placeholderImage:[UIImage imageNamed:@"default_family"]];
     
     UILabel *familyNameLabel = (UILabel *)[cell viewWithTag:101];
     familyNameLabel.text = familyInfo.name;
+    familyNameLabel.textColor = [BLTheme titleColor];
+    familyNameLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
     
     UILabel *familyIdLabel = (UILabel *)[cell viewWithTag:102];
     familyIdLabel.text = familyInfo.familyid;
+    familyIdLabel.textColor = [BLTheme subtitleColor];
+    familyIdLabel.font = [UIFont systemFontOfSize:12];
     
     return cell;
 }

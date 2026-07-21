@@ -7,12 +7,16 @@
 //
 
 #import "BLUserSaftyInfoCell.h"
+#import "BLTheme.h"
 
 @implementation BLUserSaftyInfoCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
+    self.backgroundColor = [BLTheme cardColor];
+    self.contentView.backgroundColor = [BLTheme cardColor];
+    self.titleLabel.textColor = [BLTheme titleColor];
+    self.rightTitleLabel.textColor = [BLTheme subtitleColor];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

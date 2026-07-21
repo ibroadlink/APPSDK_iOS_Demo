@@ -10,7 +10,7 @@
 #define AppMacro_h
 
 #define SDK_PACKAGE_ID  @"com.broadlink.blappsdkdemo"
-#define SDK_LICENSE     @"4oQxAHVFYnnY7HPuDlYnm0I6pGcRvFTh/Ct2Vv+/5qZDpJJiIweBn2RUUA6oE8InRDV+XAAAAABz4LOxmXdGndIQ0J762DN4lXimLcoYN1h90T3OlpYrQrNgvm0/7+Kdmrgfawtr+QWBY+UBaf8hxk19tobFrLsFsEkbxXTfoUSQjDzWcfVjcAAAAAA="
+#define SDK_LICENSE     @"gagBM7T8FyK2/qogj2ExcGK2KG8sklqQ7bNfHbzEGzfIX/aX2hct1R3su9jMCvxvfRitZAAAAABiQptPAH3WhTnEMi294aacnraw1WFPpYiayxY4e5rz7MP5ktNvnwBw1zXfafx+XZYpjSpQe91SvBFERbKYQ+AAhpA4pB5S2wNVpBmU/vxzwwAAAAA="
 
 #define DISABLE_PUSH_NOTIFICATIONS 1    //不使能推送功能
 

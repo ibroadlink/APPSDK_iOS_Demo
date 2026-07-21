@@ -14,6 +14,7 @@
 #import <BLLetAccount/BLLetAccount.h>
 
 #import "BLLoadingButton.h"
+#import "BLTheme.h"
 #import <YYCategories/UIColor+YYAdd.h>
 #import <YYCategories/UIImage+YYAdd.h>
 #import <YYCategories/YYCategories.h>
@@ -34,13 +35,10 @@
 }
 
 - (void)viewInit {
-    UIImage *backgroundAbleImage = [UIImage imageWithColor:[UIColor colorWithRGB:0xF0AA3D]];
-    UIImage *backgroundDisableImage = [UIImage imageWithColor:[UIColor colorWithRGBA:0xF0AA3DB3]];
-    [self.loginButton setBackgroundImage:backgroundAbleImage forState:UIControlStateNormal];
-    [self.loginButton setBackgroundImage:backgroundDisableImage forState:UIControlStateDisabled];
-    [self.loginButton setBackgroundColor:self.view.backgroundColor];
-    self.loginButton.layer.cornerRadius = 5;
-    self.loginButton.layer.masksToBounds = YES;
+    self.view.backgroundColor = [BLTheme backgroundColor];
+    [BLTheme styleTextField:self.userNameField];
+    [BLTheme styleTextField:self.passwordField];
+    [BLTheme stylePrimaryButton:self.loginButton];
     self.userNameField.clearButtonMode = UITextFieldViewModeWhileEditing;
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -48,11 +46,11 @@
     [button setImage:[UIImage imageNamed:@"icon_password_eye_hidden"] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(passwordShowAction:) forControlEvents:UIControlEventTouchUpInside];
     button.selected = NO;
-    button.frame = CGRectMake(0, 0, 34, 34);
+    button.frame = CGRectMake(0, 0, 40, 40);
     
     self.passwordField.secureTextEntry = YES;
     self.passwordField.rightView = button;
-    self.passwordField.rightViewMode = UITextFieldViewModeWhileEditing;
+    self.passwordField.rightViewMode = UITextFieldViewModeAlways;
     self.userNameField.placeholder = @"Phone number / email";
     self.passwordField.placeholder = @"Password";
     

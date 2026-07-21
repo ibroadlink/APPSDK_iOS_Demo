@@ -13,6 +13,7 @@
 #import "BrandSelectController.h"
 
 #import "BLStatusBar.h"
+#import "BLTheme.h"
 #import <BLLetIRCode/BLLetIRCode.h>
 
 @interface IRCodeTestViewController ()
@@ -28,7 +29,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.title = @"IR Code";
+    NSArray *items = @[
+        @{@"title": @"AC Code", @"desc": @"Air conditioner IR library", @"symbol": @"wind", @"tag": @100},
+        @{@"title": @"TV Code", @"desc": @"Television IR library", @"symbol": @"tv", @"tag": @101},
+        @{@"title": @"TV Box Code", @"desc": @"Set-top box IR library", @"symbol": @"rectangle.on.rectangle", @"tag": @102},
+    ];
+    [BLTheme installMenuListOnView:self.view
+                             title:@"IR Code"
+                          subtitle:@"Select a device type to match IR codes"
+                             items:items
+                            target:self
+                            action:@selector(button:)];
 }
 
 - (void)didReceiveMemoryWarning {

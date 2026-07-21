@@ -20,7 +20,40 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BLTool" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="brand-label">
+                                <rect key="frame" x="24" y="292" width="327" height="41"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="34"/>
+                                <color key="textColor" red="0.05882352941" green="0.09019607843" blue="0.1647058824" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BroadLink App SDK Demo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sub-label">
+                                <rect key="frame" x="24" y="341" width="327" height="18"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                <color key="textColor" red="0.3921568627" green="0.4549019608" blue="0.5450980392" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="accent-bar">
+                                <rect key="frame" x="169.5" y="375" width="36" height="4"/>
+                                <color key="backgroundColor" red="0.05882352941" green="0.462745098" blue="0.431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="36" id="accent-w"/>
+                                    <constraint firstAttribute="height" constant="4" id="accent-h"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.9568627451" green="0.968627451" blue="0.9803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="brand-label" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="brand-cx"/>
+                            <constraint firstItem="brand-label" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-20" id="brand-cy"/>
+                            <constraint firstItem="brand-label" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="24" id="brand-l"/>
+                            <constraint firstAttribute="trailing" secondItem="brand-label" secondAttribute="trailing" constant="24" id="brand-r"/>
+                            <constraint firstItem="sub-label" firstAttribute="top" secondItem="brand-label" secondAttribute="bottom" constant="8" id="sub-t"/>
+                            <constraint firstItem="sub-label" firstAttribute="leading" secondItem="brand-label" secondAttribute="leading" id="sub-l"/>
+                            <constraint firstItem="sub-label" firstAttribute="trailing" secondItem="brand-label" secondAttribute="trailing" id="sub-r"/>
+                            <constraint firstItem="accent-bar" firstAttribute="top" secondItem="sub-label" secondAttribute="bottom" constant="16" id="accent-t"/>
+                            <constraint firstItem="accent-bar" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="accent-cx"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>

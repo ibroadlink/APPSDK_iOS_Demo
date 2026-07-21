@@ -11,6 +11,8 @@
 #import "BLProductCategoryList.h"
 #import "BLDeviceConfigureInfo.h"
 #import "BLConfigureStartViewController.h"
+#import "BLUserDefaults.h"
+#import "BLStatusBar.h"
 #import <BLLetAccount/BLLetAccount.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -28,12 +30,23 @@
 
 - (void)getProductList:(NSString *)categoryid {
     BLAccount *account = [BLAccount sharedAccount];
+    NSString *userId = account.loginUserid;
+    if (userId.length == 0) {
+        userId = [[BLUserDefaults shareUserDefaults] getUserId];
+    }
+    if (userId.length == 0) {
+        [BLStatusBar showTipMessageWithStatus:@"Please login first!!!"];
+        return;
+    }
+    if (categoryid.length == 0) {
+        categoryid = @"";
+    }
     NSDictionary *headers = @{
                               @"countryCode": @"1",
-                              @"userid": account.loginUserid};
+                              @"userid": userId};
     NSDictionary *parameters = @{ @"brandid": @"",
                                   @"protocols": @[],
-                                  @"categoryid":categoryid
+                                  @"categoryid": categoryid
                                   };
     NSString *url = [NSString stringWithFormat:@"https://%@bizappmanage.ibroadlink.com/ec4/v1/system/resource/productlist",[BLConfigParam sharedConfigParam].licenseId];
     

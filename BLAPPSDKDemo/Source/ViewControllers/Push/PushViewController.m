@@ -11,6 +11,7 @@
 #import "BLDeviceService.h"
 #import "BLTemplate.h"
 #import "LinkageTemplate.h"
+#import "BLTheme.h"
 
 @interface PushViewController () <UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITextView *deviceInfoView;
@@ -27,9 +28,34 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.title = @"Push";
+    self.view.backgroundColor = [BLTheme backgroundColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.backgroundColor = [BLTheme backgroundColor];
+    self.tableView.separatorColor = [BLTheme separatorColor];
+    [BLTheme styleResultTextView:self.deviceInfoView];
+    [BLTheme styleResultTextView:self.resultTextView];
+    [self stylePushButtonsInView:self.view];
     self.isTemplates = YES;
+}
+
+- (void)stylePushButtonsInView:(UIView *)view {
+    for (UIView *subview in view.subviews) {
+        if ([subview isKindOfClass:[UIButton class]]) {
+            UIButton *button = (UIButton *)subview;
+            button.backgroundColor = [BLTheme primaryColor];
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button setBackgroundImage:nil forState:UIControlStateNormal];
+            button.layer.cornerRadius = 10;
+            button.layer.masksToBounds = YES;
+            button.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightSemibold];
+            button.contentEdgeInsets = UIEdgeInsetsZero;
+        } else if (![subview isKindOfClass:[UITableView class]] &&
+                   ![subview isKindOfClass:[UITextView class]]) {
+            [self stylePushButtonsInView:subview];
+        }
+    }
 }
 
 + (instancetype)viewController {

@@ -93,6 +93,7 @@
 		705B09641D4F1C5B00805109 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 705B09621D4F1C5B00805109 /* LaunchScreen.storyboard */; };
 		70DDAEF51DC73D4A005E4278 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 70DDAEE91DC73D4A005E4278 /* AppDelegate.m */; };
 		70DDAEF91DC73D4A005E4278 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 70DDAEF01DC73D4A005E4278 /* main.m */; };
+		A7E91B0624E7A00100B171E1 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E91B0524E7A00100B171E1 /* SceneDelegate.m */; };
 		8405E12F225485ED00DC73D1 /* IRCodeMatchTreeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8405E12E225485ED00DC73D1 /* IRCodeMatchTreeInfo.m */; };
 		8405E1322254BE4E00DC73D1 /* MatchTreeTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8405E1312254BE4E00DC73D1 /* MatchTreeTestController.m */; };
 		8405E139225C3B6000DC73D1 /* DeviceStressTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8405E138225C3B6000DC73D1 /* DeviceStressTestController.m */; };
@@ -104,6 +105,7 @@
 		842C9614221E850300B3A1A6 /* EndpointListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C9613221E850300B3A1A6 /* EndpointListViewController.m */; };
 		842C9617221E964B00B3A1A6 /* EndpointAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C9616221E964B00B3A1A6 /* EndpointAddViewController.m */; };
 		8430DCC32228CDB10048DCA7 /* EndpointDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8430DCC22228CDB10048DCA7 /* EndpointDetailController.m */; };
+		8442D5862AEA703F005F4593 /* BLSFamily.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8442D5852AEA703F005F4593 /* BLSFamily.framework */; };
 		846CA92D2248BBA200884421 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846CA92C2248BBA200884421 /* MainViewController.m */; };
 		846CA9302248CDB900884421 /* ModifyEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846CA92F2248CDB900884421 /* ModifyEmailViewController.m */; };
 		848C781622AFA22700E464F2 /* IRCodeLocationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 848C781522AFA22700E464F2 /* IRCodeLocationInfo.m */; };
@@ -120,7 +122,8 @@
 		84F84214224A2FA200D60C76 /* IRCodeDownloadInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F84213224A2FA200D60C76 /* IRCodeDownloadInfo.m */; };
 		84F84217224A3E8A00D60C76 /* IRCodeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F84216224A3E8A00D60C76 /* IRCodeModel.m */; };
 		84F84219224A416900D60C76 /* IRCodeProviderInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F84218224A416900D60C76 /* IRCodeProviderInfo.m */; };
-		AADA6EE36D3CC88AD40F195C /* libPods-BLAPPSDKDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D118C5D79AEB44CD00AD9904 /* libPods-BLAPPSDKDemo.a */; };
+		A7E91B0324E7A00100B171E1 /* BLTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E91B0224E7A00100B171E1 /* BLTheme.m */; };
+		C93C2DDCBFA64E0BFCE99E36 /* Pods_BLAPPSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 409A190FC527B889B267E6AE /* Pods_BLAPPSDKDemo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -208,6 +211,7 @@
 		3AFC6D7420EB6063003404E6 /* Tools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		3AFC6D7620EB7278003404E6 /* UIImage+BDL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+BDL.h"; sourceTree = "<group>"; };
 		3AFC6D7720EB7278003404E6 /* UIImage+BDL.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+BDL.m"; sourceTree = "<group>"; };
+		409A190FC527B889B267E6AE /* Pods_BLAPPSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BLAPPSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		496EDC6DADF2CEDFD1420839 /* Pods-BLAPPSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLAPPSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		70503D521FDBE37A002D3371 /* BLDeviceService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLDeviceService.m; sourceTree = "<group>"; };
 		70503D531FDBE37A002D3371 /* BLDeviceWebControlPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLDeviceWebControlPlugin.m; sourceTree = "<group>"; };
@@ -286,6 +290,8 @@
 		70DDAEE81DC73D4A005E4278 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Source/AppDelegate.h; sourceTree = "<group>"; };
 		70DDAEE91DC73D4A005E4278 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Source/AppDelegate.m; sourceTree = "<group>"; };
 		70DDAEF01DC73D4A005E4278 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Source/main.m; sourceTree = "<group>"; };
+		A7E91B0424E7A00100B171E1 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SceneDelegate.h; path = Source/SceneDelegate.h; sourceTree = "<group>"; };
+		A7E91B0524E7A00100B171E1 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SceneDelegate.m; path = Source/SceneDelegate.m; sourceTree = "<group>"; };
 		72367507CB38F6AA480979FA /* Pods-BLAPPSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLAPPSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		8405E12D225485ED00DC73D1 /* IRCodeMatchTreeInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCodeMatchTreeInfo.h; sourceTree = "<group>"; };
 		8405E12E225485ED00DC73D1 /* IRCodeMatchTreeInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRCodeMatchTreeInfo.m; sourceTree = "<group>"; };
@@ -309,6 +315,7 @@
 		842C9616221E964B00B3A1A6 /* EndpointAddViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EndpointAddViewController.m; sourceTree = "<group>"; };
 		8430DCC12228CDB10048DCA7 /* EndpointDetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EndpointDetailController.h; sourceTree = "<group>"; };
 		8430DCC22228CDB10048DCA7 /* EndpointDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EndpointDetailController.m; sourceTree = "<group>"; };
+		8442D5852AEA703F005F4593 /* BLSFamily.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BLSFamily.framework; sourceTree = "<group>"; };
 		846CA92B2248BBA200884421 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		846CA92C2248BBA200884421 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		846CA92E2248CDB900884421 /* ModifyEmailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyEmailViewController.h; sourceTree = "<group>"; };
@@ -342,7 +349,8 @@
 		84F84216224A3E8A00D60C76 /* IRCodeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRCodeModel.m; sourceTree = "<group>"; };
 		84F84218224A416900D60C76 /* IRCodeProviderInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRCodeProviderInfo.m; sourceTree = "<group>"; };
 		84F8421A224A41E100D60C76 /* IRCodeProviderInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRCodeProviderInfo.h; sourceTree = "<group>"; };
-		D118C5D79AEB44CD00AD9904 /* libPods-BLAPPSDKDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BLAPPSDKDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7E91B0124E7A00100B171E1 /* BLTheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLTheme.h; sourceTree = "<group>"; };
+		A7E91B0224E7A00100B171E1 /* BLTheme.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLTheme.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -353,7 +361,8 @@
 				3AD8B31D22FD22EF0046A9BF /* CoreLocation.framework in Frameworks */,
 				02AE62F3200713A700847CE5 /* libsqlite3.0.tbd in Frameworks */,
 				3A3582FC2330DED00020B6C0 /* ExternalAccessory.framework in Frameworks */,
-				AADA6EE36D3CC88AD40F195C /* libPods-BLAPPSDKDemo.a in Frameworks */,
+				8442D5862AEA703F005F4593 /* BLSFamily.framework in Frameworks */,
+				C93C2DDCBFA64E0BFCE99E36 /* Pods_BLAPPSDKDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,6 +664,8 @@
 				70503D971FDBE4D5002D3371 /* BLUserDefaults.m */,
 				70503D961FDBE4D5002D3371 /* BLStatusBar.h */,
 				70503D9A1FDBE4D5002D3371 /* BLStatusBar.m */,
+				A7E91B0124E7A00100B171E1 /* BLTheme.h */,
+				A7E91B0224E7A00100B171E1 /* BLTheme.m */,
 				70503D9C1FDBE4D5002D3371 /* AppMacro.h */,
 				3AFC6D7120EB5DDC003404E6 /* BLSystemImage.h */,
 				3AFC6D7020EB5DDB003404E6 /* BLSystemImage.m */,
@@ -717,6 +728,8 @@
 				70503D5A1FDBE4D5002D3371 /* ViewControllers */,
 				70DDAEE81DC73D4A005E4278 /* AppDelegate.h */,
 				70DDAEE91DC73D4A005E4278 /* AppDelegate.m */,
+				A7E91B0424E7A00100B171E1 /* SceneDelegate.h */,
+				A7E91B0524E7A00100B171E1 /* SceneDelegate.m */,
 				70DDAEF01DC73D4A005E4278 /* main.m */,
 			);
 			name = Source;
@@ -725,12 +738,13 @@
 		70AE16E81DB8B1A8002FF319 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8442D5852AEA703F005F4593 /* BLSFamily.framework */,
 				3A3582FB2330DED00020B6C0 /* ExternalAccessory.framework */,
 				3AD8B31C22FD22EF0046A9BF /* CoreLocation.framework */,
 				84906B632260893400FBA364 /* libz.1.2.11.tbd */,
 				02AE62F2200713A700847CE5 /* libsqlite3.0.tbd */,
 				02AE62F02007139B00847CE5 /* libz.1.2.5.tbd */,
-				D118C5D79AEB44CD00AD9904 /* libPods-BLAPPSDKDemo.a */,
+				409A190FC527B889B267E6AE /* Pods_BLAPPSDKDemo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -824,6 +838,7 @@
 				705B094D1D4F1C5B00805109 /* Sources */,
 				705B094E1D4F1C5B00805109 /* Frameworks */,
 				705B094F1D4F1C5B00805109 /* Resources */,
+				B5EB499727E551E30BDE5058 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -845,7 +860,7 @@
 				TargetAttributes = {
 					705B09501D4F1C5B00805109 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = U546APCTMY;
+						DevelopmentTeam = HY3APXQW82;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.AccessWiFi = {
@@ -936,6 +951,34 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		B5EB499727E551E30BDE5058 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Cordova/Cordova.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
+				"${BUILT_PRODUCTS_DIR}/YYCategories/YYCategories.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cordova.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYCategories.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BLAPPSDKDemo/Pods-BLAPPSDKDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -974,6 +1017,7 @@
 				70503DAD1FDBE4D5002D3371 /* DNAControlViewController.m in Sources */,
 				84A29D952397FFFE00CEBCBB /* SMCallTraceTimeCostModel.m in Sources */,
 				70503DBC1FDBE4D6002D3371 /* BLStatusBar.m in Sources */,
+				A7E91B0324E7A00100B171E1 /* BLTheme.m in Sources */,
 				70503DB91FDBE4D6002D3371 /* DeviceWebControlViewController.m in Sources */,
 				84BACDE32236555F00C1E5DA /* SceneAddController.m in Sources */,
 				84A29D972397FFFE00CEBCBB /* SMCallTraceCore.c in Sources */,
@@ -1030,6 +1074,7 @@
 				3A076F202313D6340011789F /* FastconGroupDeviceEditViewController.m in Sources */,
 				84A29D982397FFFE00CEBCBB /* SMCallLib.m in Sources */,
 				70DDAEF51DC73D4A005E4278 /* AppDelegate.m in Sources */,
+				A7E91B0624E7A00100B171E1 /* SceneDelegate.m in Sources */,
 				70503DAC1FDBE4D5002D3371 /* ProductModelsTableViewController.m in Sources */,
 				3A7C339B22EEEB7D0021322F /* LinkageTemplate.m in Sources */,
 				84F84214224A2FA200D60C76 /* IRCodeDownloadInfo.m in Sources */,
@@ -1182,13 +1227,14 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U546APCTMY;
+				DEVELOPMENT_TEAM = HY3APXQW82;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BLAPPSDKDemo/Source/AppSdk",
 					"$(PROJECT_DIR)/BLAPPSDKDemo/BLLet",
 					"$(PROJECT_DIR)/BLAPPSDKDemo/Source/Library",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1196,7 +1242,8 @@
 					"COCOAPODS=1",
 				);
 				INFOPLIST_FILE = BLAPPSDKDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				IPHONEOS_DEPLOYMENT_TARGET = 13;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1209,9 +1256,12 @@
 					"$(PROJECT_DIR)/BLAPPSDKDemo/Library",
 				);
 				NEW_SETTING = "";
-				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.broadlink.namolc;
+				PRODUCT_BUNDLE_IDENTIFIER = com.broadlink.blappsdkdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1230,13 +1280,14 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U546APCTMY;
+				DEVELOPMENT_TEAM = HY3APXQW82;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BLAPPSDKDemo/Source/AppSdk",
 					"$(PROJECT_DIR)/BLAPPSDKDemo/BLLet",
 					"$(PROJECT_DIR)/BLAPPSDKDemo/Source/Library",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1244,7 +1295,8 @@
 					"COCOAPODS=1",
 				);
 				INFOPLIST_FILE = BLAPPSDKDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				IPHONEOS_DEPLOYMENT_TARGET = 13;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1257,9 +1309,12 @@
 					"$(PROJECT_DIR)/BLAPPSDKDemo/Library",
 				);
 				NEW_SETTING = "";
-				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.broadlink.namolc;
+				PRODUCT_BUNDLE_IDENTIFIER = com.broadlink.blappsdkdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

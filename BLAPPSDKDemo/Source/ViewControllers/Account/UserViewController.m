@@ -17,6 +17,7 @@
 #import "BLSystemImage.h"
 #import "BLStatusBar.h"
 #import "UIImage+BDL.h"
+#import "BLTheme.h"
 
 
 @interface UserViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -34,11 +35,15 @@
     [super viewDidLoad];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.backgroundColor = [BLTheme backgroundColor];
+    self.tableView.separatorColor = [BLTheme separatorColor];
+    self.view.backgroundColor = [BLTheme backgroundColor];
     
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Main" style:UIBarButtonItemStylePlain target:self action:@selector(viewBack)];
     self.navigationItem.leftBarButtonItem = leftButton;
     
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(logout)];
+    rightButton.tintColor = [BLTheme dangerColor];
     self.navigationItem.rightBarButtonItem = rightButton;
     
     [self getUserInfo];
@@ -83,6 +88,13 @@
     if (indexPath.section==0 && indexPath.row == 0) {
         BLUserHeadImageCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BLUserHeadImageCell"];
         cell.titleLabel.text = @"Avatar";
+        cell.titleLabel.textColor = [BLTheme titleColor];
+        cell.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
+        cell.IconUrlImageView.layer.cornerRadius = CGRectGetWidth(cell.IconUrlImageView.bounds) > 0 ? CGRectGetWidth(cell.IconUrlImageView.bounds) / 2.0 : 28;
+        cell.IconUrlImageView.layer.masksToBounds = YES;
+        cell.IconUrlImageView.layer.borderWidth = 2;
+        cell.IconUrlImageView.layer.borderColor = [BLTheme primaryLightColor].CGColor;
+        cell.IconUrlImageView.backgroundColor = [BLTheme primaryLightColor];
         NSString *iconUrl = nil;
         
         if (![BLCommonTools isEmpty:self.iconUrl]) {
@@ -98,6 +110,10 @@
     } else if (indexPath.section == 2) {
         BLUserLogoutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BLUserLogoutCell"];
         cell.titleLabel.text = @"Logout";
+        cell.titleLabel.textColor = [BLTheme dangerColor];
+        cell.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
+        cell.titleLabel.textAlignment = NSTextAlignmentCenter;
+        cell.backgroundColor = [[BLTheme dangerColor] colorWithAlphaComponent:0.08];
         return cell;
     } else {
         BLUserSaftyInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BLUserSaftyInfoCell"];

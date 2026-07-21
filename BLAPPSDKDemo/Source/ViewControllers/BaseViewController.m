@@ -8,6 +8,7 @@
 
 #import "BaseViewController.h"
 #import "MBProgressHUD.h"
+#import "BLTheme.h"
 
 @interface BaseViewController () <MBProgressHUDDelegate>
 
@@ -29,7 +30,9 @@
     }
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(viewBack)];
     self.navigationItem.backBarButtonItem = item;
-    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+    self.view.backgroundColor = [BLTheme backgroundColor];
+    self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+    self.navigationController.navigationBar.tintColor = [BLTheme primaryColor];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -104,6 +107,10 @@
         
         _progressHUD = [[MBProgressHUD alloc] initWithView:_progressHUDBackView];
         _progressHUD.delegate = self;
+        _progressHUD.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
+        _progressHUD.bezelView.color = [[BLTheme titleColor] colorWithAlphaComponent:0.85];
+        _progressHUD.contentColor = [UIColor whiteColor];
+        _progressHUD.bezelView.layer.cornerRadius = 14.0;
         [_progressHUDBackView addSubview:_progressHUD];
     }
 }

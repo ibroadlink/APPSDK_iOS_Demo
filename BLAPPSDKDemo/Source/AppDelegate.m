@@ -12,6 +12,7 @@
 #import "BLUserDefaults.h"
 #import <BLSFamily/BLSFamily.h>
 #import "BLDeviceService.h"
+#import "BLTheme.h"
 
 #ifndef DISABLE_PUSH_NOTIFICATIONS
 #import "BLSNotificationService.h"
@@ -33,7 +34,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
+    [BLTheme applyGlobalAppearance];
+
     [self loadAppSdk];
 
 #ifndef DISABLE_PUSH_NOTIFICATIONS
@@ -44,6 +46,15 @@
 #endif
     
     return YES;
+}
+
+#pragma mark - UISceneSession lifecycle
+
+- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
+    return [[UISceneConfiguration alloc] initWithName:@"Default Configuration" sessionRole:connectingSceneSession.role];
+}
+
+- (void)application:(UIApplication *)application didDiscardSceneSessions:(NSSet<UISceneSession *> *)sceneSessions {
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -165,7 +176,21 @@
     }];
     [alert addAction:cancelAction];
     [alert addAction:okAction];
-    [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+    UIViewController *root = self.window.rootViewController;
+    if (!root) {
+        for (UIScene *scene in UIApplication.sharedApplication.connectedScenes) {
+            if (scene.activationState != UISceneActivationStateForegroundActive) { continue; }
+            if (![scene isKindOfClass:[UIWindowScene class]]) { continue; }
+            for (UIWindow *window in ((UIWindowScene *)scene).windows) {
+                if (window.isKeyWindow) {
+                    root = window.rootViewController;
+                    break;
+                }
+            }
+            if (root) { break; }
+        }
+    }
+    [root presentViewController:alert animated:YES completion:nil];
 }
 
 #endif
@@ -190,18 +215,13 @@
 
     // 使用云端集群
     [BLConfigParam sharedConfigParam].appServiceEnable = [userDefault getAppServiceEnable];
-    if ([BLConfigParam sharedConfigParam].appServiceEnable > 0) {
-        NSString *cloudClusterHost = [userDefault getAppServiceHost];
-        if (![BLCommonTools isEmpty:cloudClusterHost]) {
-            [BLConfigParam sharedConfigParam].appServiceHost = cloudClusterHost;
-        }
-    }
+    [BLConfigParam sharedConfigParam].appServiceHost = @"https://app-service-chn-467a8f05.ibroadlink.com";
     
     [self.let setDebugLog:BL_LEVEL_ALL];                                            // Set APPSDK debug log level
     [self.let.controller setSDKRawDebugLevel:BL_LEVEL_ALL];                       // Set DNASDK debug log level
     
     // 相关模块必须先初始化
-    BLAccount *account = [BLAccount sharedAccount];
+    // BLAccount *account = [BLAccount sharedAccount];
     
     BLIRCode *ircode = [BLIRCode sharedIrdaCode];
     [ircode startRMSubDeviceWork];
@@ -209,14 +229,14 @@
     [[BLDeviceService sharedDeviceService] startDeviceManagment];
         
     //本地登录 获取账号管理对象
-    if ([userDefault getUserId] && [userDefault getSessionId]) {
-
-        [account localLoginWithUsrid:[userDefault getUserId] session:[userDefault getSessionId] completionHandler:^(BLLoginResult * _Nonnull result) {
-            if ([result succeed]) {
-                NSLog(@"Login success!");
-            }
-        }];
-    }
+//    if ([userDefault getUserId] && [userDefault getSessionId]) {
+//
+//        [account localLoginWithUsrid:[userDefault getUserId] session:[userDefault getSessionId] completionHandler:^(BLLoginResult * _Nonnull result) {
+//            if ([result succeed]) {
+//                NSLog(@"Login success!");
+//            }
+//        }];
+//    }
 }
 
 - (void)didReceiveMessage:(id)message {

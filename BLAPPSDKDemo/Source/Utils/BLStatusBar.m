@@ -7,6 +7,7 @@
 //
 
 #import "BLStatusBar.h"
+#import "BLTheme.h"
 
 @interface BLStatusBar ()
 @property (nonatomic, strong, readwrite) UIWindow *overlayWindow;
@@ -57,7 +58,8 @@
         
         topBar.frame =CGRectMake(0, [UIScreen mainScreen].bounds.size.height-32, overlayWindow.frame.size.width, 30.0);
         topBar.alpha =1;
-        topBar.layer.cornerRadius =2.5;
+        topBar.layer.cornerRadius =18.0;
+        topBar.layer.masksToBounds = YES;
         [overlayWindow addSubview:topBar];
     }
     return topBar;
@@ -65,12 +67,12 @@
 -(UILabel* )stringLabel{
     if (stringLabel ==nil) {
         stringLabel =[[UILabel alloc]initWithFrame:CGRectZero];
-        stringLabel.textColor= [UIColor orangeColor];
+        stringLabel.textColor= [UIColor whiteColor];
         stringLabel.backgroundColor=[UIColor clearColor];
         stringLabel.adjustsFontSizeToFitWidth =YES;
         stringLabel.textAlignment = NSTextAlignmentCenter;
         stringLabel.baselineAdjustment =UIBaselineAdjustmentAlignCenters;
-        stringLabel.font =[UIFont systemFontOfSize:14.0];
+        stringLabel.font =[UIFont systemFontOfSize:14.0 weight:UIFontWeightMedium];
         stringLabel.numberOfLines=0;
     }
     if (!stringLabel.superview) {
@@ -167,7 +169,7 @@
         [self.overlayWindow addSubview:self];
     
     self.showing =YES;
-    self.topBar.backgroundColor=[UIColor colorWithRed:20.0/255.0 green:20.0/255.0 blue:20.0/255.0 alpha:1];
+    self.topBar.backgroundColor=[BLTheme toastBackgroundColor];
     NSString* text=string;
     UIImage* topImage=image;
     CGRect labelRect = CGRectZero;
@@ -178,29 +180,30 @@
     self.stringLabel.text=text;
     self.stringLabel.textColor =[UIColor whiteColor];
     if (image !=nil) {
-        self.topImageView.frame =CGRectMake(10, 7.5, 15, 15);
+        self.topImageView.frame =CGRectMake(14, 10.5, 15, 15);
         self.topImageView.image=topImage;
     }else{
         self.topImageView.frame =CGRectMake(0, 0, 0, 0);
     }
     if (string) {
-//        CGSize stringSize =[text sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(self.topBar.frame.size.width, self.topBar.frame.size.height)];
-        CGSize size = CGSizeMake(self.topBar.frame.size.width, self.topBar.frame.size.height);
+        CGSize size = CGSizeMake([UIScreen mainScreen].bounds.size.width - 80, 60);
         NSDictionary *attrDic = @{NSFontAttributeName:self.stringLabel.font};
         CGSize stringSize = [text boundingRectWithSize:size
                                                options:NSStringDrawingUsesLineFragmentOrigin
                                             attributes:attrDic
                                                context:nil].size;
         width =stringSize.width;
-        height =stringSize.height;
-        labelRect =CGRectMake((self.topImageView.frame.origin.x +12), 6, width, height);
+        height =MAX(stringSize.height, 18);
+        CGFloat labelX = image ? (self.topImageView.frame.origin.x + 22) : 16;
+        labelRect =CGRectMake(labelX, 10, width, height);
     }
     self.stringLabel.frame=labelRect;
-    if (isBottom ==YES) {
-        self.topBar.frame =CGRectMake(([UIScreen mainScreen].bounds.size.width - self.topImageView.frame.size.width -self.stringLabel.frame.size.width-25)/2, [UIScreen mainScreen].bounds.size.height - 37 - 55, self.topImageView.frame.size.width+10+self.stringLabel.frame.size.width+15, 30);
-    }else{
-        self.topBar.frame =CGRectMake(([UIScreen mainScreen].bounds.size.width - self.topImageView.frame.size.width -self.stringLabel.frame.size.width-25)/2, [UIScreen mainScreen].bounds.size.height -37 - 55, self.topImageView.frame.size.width+10+self.stringLabel.frame.size.width+15, 30);
-    }
+    CGFloat barWidth = MAX(120, self.topImageView.frame.size.width + self.stringLabel.frame.size.width + 40);
+    CGFloat barHeight = MAX(36, height + 20);
+    CGFloat barX = ([UIScreen mainScreen].bounds.size.width - barWidth) / 2.0;
+    CGFloat barY = [UIScreen mainScreen].bounds.size.height - barHeight - 64;
+    self.topBar.frame = CGRectMake(barX, barY, barWidth, barHeight);
+    self.topBar.layer.cornerRadius = barHeight / 2.0;
     [self.overlayWindow setHidden:NO];
     
     self.topBar.alpha =1.0;
@@ -211,7 +214,7 @@
 -(void)showStatusWithString:(NSString* )string andTopImage:(UIImage *)image andCoin:(NSString*)coin andSecImage:(UIImage*)secImage andTipIsBottom:(BOOL)isBottom{
     if (!self.superview)
         [self.overlayWindow addSubview:self];
-    self.topBar.backgroundColor=[UIColor colorWithRed:20.0/255.0 green:20.0/255.0 blue:20.0/255.0 alpha:1];
+    self.topBar.backgroundColor=[BLTheme toastBackgroundColor];
     NSString* text=string;
     UIImage* topImage=image;
     
@@ -220,22 +223,21 @@
     CGFloat height =0;
     
     if (image !=nil) {
-        self.topImageView.frame =CGRectMake(10, 7.5, 15, 15);
+        self.topImageView.frame =CGRectMake(14, 10.5, 15, 15);
         
         self.topImageView.image=topImage;
     }
     
     if (string) {
-//        CGSize stringSize =[text sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(self.topBar.frame.size.width, self.topBar.frame.size.height)];
-        CGSize size = CGSizeMake(self.topBar.frame.size.width, self.topBar.frame.size.height);
+        CGSize size = CGSizeMake([UIScreen mainScreen].bounds.size.width - 80, 60);
         NSDictionary *attrDic = @{NSFontAttributeName:self.stringLabel.font};
         CGSize stringSize = [text boundingRectWithSize:size
                                                options:NSStringDrawingUsesLineFragmentOrigin
                                             attributes:attrDic
                                                context:nil].size;
         width =stringSize.width;
-        height =stringSize.height;
-        labelRect =CGRectMake((self.topImageView.frame.origin.x +20), 6, width, height);
+        height =MAX(stringSize.height, 18);
+        labelRect =CGRectMake((self.topImageView.frame.origin.x +22), 10, width, height);
     }
     self.stringLabel.frame=labelRect;
     
@@ -250,15 +252,18 @@
     
     self.coinLabel.textColor = [UIColor whiteColor];
     [self.coinLabel sizeToFit];
-    self.coinLabel.frame =CGRectMake(labelRect.origin.x+labelRect.size.width+5, 6, self.coinLabel.frame.size.width, self.coinLabel.frame.size.height);
+    self.coinLabel.frame =CGRectMake(labelRect.origin.x+labelRect.size.width+5, 10, self.coinLabel.frame.size.width, self.coinLabel.frame.size.height);
     
     if (image !=nil) {
-        self.coinImageView.frame =CGRectMake(self.coinLabel.frame.origin.x+self.coinLabel.frame.size.width+5, 5, 17, 17);
+        self.coinImageView.frame =CGRectMake(self.coinLabel.frame.origin.x+self.coinLabel.frame.size.width+5, 9, 17, 17);
         self.coinImageView.image=secImage;
         
     }
     
-    self.topBar.frame =CGRectMake(([UIScreen mainScreen].bounds.size.width-self.topImageView.frame.size.width-self.stringLabel.frame.size.width-self.coinImageView.frame.size.width-35-self.coinLabel.frame.size.width)/2, [UIScreen mainScreen].bounds.size.height -37 - 55, self.topImageView.frame.size.width+10+self.stringLabel.frame.size.width+25+self.coinImageView.frame.size.width+self.coinLabel.frame.size.width, 30);
+    CGFloat barWidth = self.topImageView.frame.size.width+10+self.stringLabel.frame.size.width+25+self.coinImageView.frame.size.width+self.coinLabel.frame.size.width;
+    CGFloat barHeight = MAX(36, height + 20);
+    self.topBar.frame =CGRectMake(([UIScreen mainScreen].bounds.size.width-barWidth)/2, [UIScreen mainScreen].bounds.size.height - barHeight - 64, barWidth, barHeight);
+    self.topBar.layer.cornerRadius = barHeight / 2.0;
     
     self.topBar.alpha =1.0;
     [self.overlayWindow setHidden:NO];

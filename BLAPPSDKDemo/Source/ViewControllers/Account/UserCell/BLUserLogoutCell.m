@@ -7,12 +7,17 @@
 //
 
 #import "BLUserLogoutCell.h"
+#import "BLTheme.h"
 
 @implementation BLUserLogoutCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
+    self.backgroundColor = [[BLTheme dangerColor] colorWithAlphaComponent:0.08];
+    self.contentView.backgroundColor = [UIColor clearColor];
+    self.titleLabel.textColor = [BLTheme dangerColor];
+    self.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
+    self.titleLabel.textAlignment = NSTextAlignmentCenter;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

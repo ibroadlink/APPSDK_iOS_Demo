@@ -15,6 +15,9 @@
 #import "BLDeviceConfigureInfo.h"
 #import "BLConfigureStartViewController.h"
 #import "BLAddDeviceListViewController.h"
+#import "BLTheme.h"
+#import "BLUserDefaults.h"
+#import "BLStatusBar.h"
 
 
 @interface ProductListViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
@@ -37,8 +40,11 @@
 }
 
 - (void)viewInit {
+    self.title = @"Product";
+    self.view.backgroundColor = [BLTheme backgroundColor];
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
+    self.collectionView.backgroundColor = [BLTheme backgroundColor];
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     CGSize size = self.view.bounds.size;
     flowLayout.itemSize = CGSizeMake(size.width - 30, 65);
@@ -55,8 +61,17 @@
 //获取产品分类列表
 - (void)getProductCategoryList {
     BLAccount *account = [BLAccount sharedAccount];
+    NSString *userId = account.loginUserid;
+    if (userId.length == 0) {
+        userId = [[BLUserDefaults shareUserDefaults] getUserId];
+    }
+    if (userId.length == 0) {
+        [BLStatusBar showTipMessageWithStatus:@"Please login first!!!"];
+        return;
+    }
+
     NSDictionary *headers = @{@"countryCode": @"1",
-                              @"userid": account.loginUserid};
+                              @"userid": userId};
     NSDictionary *parameters = @{ @"brandid": @"",
                                   @"protocols": @[]};
     NSString *url = [[BLApiUrls sharedApiUrl] familyCommonUrlWithPath:@"/ec4/v1/system/resource/categorylist"];
@@ -112,7 +127,11 @@
         UILabel *label = [cell viewWithTag:102];
         [imageView sd_setImageWithURL:[NSURL URLWithString:model.iconUrlString]];
         label.text = model.moduleName;
-        cell.layer.borderWidth = 1 / [UIScreen mainScreen].scale;
+        label.textColor = [BLTheme titleColor];
+        cell.backgroundColor = [BLTheme cardColor];
+        cell.layer.cornerRadius = 12;
+        cell.layer.borderWidth = 0;
+        cell.clipsToBounds = YES;
     } else {
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"categoryCell" forIndexPath:indexPath];
         BLProductCategoryModel *model = self.categoryArray[indexPath.row];
@@ -120,7 +139,11 @@
         UILabel *label = [cell viewWithTag:102];
         [imageView sd_setImageWithURL:[NSURL URLWithString:model.link]];
         label.text = model.name;
-        cell.layer.borderWidth = 1 / [UIScreen mainScreen].scale;
+        label.textColor = [BLTheme titleColor];
+        cell.backgroundColor = [BLTheme cardColor];
+        cell.layer.cornerRadius = 12;
+        cell.layer.borderWidth = 0;
+        cell.clipsToBounds = YES;
     }
     return cell;
 }

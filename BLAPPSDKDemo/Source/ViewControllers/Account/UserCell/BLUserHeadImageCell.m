@@ -7,12 +7,19 @@
 //
 
 #import "BLUserHeadImageCell.h"
+#import "BLTheme.h"
 
 @implementation BLUserHeadImageCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
+    self.backgroundColor = [BLTheme cardColor];
+    self.contentView.backgroundColor = [BLTheme cardColor];
+    self.IconUrlImageView.layer.cornerRadius = 28;
+    self.IconUrlImageView.layer.masksToBounds = YES;
+    self.IconUrlImageView.layer.borderWidth = 2;
+    self.IconUrlImageView.layer.borderColor = [BLTheme primaryLightColor].CGColor;
+    self.titleLabel.textColor = [BLTheme titleColor];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
