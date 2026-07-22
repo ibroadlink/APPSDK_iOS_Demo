@@ -199,26 +199,28 @@
 #pragma mark - private method
 - (void)loadAppSdk {    
     BLUserDefaults* userDefault = [BLUserDefaults shareUserDefaults];
-    if ([userDefault getPackName] && [userDefault getLicense]) {
-        [BLConfigParam sharedConfigParam].packName = [userDefault getPackName];
-        self.let = [BLLet sharedLetWithLicense:[userDefault getLicense]];
-    } else {
-        [BLConfigParam sharedConfigParam].packName = SDK_PACKAGE_ID;                // Set Package ID
-        self.let = [BLLet sharedLetWithLicense:SDK_LICENSE];                        // Init APPSDK
-    }
     
-    [BLConfigParam sharedConfigParam].controllerLocalTimeout = 5000;                // 局域网控制超时时间
-    [BLConfigParam sharedConfigParam].controllerRemoteTimeout = 8000;               // 远程控制超时时间
-    [BLConfigParam sharedConfigParam].controllerSendCount = 2;                      // 控制重试次数
-    [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;          // 脚本下载平台
-    [BLConfigParam sharedConfigParam].httpCommonHeader = @{@"NewHeader": @"Test"};  //自定义header
-
-    // 使用云端集群
+    // 参数配置
     [BLConfigParam sharedConfigParam].appServiceEnable = [userDefault getAppServiceEnable];
     [BLConfigParam sharedConfigParam].appServiceHost = @"https://app-service-chn-467a8f05.ibroadlink.com";
+    [BLConfigParam sharedConfigParam].controllerScriptDownloadVersion = 1;          // 脚本下载平台
+//    [BLConfigParam sharedConfigParam].controllerSendCount = 2;                      // 控制重试次数
+//    [BLConfigParam sharedConfigParam].httpCommonHeader = @{@"NewHeader": @"Test"};  //自定义header
+//    [BLConfigParam sharedConfigParam].controllerLocalTimeout = 5000;                // 局域网控制超时时间
+//    [BLConfigParam sharedConfigParam].controllerRemoteTimeout = 8000;               // 远程控制超时时间
     
-    [self.let setDebugLog:BL_LEVEL_ALL];                                            // Set APPSDK debug log level
-    [self.let.controller setSDKRawDebugLevel:BL_LEVEL_ALL];                       // Set DNASDK debug log level
+    // SDK初始化：优先使用本地自定义 packName/license，否则回退到默认配置
+    NSString *packName = [userDefault getPackName];
+    NSString *license = [userDefault getLicense];
+    if (packName.length == 0 || license.length == 0) {
+        packName = SDK_PACKAGE_ID;
+        license = SDK_LICENSE;
+    }
+    [BLConfigParam sharedConfigParam].packName = packName;
+    self.let = [BLLet sharedLetWithLicense:license];
+    
+//    [self.let setDebugLog:BL_LEVEL_ALL];                                            // Set APPSDK debug log level
+//    [self.let.controller setSDKRawDebugLevel:BL_LEVEL_ALL];                       // Set DNASDK debug log level
     
     // 相关模块必须先初始化
     BLAccount *account = [BLAccount sharedAccount];

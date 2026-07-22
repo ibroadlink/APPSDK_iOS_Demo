@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface GroupDeviceViewController : BaseViewController
 
++ (instancetype)viewController;
+
 @end
 
 NS_ASSUME_NONNULL_END

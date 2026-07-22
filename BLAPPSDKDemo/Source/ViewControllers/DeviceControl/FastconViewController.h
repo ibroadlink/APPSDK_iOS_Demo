@@ -10,10 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FastconViewController : BaseViewController <UITableViewDelegate, UITableViewDataSource>
+@interface FastconViewController : BaseViewController
 
-@property (weak, nonatomic) IBOutlet UITextView *resultView;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
++ (instancetype)viewController;
 
 @end
 

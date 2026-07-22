@@ -8,9 +8,8 @@
 
 #import "BaseViewController.h"
 
-@interface DNAControlViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource>
+@interface DNAControlViewController : BaseViewController <UITableViewDelegate, UITableViewDataSource>
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-- (IBAction)buttonClick:(UIButton *)sender;
++ (instancetype)viewController;
 
 @end

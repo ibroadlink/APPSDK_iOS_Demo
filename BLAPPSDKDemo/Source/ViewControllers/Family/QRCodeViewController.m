@@ -7,117 +7,166 @@
 //
 
 #import "QRCodeViewController.h"
-#import <AVFoundation/AVFoundation.h>
 #import "JoinFamilyViewController.h"
-@interface QRCodeViewController ()<AVCaptureMetadataOutputObjectsDelegate>
-@property (weak, nonatomic) IBOutlet UIView *viewPreview;
-@property (strong, nonatomic) UIView *boxView;
-@property (strong, nonatomic) CALayer *scanLayer;
-@property (strong, nonatomic) NSString *qCode;
+#import "BLTheme.h"
+#import <AVFoundation/AVFoundation.h>
+#import <Masonry/Masonry.h>
 
-//捕捉会话
+@interface QRCodeViewController () <AVCaptureMetadataOutputObjectsDelegate>
+
+@property (nonatomic, strong) UIView *viewPreview;
+@property (nonatomic, strong) UIView *boxView;
+@property (nonatomic, strong) CALayer *scanLayer;
+@property (nonatomic, copy) NSString *qCode;
 @property (nonatomic, strong) AVCaptureSession *captureSession;
-//展示layer
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *videoPreviewLayer;
+@property (nonatomic, strong) NSTimer *scanTimer;
+@property (nonatomic, assign) BOOL didStartReading;
+
 @end
 
 @implementation QRCodeViewController
 
++ (instancetype)viewController {
+    return [[self alloc] init];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self startReading];
+    self.title = @"Scan QR Code";
+    self.view.backgroundColor = [BLTheme backgroundColor];
+    [self buildUI];
+}
+
+- (void)buildUI {
+    self.viewPreview = [[UIView alloc] init];
+    self.viewPreview.backgroundColor = [UIColor blackColor];
+    self.viewPreview.clipsToBounds = YES;
+    [self.view addSubview:self.viewPreview];
+
+    [self.viewPreview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
+        make.left.right.bottom.equalTo(self.view);
+    }];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+
+    if (self.videoPreviewLayer) {
+        self.videoPreviewLayer.frame = self.viewPreview.layer.bounds;
+        [self updateScanBoxFrame];
+    }
+
+    if (!self.didStartReading && self.viewPreview.bounds.size.width > 0 && self.viewPreview.bounds.size.height > 0) {
+        self.didStartReading = YES;
+        [self startReading];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if (self.isMovingFromParentViewController) {
+        [self stopReading];
+    }
+}
+
+- (void)dealloc {
+    [self.scanTimer invalidate];
+    self.scanTimer = nil;
+}
+
+- (void)updateScanBoxFrame {
+    if (!self.boxView) { return; }
+    CGRect bounds = self.viewPreview.bounds;
+    CGFloat insetX = bounds.size.width * 0.2f;
+    CGFloat insetY = bounds.size.height * 0.2f;
+    self.boxView.frame = CGRectMake(insetX, insetY, bounds.size.width - insetX * 2, bounds.size.height - insetY * 2);
+    self.scanLayer.frame = CGRectMake(0, 0, self.boxView.bounds.size.width, 2);
 }
 
 - (BOOL)startReading {
     NSError *error;
-    //1.初始化捕捉设备（AVCaptureDevice），类型为AVMediaTypeVideo
     AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    //2.用captureDevice创建输入流
     AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&error];
     if (!input) {
         NSLog(@"%@", [error localizedDescription]);
         return NO;
     }
-    //3.创建媒体数据输出流
+
     AVCaptureMetadataOutput *captureMetadataOutput = [[AVCaptureMetadataOutput alloc] init];
-    //4.实例化捕捉会话
     self.captureSession = [[AVCaptureSession alloc] init];
-    //4.1.将输入流添加到会话
     [self.captureSession addInput:input];
-    //4.2.将媒体输出流添加到会话中
     [self.captureSession addOutput:captureMetadataOutput];
-    //5.创建串行队列，并加媒体输出流添加到队列当中
+
     dispatch_queue_t dispatchQueue = dispatch_queue_create("myQueue", NULL);
-    //5.1.设置代理
     [captureMetadataOutput setMetadataObjectsDelegate:self queue:dispatchQueue];
-    //5.2.设置输出媒体数据类型为QRCode
-    [captureMetadataOutput setMetadataObjectTypes:[NSArray arrayWithObject:AVMetadataObjectTypeQRCode]];
-    //6.实例化预览图层
-    _videoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.captureSession];
-    //7.设置预览图层填充方式
-    [_videoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
-    //8.设置图层的frame
-    [_videoPreviewLayer setFrame:_viewPreview.layer.bounds];
-    //9.将图层添加到预览view的图层上
-    [_viewPreview.layer addSublayer:_videoPreviewLayer];
-    //10.设置扫描范围
+    [captureMetadataOutput setMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]];
+
+    self.videoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.captureSession];
+    self.videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    self.videoPreviewLayer.frame = self.viewPreview.layer.bounds;
+    [self.viewPreview.layer addSublayer:self.videoPreviewLayer];
+
     captureMetadataOutput.rectOfInterest = CGRectMake(0.2f, 0.2f, 0.8f, 0.8f);
-    //10.1.扫描框
-    _boxView = [[UIView alloc] initWithFrame:CGRectMake(_viewPreview.bounds.size.width * 0.2f, _viewPreview.bounds.size.height * 0.2f, _viewPreview.bounds.size.width - _viewPreview.bounds.size.width * 0.4f, _viewPreview.bounds.size.height - _viewPreview.bounds.size.height * 0.4f)];
-    _boxView.layer.borderColor = [UIColor greenColor].CGColor;
-    _boxView.layer.borderWidth = 1.0f;
-    [_viewPreview addSubview:_boxView];
-    //10.2.扫描线
-    _scanLayer = [[CALayer alloc] init];
-    _scanLayer.frame = CGRectMake(0, 0, _boxView.bounds.size.width, 1);
-    _scanLayer.backgroundColor = [UIColor brownColor].CGColor;
-    [_boxView.layer addSublayer:_scanLayer];
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.2f target:self selector:@selector(moveScanLayer:) userInfo:nil repeats:YES];
-    [timer fire];
-    //10.开始扫描
+
+    self.boxView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.boxView.layer.borderColor = [BLTheme primaryColor].CGColor;
+    self.boxView.layer.borderWidth = 2.0f;
+    self.boxView.backgroundColor = [UIColor clearColor];
+    [self.viewPreview addSubview:self.boxView];
+
+    self.scanLayer = [[CALayer alloc] init];
+    self.scanLayer.backgroundColor = [BLTheme primaryColor].CGColor;
+    [self.boxView.layer addSublayer:self.scanLayer];
+    [self updateScanBoxFrame];
+
+    self.scanTimer = [NSTimer scheduledTimerWithTimeInterval:0.2f
+                                                      target:self
+                                                    selector:@selector(moveScanLayer:)
+                                                    userInfo:nil
+                                                     repeats:YES];
+    [self.scanTimer fire];
+
     [self.captureSession startRunning];
     return YES;
 }
 
 #pragma mark - AVCaptureMetadataOutputObjectsDelegate
-- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
-{
-    //判断是否有数据
-    if (metadataObjects != nil && [metadataObjects count] > 0) {
-        AVMetadataMachineReadableCodeObject *metadataObj = [metadataObjects objectAtIndex:0];
-        //判断回传的数据类型
-        if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeQRCode]) {
-            NSString *qcode = [metadataObj stringValue];
+
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection {
+    if (metadataObjects != nil && metadataObjects.count > 0) {
+        AVMetadataMachineReadableCodeObject *metadataObj = metadataObjects.firstObject;
+        if ([metadataObj.type isEqualToString:AVMetadataObjectTypeQRCode]) {
+            NSString *qcode = metadataObj.stringValue;
             self.qCode = qcode;
             [self performSelectorOnMainThread:@selector(stopReading) withObject:nil waitUntilDone:NO];
             dispatch_async(dispatch_get_main_queue(), ^{
-                JoinFamilyViewController *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+                JoinFamilyViewController *vc = self.navigationController.viewControllers[self.navigationController.viewControllers.count - 2];
                 vc.qCode = self.qCode;
                 [self.navigationController popToViewController:vc animated:YES];
             });
-            
         }
     }
 }
 
-- (void)moveScanLayer:(NSTimer *)timer
-{
-    CGRect frame = _scanLayer.frame;
-    if (_boxView.frame.size.height < _scanLayer.frame.origin.y) {
+- (void)moveScanLayer:(NSTimer *)timer {
+    if (!self.scanLayer || !self.boxView) { return; }
+    CGRect frame = self.scanLayer.frame;
+    if (self.boxView.frame.size.height < self.scanLayer.frame.origin.y + 2) {
         frame.origin.y = 0;
-        _scanLayer.frame = frame;
-    }else{
-        
+        self.scanLayer.frame = frame;
+    } else {
         frame.origin.y += 5;
-        
         [UIView animateWithDuration:0.1 animations:^{
             self.scanLayer.frame = frame;
         }];
     }
 }
 
-
--(void)stopReading{
+- (void)stopReading {
+    [self.scanTimer invalidate];
+    self.scanTimer = nil;
     [self.captureSession stopRunning];
     self.captureSession = nil;
 }

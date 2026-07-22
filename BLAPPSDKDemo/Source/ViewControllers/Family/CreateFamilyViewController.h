@@ -10,8 +10,6 @@
 
 @interface CreateFamilyViewController : BaseViewController
 
-@property (weak, nonatomic) IBOutlet UITextField *familyNameField;
-
-- (IBAction)createBtnClick:(UIButton *)sender;
++ (instancetype)viewController;
 
 @end

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <BLLetCore/BLLetCore.h>
 
+FOUNDATION_EXPORT NSString * const BLDeviceScanUpdatedNotification;
+
 @interface BLDeviceService : NSObject
 
 + (instancetype)sharedDeviceService;

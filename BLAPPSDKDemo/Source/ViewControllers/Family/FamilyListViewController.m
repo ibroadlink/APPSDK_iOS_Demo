@@ -8,29 +8,40 @@
 
 #import "FamilyListViewController.h"
 #import "FamilyDetailViewController.h"
+#import "CreateFamilyViewController.h"
+#import "JoinFamilyViewController.h"
 #import "BLStatusBar.h"
 #import "DropDownList.h"
 #import "BLTheme.h"
-#import "Tools.h"
 #import <BLSFamily/BLSFamily.h>
 #import <Masonry/Masonry.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface FamilyListViewController () <UITableViewDelegate, UITableViewDataSource>
 
+@property (nonatomic, strong) UITableView *familyListTableView;
 @property (nonatomic, strong) NSArray<BLSFamilyInfo *> *familyInfos;
 @property (nonatomic, strong) UILabel *emptyLabel;
-@property (nonatomic, strong) UIView *tableHeader;
 
 @end
 
 @implementation FamilyListViewController
+
++ (instancetype)viewController {
+    return [[self alloc] init];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Family";
     self.familyInfos = @[];
     self.view.backgroundColor = [BLTheme backgroundColor];
+
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                          target:self
+                                                                                          action:@selector(addFamilyBtnClick)];
+
+    self.familyListTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     self.familyListTableView.delegate = self;
     self.familyListTableView.dataSource = self;
     self.familyListTableView.backgroundColor = [BLTheme backgroundColor];
@@ -41,6 +52,11 @@
         self.familyListTableView.sectionHeaderTopPadding = 0;
     }
     [self setExtraCellLineHidden:self.familyListTableView];
+    [self.view addSubview:self.familyListTableView];
+    [self.familyListTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+
     [self setupTableHeader];
     [self setupEmptyState];
 }
@@ -48,10 +64,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self queryFamilyBaseList];
-}
-
-+ (instancetype)viewController {
-    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (void)setupTableHeader {
@@ -93,7 +105,6 @@
         make.bottom.equalTo(header).offset(-8);
     }];
 
-    self.tableHeader = header;
     self.familyListTableView.tableHeaderView = header;
 }
 
@@ -123,109 +134,129 @@
 }
 
 #pragma mark - UITableViewDataSource
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.familyInfos.count;
-}
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.familyInfos.count;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cellIdentifier = @"FAMILY_LIST_CELL";
+    static NSString *cellIdentifier = @"FAMILY_CARD_CELL";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    UIView *card;
+    UIImageView *icon;
+    UILabel *nameLabel;
+    UILabel *idLabel;
+
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-    }
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = [UIColor clearColor];
+        cell.contentView.backgroundColor = [UIColor clearColor];
 
-    cell.backgroundColor = [UIColor clearColor];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.clipsToBounds = NO;
-    cell.layer.masksToBounds = NO;
+        card = [[UIView alloc] init];
+        card.tag = 200;
+        [BLTheme styleCardView:card];
+        [cell.contentView addSubview:card];
 
-    cell.contentView.backgroundColor = [BLTheme cardColor];
-    cell.contentView.layer.cornerRadius = [BLTheme cardCornerRadius];
-    cell.contentView.layer.masksToBounds = YES;
+        UIView *iconBg = [[UIView alloc] init];
+        iconBg.backgroundColor = [BLTheme primaryLightColor];
+        iconBg.layer.cornerRadius = 16;
+        iconBg.tag = 210;
+        [card addSubview:iconBg];
 
-    cell.layer.shadowColor = [UIColor colorWithWhite:0 alpha:1].CGColor;
-    cell.layer.shadowOpacity = 0.07;
-    cell.layer.shadowRadius = 10;
-    cell.layer.shadowOffset = CGSizeMake(0, 4);
+        icon = [[UIImageView alloc] init];
+        icon.tag = 211;
+        icon.contentMode = UIViewContentModeScaleAspectFill;
+        icon.clipsToBounds = YES;
+        icon.layer.cornerRadius = 12;
+        [iconBg addSubview:icon];
 
-    BLSFamilyInfo *familyInfo = self.familyInfos[indexPath.section];
-    UIImageView *headImageView = (UIImageView *)[cell viewWithTag:100];
-    headImageView.contentMode = UIViewContentModeScaleAspectFill;
-    headImageView.layer.cornerRadius = 12;
-    headImageView.layer.masksToBounds = YES;
-    headImageView.backgroundColor = [BLTheme primaryLightColor];
-    [headImageView sd_setImageWithURL:[NSURL URLWithString:familyInfo.iconpath]
-                     placeholderImage:[UIImage imageNamed:@"default_family"]];
+        nameLabel = [[UILabel alloc] init];
+        nameLabel.tag = 201;
+        nameLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightSemibold];
+        nameLabel.textColor = [BLTheme titleColor];
+        [card addSubview:nameLabel];
 
-    UILabel *familyNameLabel = (UILabel *)[cell viewWithTag:101];
-    familyNameLabel.text = familyInfo.name.length ? familyInfo.name : @"Untitled Family";
-    familyNameLabel.textColor = [BLTheme titleColor];
-    familyNameLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightSemibold];
+        idLabel = [[UILabel alloc] init];
+        idLabel.tag = 202;
+        idLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightRegular];
+        idLabel.textColor = [BLTheme subtitleColor];
+        idLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+        [card addSubview:idLabel];
 
-    UILabel *familyIdLabel = (UILabel *)[cell viewWithTag:102];
-    familyIdLabel.text = familyInfo.familyid;
-    familyIdLabel.textColor = [BLTheme subtitleColor];
-    familyIdLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightRegular];
-
-    UIImageView *chevron = [cell.contentView viewWithTag:901];
-    if (!chevron) {
-        chevron = [[UIImageView alloc] init];
-        chevron.tag = 901;
+        UIImageView *chevron = [[UIImageView alloc] init];
         chevron.tintColor = [BLTheme subtitleColor];
         if (@available(iOS 13.0, *)) {
             chevron.image = [UIImage systemImageNamed:@"chevron.right"];
         }
-        [cell.contentView addSubview:chevron];
-        [chevron mas_makeConstraints:^(MASConstraintMaker *make) {
+        [card addSubview:chevron];
+
+        [card mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(cell.contentView).offset(6);
+            make.bottom.equalTo(cell.contentView).offset(-6);
+            make.left.equalTo(cell.contentView).offset(16);
             make.right.equalTo(cell.contentView).offset(-16);
-            make.centerY.equalTo(cell.contentView);
+        }];
+        [iconBg mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(card).offset(14);
+            make.centerY.equalTo(card);
+            make.width.height.mas_equalTo(52);
+        }];
+        [icon mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(iconBg).insets(UIEdgeInsetsMake(4, 4, 4, 4));
+        }];
+        [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(iconBg.mas_right).offset(12);
+            make.top.equalTo(iconBg).offset(6);
+            make.right.equalTo(chevron.mas_left).offset(-8);
+        }];
+        [idLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.equalTo(nameLabel);
+            make.top.equalTo(nameLabel.mas_bottom).offset(4);
+        }];
+        [chevron mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(card).offset(-14);
+            make.centerY.equalTo(card);
             make.width.mas_equalTo(10);
             make.height.mas_equalTo(14);
         }];
+    } else {
+        card = [cell.contentView viewWithTag:200];
+        icon = (UIImageView *)[card viewWithTag:211];
+        nameLabel = (UILabel *)[card viewWithTag:201];
+        idLabel = (UILabel *)[card viewWithTag:202];
     }
+
+    BLSFamilyInfo *familyInfo = self.familyInfos[indexPath.row];
+    nameLabel.text = familyInfo.name.length ? familyInfo.name : @"Untitled Family";
+    idLabel.text = familyInfo.familyid ?: @"--";
+    [icon sd_setImageWithURL:[NSURL URLWithString:familyInfo.iconpath]
+            placeholderImage:[UIImage imageNamed:@"default_family"]];
 
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 0.0001;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 14;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *spacer = [[UIView alloc] init];
-    spacer.backgroundColor = [UIColor clearColor];
-    return spacer;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat margin = 16.0;
-    CGRect frame = UIEdgeInsetsInsetRect(cell.bounds, UIEdgeInsetsMake(0, margin, 0, margin));
-    cell.contentView.frame = frame;
-    cell.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:frame cornerRadius:[BLTheme cardCornerRadius]].CGPath;
-}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 88.f;
+    return 96.f;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    BLSFamilyInfo *familyInfo = self.familyInfos[indexPath.section];
-    [self performSegueWithIdentifier:@"FamilyDetailView" sender:familyInfo];
+    BLSFamilyInfo *familyInfo = self.familyInfos[indexPath.row];
+    [BLSFamilyManager sharedFamily].familyid = familyInfo.familyid;
+    FamilyDetailViewController *vc = [FamilyDetailViewController viewController];
+    vc.familyInfo = familyInfo;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        BLSFamilyInfo *familyInfo = self.familyInfos[indexPath.section];
+        BLSFamilyInfo *familyInfo = self.familyInfos[indexPath.row];
         BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
 
         [self showIndicatorOnWindow];
@@ -243,7 +274,7 @@
     }
 }
 
-#pragma mark - private method
+#pragma mark - private
 
 - (void)queryFamilyBaseList {
     [self showIndicatorOnWindow];
@@ -265,33 +296,21 @@
     });
 }
 
-- (IBAction)addFamilyBtnClick:(UIBarButtonItem *)sender {
-    NSArray *keyList = @[@"创建家庭", @"加入家庭"];
-    CGFloat drop_X = CGRectGetMaxX(self.navigationController.navigationBar.frame) - 100;
+- (void)addFamilyBtnClick {
+    NSArray *keyList = @[@"Create Family", @"Join Family"];
+    CGFloat drop_X = CGRectGetMaxX(self.navigationController.navigationBar.frame) - 120;
     CGFloat drop_Y = 5;
-    CGFloat drop_W = 100;
+    CGFloat drop_W = 120;
     CGFloat drop_H = keyList.count * 40 + 10;
 
     DropDownList *dropList = [[DropDownList alloc] initWithFrame:CGRectMake(drop_X, drop_Y, drop_W, drop_H) dataArray:keyList onTheView:self.view];
     dropList.myBlock = ^(NSInteger row, NSString *title) {
-        if (row == 0) {
-            [self performSegueWithIdentifier:@"CreateFamilyView" sender:nil];
-        } else {
-            [self performSegueWithIdentifier:@"JoinFamilyView" sender:nil];
-        }
+        UIViewController *vc = (row == 0)
+            ? [CreateFamilyViewController viewController]
+            : [JoinFamilyViewController viewController];
+        [self.navigationController pushViewController:vc animated:YES];
     };
     [self.view addSubview:dropList];
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"FamilyDetailView"]) {
-        UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[FamilyDetailViewController class]]) {
-            [BLSFamilyManager sharedFamily].familyid = ((BLSFamilyInfo *)sender).familyid;
-            FamilyDetailViewController *vc = (FamilyDetailViewController *)target;
-            vc.familyInfo = (BLSFamilyInfo *)sender;
-        }
-    }
 }
 
 @end

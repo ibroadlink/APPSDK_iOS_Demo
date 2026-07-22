@@ -4,6 +4,7 @@
 //
 
 #import "BLTheme.h"
+#import "BLLoadingButton.h"
 #import <Masonry/Masonry.h>
 
 @implementation BLTheme
@@ -256,8 +257,8 @@
 
     for (UIView *subview in hostView.subviews) {
         if (subview.tag == 88001) { return; } // already installed
-        subview.hidden = YES;
     }
+    [self hideStoryboardSubviewsIn:hostView];
 
     hostView.backgroundColor = [self backgroundColor];
 
@@ -330,6 +331,221 @@
         make.right.equalTo(content).offset(-16);
         make.bottom.equalTo(content).offset(-28);
     }];
+}
+
+#pragma mark - Account form helpers
+
++ (void)hideStoryboardSubviewsIn:(UIView *)hostView {
+    // 必须 remove，仅 hidden 仍会保留 Storyboard 约束，复杂页面（如 Login）会卡死在布局求解
+    NSArray<UIView *> *subviews = [hostView.subviews copy];
+    for (UIView *subview in subviews) {
+        if (subview.tag == 88001 || subview.tag == 88002) { continue; }
+        [subview removeFromSuperview];
+    }
+}
+
++ (UITextField *)makeTextFieldWithPlaceholder:(NSString *)placeholder {
+    UITextField *field = [[UITextField alloc] init];
+    field.placeholder = placeholder;
+    field.clearButtonMode = UITextFieldViewModeWhileEditing;
+    field.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    field.autocorrectionType = UITextAutocorrectionTypeNo;
+    field.returnKeyType = UIReturnKeyDone;
+    [self styleTextField:field];
+    [field mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(50);
+    }];
+    return field;
+}
+
++ (UITextField *)makePasswordFieldWithPlaceholder:(NSString *)placeholder {
+    UITextField *field = [self makeTextFieldWithPlaceholder:placeholder];
+    field.secureTextEntry = YES;
+    field.clearButtonMode = UITextFieldViewModeNever;
+
+    UIButton *eye = [UIButton buttonWithType:UIButtonTypeCustom];
+    eye.frame = CGRectMake(0, 0, 44, 44);
+    eye.tintColor = [self subtitleColor];
+    if (@available(iOS 13.0, *)) {
+        UIImageSymbolConfiguration *cfg = [UIImageSymbolConfiguration configurationWithPointSize:16 weight:UIImageSymbolWeightMedium];
+        [eye setImage:[UIImage systemImageNamed:@"eye.slash" withConfiguration:cfg] forState:UIControlStateNormal];
+        [eye setImage:[UIImage systemImageNamed:@"eye" withConfiguration:cfg] forState:UIControlStateSelected];
+    } else {
+        [eye setImage:[UIImage imageNamed:@"icon_password_eye_hidden"] forState:UIControlStateNormal];
+        [eye setImage:[UIImage imageNamed:@"icon_password_eye_show"] forState:UIControlStateSelected];
+    }
+    [eye addTarget:self action:@selector(togglePasswordVisibility:) forControlEvents:UIControlEventTouchUpInside];
+    field.rightView = eye;
+    field.rightViewMode = UITextFieldViewModeAlways;
+    return field;
+}
+
++ (void)togglePasswordVisibility:(UIButton *)sender {
+    sender.selected = !sender.selected;
+    UIView *superview = sender.superview;
+    while (superview && ![superview isKindOfClass:[UITextField class]]) {
+        superview = superview.superview;
+    }
+    if (![superview isKindOfClass:[UITextField class]]) { return; }
+    UITextField *field = (UITextField *)superview;
+    BOOL wasFirstResponder = field.isFirstResponder;
+    field.secureTextEntry = !sender.selected;
+    if (wasFirstResponder) {
+        [field becomeFirstResponder];
+    }
+}
+
++ (UIButton *)makePrimaryButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action {
+    BLLoadingButton *button = [BLLoadingButton buttonWithType:UIButtonTypeCustom];
+    [button setTitle:title forState:UIControlStateNormal];
+    [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    [self stylePrimaryButton:button];
+    [button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(50);
+    }];
+    return button;
+}
+
++ (UIButton *)makeSecondaryButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setTitle:title forState:UIControlStateNormal];
+    [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    [self styleSecondaryButton:button];
+    [button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(44);
+    }];
+    return button;
+}
+
++ (UIButton *)makeLinkButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitleColor:[self primaryColor] forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    return button;
+}
+
++ (void)installAuthFormOnView:(UIView *)hostView
+                        title:(NSString *)title
+                     subtitle:(NSString *)subtitle
+                    formViews:(NSArray<UIView *> *)formViews
+                primaryButton:(UIButton *)primaryButton
+                  footerViews:(NSArray<UIView *> *)footerViews {
+    if (!hostView) { return; }
+    [self hideStoryboardSubviewsIn:hostView];
+    hostView.backgroundColor = [self backgroundColor];
+
+    for (UIView *subview in hostView.subviews) {
+        if (subview.tag == 88002) { return; }
+    }
+
+    UIScrollView *scrollView = [[UIScrollView alloc] init];
+    scrollView.tag = 88002;
+    scrollView.alwaysBounceVertical = YES;
+    scrollView.showsVerticalScrollIndicator = NO;
+    scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    [hostView addSubview:scrollView];
+
+    UIView *content = [[UIView alloc] init];
+    [scrollView addSubview:content];
+
+    UIView *iconBg = [[UIView alloc] init];
+    iconBg.backgroundColor = [self primaryLightColor];
+    iconBg.layer.cornerRadius = 28;
+    [content addSubview:iconBg];
+
+    UIImageView *iconView = [[UIImageView alloc] init];
+    iconView.tintColor = [self primaryColor];
+    iconView.contentMode = UIViewContentModeScaleAspectFit;
+    if (@available(iOS 13.0, *)) {
+        UIImageSymbolConfiguration *cfg = [UIImageSymbolConfiguration configurationWithPointSize:28 weight:UIImageSymbolWeightMedium];
+        iconView.image = [UIImage systemImageNamed:@"person.crop.circle.fill" withConfiguration:cfg];
+    }
+    [iconBg addSubview:iconView];
+
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.text = title;
+    titleLabel.font = [UIFont systemFontOfSize:28 weight:UIFontWeightBold];
+    titleLabel.textColor = [self titleColor];
+    [content addSubview:titleLabel];
+
+    UILabel *subtitleLabel = [[UILabel alloc] init];
+    subtitleLabel.text = subtitle;
+    subtitleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightRegular];
+    subtitleLabel.textColor = [self subtitleColor];
+    subtitleLabel.numberOfLines = 0;
+    [content addSubview:subtitleLabel];
+
+    UIStackView *formStack = [[UIStackView alloc] initWithArrangedSubviews:formViews ?: @[]];
+    formStack.axis = UILayoutConstraintAxisVertical;
+    formStack.spacing = 14;
+    [content addSubview:formStack];
+
+    if (primaryButton) {
+        [content addSubview:primaryButton];
+    }
+
+    UIStackView *footerStack = nil;
+    if (footerViews.count > 0) {
+        footerStack = [[UIStackView alloc] initWithArrangedSubviews:footerViews];
+        footerStack.axis = UILayoutConstraintAxisHorizontal;
+        footerStack.spacing = 20;
+        footerStack.distribution = UIStackViewDistributionEqualSpacing;
+        footerStack.alignment = UIStackViewAlignmentCenter;
+        [content addSubview:footerStack];
+    }
+
+    [scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(hostView);
+    }];
+    [content mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(scrollView);
+        make.width.equalTo(scrollView);
+    }];
+    [iconBg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(content).offset(28);
+        make.left.equalTo(content).offset(24);
+        make.width.height.mas_equalTo(56);
+    }];
+    [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(iconBg);
+        make.width.height.mas_equalTo(30);
+    }];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(iconBg.mas_bottom).offset(20);
+        make.left.equalTo(content).offset(24);
+        make.right.equalTo(content).offset(-24);
+    }];
+    [subtitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(titleLabel.mas_bottom).offset(8);
+        make.left.right.equalTo(titleLabel);
+    }];
+    [formStack mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(subtitleLabel.mas_bottom).offset(28);
+        make.left.equalTo(content).offset(24);
+        make.right.equalTo(content).offset(-24);
+    }];
+
+    UIView *bottomAnchor = formStack;
+    if (primaryButton) {
+        [primaryButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(formStack.mas_bottom).offset(24);
+            make.left.right.equalTo(formStack);
+        }];
+        bottomAnchor = primaryButton;
+    }
+    if (footerStack) {
+        [footerStack mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(bottomAnchor.mas_bottom).offset(20);
+            make.centerX.equalTo(content);
+            make.bottom.equalTo(content).offset(-40);
+        }];
+    } else {
+        [bottomAnchor mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(content).offset(-40);
+        }];
+    }
 }
 
 @end

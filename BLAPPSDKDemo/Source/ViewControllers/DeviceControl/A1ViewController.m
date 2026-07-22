@@ -8,76 +8,152 @@
 
 #import "A1ViewController.h"
 #import <BLLetPlugins/BLLetPlugins.h>
-
 #import "BLDeviceService.h"
-#import "BLStatusBar.h"
+#import "BLTheme.h"
 #import "Tools.h"
+#import <Masonry/Masonry.h>
 
-@interface A1ViewController (){
+@interface A1ViewController () {
     BLeAirNetWorkDataParser *_a1DataParser;
     NSTimer *timer;
 }
 
 @property (strong, nonatomic) BLDNADevice *device;
-
-@property (weak, nonatomic) IBOutlet UILabel *temperatureLabel;
-@property (weak, nonatomic) IBOutlet UILabel *humidityLabel;
-@property (weak, nonatomic) IBOutlet UILabel *lightLabel;
-@property (weak, nonatomic) IBOutlet UILabel *airLabel;
-@property (weak, nonatomic) IBOutlet UILabel *noisyLabel;
-@property (weak, nonatomic) IBOutlet UILabel *resultLabel;
+@property (nonatomic, strong) UILabel *temperatureLabel;
+@property (nonatomic, strong) UILabel *humidityLabel;
+@property (nonatomic, strong) UILabel *lightLabel;
+@property (nonatomic, strong) UILabel *airLabel;
+@property (nonatomic, strong) UILabel *noisyLabel;
+@property (nonatomic, strong) UITextView *resultTextView;
 
 @end
 
 @implementation A1ViewController
 
++ (instancetype)viewController {
+    return [[self alloc] init];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"A1 Device Demo";
     self.device = [BLDeviceService sharedDeviceService].selectDevice;
-    
     _a1DataParser = [BLeAirNetWorkDataParser sharedInstace];
-    //获取A1的数据
-    timer = [NSTimer scheduledTimerWithTimeInterval:2.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
+    [self buildUI];
+
+    timer = [NSTimer scheduledTimerWithTimeInterval:2.0f repeats:YES block:^(NSTimer * _Nonnull t) {
         [self getA1RefreshInfo];
     }];
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [timer invalidate];
+    timer = nil;
 }
 
-- (void)dealloc {
-    timer = nil;
+- (void)buildUI {
+    UIScrollView *scroll = [[UIScrollView alloc] init];
+    scroll.alwaysBounceVertical = YES;
+    [self.view addSubview:scroll];
+
+    UIView *content = [[UIView alloc] init];
+    [scroll addSubview:content];
+
+    UIView *sensorCard = [[UIView alloc] init];
+    [BLTheme styleCardView:sensorCard];
+    [content addSubview:sensorCard];
+
+    UIStackView *sensorStack = [[UIStackView alloc] init];
+    sensorStack.axis = UILayoutConstraintAxisVertical;
+    sensorStack.spacing = 10;
+    [sensorCard addSubview:sensorStack];
+
+    self.temperatureLabel = [self metricLabel:@"Temperature: --"];
+    self.humidityLabel = [self metricLabel:@"Humidity: --"];
+    self.lightLabel = [self metricLabel:@"Light: --"];
+    self.airLabel = [self metricLabel:@"Air Quality: --"];
+    self.noisyLabel = [self metricLabel:@"Noise: --"];
+    [sensorStack addArrangedSubview:self.temperatureLabel];
+    [sensorStack addArrangedSubview:self.humidityLabel];
+    [sensorStack addArrangedSubview:self.lightLabel];
+    [sensorStack addArrangedSubview:self.airLabel];
+    [sensorStack addArrangedSubview:self.noisyLabel];
+
+    UIButton *iftttButton = [BLTheme makePrimaryButtonWithTitle:@"Get IFTTT List"
+                                                         target:self
+                                                         action:@selector(getIFTTTList)];
+    [content addSubview:iftttButton];
+
+    UILabel *resultTitle = [[UILabel alloc] init];
+    resultTitle.text = @"IFTTT Result";
+    resultTitle.font = [UIFont systemFontOfSize:13 weight:UIFontWeightSemibold];
+    resultTitle.textColor = [BLTheme subtitleColor];
+    [content addSubview:resultTitle];
+
+    self.resultTextView = [[UITextView alloc] init];
+    self.resultTextView.editable = NO;
+    [BLTheme styleResultTextView:self.resultTextView];
+    [content addSubview:self.resultTextView];
+
+    [scroll mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
+        make.left.right.bottom.equalTo(self.view);
+    }];
+    [content mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(scroll);
+        make.width.equalTo(scroll);
+    }];
+    [sensorCard mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(content).offset(16);
+        make.left.equalTo(content).offset(16);
+        make.right.equalTo(content).offset(-16);
+    }];
+    [sensorStack mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(sensorCard).insets(UIEdgeInsetsMake(14, 14, 14, 14));
+    }];
+    [iftttButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(sensorCard.mas_bottom).offset(16);
+        make.left.right.equalTo(sensorCard);
+        make.height.mas_equalTo(48);
+    }];
+    [resultTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(iftttButton.mas_bottom).offset(20);
+        make.left.right.equalTo(sensorCard);
+    }];
+    [self.resultTextView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(resultTitle.mas_bottom).offset(8);
+        make.left.right.equalTo(sensorCard);
+        make.height.mas_equalTo(160);
+        make.bottom.equalTo(content).offset(-24);
+    }];
+}
+
+- (UILabel *)metricLabel:(NSString *)text {
+    UILabel *label = [[UILabel alloc] init];
+    label.text = text;
+    label.font = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
+    label.textColor = [BLTheme titleColor];
+    label.numberOfLines = 0;
+    return label;
 }
 
 - (void)getA1RefreshInfo {
     NSData *data = [_a1DataParser a1RefreshByts];
     BLPassthroughResult *passThroughResult = [[BLLet sharedLet].controller dnaPassthrough:[Tools controlDidForDevice:self.device] passthroughData:data];
     BLeAirStatusInfo *a1StatusInfo = [_a1DataParser parseA1RefreshResult:passThroughResult.data];
-    
-    NSString *temperature = [NSString stringWithFormat:@"温度：%ld.%ld℃",(long)a1StatusInfo.temperature.integer , a1StatusInfo.temperature.decimal ];
-    NSString *humidity = [NSString stringWithFormat:@"湿度：%ld.%ld%%",(long)a1StatusInfo.humidity.integer , a1StatusInfo.humidity.decimal];
-    //0:暗 1:昏暗 2:正常  3:亮
-    NSString *light = [NSString stringWithFormat:@"光照：%ld",(long)a1StatusInfo.light.integer];
-    //0:优 1:良 2:正常  3:差
-    NSString *air = [NSString stringWithFormat:@"空气质量：%ld",(long)a1StatusInfo.air.integer];
-    //0:寂静 1:正常 2:吵闹
-    NSString *noisy = [NSString stringWithFormat:@"噪音：%ld",(long)a1StatusInfo.noisy.integer];
-    
-    _temperatureLabel.text = temperature;
-    _humidityLabel.text = humidity;
-    _lightLabel.text = light;
-    _airLabel.text = air;
-    _noisyLabel.text = noisy;
+
+    self.temperatureLabel.text = [NSString stringWithFormat:@"温度：%ld.%ld℃", (long)a1StatusInfo.temperature.integer, a1StatusInfo.temperature.decimal];
+    self.humidityLabel.text = [NSString stringWithFormat:@"湿度：%ld.%ld%%", (long)a1StatusInfo.humidity.integer, a1StatusInfo.humidity.decimal];
+    self.lightLabel.text = [NSString stringWithFormat:@"光照：%ld", (long)a1StatusInfo.light.integer];
+    self.airLabel.text = [NSString stringWithFormat:@"空气质量：%ld", (long)a1StatusInfo.air.integer];
+    self.noisyLabel.text = [NSString stringWithFormat:@"噪音：%ld", (long)a1StatusInfo.noisy.integer];
 }
 
-- (IBAction)getIFTTTList:(id)sender {
+- (void)getIFTTTList {
     [self getIFTTT];
 }
 
-//结合智慧星APP设置联动，再来获取结果作参考
 - (void)getIFTTT {
     NSData *data = [_a1DataParser getIFTTT];
     BLPassthroughResult *passThroughResult = [[BLLet sharedLet].controller dnaPassthrough:[Tools controlDidForDevice:self.device] passthroughData:data];
@@ -85,68 +161,56 @@
     NSArray *list = a1IFTTTInfo.list;
     if (![list isKindOfClass:[NSNull class]] && list != nil && list.count != 0) {
         BLeAirIFTTTInfo *a1Info = list[0];
-        
         BLeAirConditionInfo *condition = a1Info.ifttt.condition;
-        
         BLeAirTriggerInfo *trigger = condition.trigger;
-        
-        
-        //当下降到昏暗时，路由器开，时间：08：00-09：00，周期：周日周一周二
-        // 0: condition up 1: condition down
+
         static NSString *conditionText;
         if (trigger.trigger == 0) {
             conditionText = @"上升";
-        }else if (trigger.trigger == 1){
+        } else if (trigger.trigger == 1) {
             conditionText = @"下降";
         }
-        // 0: temperature 1: humidity 2: light 3: air quality 4: noisy
         static NSString *triggerValueText;
         if (trigger.type == 0) {
-            triggerValueText = [NSString stringWithFormat:@"温度：%ld.%ld℃",(long)trigger.value.integer , trigger.value.decimal];
-        }else if (trigger.type == 1){
-            triggerValueText = [NSString stringWithFormat:@"湿度：%ld.%ld%%",(long)trigger.value.integer , trigger.value.decimal];
-        }else if (trigger.type == 2){
-            //0:暗 1:昏暗 2:正常  3:亮
-            triggerValueText = [NSString stringWithFormat:@"光照：%ld",(long)trigger.value.integer];
-        }else if (trigger.type == 3){
-            //0:优 1:良 2:正常  3:差
-            triggerValueText = [NSString stringWithFormat:@"空气质量：%ld",(long)trigger.value.integer];
-        }else if (trigger.type == 4){
-            //0:寂静 1:正常 2:吵闹
-            triggerValueText = [NSString stringWithFormat:@"噪音：%ld",(long)trigger.value.integer];
+            triggerValueText = [NSString stringWithFormat:@"温度：%ld.%ld℃", (long)trigger.value.integer, trigger.value.decimal];
+        } else if (trigger.type == 1) {
+            triggerValueText = [NSString stringWithFormat:@"湿度：%ld.%ld%%", (long)trigger.value.integer, trigger.value.decimal];
+        } else if (trigger.type == 2) {
+            triggerValueText = [NSString stringWithFormat:@"光照：%ld", (long)trigger.value.integer];
+        } else if (trigger.type == 3) {
+            triggerValueText = [NSString stringWithFormat:@"空气质量：%ld", (long)trigger.value.integer];
+        } else if (trigger.type == 4) {
+            triggerValueText = [NSString stringWithFormat:@"噪音：%ld", (long)trigger.value.integer];
         }
         NSString *time = [self timeAndWeek:a1Info];
-        _resultLabel.text = [NSString stringWithFormat:@"当%@到%@时，%@，生效时间：%@", conditionText,triggerValueText,a1Info.ifttt.name,time];
+        self.resultTextView.text = [NSString stringWithFormat:@"当%@到%@时，%@，生效时间：%@", conditionText, triggerValueText, a1Info.ifttt.name, time];
     }
-    
 }
 
-- (NSString *)timeAndWeek:(BLeAirIFTTTInfo *)info{
+- (NSString *)timeAndWeek:(BLeAirIFTTTInfo *)info {
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit | NSWeekdayCalendarUnit;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-    NSString *timeString = [NSString stringWithFormat:@"%02d-%02d-%02d %02d:%02d",info.ifttt.timeA.year,info.ifttt.timeA.month,info.ifttt.timeA.day,info.ifttt.timeA.hour, info.ifttt.timeA.minute];
+    NSString *timeString = [NSString stringWithFormat:@"%02d-%02d-%02d %02d:%02d", info.ifttt.timeA.year, info.ifttt.timeA.month, info.ifttt.timeA.day, info.ifttt.timeA.hour, info.ifttt.timeA.minute];
     NSDate *startDate = [dateFormatter dateFromString:timeString];
     NSDateComponents *oldComps = [calendar components:unitFlags fromDate:startDate];
     NSDateComponents *startComps = [calendar components:unitFlags fromDate:startDate];
-    
-    timeString = [NSString stringWithFormat:@"%02d-%02d-%02d %02d:%02d",info.ifttt.timeA.year,info.ifttt.timeA.month,info.ifttt.timeA.day,info.ifttt.timeB.hour, info.ifttt.timeB.minute];
+
+    timeString = [NSString stringWithFormat:@"%02d-%02d-%02d %02d:%02d", info.ifttt.timeA.year, info.ifttt.timeA.month, info.ifttt.timeA.day, info.ifttt.timeB.hour, info.ifttt.timeB.minute];
     NSDate *endDate = [dateFormatter dateFromString:timeString];
     NSDateComponents *endComps = [calendar components:unitFlags fromDate:endDate];
-    
+
     uint8_t temprepeatWeeks = info.ifttt.timeA.weekday;
     if (((oldComps.weekday < startComps.weekday) && (startComps.weekday - oldComps.weekday == 1))
-        ||((oldComps.weekday > startComps.weekday) && ( oldComps.weekday - startComps.weekday > 1)))
-    {
+        || ((oldComps.weekday > startComps.weekday) && (oldComps.weekday - startComps.weekday > 1))) {
         temprepeatWeeks = info.ifttt.timeA.weekday << 1 | (info.ifttt.timeA.weekday >> 6);
     }
     if (((oldComps.weekday > startComps.weekday) && (oldComps.weekday - startComps.weekday == 1))
-        ||((oldComps.weekday < startComps.weekday) && ( startComps.weekday - oldComps.weekday  > 1)))
-    {
+        || ((oldComps.weekday < startComps.weekday) && (startComps.weekday - oldComps.weekday > 1))) {
         temprepeatWeeks = info.ifttt.timeA.weekday >> 1 | (0x40 && (info.ifttt.timeA.weekday << 6));
     }
-    NSString *time = [NSString stringWithFormat:@"%02ld:%02ld-%02ld:%02ld,周期：%hhu", (long)[startComps hour], (long)[startComps minute], (long)[endComps hour], (long)[endComps minute],temprepeatWeeks];
-    return time;
+    return [NSString stringWithFormat:@"%02ld:%02ld-%02ld:%02ld,周期：%hhu", (long)[startComps hour], (long)[startComps minute], (long)[endComps hour], (long)[endComps minute], temprepeatWeeks];
 }
+
 @end

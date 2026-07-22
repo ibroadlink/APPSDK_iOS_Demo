@@ -11,7 +11,6 @@
 #import "CateGoriesTableViewController.h"
 #import "AKeyToIdentifyViewController.h"
 #import "BrandSelectController.h"
-#import "Tools.h"
 
 #import "BLStatusBar.h"
 #import "BLTheme.h"
@@ -24,7 +23,7 @@
 @implementation IRCodeTestViewController
 
 + (instancetype)viewController {
-    return [Tools viewControllerFromMainStoryboard:self];
+    return [[self alloc] init];
 }
 
 - (void)viewDidLoad {
@@ -44,7 +43,6 @@
 }
 
 - (IBAction)button:(UIButton *)sender {
-    
     switch (sender.tag) {
         case 100:
             [self acIRCodeSelect];
@@ -61,7 +59,6 @@
 }
 
 - (void)acIRCodeSelect {
-    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"AC Code selection" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *cateGories = [UIAlertAction actionWithTitle:@"Choose Brand Model" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         CateGoriesTableViewController *vc = [CateGoriesTableViewController viewController];
@@ -69,7 +66,8 @@
         [self.navigationController pushViewController:vc animated:YES];
     }];
     UIAlertAction *keyIdentify = [UIAlertAction actionWithTitle:@"Code one key recognition" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-        [self performSegueWithIdentifier:@"aKeyToIdentify" sender:nil];
+        AKeyToIdentifyViewController *vc = [AKeyToIdentifyViewController viewController];
+        [self.navigationController pushViewController:vc animated:YES];
     }];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
 
@@ -81,7 +79,6 @@
 }
 
 - (void)tvIRCodeSelect {
-    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"TV Code selection" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *cateGories = [UIAlertAction actionWithTitle:@"Choose Brand Model" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         CateGoriesTableViewController *vc = [CateGoriesTableViewController viewController];
@@ -94,11 +91,11 @@
         [self.navigationController pushViewController:vc animated:YES];
     }];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
-    
+
     [alertController addAction:cateGories];
     [alertController addAction:keyIdentify];
     [alertController addAction:cancelAction];
-    
+
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
@@ -108,7 +105,6 @@
         TVBoxAreaSelectController *vc = [TVBoxAreaSelectController viewController];
         IRCodeSubAreaInfo *area = [[IRCodeSubAreaInfo alloc] init];
         vc.currentArea = area;
-        
         [self.navigationController pushViewController:vc animated:YES];
     }];
     UIAlertAction *keyIdentify = [UIAlertAction actionWithTitle:@"Match Tree" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
@@ -117,11 +113,11 @@
         [self.navigationController pushViewController:vc animated:YES];
     }];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
-    
+
     [alertController addAction:cateGories];
     [alertController addAction:keyIdentify];
     [alertController addAction:cancelAction];
-    
+
     [self presentViewController:alertController animated:YES completion:nil];
 }
 

@@ -6,11 +6,9 @@
 //  Copyright © 2016年 BroadLink. All rights reserved.
 //
 #import "OperateViewController.h"
-#import "GeneralTimerControlView.h"
-#import "FastconGroupDeviceViewController.h"
+#import "DataPassthoughViewController.h"
+#import "DNAControlViewController.h"
 
-#import "AppMacro.h"
-#import "BLStatusBar.h"
 #import "SSZipArchive.h"
 #import "BLDeviceService.h"
 #import "BLTheme.h"
@@ -18,21 +16,12 @@
 #import <Masonry/Masonry.h>
 
 typedef NS_ENUM(NSInteger, OperateAction) {
-    OperateActionDeviceStatus,
-    OperateActionDeviceTime,
     OperateActionDataPassthrough,
     OperateActionDNAControl,
-    OperateActionTimer,
-    OperateActionGateway,
-    OperateActionFastcon,
-    OperateActionFirmwareQuery,
+    OperateActionScriptDownload,
+    OperateActionUIDownload,
     OperateActionFirmwareUpgrade,
-    OperateActionRM,
-    OperateActionSP,
-    OperateActionA1,
-    OperateActionStartLogRedirect,
-    OperateActionStopLogRedirect,
-    OperateActionFastconGroup,
+    OperateActionDeviceTime,
 };
 
 @interface OperateViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -42,20 +31,22 @@ typedef NS_ENUM(NSInteger, OperateAction) {
 @property (nonatomic, strong) NSArray *operateButtonArray;
 @property (nonatomic, strong) NSArray *operateSymbols;
 
-@property (nonatomic, strong) NSString *logfile;
-@property (nonatomic, strong) NSDateFormatter *formatter;
-
-@property (weak, nonatomic) IBOutlet UITextView *deviceInfoView;
-@property (weak, nonatomic) IBOutlet UITableView *operateTableView;
+@property (nonatomic, strong) UITableView *operateTableView;
 
 @property (nonatomic, strong) UIView *infoCard;
 @property (nonatomic, strong) UILabel *stateBadgeLabel;
 @property (nonatomic, strong) UIView *stateDot;
 @property (nonatomic, copy) NSString *deviceJSONString;
+@property (nonatomic, copy) NSString *firmwareVersionText;
+@property (nonatomic, assign) BOOL didLoadFirmwareOnce;
 
 @end
 
 @implementation OperateViewController
+
++ (instancetype)viewController {
+    return [[self alloc] init];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -66,40 +57,23 @@ typedef NS_ENUM(NSInteger, OperateAction) {
     self.view.backgroundColor = [BLTheme backgroundColor];
 
     self.operateButtonArray = @[
-                                @"Device Status Query",
-                                @"Device Time Query",
                                 @"Device Passthough",
                                 @"Device Control",
-                                @"Timer Task Functions",
-                                @"GateWay Functions",
-                                @"Fastcon Functions",
-                                @"Device Firmware Query",
+                                @"Script Download",
+                                @"UI Download",
                                 @"Device Firmware Upgrade",
-                                @"RM Device Demo",
-                                @"SP Device Demo",
-                                @"A1 Device Demo",
-                                @"Start Log Redirect",
-                                @"Stop Log Redirect",
-                                @"FastconGroupDevice"
+                                @"Device Time Query",
                                 ];
     self.operateSymbols = @[
-        @"wifi",
-        @"clock",
         @"arrow.left.arrow.right",
         @"slider.horizontal.3",
-        @"timer",
-        @"link",
-        @"dot.radiowaves.left.and.right",
-        @"info.circle",
+        @"arrow.down.doc",
+        @"rectangle.on.rectangle.angled",
         @"arrow.up.circle",
-        @"tv",
-        @"bolt",
-        @"thermometer",
-        @"doc.text",
-        @"stop.circle",
-        @"square.stack.3d.up",
+        @"clock",
     ];
-    
+
+    self.operateTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     self.operateTableView.delegate = self;
     self.operateTableView.dataSource = self;
     self.operateTableView.backgroundColor = [BLTheme backgroundColor];
@@ -110,39 +84,16 @@ typedef NS_ENUM(NSInteger, OperateAction) {
         self.operateTableView.sectionHeaderTopPadding = 0;
     }
     [self setExtraCellLineHidden:self.operateTableView];
+    [self.view addSubview:self.operateTableView];
+
+    self.firmwareVersionText = @"Loading...";
     [self setupSummaryHeader];
     [self rebuildInfoAndResultPanels];
     [self refreshDeviceInfoPanel];
-    
-    self.formatter = [[NSDateFormatter alloc] init];
-    [self.formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"]];
-    [self.formatter setDateFormat:@"yyyy-MM-dd_HH:mm:ss"];
-}
-
-- (void)deactivateStoryboardLayoutForView:(UIView *)target {
-    if (!target) { return; }
-    NSMutableArray<NSLayoutConstraint *> *toDeactivate = [NSMutableArray array];
-    for (NSLayoutConstraint *constraint in self.view.constraints) {
-        if (constraint.firstItem == target || constraint.secondItem == target) {
-            [toDeactivate addObject:constraint];
-        }
-    }
-    for (NSLayoutConstraint *constraint in target.constraints) {
-        if (constraint.firstAttribute == NSLayoutAttributeHeight ||
-            constraint.firstAttribute == NSLayoutAttributeWidth) {
-            [toDeactivate addObject:constraint];
-        }
-    }
-    [NSLayoutConstraint deactivateConstraints:toDeactivate];
+    [self loadDeviceStatusAndFirmwareOnce];
 }
 
 - (void)rebuildInfoAndResultPanels {
-    [self deactivateStoryboardLayoutForView:self.deviceInfoView];
-    [self deactivateStoryboardLayoutForView:self.resultText];
-    [self deactivateStoryboardLayoutForView:self.operateTableView];
-
-    self.deviceInfoView.hidden = YES;
-
     // Info card
     UIView *infoCard = [[UIView alloc] init];
     [BLTheme styleCardView:infoCard];
@@ -200,8 +151,6 @@ typedef NS_ENUM(NSInteger, OperateAction) {
     hintLabel.textColor = [BLTheme subtitleColor];
     hintLabel.userInteractionEnabled = NO;
     [infoCard addSubview:hintLabel];
-
-    self.resultText.hidden = YES;
 
     [self.view bringSubviewToFront:self.operateTableView];
 
@@ -273,7 +222,7 @@ typedef NS_ENUM(NSInteger, OperateAction) {
 
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.bottom.equalTo(row);
-        make.width.mas_equalTo(56);
+        make.width.mas_equalTo(72);
     }];
     [valueLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(titleLabel.mas_right).offset(8);
@@ -314,6 +263,7 @@ typedef NS_ENUM(NSInteger, OperateAction) {
         @[@"Type", [NSString stringWithFormat:@"%lu", (unsigned long)self.device.getType]],
         @[@"PID", self.device.getPid ?: @"--"],
         @[@"LAN IP", self.device.getLanaddr.length ? self.device.getLanaddr : @"--"],
+        @[@"Firmware", self.firmwareVersionText.length ? self.firmwareVersionText : @"--"],
     ];
     for (NSArray *item in items) {
         [rows addArrangedSubview:[self infoRowWithTitle:item[0] value:item[1]]];
@@ -359,7 +309,11 @@ typedef NS_ENUM(NSInteger, OperateAction) {
     textView.selectable = YES;
     [popup.view addSubview:textView];
     [textView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(popup.view.mas_safeAreaLayoutGuide).insets(UIEdgeInsetsMake(12, 16, 12, 16));
+        // Masonry 不能用 edges.equalTo(mas_safeAreaLayoutGuide)，会把 left 错绑到 bottom
+        make.top.equalTo(popup.view.mas_safeAreaLayoutGuideTop).offset(12);
+        make.left.equalTo(popup.view).offset(16);
+        make.right.equalTo(popup.view).offset(-16);
+        make.bottom.equalTo(popup.view.mas_safeAreaLayoutGuideBottom).offset(-12);
     }];
 
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:popup];
@@ -418,9 +372,24 @@ typedef NS_ENUM(NSInteger, OperateAction) {
     [self refreshDeviceInfoPanel];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    [self stopDeviceLogRedirect];
+- (void)loadDeviceStatusAndFirmwareOnce {
+    if (self.didLoadFirmwareOnce) {
+        return;
+    }
+    self.didLoadFirmwareOnce = YES;
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BLFirmwareVersionResult *result = [[BLLet sharedLet].controller queryFirmwareVersion:[Tools controlDidForDevice:self.device]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([result succeed]) {
+                NSString *version = [result getVersion];
+                self.firmwareVersionText = version.length ? version : @"--";
+            } else {
+                self.firmwareVersionText = result.getMsg.length ? result.getMsg : @"Query failed";
+            }
+            [self refreshDeviceInfoPanel];
+        });
+    });
 }
 
 #pragma mark - table delegate
@@ -520,11 +489,14 @@ typedef NS_ENUM(NSInteger, OperateAction) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch ((OperateAction)indexPath.row) {
-        case OperateActionDeviceStatus:
-            [self getDeviceState];
-            break;
         case OperateActionDeviceTime:
             [self getServerTime];
+            break;
+        case OperateActionScriptDownload:
+            [self downloadScript];
+            break;
+        case OperateActionUIDownload:
+            [self downloadUI];
             break;
         case OperateActionDataPassthrough:
             [self dataPassthough];
@@ -532,38 +504,8 @@ typedef NS_ENUM(NSInteger, OperateAction) {
         case OperateActionDNAControl:
             [self dnaControl];
             break;
-        case OperateActionTimer:
-            [self generalTimerControl];
-            break;
-        case OperateActionGateway:
-            [self gateWayControl];
-            break;
-        case OperateActionFastcon:
-            [self fastconNoConfig];
-            break;
-        case OperateActionFirmwareQuery:
-            [self getFirmwareVersion];
-            break;
         case OperateActionFirmwareUpgrade:
             [self upgradeFirmVersion];
-            break;
-        case OperateActionRM:
-            [self rmDeviceController];
-            break;
-        case OperateActionSP:
-            [self SPControl];
-            break;
-        case OperateActionA1:
-            [self A1Control];
-            break;
-        case OperateActionStartLogRedirect:
-            [self startDeviceLogRedirect];
-        break;
-        case OperateActionStopLogRedirect:
-            [self stopDeviceLogRedirect];
-            break;
-        case OperateActionFastconGroup:
-            [self fastconGroupDevice];
             break;
         default:
             break;
@@ -578,24 +520,82 @@ typedef NS_ENUM(NSInteger, OperateAction) {
     });
 }
 
-- (void)getDeviceState {
-    BLDeviceStatusEnum state = [[BLLet sharedLet].controller queryDeviceState:[Tools controlDidForDevice:self.device]];
-    NSString *stateString = [Tools stringForDeviceState:state];
-    [self showResult:[NSString stringWithFormat:@"state: %ld - %@", (long)state, stateString]];
+- (void)downloadScript {
+    [self showIndicatorOnWindowWithMessage:@"Querying script version..."];
+    NSString *pid = self.device.pid;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BLQueryResourceVersionResult *versionResult = [[BLLet sharedLet].controller queryScriptVersion:pid];
+        NSString *versionInfo = nil;
+        if ([versionResult succeed]) {
+            BLResourceVersion *info = [versionResult.versions firstObject];
+            versionInfo = [NSString stringWithFormat:@"Script Pid:%@\nVersion:%@", info.pid ?: @"--", info.version ?: @"--"];
+        } else {
+            versionInfo = [NSString stringWithFormat:@"Script Version Query Failed\nCode(%ld) Msg(%@)",
+                           (long)versionResult.getError, versionResult.getMsg ?: @""];
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showIndicatorOnWindowWithMessage:@"Script Downloading..."];
+        });
+
+        [[BLLet sharedLet].controller downloadScript:pid completionHandler:^(BLDownloadResult * _Nonnull result) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideIndicatorOnWindow];
+                NSMutableString *text = [NSMutableString stringWithString:versionInfo ?: @""];
+                [text appendString:@"\n\n"];
+                if ([result succeed]) {
+                    [text appendFormat:@"ScriptPath:%@", [result getSavePath]];
+                    [self showResult:text];
+                    [self showTextOnly:@"Script downloaded"];
+                } else {
+                    [text appendFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+                    [self showResult:text];
+                    [self showTextOnly:result.getMsg.length ? result.getMsg : @"Script download failed"];
+                }
+            });
+        }];
+    });
 }
 
-- (void)getFirmwareVersion {
-    [self showIndicatorOnWindow];
+- (void)downloadUI {
+    [self showIndicatorOnWindowWithMessage:@"Querying UI version..."];
+    NSString *pid = self.device.pid;
+    NSString *unzipPath = [[BLLet sharedLet].controller queryUIPath:pid];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        BLFirmwareVersionResult *result = [[BLLet sharedLet].controller queryFirmwareVersion:[Tools controlDidForDevice:self.device]];
+        BLQueryResourceVersionResult *versionResult = [[BLLet sharedLet].controller queryUIVersion:pid];
+        NSString *versionInfo = nil;
+        if ([versionResult succeed]) {
+            BLResourceVersion *info = [versionResult.versions firstObject];
+            versionInfo = [NSString stringWithFormat:@"UI Pid:%@\nVersion:%@", info.pid ?: @"--", info.version ?: @"--"];
+        } else {
+            versionInfo = [NSString stringWithFormat:@"UI Version Query Failed\nCode(%ld) Msg(%@)",
+                           (long)versionResult.getError, versionResult.getMsg ?: @""];
+        }
+
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideIndicatorOnWindow];
-            if ([result succeed]) {
-                [self showResult:[NSString stringWithFormat:@"Firmware Version:%@", [result getVersion]]];
-            } else {
-                [self showResult:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
-            }
+            [self showIndicatorOnWindowWithMessage:@"UI Downloading..."];
         });
+
+        [[BLLet sharedLet].controller downloadUI:pid completionHandler:^(BLDownloadResult * _Nonnull result) {
+            if ([result succeed]) {
+                BOOL isUnzip = [SSZipArchive unzipFileAtPath:[result getSavePath] toDestination:unzipPath];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self hideIndicatorOnWindow];
+                    NSString *text = [NSString stringWithFormat:@"%@\n\nisUnzip:%d\nDownload File:%@\nUIPath:%@",
+                                      versionInfo ?: @"", isUnzip, [result getSavePath], unzipPath];
+                    [self showResult:text];
+                    [self showTextOnly:isUnzip ? @"UI downloaded" : @"UI unzip failed"];
+                });
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self hideIndicatorOnWindow];
+                    NSString *text = [NSString stringWithFormat:@"%@\n\nCode(%ld) Msg(%@)",
+                                      versionInfo ?: @"", (long)result.getError, result.getMsg];
+                    [self showResult:text];
+                    [self showTextOnly:result.getMsg.length ? result.getMsg : @"UI download failed"];
+                });
+            }
+        }];
     });
 }
 
@@ -624,83 +624,17 @@ typedef NS_ENUM(NSInteger, OperateAction) {
 }
 
 - (void)dataPassthough {
-    [self performSegueWithIdentifier:@"DataPassthoughView" sender:nil];
+    DataPassthoughViewController *vc = [DataPassthoughViewController viewController];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)dnaControl {
     //是否下载了脚本，需要先下载脚本才能控制设备
-    [self isDownloadScript];
-    [self performSegueWithIdentifier:@"DNAControlView" sender:nil];
-}
-
-- (void)SPControl {
-    if ([self isDownloadScript]) {
-        NSString *ProfileStr = [self getDeviceProfile];
-        if([ProfileStr isEqualToString:SMART_SP]){
-            [self performSegueWithIdentifier:@"SPminiControlView" sender:nil];
-        }else{
-            [BLStatusBar showTipMessageWithStatus:@"Not SP device"];
-        }
+    if (![self isDownloadScript]) {
+        return;
     }
-}
-
-- (void)A1Control {
-    if ([self isDownloadScript]) {
-        NSString *ProfileStr = [self getDeviceProfile];
-        if([ProfileStr isEqualToString:SMART_A1]){
-            [self performSegueWithIdentifier:@"A1ControlView" sender:nil];
-        }else{
-            [BLStatusBar showTipMessageWithStatus:@"Not A1 device"];
-        }
-    }
-}
-
-- (void)gateWayControl {
-    if ([self isDownloadScript]) {
-        [self performSegueWithIdentifier:@"GateWayControlView" sender:nil];
-    }
-}
-
-- (void)rmDeviceController {
-    if ([self isDownloadScript]) {
-        NSString *ProfileStr = [self getDeviceProfile];
-        if([ProfileStr isEqualToString:SMART_RM]){
-            [self performSegueWithIdentifier:@"RMminiControlView" sender:nil];
-        } else {
-            [BLStatusBar showTipMessageWithStatus:@"Not RM device"];
-        }
-    }
-}
-
-- (void)webViewControl {
-    if ([Tools copyCordovaJsNamed:DNAKIT_CORVODA_JS_FILE forPid:self.device.pid]) {
-        [self performSegueWithIdentifier:@"DeviceWebControlView" sender:nil];
-    }
-}
-
-- (void)generalTimerControl {
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Please input query device did or sdid" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.text = @"";
-        textField.placeholder = @"Device did or sdid";
-    }];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSString *did = alertController.textFields.firstObject.text;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            GeneralTimerControlView *vc = [GeneralTimerControlView viewController];
-            vc.sdid = did;
-            [self.navigationController pushViewController:vc animated:YES];
-        });
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:alertController animated:YES completion:nil];
-    
-    
-}
-
-- (void)fastconNoConfig {
-    [self performSegueWithIdentifier:@"fastconControlView" sender:nil];
+    DNAControlViewController *vc = [DNAControlViewController viewController];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 //查询设备数据上报
@@ -757,79 +691,13 @@ typedef NS_ENUM(NSInteger, OperateAction) {
     [self showResult:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
 }
 
-- (NSString *)getDeviceProfile {
-    BLProfileStringResult *result = [[BLLet sharedLet].controller queryProfileByPid:self.device.pid];
-    if ([result succeed]) {
-        NSString *profileStr = [result getProfile];
-        NSDictionary *dic = [BLCommonTools deserializeMessageJSON:profileStr];
-        NSArray *srvStrArray = dic[@"srvs"];
-        if (![BLCommonTools isEmptyArray:srvStrArray]) {
-            return srvStrArray.firstObject;
-        }
-    }
-    return nil;
-}
-
 - (BOOL)isDownloadScript {
-    NSString *profileFile = [[BLLet sharedLet].controller queryScriptFileName:[self.device getPid]];
+    NSString *profileFile = [[BLLet sharedLet].controller queryScriptFileName:self.device.pid];
     if (![[NSFileManager defaultManager] fileExistsAtPath:profileFile]) {
-        [BLStatusBar showTipMessageWithStatus:@"Please download script first!"];
+        [self showTextOnly:@"Please download script first!"];
         return NO;
     }
     return YES;
 }
 
-- (BOOL)createDeviceLogFile {
-    
-    //将NSlog打印信息保存到Document目录下的Log文件夹下
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *logDirectory = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"DeviceLog"];
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    BOOL fileExists = [fileManager fileExistsAtPath:logDirectory];
-    if (!fileExists) {
-        [fileManager createDirectoryAtPath:logDirectory  withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-    
-    //每次启动后都保存一个新的日志文件中
-    NSString *dateStr = [self.formatter stringFromDate:[NSDate date]];
-    self.logfile = [logDirectory stringByAppendingFormat:@"/%@-%@.log", self.device.did, dateStr];
-    
-    BOOL isSuccess = [fileManager createFileAtPath:self.logfile contents:nil attributes:nil];
-    if (isSuccess) {
-        NSLog(@"createStressTestLogFile success");
-    } else {
-        NSLog(@"createStressTestLogFile fail");
-    }
-    
-    return isSuccess;
-}
-
-- (void)writeDeviceLogToFileWithString:(NSString *)log {
-    
-    if ([BLCommonTools isEmpty:log]) {
-        return;
-    }
-    
-    NSString *input = [NSString stringWithFormat:@"\n%@\n", log];
-    
-    NSFileHandle *outFile = [NSFileHandle fileHandleForWritingAtPath:self.logfile];
-    if (!outFile) {
-        return;
-    }
-    [outFile seekToEndOfFile];
-    [outFile writeData:[input dataUsingEncoding:NSUTF8StringEncoding]];
-    [outFile closeFile];
-    
-}
-
-- (void)startDeviceLogRedirect {
-}
-
-- (void)stopDeviceLogRedirect {
-}
-
-- (void)fastconGroupDevice {
-    [self performSegueWithIdentifier:@"FastconGroupDeviceViewController" sender:nil];
-}
 @end

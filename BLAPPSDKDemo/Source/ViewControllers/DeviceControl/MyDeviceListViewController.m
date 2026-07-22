@@ -15,17 +15,23 @@
 #import <Masonry/Masonry.h>
 
 @interface MyDeviceListViewController ()
+@property (nonatomic, strong) UITableView *MyDeviceTable;
 @property (nonatomic, strong) UILabel *emptyLabel;
 @property (nonatomic, strong) NSTimer *refreshTimer;
 @end
 
 @implementation MyDeviceListViewController
 
++ (instancetype)viewController {
+    return [[self alloc] init];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"My Devices";
     self.view.backgroundColor = [BLTheme backgroundColor];
 
+    self.MyDeviceTable = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     self.MyDeviceTable.delegate = self;
     self.MyDeviceTable.dataSource = self;
     self.MyDeviceTable.backgroundColor = [BLTheme backgroundColor];
@@ -36,6 +42,11 @@
         self.MyDeviceTable.sectionHeaderTopPadding = 0;
     }
     [self setExtraCellLineHidden:self.MyDeviceTable];
+    [self.view addSubview:self.MyDeviceTable];
+    [self.MyDeviceTable mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+
     [self setupHeader];
     [self setupEmptyLabel];
 }
@@ -288,7 +299,8 @@
     NSString *did = self.deviceIds[indexPath.row];
     BLDNADevice *device = [deviceService.manageDevices objectForKey:did];
     deviceService.selectDevice = device;
-    [self performSegueWithIdentifier:@"OperateView" sender:device];
+    OperateViewController *vc = [OperateViewController viewController];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {

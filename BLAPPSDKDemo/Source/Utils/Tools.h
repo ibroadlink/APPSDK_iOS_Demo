@@ -42,9 +42,6 @@ NS_ASSUME_NONNULL_BEGIN
               timeout:(NSUInteger)timeout
     completionHandler:(void (^)(NSData * _Nullable data, NSError * _Nullable error))completionHandler;
 
-#pragma mark - Storyboard
-+ (instancetype)viewControllerFromMainStoryboard:(Class)cls;
-
 #pragma mark - Alert helpers
 + (void)presentAlertOn:(UIViewController *)vc
                  title:(NSString *)title

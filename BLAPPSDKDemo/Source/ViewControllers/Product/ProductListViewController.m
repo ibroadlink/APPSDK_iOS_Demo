@@ -22,15 +22,21 @@
 #import "Tools.h"
 
 static NSString * const kProductSectionHeaderId = @"ProductSectionHeader";
+static NSString * const kDeviceCellId = @"deviceCell";
+static NSString * const kCategoryCellId = @"categoryCell";
 
 @interface ProductListViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong, readwrite) NSArray<BLProductCategoryModel *> *categoryArray;
 @property (nonatomic, strong, readwrite) NSArray<BLDeviceConfigureInfo *> *hotDeviceArray;
 @property (nonatomic, strong) UILabel *emptyLabel;
 @end
 
 @implementation ProductListViewController
+
++ (instancetype)viewController {
+    return [[self alloc] init];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -45,12 +51,6 @@ static NSString * const kProductSectionHeaderId = @"ProductSectionHeader";
 - (void)viewInit {
     self.title = @"Product";
     self.view.backgroundColor = [BLTheme backgroundColor];
-    self.collectionView.delegate = self;
-    self.collectionView.dataSource = self;
-    self.collectionView.backgroundColor = [BLTheme backgroundColor];
-    self.collectionView.alwaysBounceVertical = YES;
-    self.collectionView.showsVerticalScrollIndicator = NO;
-    self.collectionView.contentInset = UIEdgeInsetsMake(4, 0, 24, 0);
 
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
@@ -58,17 +58,27 @@ static NSString * const kProductSectionHeaderId = @"ProductSectionHeader";
     flowLayout.minimumLineSpacing = 12;
     flowLayout.sectionInset = UIEdgeInsetsMake(8, 16, 20, 16);
     flowLayout.headerReferenceSize = CGSizeMake(self.view.bounds.size.width, 44);
-    self.collectionView.collectionViewLayout = flowLayout;
 
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    self.collectionView.backgroundColor = [BLTheme backgroundColor];
+    self.collectionView.alwaysBounceVertical = YES;
+    self.collectionView.showsVerticalScrollIndicator = NO;
+    self.collectionView.contentInset = UIEdgeInsetsMake(4, 0, 24, 0);
+    [self.view addSubview:self.collectionView];
+
+    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+
+    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kDeviceCellId];
+    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kCategoryCellId];
     [self.collectionView registerClass:[UICollectionReusableView class]
             forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                    withReuseIdentifier:kProductSectionHeaderId];
 
     [self setupEmptyState];
-}
-
-+ (instancetype)viewController {
-    return [Tools viewControllerFromMainStoryboard:self];
 }
 
 - (void)setupEmptyState {
@@ -100,6 +110,50 @@ static NSString * const kProductSectionHeaderId = @"ProductSectionHeader";
     NSInteger columns = 3;
     CGFloat total = self.collectionView.bounds.size.width - inset * 2 - spacing * (columns - 1);
     return floor(total / columns);
+}
+
+- (void)ensureProductCellContent:(UICollectionViewCell *)cell categoryStyle:(BOOL)categoryStyle {
+    if ([cell.contentView viewWithTag:101]) {
+        return;
+    }
+
+    UIImageView *imageView = [[UIImageView alloc] init];
+    imageView.tag = 101;
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [cell.contentView addSubview:imageView];
+
+    UILabel *label = [[UILabel alloc] init];
+    label.tag = 102;
+    label.numberOfLines = 2;
+    label.textAlignment = NSTextAlignmentCenter;
+    [cell.contentView addSubview:label];
+
+    CGFloat iconSize = categoryStyle ? 30 : 50;
+    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(cell.contentView);
+        make.top.equalTo(cell.contentView).offset(categoryStyle ? 18 : 16);
+        make.width.height.mas_equalTo(iconSize);
+    }];
+    [label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(imageView.mas_bottom).offset(10);
+        make.left.equalTo(cell.contentView).offset(5);
+        make.right.equalTo(cell.contentView).offset(-5);
+        make.bottom.lessThanOrEqualTo(cell.contentView).offset(-10);
+    }];
+}
+
+#pragma mark - Navigation
+
+- (void)pushConfigureStartWithModel:(BLDeviceConfigureInfo *)model {
+    BLConfigureStartViewController *vc = [[BLConfigureStartViewController alloc] init];
+    vc.model = model;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)pushAddDeviceListWithModel:(BLProductCategoryModel *)model {
+    BLAddDeviceListViewController *vc = [BLAddDeviceListViewController viewController];
+    vc.model = model;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Network
@@ -142,25 +196,27 @@ static NSString * const kProductSectionHeaderId = @"ProductSectionHeader";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         BLDeviceConfigureInfo *model = self.hotDeviceArray[indexPath.row];
-        [self performSegueWithIdentifier:@"configStartView" sender:model];
+        [self pushConfigureStartWithModel:model];
     } else {
         BLProductCategoryModel *model = self.categoryArray[indexPath.row];
-        [self performSegueWithIdentifier:@"addDeviceList" sender:model];
+        [self pushAddDeviceListWithModel:model];
     }
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = nil;
+    BOOL categorySection = indexPath.section != 0;
+    NSString *reuseId = categorySection ? kCategoryCellId : kDeviceCellId;
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
+    [self ensureProductCellContent:cell categoryStyle:categorySection];
+
     NSString *title = nil;
     NSString *iconURL = nil;
 
-    if (indexPath.section == 0) {
-        cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"deviceCell" forIndexPath:indexPath];
+    if (!categorySection) {
         BLDeviceConfigureInfo *model = self.hotDeviceArray[indexPath.row];
         title = model.moduleName;
         iconURL = model.iconUrlString;
     } else {
-        cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"categoryCell" forIndexPath:indexPath];
         BLProductCategoryModel *model = self.categoryArray[indexPath.row];
         title = model.name;
         iconURL = model.link;
@@ -183,8 +239,8 @@ static NSString * const kProductSectionHeaderId = @"ProductSectionHeader";
     cell.contentView.layer.masksToBounds = YES;
     cell.contentView.backgroundColor = [BLTheme cardColor];
 
-    UIImageView *imageView = [cell viewWithTag:101];
-    UILabel *label = [cell viewWithTag:102];
+    UIImageView *imageView = [cell.contentView viewWithTag:101];
+    UILabel *label = [cell.contentView viewWithTag:102];
 
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.backgroundColor = [BLTheme primaryLightColor];
@@ -277,22 +333,6 @@ static NSString * const kProductSectionHeaderId = @"ProductSectionHeader";
     [countLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
     return header;
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"configStartView"]) {
-        UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[BLConfigureStartViewController class]]) {
-            BLConfigureStartViewController *vc = (BLConfigureStartViewController *)target;
-            vc.model = (BLDeviceConfigureInfo *)sender;
-        }
-    } else if ([segue.identifier isEqualToString:@"addDeviceList"]) {
-        UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[BLAddDeviceListViewController class]]) {
-            BLAddDeviceListViewController *vc = (BLAddDeviceListViewController *)target;
-            vc.model = (BLProductCategoryModel *)sender;
-        }
-    }
 }
 
 @end

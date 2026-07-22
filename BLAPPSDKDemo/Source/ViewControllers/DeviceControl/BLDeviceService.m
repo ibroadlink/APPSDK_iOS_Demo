@@ -9,9 +9,12 @@
 #import "BLDeviceService.h"
 #import "DeviceDB.h"
 
+NSString * const BLDeviceScanUpdatedNotification = @"BLDeviceScanUpdatedNotification";
+
 @interface BLDeviceService() <BLControllerDelegate>
 
 @property (nonatomic, strong) NSTimer *checkTimer;
+@property (nonatomic, assign) BOOL pendingScanNotify;
 
 @end
 
@@ -86,6 +89,7 @@ static BLDeviceService *_deviceService = nil;
         [self.manageDevices setObject:device forKey:did];
         [[BLLet sharedLet].controller addDevice:device];
         [[DeviceDB sharedOperateDB] insertSqlWithDevice:device];
+        [self notifyScanUpdated];
     }
 }
 
@@ -95,25 +99,38 @@ static BLDeviceService *_deviceService = nil;
         [self.manageDevices removeObjectForKey:did];
         [[BLLet sharedLet].controller removeDevice:device];
         [[DeviceDB sharedOperateDB] deleteWithinfo:device];
+        [self notifyScanUpdated];
     }
+}
+
+- (void)notifyScanUpdated {
+    if (self.pendingScanNotify) { return; }
+    self.pendingScanNotify = YES;
+    __weak typeof(self) weakSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        weakSelf.pendingScanNotify = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:BLDeviceScanUpdatedNotification object:weakSelf];
+    });
 }
 
 - (void)checkDeviceCache {
     
     if (self.scanDevices.allKeys.count > 0) {
         NSTimeInterval nowTime = [[NSDate date] timeIntervalSinceReferenceDate];
+        BOOL removed = NO;
         
-        for (int i = 0; i < self.scanDevices.allKeys.count; i++) {
-            NSString *did = self.scanDevices.allKeys[i];
+        NSArray *keys = [self.scanDevices.allKeys copy];
+        for (NSString *did in keys) {
             BLDNADevice *obj = self.scanDevices[did];
-            
-            if (obj != nil) {
-                if ((nowTime - obj.lastStateRefreshTime) > 15) {
-                    @synchronized (self.scanDevices) {
-                        [self.scanDevices removeObjectForKey:did];
-                    }
+            if (obj != nil && (nowTime - obj.lastStateRefreshTime) > 15) {
+                @synchronized (self.scanDevices) {
+                    [self.scanDevices removeObjectForKey:did];
+                    removed = YES;
                 }
             }
+        }
+        if (removed) {
+            [self notifyScanUpdated];
         }
     }
 }
@@ -126,6 +143,7 @@ static BLDeviceService *_deviceService = nil;
     
     if (device.did) {
         [self.scanDevices setObject:device forKey:device.did];
+        [self notifyScanUpdated];
     }
     
 }

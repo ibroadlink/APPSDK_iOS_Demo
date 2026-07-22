@@ -117,12 +117,6 @@
     [httpAccessor post:url head:head data:body timeout:timeout completionHandler:completionHandler];
 }
 
-#pragma mark - Storyboard
-
-+ (instancetype)viewControllerFromMainStoryboard:(Class)cls {
-    return [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(cls)];
-}
-
 #pragma mark - Alert helpers
 
 + (void)presentAlertOn:(UIViewController *)vc

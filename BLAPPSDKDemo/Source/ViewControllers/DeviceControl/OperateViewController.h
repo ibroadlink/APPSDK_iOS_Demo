@@ -10,6 +10,6 @@
 
 @interface OperateViewController : BaseViewController
 
-@property (weak, nonatomic) IBOutlet UITextView *resultText;
++ (instancetype)viewController;
 
 @end

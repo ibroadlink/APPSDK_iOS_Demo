@@ -6,12 +6,17 @@
 //  Copyright © 2019 BroadLink. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 #import "BLProductCategoryModel.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BLAddDeviceListViewController : UITableViewController
+@interface BLAddDeviceListViewController : BaseViewController
+
++ (instancetype)viewController;
+
 @property (nonatomic, strong, readwrite) BLProductCategoryModel *model;
+
 @end
 
 NS_ASSUME_NONNULL_END

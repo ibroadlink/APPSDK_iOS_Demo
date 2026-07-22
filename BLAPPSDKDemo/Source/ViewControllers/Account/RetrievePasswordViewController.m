@@ -2,73 +2,74 @@
 //  RetrievePasswordViewController.m
 //  BLAPPSDKDemo
 //
-//  Created by 白洪坤 on 2018/6/27.
-//  Copyright © 2018年 BroadLink. All rights reserved.
-//
 
 #import "RetrievePasswordViewController.h"
+#import "RestPasswordViewController.h"
+#import "BLLoadingButton.h"
+#import "BLTheme.h"
 #import <BLLetAccount/BLLetAccount.h>
 
-#import "BLLoadingButton.h"
-#import "RestPasswordViewController.h"
-
 @interface RetrievePasswordViewController () <UITextFieldDelegate>
-@property (weak, nonatomic) IBOutlet UITextField *accountTextField;
-@property (weak, nonatomic) IBOutlet BLLoadingButton *nextButton;
-
+@property (nonatomic, strong) UITextField *accountTextField;
+@property (nonatomic, strong) BLLoadingButton *nextButton;
 @end
 
 @implementation RetrievePasswordViewController
 
++ (instancetype)viewController {
+    return [[self alloc] init];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self viewInit];
+    self.title = @"Forgot Password";
+    [self buildUI];
 }
 
-- (void)viewInit {
+- (void)buildUI {
+    self.accountTextField = [BLTheme makeTextFieldWithPlaceholder:@"Phone / Email"];
+    self.accountTextField.keyboardType = UIKeyboardTypeEmailAddress;
     self.accountTextField.delegate = self;
+
+    self.nextButton = (BLLoadingButton *)[BLTheme makePrimaryButtonWithTitle:@"Send Code"
+                                                                     target:self
+                                                                     action:@selector(nextAction:)];
+
+    [BLTheme installAuthFormOnView:self.view
+                             title:@"Reset password"
+                          subtitle:@"We'll send a verification code to your account"
+                         formViews:@[self.accountTextField]
+                     primaryButton:self.nextButton
+                       footerViews:nil];
 }
 
-- (IBAction)nextAction:(id)sender {
+- (void)nextAction:(id)sender {
+    [self.accountTextField resignFirstResponder];
+    if (self.accountTextField.text.length == 0) {
+        [self showTextOnly:@"Please enter phone or email"];
+        return;
+    }
+
     __weak typeof(self) weakSelf = self;
     self.nextButton.isLoading = YES;
     [[BLAccount sharedAccount] sendRetriveVCode:self.accountTextField.text completionHandler:^(BLBaseResult * _Nonnull result) {
-        if ([result succeed]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                weakSelf.nextButton.isLoading = NO;
-                [weakSelf performSegueWithIdentifier:@"retrievePassword" sender:weakSelf.accountTextField.text];
-            });
-        }else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                weakSelf.nextButton.isLoading = NO;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.nextButton.isLoading = NO;
+            if ([result succeed]) {
+                RestPasswordViewController *vc = [RestPasswordViewController viewController];
+                vc.accountText = weakSelf.accountTextField.text;
+                [weakSelf.navigationController pushViewController:vc animated:YES];
+            } else {
                 [weakSelf showSDKResult:result successMessage:nil];
-            });
-        }
+            }
+        });
     }];
 }
 
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    if ([segue.identifier isEqualToString:@"retrievePassword"]) {
-        UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[RestPasswordViewController class]]) {
-            RestPasswordViewController* opVC = (RestPasswordViewController *)target;
-            opVC.accountText = (NSString *)sender;
-        }
-    }
-}
-
-#pragma mark - text field delegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
+    [self nextAction:nil];
     return YES;
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    [textField resignFirstResponder];
-}
 @end

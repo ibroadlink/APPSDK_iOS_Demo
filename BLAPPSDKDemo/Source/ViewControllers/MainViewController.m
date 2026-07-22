@@ -8,12 +8,17 @@
 
 #import "MainViewController.h"
 #import "LoginsTableViewController.h"
+#import "LoginViewController.h"
+#import "CodeLoginViewController.h"
+#import "RegisterViewController.h"
+#import "RetrievePasswordViewController.h"
 #import "UserViewController.h"
 #import "FamilyListViewController.h"
 #import "DeviceMainViewController.h"
 #import "IRCodeTestViewController.h"
 #import "ProductListViewController.h"
 #import "PushViewController.h"
+#import "ResetSDKInitViewController.h"
 
 #import "BLUserDefaults.h"
 #import "BLStatusBar.h"
@@ -22,17 +27,27 @@
 
 @interface MainViewController ()
 
-- (IBAction)buttonClick:(UIButton *)sender;
-
 @end
 
 @implementation MainViewController
+
++ (instancetype)viewController {
+    return [[self alloc] init];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"";
     self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Reset"
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(gotoResetSDKInit)];
     [self buildModernHomeUI];
+}
+
+- (void)gotoResetSDKInit {
+    [self.navigationController pushViewController:[ResetSDKInitViewController viewController] animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -40,11 +55,31 @@
     self.navigationController.navigationBar.prefersLargeTitles = NO;
 }
 
-- (void)buildModernHomeUI {
-    for (UIView *subview in self.view.subviews) {
-        subview.hidden = YES;
-    }
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self redirectToLoginIfNeeded];
+}
 
+/// 未登录时跳转登录页；已在登录相关页栈中则不再重复 push
+- (void)redirectToLoginIfNeeded {
+    if ([self hasBeenLogined]) {
+        return;
+    }
+    for (UIViewController *vc in self.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[LoginViewController class]] ||
+            [vc isKindOfClass:[LoginsTableViewController class]] ||
+            [vc isKindOfClass:[CodeLoginViewController class]] ||
+            [vc isKindOfClass:[RegisterViewController class]] ||
+            [vc isKindOfClass:[RetrievePasswordViewController class]]) {
+            return;
+        }
+    }
+    LoginViewController *loginVC = [LoginViewController viewController];
+    loginVC.navigationItem.hidesBackButton = YES;
+    [self.navigationController pushViewController:loginVC animated:NO];
+}
+
+- (void)buildModernHomeUI {
     self.view.backgroundColor = [BLTheme backgroundColor];
 
     UIScrollView *scrollView = [[UIScrollView alloc] init];
@@ -199,7 +234,7 @@
     return card;
 }
 
-- (IBAction)buttonClick:(UIButton *)sender {
+- (void)buttonClick:(UIButton *)sender {
     
     switch (sender.tag) {
         case 100:

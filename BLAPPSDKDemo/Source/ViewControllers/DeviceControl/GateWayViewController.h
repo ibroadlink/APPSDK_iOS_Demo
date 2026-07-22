@@ -10,8 +10,6 @@
 
 @interface GateWayViewController : BaseViewController
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-
-+ (GateWayViewController *)viewController;
++ (instancetype)viewController;
 
 @end

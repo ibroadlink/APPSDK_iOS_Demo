@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EndpointDetailController : BaseViewController
 
-+ (EndpointDetailController *)viewController;
++ (instancetype)viewController;
 
 @property (nonatomic, assign) BOOL isNeedDeviceControl;
 @property (nonatomic, strong) BLSEndpointInfo *endpoint;

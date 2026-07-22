@@ -8,8 +8,8 @@
 
 #import "BaseViewController.h"
 
-@interface DeviceListViewController : BaseViewController <UITableViewDelegate, UITableViewDataSource,BLControllerDelegate>
+@interface DeviceListViewController : BaseViewController <UITableViewDelegate, UITableViewDataSource, BLControllerDelegate>
 
-@property (weak, nonatomic) IBOutlet UITableView *deviceListTableView;
++ (instancetype)viewController;
 
 @end

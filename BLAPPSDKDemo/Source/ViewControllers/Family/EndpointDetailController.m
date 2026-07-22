@@ -8,40 +8,90 @@
 
 #import "EndpointDetailController.h"
 #import "OperateViewController.h"
-
 #import "BLDeviceService.h"
 #import "BLStatusBar.h"
-#import "Tools.h"
+#import "BLTheme.h"
+#import <BLSFamily/BLSFamily.h>
+#import <Masonry/Masonry.h>
 
 @interface EndpointDetailController () <UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextField *nameField;
-@property (weak, nonatomic) IBOutlet UILabel *detailInfoLabel;
-@property (weak, nonatomic) IBOutlet UIButton *deviceControlBtn;
-
-- (IBAction)buttonClick:(UIButton *)sender;
-
+@property (nonatomic, strong) UITextField *nameField;
+@property (nonatomic, strong) UITextView *detailTextView;
+@property (nonatomic, strong) UIButton *deviceControlBtn;
 
 @end
 
 @implementation EndpointDetailController
 
-+ (EndpointDetailController *)viewController {
-    return [Tools viewControllerFromMainStoryboard:[self class]];
++ (instancetype)viewController {
+    return [[self alloc] init];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    self.deviceControlBtn.hidden = !self.isNeedDeviceControl;
-    self.detailInfoLabel.text = [self.endpoint BLS_modelToJSONString];
-    self.nameField.text = self.endpoint.friendlyName;
-    self.nameField.delegate = self;
+    self.title = @"Endpoint Detail";
+    self.view.backgroundColor = [BLTheme backgroundColor];
+    [self buildUI];
+    [self bindData];
+
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+    tap.cancelsTouchesInView = NO;
+    [self.view addGestureRecognizer:tap];
 }
 
+- (void)buildUI {
+    self.nameField = [BLTheme makeTextFieldWithPlaceholder:@"Friendly name"];
+    self.nameField.delegate = self;
 
-- (IBAction)buttonClick:(UIButton *)sender {
-    
+    UILabel *detailTitle = [[UILabel alloc] init];
+    detailTitle.text = @"Endpoint Info";
+    detailTitle.font = [UIFont systemFontOfSize:13 weight:UIFontWeightSemibold];
+    detailTitle.textColor = [BLTheme subtitleColor];
+
+    self.detailTextView = [[UITextView alloc] init];
+    [BLTheme styleResultTextView:self.detailTextView];
+    self.detailTextView.editable = NO;
+    self.detailTextView.selectable = YES;
+    [self.detailTextView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(180);
+    }];
+
+    self.deviceControlBtn = [BLTheme makeSecondaryButtonWithTitle:@"Device Control"
+                                                          target:self
+                                                          action:@selector(buttonClick:)];
+    self.deviceControlBtn.tag = 100;
+
+    UIButton *saveButton = [BLTheme makePrimaryButtonWithTitle:@"Save / Modify"
+                                                        target:self
+                                                        action:@selector(buttonClick:)];
+    saveButton.tag = 101;
+
+    UIButton *deleteButton = [BLTheme makeSecondaryButtonWithTitle:@"Delete"
+                                                            target:self
+                                                            action:@selector(buttonClick:)];
+    deleteButton.tag = 102;
+    [BLTheme styleDangerOutlineButton:deleteButton];
+
+    [BLTheme installAuthFormOnView:self.view
+                             title:@"Endpoint"
+                          subtitle:@"View details, rename, or remove this family device"
+                         formViews:@[self.nameField, detailTitle, self.detailTextView, self.deviceControlBtn, saveButton, deleteButton]
+                     primaryButton:nil
+                       footerViews:nil];
+}
+
+- (void)bindData {
+    self.deviceControlBtn.hidden = !self.isNeedDeviceControl;
+    self.detailTextView.text = [self.endpoint BLS_modelToJSONString];
+    self.nameField.text = self.endpoint.friendlyName;
+}
+
+- (void)dismissKeyboard {
+    [self.view endEditing:YES];
+}
+
+- (void)buttonClick:(UIButton *)sender {
     switch (sender.tag) {
         case 100:
             [self showDeviceControlView];
@@ -55,33 +105,31 @@
         default:
             break;
     }
-    
 }
 
 - (void)showDeviceControlView {
     [BLDeviceService sharedDeviceService].selectDevice = [self.endpoint toDNADevice];
-    [self performSegueWithIdentifier:@"OperateView" sender:nil];
+    OperateViewController *vc = [OperateViewController viewController];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)ModifyEndPointInfo {
-    
     NSString *name = self.nameField.text;
     if ([BLCommonTools isEmpty:name]) {
-        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Please input new name"]];
-         return;
+        [BLStatusBar showTipMessageWithStatus:@"Please input new name"];
+        return;
     }
-    
+
     NSDictionary *dic = @{
-                          @"attributeName": @"friendlyName",
-                          @"attributeValue": name
-                          };
+        @"attributeName": @"friendlyName",
+        @"attributeValue": name
+    };
     NSArray *attributes = @[dic];
-    
+
     BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     [self showIndicatorOnWindow];
 
     [manager modifyEndpoint:self.endpoint.endpointId attributes:attributes completionHandler:^(BLBaseResult * _Nonnull result) {
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideIndicatorOnWindow];
             if ([result succeed]) {
@@ -90,12 +138,10 @@
                 [self showErrorCode:result.status msg:result.msg];
             }
         });
-        
     }];
 }
 
 - (void)deleteEndpoint {
-    
     BLSFamilyManager *manager = [BLSFamilyManager sharedFamily];
     [self showIndicatorOnWindow];
 
@@ -108,7 +154,6 @@
             BLDNADevice *device = [self.endpoint toDNADevice];
 
             if (![BLCommonTools isEmpty:device.pDid]) {
-                //子设备需要从网关里删除信息
                 [[BLLet sharedLet].controller subDevDelWithDid:device.pDid subDevDid:device.did];
             }
             [[BLDeviceService sharedDeviceService] removeDevice:device.did];

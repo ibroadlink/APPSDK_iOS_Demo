@@ -38,8 +38,6 @@
 		3A7C339A22EEEB7D0021322F /* BLTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7C339622EEEB7D0021322F /* BLTemplate.m */; };
 		3A7C339B22EEEB7D0021322F /* LinkageTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7C339822EEEB7D0021322F /* LinkageTemplate.m */; };
 		3A9B60E02100377D0048540B /* JoinFamilyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9B60DF2100377D0048540B /* JoinFamilyViewController.m */; };
-		3AAC2A2A20EB250D00031DEC /* BLUserSaftyInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC2A2920EB250D00031DEC /* BLUserSaftyInfoCell.m */; };
-		3AAC2A2D20EB252200031DEC /* BLUserLogoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC2A2C20EB252200031DEC /* BLUserLogoutCell.m */; };
 		3AB87FC822154DF200B97D38 /* FastconViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB87FC722154DF200B97D38 /* FastconViewController.m */; };
 		3ACDE3C120EC9CF00016461D /* ModifyPhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACDE3C020EC9CF00016461D /* ModifyPhoneViewController.m */; };
 		3AD8B31D22FD22EF0046A9BF /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD8B31C22FD22EF0046A9BF /* CoreLocation.framework */; };
@@ -50,7 +48,6 @@
 		3AEF737C222670BD00F2376A /* BLAddDeviceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF737B222670BD00F2376A /* BLAddDeviceListViewController.m */; };
 		3AF900C4227008BF00F57E9B /* BLSMediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF900C3227008BF00F57E9B /* BLSMediator.m */; };
 		3AF9B6382317A0EC00E8A6D9 /* GroupDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9B6372317A0EC00E8A6D9 /* GroupDeviceViewController.m */; };
-		3AFC6D6F20EB59E5003404E6 /* BLUserHeadImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC6D6E20EB59E5003404E6 /* BLUserHeadImageCell.m */; };
 		3AFC6D7220EB5DDC003404E6 /* BLSystemImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC6D7020EB5DDB003404E6 /* BLSystemImage.m */; };
 		3AFC6D7520EB6063003404E6 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC6D7420EB6063003404E6 /* Tools.m */; };
 		3AFC6D7820EB7278003404E6 /* UIImage+BDL.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC6D7720EB7278003404E6 /* UIImage+BDL.m */; };
@@ -88,7 +85,6 @@
 		70503DBA1FDBE4D6002D3371 /* BLUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D971FDBE4D5002D3371 /* BLUserDefaults.m */; };
 		70503DBB1FDBE4D6002D3371 /* DeviceDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D981FDBE4D5002D3371 /* DeviceDB.m */; };
 		70503DBC1FDBE4D6002D3371 /* BLStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 70503D9A1FDBE4D5002D3371 /* BLStatusBar.m */; };
-		705B095F1D4F1C5B00805109 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 705B095D1D4F1C5B00805109 /* Main.storyboard */; };
 		705B09611D4F1C5B00805109 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 705B09601D4F1C5B00805109 /* Assets.xcassets */; };
 		705B09641D4F1C5B00805109 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 705B09621D4F1C5B00805109 /* LaunchScreen.storyboard */; };
 		70DDAEF51DC73D4A005E4278 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 70DDAEE91DC73D4A005E4278 /* AppDelegate.m */; };
@@ -180,11 +176,6 @@
 		3A7C339922EEEB7D0021322F /* BLTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLTemplate.h; sourceTree = "<group>"; };
 		3A9B60DE2100377C0048540B /* JoinFamilyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoinFamilyViewController.h; sourceTree = "<group>"; };
 		3A9B60DF2100377D0048540B /* JoinFamilyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JoinFamilyViewController.m; sourceTree = "<group>"; };
-		3AAC2A2520EB24C600031DEC /* BLUserHeadImageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUserHeadImageCell.h; sourceTree = "<group>"; };
-		3AAC2A2820EB250D00031DEC /* BLUserSaftyInfoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUserSaftyInfoCell.h; sourceTree = "<group>"; };
-		3AAC2A2920EB250D00031DEC /* BLUserSaftyInfoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLUserSaftyInfoCell.m; sourceTree = "<group>"; };
-		3AAC2A2B20EB252200031DEC /* BLUserLogoutCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUserLogoutCell.h; sourceTree = "<group>"; };
-		3AAC2A2C20EB252200031DEC /* BLUserLogoutCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLUserLogoutCell.m; sourceTree = "<group>"; };
 		3AB87FC622154DF200B97D38 /* FastconViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FastconViewController.h; sourceTree = "<group>"; };
 		3AB87FC722154DF200B97D38 /* FastconViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FastconViewController.m; sourceTree = "<group>"; };
 		3ACDE3BF20EC9CF00016461D /* ModifyPhoneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyPhoneViewController.h; sourceTree = "<group>"; };
@@ -204,7 +195,6 @@
 		3AF900C3227008BF00F57E9B /* BLSMediator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLSMediator.m; sourceTree = "<group>"; };
 		3AF9B6362317A0EC00E8A6D9 /* GroupDeviceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupDeviceViewController.h; sourceTree = "<group>"; };
 		3AF9B6372317A0EC00E8A6D9 /* GroupDeviceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupDeviceViewController.m; sourceTree = "<group>"; };
-		3AFC6D6E20EB59E5003404E6 /* BLUserHeadImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUserHeadImageCell.m; sourceTree = "<group>"; };
 		3AFC6D7020EB5DDB003404E6 /* BLSystemImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLSystemImage.m; sourceTree = "<group>"; };
 		3AFC6D7120EB5DDC003404E6 /* BLSystemImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLSystemImage.h; sourceTree = "<group>"; };
 		3AFC6D7320EB6063003404E6 /* Tools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
@@ -283,7 +273,6 @@
 		70503D9B1FDBE4D5002D3371 /* DeviceDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceDB.h; sourceTree = "<group>"; };
 		70503D9C1FDBE4D5002D3371 /* AppMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppMacro.h; sourceTree = "<group>"; };
 		705B09511D4F1C5B00805109 /* BLAPPSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BLAPPSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		705B095E1D4F1C5B00805109 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		705B09601D4F1C5B00805109 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		705B09631D4F1C5B00805109 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		705B09651D4F1C5B00805109 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -372,7 +361,6 @@
 		02B42DA320B2A14B00700177 /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				3AAC2A2E20EB597C00031DEC /* UserCell */,
 				70503D851FDBE4D5002D3371 /* CodeLoginViewController.h */,
 				70503D6B1FDBE4D5002D3371 /* CodeLoginViewController.m */,
 				70503D7A1FDBE4D5002D3371 /* LoginByOauthViewController.h */,
@@ -592,19 +580,6 @@
 			path = Linkage;
 			sourceTree = "<group>";
 		};
-		3AAC2A2E20EB597C00031DEC /* UserCell */ = {
-			isa = PBXGroup;
-			children = (
-				3AAC2A2520EB24C600031DEC /* BLUserHeadImageCell.h */,
-				3AFC6D6E20EB59E5003404E6 /* BLUserHeadImageCell.m */,
-				3AAC2A2820EB250D00031DEC /* BLUserSaftyInfoCell.h */,
-				3AAC2A2920EB250D00031DEC /* BLUserSaftyInfoCell.m */,
-				3AAC2A2B20EB252200031DEC /* BLUserLogoutCell.h */,
-				3AAC2A2C20EB252200031DEC /* BLUserLogoutCell.m */,
-			);
-			path = UserCell;
-			sourceTree = "<group>";
-		};
 		70503D4F1FDBE37A002D3371 /* CordovaPlugin */ = {
 			isa = PBXGroup;
 			children = (
@@ -712,7 +687,6 @@
 		705B09541D4F1C5B00805109 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				705B095D1D4F1C5B00805109 /* Main.storyboard */,
 				705B09601D4F1C5B00805109 /* Assets.xcassets */,
 				705B09621D4F1C5B00805109 /* LaunchScreen.storyboard */,
 				705B09651D4F1C5B00805109 /* Info.plist */,
@@ -925,7 +899,6 @@
 				705B09611D4F1C5B00805109 /* Assets.xcassets in Resources */,
 				02B89AD72047A540004E0088 /* index.html in Resources */,
 				02B89AD42047A540004E0088 /* cordova_plugins.js in Resources */,
-				705B095F1D4F1C5B00805109 /* Main.storyboard in Resources */,
 				02B89AD82047A540004E0088 /* index.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -992,18 +965,15 @@
 				70503DAA1FDBE4D5002D3371 /* MyDeviceListViewController.m in Sources */,
 				3AEF737322253BDE00F2376A /* BLDeviceConfigIntroduction.m in Sources */,
 				3A44F4B42225146300936AFF /* BLProductCategoryModel.m in Sources */,
-				3AFC6D6F20EB59E5003404E6 /* BLUserHeadImageCell.m in Sources */,
 				70503DBA1FDBE4D6002D3371 /* BLUserDefaults.m in Sources */,
 				70503DA71FDBE4D5002D3371 /* OperateViewController.m in Sources */,
 				025A168420E33C9700D75DAB /* RetrievePasswordViewController.m in Sources */,
 				70503D9E1FDBE4D5002D3371 /* FamilyListViewController.m in Sources */,
 				70503DA31FDBE4D5002D3371 /* AKeyToIdentifyViewController.m in Sources */,
-				3AAC2A2A20EB250D00031DEC /* BLUserSaftyInfoCell.m in Sources */,
 				70503DA11FDBE4D5002D3371 /* BaseViewController.m in Sources */,
 				8430DCC32228CDB10048DCA7 /* EndpointDetailController.m in Sources */,
 				3A1C7A9622816026007E120A /* QRCodeViewController.m in Sources */,
 				70503DB01FDBE4D6002D3371 /* ConfigureViewController.m in Sources */,
-				3AAC2A2D20EB252200031DEC /* BLUserLogoutCell.m in Sources */,
 				70503DA51FDBE4D5002D3371 /* CodeLoginViewController.m in Sources */,
 				84F84207224A068A00D60C76 /* TVBoxAreaSelectController.m in Sources */,
 				846CA9302248CDB900884421 /* ModifyEmailViewController.m in Sources */,
@@ -1092,14 +1062,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		705B095D1D4F1C5B00805109 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				705B095E1D4F1C5B00805109 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		705B09621D4F1C5B00805109 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

@@ -11,6 +11,8 @@
 
 @interface FamilyDetailViewController : BaseViewController
 
-@property (nonatomic, strong)BLSFamilyInfo *familyInfo;
++ (instancetype)viewController;
+
+@property (nonatomic, strong) BLSFamilyInfo *familyInfo;
 
 @end

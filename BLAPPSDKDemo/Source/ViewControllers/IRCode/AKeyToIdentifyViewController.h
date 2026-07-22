@@ -14,4 +14,6 @@
 @property (nonatomic, strong) NSString *randkey;
 @property (nonatomic, strong) NSString *savePath;
 
++ (instancetype)viewController;
+
 @end

@@ -6,11 +6,13 @@
 //  Copyright © 2019 BroadLink. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "BaseViewController.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ShareFamilyViewController : BaseViewController
+
++ (instancetype)viewController;
 
 @end
 

@@ -44,6 +44,25 @@ NS_ASSUME_NONNULL_BEGIN
                        target:(id)target
                        action:(SEL)action;
 
+#pragma mark - Account form helpers
+
+/// 隐藏 Storyboard 原有子视图，避免与代码布局冲突
++ (void)hideStoryboardSubviewsIn:(UIView *)hostView;
+
++ (UITextField *)makeTextFieldWithPlaceholder:(NSString *)placeholder;
++ (UITextField *)makePasswordFieldWithPlaceholder:(NSString *)placeholder;
++ (UIButton *)makePrimaryButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action;
++ (UIButton *)makeSecondaryButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action;
++ (UIButton *)makeLinkButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action;
+
+/// 账号表单页：大标题 + 副标题 + 表单区 + 主按钮 + 底部链接
++ (void)installAuthFormOnView:(UIView *)hostView
+                        title:(NSString *)title
+                     subtitle:(nullable NSString *)subtitle
+                   formViews:(NSArray<UIView *> *)formViews
+               primaryButton:(nullable UIButton *)primaryButton
+                 footerViews:(nullable NSArray<UIView *> *)footerViews;
+
 + (UIColor *)colorWithHex:(NSUInteger)hex;
 + (UIImage *)imageWithColor:(UIColor *)color;
 

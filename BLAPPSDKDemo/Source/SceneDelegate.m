@@ -5,6 +5,8 @@
 
 #import "SceneDelegate.h"
 #import "AppDelegate.h"
+#import "MainViewController.h"
+#import "BLTheme.h"
 
 @implementation SceneDelegate
 
@@ -13,19 +15,18 @@
         return;
     }
 
-    // Main.storyboard 已在 Info.plist 的 UISceneStoryboardFile 中配置，系统会创建 window。
-    // 这里同步给 AppDelegate，兼容旧代码里对 window 的访问。
+    UIWindowScene *windowScene = (UIWindowScene *)scene;
+    self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
+
+    MainViewController *mainVC = [MainViewController viewController];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:mainVC];
+    nav.navigationBar.prefersLargeTitles = NO;
+    self.window.rootViewController = nav;
+    self.window.backgroundColor = [BLTheme backgroundColor];
+    [self.window makeKeyAndVisible];
+
     AppDelegate *appDelegate = (AppDelegate *)UIApplication.sharedApplication.delegate;
-    if (self.window) {
-        appDelegate.window = self.window;
-    } else {
-        UIWindowScene *windowScene = (UIWindowScene *)scene;
-        self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        self.window.rootViewController = [storyboard instantiateInitialViewController];
-        [self.window makeKeyAndVisible];
-        appDelegate.window = self.window;
-    }
+    appDelegate.window = self.window;
 }
 
 - (void)sceneDidDisconnect:(UIScene *)scene {

@@ -2,60 +2,68 @@
 //  LoginsTableViewController.m
 //  BLAPPSDKDemo
 //
-//  Created by 白洪坤 on 2017/8/4.
-//  Copyright © 2017年 BroadLink. All rights reserved.
-//
 
 #import "LoginsTableViewController.h"
+#import "LoginViewController.h"
+#import "CodeLoginViewController.h"
+#import "RegisterViewController.h"
+#import "LoginByOauthViewController.h"
+#import "UserViewController.h"
 #import "BLTheme.h"
-#import "Tools.h"
 
 @implementation LoginsTableViewController
+
++ (instancetype)viewController {
+    return [[self alloc] init];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Account";
-    self.view.backgroundColor = [BLTheme backgroundColor];
+
     NSArray *items = @[
-        @{@"title": @"Password Login", @"desc": @"Sign in with username & password", @"symbol": @"lock.fill", @"tag": @100},
-        @{@"title": @"Code Login", @"desc": @"Phone / email verification code", @"symbol": @"message.fill", @"tag": @101},
-        @{@"title": @"Register", @"desc": @"Create a new BroadLink account", @"symbol": @"person.badge.plus", @"tag": @102},
-        @{@"title": @"Account Info", @"desc": @"View profile after login", @"symbol": @"person.crop.circle", @"tag": @103},
+        @{@"title": @"Password Login",
+          @"desc": @"Sign in with phone / email & password",
+          @"symbol": @"lock.fill",
+          @"tag": @100},
+        @{@"title": @"Code Login",
+          @"desc": @"One-tap sign in with verification code",
+          @"symbol": @"message.fill",
+          @"tag": @101},
+        @{@"title": @"Create Account",
+          @"desc": @"Register a new BroadLink account",
+          @"symbol": @"person.badge.plus",
+          @"tag": @102},
+        @{@"title": @"OAuth Login",
+          @"desc": @"Sign in via OAuth authorization page",
+          @"symbol": @"globe",
+          @"tag": @104},
+        @{@"title": @"My Profile",
+          @"desc": @"View and manage account details",
+          @"symbol": @"person.crop.circle",
+          @"tag": @103},
     ];
     [BLTheme installMenuListOnView:self.view
                              title:@"Account"
-                          subtitle:@"Choose how you want to sign in"
+                          subtitle:@"Sign in to unlock family, devices and more"
                              items:items
                             target:self
                             action:@selector(menuAction:)];
 }
 
-+ (instancetype)viewController {
-    return [Tools viewControllerFromMainStoryboard:self];
-}
-
 - (void)menuAction:(UIButton *)sender {
+    UIViewController *vc = nil;
     switch (sender.tag) {
-        case 100:
-            [self performSegueWithIdentifier:@"passwordLogin" sender:nil];
-            break;
-        case 101:
-            [self performSegueWithIdentifier:@"codeLogin" sender:nil];
-            break;
-        case 102:
-            [self performSegueWithIdentifier:@"RegisterView" sender:nil];
-            break;
-        case 103:
-            [self performSegueWithIdentifier:@"ListMainView" sender:nil];
-            break;
-        default:
-            break;
+        case 100: vc = [LoginViewController viewController]; break;
+        case 101: vc = [CodeLoginViewController viewController]; break;
+        case 102: vc = [RegisterViewController viewController]; break;
+        case 103: vc = [UserViewController viewController]; break;
+        case 104: vc = [LoginByOauthViewController viewController]; break;
+        default: break;
+    }
+    if (vc) {
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
-
-- (IBAction)passwordLogin:(id)sender {}
-- (IBAction)codeLogin:(id)sender {}
-- (IBAction)accountRegister:(id)sender {}
-- (IBAction)accountInfo:(id)sender {}
 
 @end

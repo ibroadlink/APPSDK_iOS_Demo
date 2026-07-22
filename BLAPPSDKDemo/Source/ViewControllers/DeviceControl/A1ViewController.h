@@ -10,4 +10,6 @@
 
 @interface A1ViewController : BaseViewController
 
++ (instancetype)viewController;
+
 @end

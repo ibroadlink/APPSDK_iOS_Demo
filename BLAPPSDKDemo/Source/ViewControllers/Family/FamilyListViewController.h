@@ -12,8 +12,4 @@
 
 + (instancetype)viewController;
 
-@property (weak, nonatomic) IBOutlet UITableView *familyListTableView;
-
-- (IBAction)addFamilyBtnClick:(UIBarButtonItem *)sender;
-
 @end

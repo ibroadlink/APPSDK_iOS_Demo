@@ -7,33 +7,40 @@
 //
 
 #import "ConfigureViewController.h"
+#import "APConfigTableViewController.h"
 #import "BLStatusBar.h"
-#import "AppDelegate.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import <NetworkExtension/NetworkExtension.h>
-#import "APConfigTableViewController.h"
 #import "BLTheme.h"
+#import <Masonry/Masonry.h>
 
 @interface ConfigureViewController ()
+
+@property (nonatomic, strong) UITextField *ssidNameField;
+@property (nonatomic, strong) UITextField *passwordField;
+@property (nonatomic, strong) UITextView *resultText;
+@property (nonatomic, strong) UIButton *smartConfig2Button;
+@property (nonatomic, strong) UIButton *smartConfig3Button;
+@property (nonatomic, strong) UIButton *apConfigButton;
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, assign) BOOL didLoadSSIDOnce;
 @property (nonatomic, assign) BOOL didScheduleSSIDLoad;
 @property (nonatomic, assign) BOOL didPrewarmKeyboard;
-@property (nonatomic, assign) BOOL didFixResultLayout;
 
 @end
 
-@implementation ConfigureViewController 
+@implementation ConfigureViewController
+
++ (instancetype)viewController {
+    return [[self alloc] init];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.ssidNameField.delegate = self;
-    self.passwordField.delegate = self;
-    [self applyThemeStyle];
-    [self fixResultTextLayoutForKeyboard];
+    self.title = @"Network Config";
+    [self buildUI];
     [self setupDismissKeyboardGesture];
-    // 定位/读 SSID 延后，避免与首次点击输入框、拉起键盘抢主线程
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -42,79 +49,82 @@
     [self prewarmKeyboardIfNeeded];
 }
 
-- (void)applyThemeStyle {
-    self.view.backgroundColor = [BLTheme backgroundColor];
-    [self styleConfigTextField:self.ssidNameField];
-    [self styleConfigTextField:self.passwordField];
-
-    // 结果区保持轻量，避免 TextKit 复杂排版参与键盘动画
-    self.resultText.backgroundColor = [BLTheme inputBackgroundColor];
-    self.resultText.textColor = [BLTheme titleColor];
-    self.resultText.font = [UIFont systemFontOfSize:13];
-    self.resultText.editable = NO;
-    self.resultText.selectable = NO;
-    self.resultText.scrollEnabled = YES;
-    self.resultText.layer.cornerRadius = 8;
-    self.resultText.layer.masksToBounds = YES;
-
-    self.ssidNameField.placeholder = self.ssidNameField.placeholder.length ? self.ssidNameField.placeholder : @"Wi-Fi SSID";
-    self.passwordField.placeholder = self.passwordField.placeholder.length ? self.passwordField.placeholder : @"Wi-Fi Password";
-    [self disablePasswordSavePromptForFields];
-
-    [BLTheme styleButtonsInView:self.view];
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [[BLLet sharedLet].controller deviceConfigCancel];
 }
 
-- (void)disablePasswordSavePromptForFields {
-    // 普通明文输入，避免密码框样式和「储存密码」提示
+- (void)buildUI {
+    self.ssidNameField = [BLTheme makeTextFieldWithPlaceholder:@"Wi-Fi SSID"];
+    self.ssidNameField.delegate = self;
+    self.ssidNameField.returnKeyType = UIReturnKeyNext;
+    [self tuneTextField:self.ssidNameField];
+
+    self.passwordField = [BLTheme makeTextFieldWithPlaceholder:@"Wi-Fi Password"];
+    self.passwordField.delegate = self;
+    self.passwordField.returnKeyType = UIReturnKeyDone;
+    [self tuneTextField:self.passwordField];
+    // 明文输入，避免系统「储存密码」提示
     self.passwordField.secureTextEntry = NO;
     self.ssidNameField.textContentType = UITextContentTypeNickname;
     self.passwordField.textContentType = UITextContentTypeNickname;
     if (@available(iOS 12.0, *)) {
         self.passwordField.passwordRules = nil;
     }
+
+    self.smartConfig2Button = [BLTheme makePrimaryButtonWithTitle:@"SmartConfig v2"
+                                                           target:self
+                                                           action:@selector(startConfigureButtonClick:)];
+    self.smartConfig2Button.tag = 101;
+
+    self.smartConfig3Button = [BLTheme makePrimaryButtonWithTitle:@"SmartConfig v3"
+                                                           target:self
+                                                           action:@selector(startConfigureButtonClick:)];
+    self.smartConfig3Button.tag = 102;
+
+    self.apConfigButton = [BLTheme makeSecondaryButtonWithTitle:@"AP Config"
+                                                         target:self
+                                                         action:@selector(startConfigureButtonClick:)];
+    self.apConfigButton.tag = 103;
+    [self.apConfigButton mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(50);
+    }];
+
+    UIStackView *configRow = [[UIStackView alloc] initWithArrangedSubviews:@[self.smartConfig2Button, self.smartConfig3Button]];
+    configRow.axis = UILayoutConstraintAxisHorizontal;
+    configRow.spacing = 12;
+    configRow.distribution = UIStackViewDistributionFillEqually;
+
+    UILabel *resultTitle = [[UILabel alloc] init];
+    resultTitle.text = @"Result";
+    resultTitle.font = [UIFont systemFontOfSize:13 weight:UIFontWeightSemibold];
+    resultTitle.textColor = [BLTheme subtitleColor];
+
+    self.resultText = [[UITextView alloc] init];
+    [BLTheme styleResultTextView:self.resultText];
+    self.resultText.selectable = NO;
+    self.resultText.text = @"Configure result will appear here.";
+    [self.resultText mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(140);
+    }];
+
+    [BLTheme installAuthFormOnView:self.view
+                             title:@"Wi-Fi Setup"
+                          subtitle:@"Put the device into pairing mode, then start configuring"
+                         formViews:@[self.ssidNameField, self.passwordField, configRow, self.apConfigButton, resultTitle, self.resultText]
+                     primaryButton:nil
+                       footerViews:nil];
 }
 
-- (void)styleConfigTextField:(UITextField *)textField {
-    if (!textField) { return; }
-    textField.borderStyle = UITextBorderStyleRoundedRect;
-    textField.backgroundColor = [UIColor whiteColor];
-    textField.textColor = [BLTheme titleColor];
-    textField.font = [UIFont systemFontOfSize:15];
-    textField.layer.cornerRadius = 0;
-    textField.layer.masksToBounds = NO;
-    textField.leftView = nil;
-    textField.leftViewMode = UITextFieldViewModeNever;
-    textField.rightView = nil;
-    textField.rightViewMode = UITextFieldViewModeNever;
-    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+- (void)tuneTextField:(UITextField *)textField {
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     textField.spellCheckingType = UITextSpellCheckingTypeNo;
     textField.smartDashesType = UITextSmartDashesTypeNo;
     textField.smartQuotesType = UITextSmartQuotesTypeNo;
     textField.smartInsertDeleteType = UITextSmartInsertDeleteTypeNo;
-    // 减少键盘上方快捷栏 / Emoji Search 相关 RTI 开销
     textField.inputAssistantItem.leadingBarButtonGroups = @[];
     textField.inputAssistantItem.trailingBarButtonGroups = @[];
-}
-
-/// Storyboard 把 resultText 顶到底部安全区，键盘弹出时会整页重算导致首点卡顿
-- (void)fixResultTextLayoutForKeyboard {
-    if (self.didFixResultLayout || !self.resultText) { return; }
-    self.didFixResultLayout = YES;
-
-    UITextView *result = self.resultText;
-    NSMutableArray<NSLayoutConstraint *> *toDeactivate = [NSMutableArray array];
-    for (NSLayoutConstraint *constraint in self.view.constraints) {
-        BOOL involvesResult = (constraint.firstItem == result || constraint.secondItem == result);
-        if (!involvesResult) { continue; }
-        if (constraint.firstAttribute == NSLayoutAttributeBottom ||
-            constraint.secondAttribute == NSLayoutAttributeBottom) {
-            [toDeactivate addObject:constraint];
-        }
-    }
-    [NSLayoutConstraint deactivateConstraints:toDeactivate];
-    [result.heightAnchor constraintEqualToConstant:160].active = YES;
 }
 
 - (void)setupDismissKeyboardGesture {
@@ -139,7 +149,6 @@
     });
 }
 
-/// 后台预热键盘，降低「第一次点击输入框」的系统冷启动耗时
 - (void)prewarmKeyboardIfNeeded {
     if (self.didPrewarmKeyboard) { return; }
     self.didPrewarmKeyboard = YES;
@@ -164,67 +173,56 @@
     });
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    [[BLLet sharedLet].controller deviceConfigCancel];
-}
-
-- (IBAction)startConfigureButtonClick:(UIButton *)sender {
+- (void)startConfigureButtonClick:(UIButton *)sender {
     [self.view endEditing:YES];
-    
+
     NSString *ssidName = self.ssidNameField.text;
     NSString *password = self.passwordField.text;
 
     if (sender.tag == 101) {
         [self showIndicatorOnWindowWithMessage:@"Configuring..."];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSDate *date = [NSDate date];
-            NSLog(@"====Start Config===");
             BLDeviceConfigResult *result = [[BLLet sharedLet].controller deviceConfig:ssidName password:password version:2 timeout:60];
-            NSLog(@"====Config over! Spends(%fs)", [date timeIntervalSinceNow]);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self hideIndicatorOnWindow];
-                if ([result succeed]) {
-                    [BLStatusBar showTipMessageWithStatus:@"Configure Wi-Fi success"];
-                    self.resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@) Did(%@) Devaddr(%@) Mac(%@)", (long)result.getError, result.getMsg, result.getDid, result.getDevaddr, result.getMac];
-                } else {
-                    [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
-                    self.resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-                }
+                [self presentConfigResult:result];
             });
         });
     } else if (sender.tag == 102) {
         [self showIndicatorOnWindowWithMessage:@"Configuring..."];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSDate *date = [NSDate date];
-            NSLog(@"====Start Config===");
-            BLAPConfigResult *apconfigResult = [[BLLet sharedLet].controller deviceAPConfig:@"12345678901234567890123456789012" password:password type:3];
+            [[BLLet sharedLet].controller deviceAPConfig:@"12345678901234567890123456789012" password:password type:3];
             BLDeviceConfigResult *result = [[BLLet sharedLet].controller deviceConfig:ssidName password:password version:3 timeout:60];
-            NSLog(@"====Config over! Spends(%fs)", [date timeIntervalSinceNow]);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self hideIndicatorOnWindow];
-                if ([result succeed]) {
-                    [BLStatusBar showTipMessageWithStatus:@"Configure Wi-Fi success"];
-                    self.resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@) Did(%@) Devaddr(%@) Mac(%@)", (long)result.getError, result.getMsg, result.getDid, result.getDevaddr, result.getMac];
-                } else {
-                    [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
-                    self.resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
-                }
+                [self presentConfigResult:result];
             });
         });
     } else if (sender.tag == 103) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Make sure you have connect to the device's Ap (maybe like \"BroadlinkProv\")" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-            [self performSegueWithIdentifier:@"APconfigView" sender:nil];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Connect to device AP"
+                                                                                 message:@"Make sure you are connected to the device hotspot (e.g. BroadlinkProv), then continue."
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            APConfigTableViewController *vc = [APConfigTableViewController viewController];
+            [self.navigationController pushViewController:vc animated:YES];
         }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:NULL]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
         [self presentViewController:alertController animated:YES completion:nil];
     }
 }
+
+- (void)presentConfigResult:(BLDeviceConfigResult *)result {
+    if ([result succeed]) {
+        [BLStatusBar showTipMessageWithStatus:@"Configure Wi-Fi success"];
+        self.resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)\nDid(%@)\nDevaddr(%@)\nMac(%@)",
+                                (long)result.getError, result.getMsg, result.getDid, result.getDevaddr, result.getMac];
+    } else {
+        [BLStatusBar showTipMessageWithStatus:[NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg]];
+        self.resultText.text = [NSString stringWithFormat:@"Code(%ld) Msg(%@)", (long)result.getError, result.getMsg];
+    }
+}
+
+#pragma mark - SSID
 
 - (void)requestLocationIfNeededAndLoadSSID {
     if (!self.locationManager) {
@@ -244,7 +242,7 @@
         return;
     }
 
-    NSLog(@"无法读取 Wi-Fi SSID：定位权限未开启（status=%d）。请在系统设置中允许定位。", status);
+    NSLog(@"无法读取 Wi-Fi SSID：定位权限未开启（status=%d）", status);
 }
 
 - (void)refreshSSIDIfAuthorized {
@@ -294,49 +292,36 @@
 - (NSString *)getCurrentSSIDInfo {
     NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
     NSDictionary *info = nil;
-
     for (NSString *ifnam in ifs) {
         info = (__bridge_transfer id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
         if (info.count > 0) {
             break;
         }
     }
-
     return info[@"SSID"];
 }
 
 #pragma mark - CLLocationManagerDelegate
+
 - (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager API_AVAILABLE(ios(14.0)) {
-    if (self.ssidNameField.isFirstResponder || self.passwordField.isFirstResponder) {
-        return;
-    }
+    if (self.ssidNameField.isFirstResponder || self.passwordField.isFirstResponder) { return; }
     [self refreshSSIDIfAuthorized];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-    if (@available(iOS 14.0, *)) {
-        return;
-    }
-    if (self.ssidNameField.isFirstResponder || self.passwordField.isFirstResponder) {
-        return;
-    }
+    if (@available(iOS 14.0, *)) { return; }
+    if (self.ssidNameField.isFirstResponder || self.passwordField.isFirstResponder) { return; }
     [self refreshSSIDIfAuthorized];
 }
 
-#pragma mark - text field delegate
+#pragma mark - UITextFieldDelegate
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField == self.ssidNameField) {
         [self.passwordField becomeFirstResponder];
     } else {
         [textField resignFirstResponder];
     }
-    return YES;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-}
-
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     return YES;
 }
 

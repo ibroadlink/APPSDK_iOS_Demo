@@ -6,11 +6,10 @@
 //  Copyright © 2017年 BroadLink. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 
 @interface SPViewController : BaseViewController
 
-@property (weak, nonatomic) IBOutlet UIButton *SPswitchtxt;
++ (instancetype)viewController;
 
 @end

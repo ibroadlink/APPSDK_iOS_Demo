@@ -9,7 +9,9 @@
 #import "GeneralTimerControlView.h"
 #import "BLDeviceService.h"
 #import "BLStatusBar.h"
+#import "BLTheme.h"
 #import "Tools.h"
+#import <Masonry/Masonry.h>
 
 typedef NS_ENUM(NSInteger, BLTimerAct) {
     BLTimerActAdd = 0,
@@ -23,7 +25,7 @@ typedef NS_ENUM(NSInteger, BLTimerAct) {
 
 @interface GeneralTimerControlView () <UITableViewDelegate, UITableViewDataSource>
 
-@property (weak, nonatomic) IBOutlet UITableView *timerList;
+@property (nonatomic, strong) UITableView *timerList;
 @property (strong, nonatomic) NSMutableArray *timeArray;
 @property (assign, nonatomic) NSInteger nextIndex;
 @property (strong, nonatomic) BLDNADevice *device;
@@ -33,22 +35,47 @@ typedef NS_ENUM(NSInteger, BLTimerAct) {
 @implementation GeneralTimerControlView
 
 + (instancetype)viewController {
-    return [Tools viewControllerFromMainStoryboard:[self class]];
+    return [[self alloc] init];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"Timer Tasks";
     self.device = [BLDeviceService sharedDeviceService].selectDevice;
     self.timeArray = [NSMutableArray array];
     self.nextIndex = -1;
-    self.timerList.delegate = self;
-    self.timerList.dataSource = self;
-    [self setExtraCellLineHidden:self.timerList];
+    [self buildUI];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self getTimerList];
+}
+
+- (void)buildUI {
+    self.navigationItem.rightBarButtonItems = @[
+        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addTimer)],
+        [[UIBarButtonItem alloc] initWithTitle:@"Type" style:UIBarButtonItemStylePlain target:self action:@selector(stopTimerType)],
+        [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(next)],
+    ];
+
+    self.timerList = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    self.timerList.delegate = self;
+    self.timerList.dataSource = self;
+    self.timerList.backgroundColor = [BLTheme backgroundColor];
+    self.timerList.separatorColor = [BLTheme separatorColor];
+    if (@available(iOS 15.0, *)) {
+        self.timerList.sectionHeaderTopPadding = 0;
+    }
+    [self setExtraCellLineHidden:self.timerList];
+    [self.view addSubview:self.timerList];
+
+    [self.timerList mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
+        make.left.equalTo(self.view).offset(16);
+        make.right.equalTo(self.view).offset(-16);
+        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-8);
+    }];
 }
 
 #pragma mark - Helpers
@@ -65,7 +92,6 @@ typedef NS_ENUM(NSInteger, BLTimerAct) {
     return @{@"params": @[params ?: @""], @"vals": @[@[@{@"val": @(val), @"idx": @1}]]};
 }
 
-/// 统一发送定时协议
 - (NSDictionary *)sendTimerAct:(BLTimerAct)act payload:(NSDictionary *)extra {
     NSMutableDictionary *stdData = [@{@"did": [self targetDid], @"act": @(act)} mutableCopy];
     if (extra) {
@@ -86,9 +112,8 @@ typedef NS_ENUM(NSInteger, BLTimerAct) {
 
 #pragma mark - Actions
 
-- (IBAction)addTimer:(id)sender {
+- (void)addTimer {
     UIAlertController *sheet = [UIAlertController alertControllerWithTitle:@"Selection Mode" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-
     NSArray *simpleTypes = @[
         @{@"title": @"Common Timer", @"type": @"comm", @"name": @"普通定时"},
         @{@"title": @"Delay Timer", @"type": @"delay", @"name": @"延时定时"},
@@ -99,7 +124,6 @@ typedef NS_ENUM(NSInteger, BLTimerAct) {
             [self presentSimpleTimerAlertWithType:item[@"type"] name:item[@"name"] title:item[@"title"]];
         }]];
     }
-
     [sheet addAction:[UIAlertAction actionWithTitle:@"Cycle Timer" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self presentRangeTimerAlertWithType:@"cycle" name:@"循环定时" title:@"Cycle Timer"];
     }]];
@@ -154,7 +178,7 @@ typedef NS_ENUM(NSInteger, BLTimerAct) {
     }];
 }
 
-- (IBAction)stopTimerType:(id)sender {
+- (void)stopTimerType {
     [self presentFields:@[
         @{@"placeholder": @"Commen"},
         @{@"placeholder": @"Delayen"},
@@ -173,7 +197,7 @@ typedef NS_ENUM(NSInteger, BLTimerAct) {
     [self queryTimeType];
 }
 
-- (IBAction)next:(id)sender {
+- (void)next {
     self.nextIndex++;
     [self gettimerDnaControl:5 index:self.nextIndex];
 }
@@ -189,6 +213,10 @@ typedef NS_ENUM(NSInteger, BLTimerAct) {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
+        cell.textLabel.font = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
+        cell.textLabel.textColor = [BLTheme titleColor];
+        cell.detailTextLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightRegular];
+        cell.detailTextLabel.textColor = [BLTheme subtitleColor];
     }
     NSDictionary *dic = self.timeArray[indexPath.row];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", dic[@"id"]];

@@ -12,6 +12,6 @@
 
 + (instancetype)viewController;
 
-@property (weak, nonatomic) IBOutlet UIWebView *loginWebView;
+- (void)jumpToOtherAppWithURL:(NSString *)urlString;
 
 @end

@@ -10,5 +10,6 @@
 
 @interface RMViewController : BaseViewController
 
++ (instancetype)viewController;
 
 @end

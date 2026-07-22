@@ -10,13 +10,15 @@
 #import "ACControlViewController.h"
 #import "TVControllTableViewController.h"
 #import "Tools.h"
+#import "BLTheme.h"
 
 #import <BLLetCore/BLLetCore.h>
 #import <BLLetIRCode/BLLetIRCode.h>
+#import <Masonry/Masonry.h>
 
 @interface RecoginzeIRCodeViewController ()
 
-@property (weak, nonatomic) IBOutlet UILabel *ResultTxt;
+@property (nonatomic, strong) UILabel *resultTxt;
 @property (nonatomic, strong) BLController *blcontroller;
 @property (nonatomic, strong) BLIRCode *blircode;
 @property (nonatomic, strong) NSMutableArray *tvList;
@@ -26,20 +28,116 @@
 @implementation RecoginzeIRCodeViewController
 
 + (instancetype)viewController {
-    return [Tools viewControllerFromMainStoryboard:self];
+    return [[self alloc] init];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [BLTheme backgroundColor];
     self.blcontroller = [BLLet sharedLet].controller;
     self.blircode = [BLIRCode sharedIrdaCode];
     self.tvList = [NSMutableArray arrayWithCapacity:0];
-    
+
     if (![BLCommonTools isEmpty:self.downloadinfo.name]) {
         self.title = self.downloadinfo.name;
     } else {
         self.title = self.downloadinfo.ircodeid;
     }
+
+    [self buildUI];
+}
+
+- (void)buildUI {
+    UIScrollView *scroll = [[UIScrollView alloc] init];
+    scroll.alwaysBounceVertical = YES;
+    [self.view addSubview:scroll];
+
+    UIView *content = [[UIView alloc] init];
+    [scroll addSubview:content];
+
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.text = self.title;
+    titleLabel.font = [UIFont systemFontOfSize:26 weight:UIFontWeightBold];
+    titleLabel.textColor = [BLTheme titleColor];
+    titleLabel.numberOfLines = 0;
+    [content addSubview:titleLabel];
+
+    UILabel *subtitleLabel = [[UILabel alloc] init];
+    subtitleLabel.text = @"Download script, inspect base info, then open control UI";
+    subtitleLabel.font = [UIFont systemFontOfSize:13 weight:UIFontWeightMedium];
+    subtitleLabel.textColor = [BLTheme subtitleColor];
+    subtitleLabel.numberOfLines = 0;
+    [content addSubview:subtitleLabel];
+
+    UIView *accent = [[UIView alloc] init];
+    accent.backgroundColor = [BLTheme primaryColor];
+    accent.layer.cornerRadius = 2;
+    [content addSubview:accent];
+
+    self.resultTxt = [[UILabel alloc] init];
+    self.resultTxt.font = [UIFont systemFontOfSize:14 weight:UIFontWeightRegular];
+    self.resultTxt.textColor = [BLTheme titleColor];
+    self.resultTxt.numberOfLines = 0;
+    self.resultTxt.text = @"—";
+    [content addSubview:self.resultTxt];
+
+    UIButton *downloadBtn = [BLTheme makePrimaryButtonWithTitle:@"Download IRCode script"
+                                                         target:self
+                                                         action:@selector(downLoadIRCodeScript:)];
+    UIButton *baseInfoBtn = [BLTheme makeSecondaryButtonWithTitle:@"Get IRCode Base Info"
+                                                           target:self
+                                                           action:@selector(getIRCodeBaseInfo:)];
+    UIButton *dataBtn = [BLTheme makePrimaryButtonWithTitle:@"Get IRCode Data"
+                                                    target:self
+                                                    action:@selector(getIRCodeData:)];
+
+    for (UIButton *btn in @[downloadBtn, baseInfoBtn, dataBtn]) {
+        [content addSubview:btn];
+        [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(44);
+        }];
+    }
+
+    [scroll mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
+        make.left.right.bottom.equalTo(self.view);
+    }];
+    [content mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(scroll);
+        make.width.equalTo(scroll);
+    }];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(content).offset(12);
+        make.left.equalTo(content).offset(20);
+        make.right.equalTo(content).offset(-20);
+    }];
+    [subtitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(titleLabel.mas_bottom).offset(4);
+        make.left.right.equalTo(titleLabel);
+    }];
+    [accent mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(subtitleLabel.mas_bottom).offset(12);
+        make.left.equalTo(titleLabel);
+        make.width.mas_equalTo(28);
+        make.height.mas_equalTo(3);
+    }];
+    [self.resultTxt mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(accent.mas_bottom).offset(16);
+        make.left.right.equalTo(titleLabel);
+    }];
+    [downloadBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.resultTxt.mas_bottom).offset(20);
+        make.left.right.equalTo(titleLabel);
+    }];
+    [baseInfoBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(downloadBtn.mas_bottom).offset(10);
+        make.left.right.equalTo(titleLabel);
+    }];
+    [dataBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(baseInfoBtn.mas_bottom).offset(10);
+        make.left.right.equalTo(titleLabel);
+        make.bottom.equalTo(content).offset(-24);
+    }];
 }
 
 - (IBAction)downLoadIRCodeScript:(id)sender {
@@ -51,18 +149,25 @@
 - (IBAction)getIRCodeBaseInfo:(id)sender {
     if (self.downloadinfo.devtype == BL_IRCODE_DEVICE_AC) {
         [self queryIRCodeScriptInfoSavePath:self.downloadinfo.savePath randkey:nil deviceType:BL_IRCODE_DEVICE_AC];
-    } else if (self.downloadinfo.devtype == BL_IRCODE_DEVICE_TV || self.downloadinfo.devtype == BL_IRCODE_DEVICE_TV_BOX){
+    } else if (self.downloadinfo.devtype == BL_IRCODE_DEVICE_TV || self.downloadinfo.devtype == BL_IRCODE_DEVICE_TV_BOX) {
         [self queryCloudCodeScriptInfoSavePath:self.downloadinfo.savePath randkey:nil deviceType:BL_IRCODE_DEVICE_TV];
     }
 }
 
 - (IBAction)getIRCodeData:(id)sender {
     if (self.downloadinfo.devtype == BL_IRCODE_DEVICE_AC) {
-        [self performSegueWithIdentifier:@"controllerView" sender:self.downloadinfo.savePath];
-    }else if (self.downloadinfo.devtype == BL_IRCODE_DEVICE_TV || self.downloadinfo.devtype == BL_IRCODE_DEVICE_TV_BOX){
-        [self performSegueWithIdentifier:@"TVcontrollerView" sender:self.downloadinfo.savePath];
+        ACControlViewController *vc = [ACControlViewController viewController];
+        vc.savePath = self.downloadinfo.savePath;
+        vc.device = self.device;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if (self.downloadinfo.devtype == BL_IRCODE_DEVICE_TV || self.downloadinfo.devtype == BL_IRCODE_DEVICE_TV_BOX) {
+        TVControllTableViewController *vc = [TVControllTableViewController viewController];
+        vc.savePath = self.downloadinfo.savePath;
+        vc.device = self.device;
+        vc.tvList = self.tvList;
+        vc.devtype = _downloadinfo.devtype;
+        [self.navigationController pushViewController:vc animated:YES];
     }
-    
 }
 
 - (void)downloadIRCodeScript:(NSString *_Nonnull)urlString savePath:(NSString *_Nonnull)path randkey:(NSString *_Nullable)randkey {
@@ -74,11 +179,11 @@
             });
             if ([result succeed]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.ResultTxt.text = result.savePath;
+                    self.resultTxt.text = result.savePath;
                 });
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.ResultTxt.text = [Tools messageForError:result.error msg:result.msg];
+                    self.resultTxt.text = [Tools messageForError:result.error msg:result.msg];
                 });
             }
         }];
@@ -90,7 +195,7 @@
     if (self.downloadinfo.devtype == BL_IRCODE_DEVICE_AC) {
         mtag = @"gz";
     }
-    
+
     [self showIndicatorOnWindow];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self.blircode downloadIRCodeScriptWithIRCodeid:ircodeid mtag:mtag savePath:path completionHandler:^(BLDownloadResult * _Nonnull result) {
@@ -99,93 +204,52 @@
             });
             if ([result succeed]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.ResultTxt.text = result.savePath;
+                    self.resultTxt.text = result.savePath;
                 });
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.ResultTxt.text = [Tools messageForError:result.error msg:result.msg];
+                    self.resultTxt.text = [Tools messageForError:result.error msg:result.msg];
                 });
             }
         }];
     });
-
 }
 
 - (void)queryIRCodeScriptInfoSavePath:(NSString *)savePath randkey:(NSString *)randkey deviceType:(NSInteger)devicetype {
-    
-//    BLController *blcontroller = [BLLet sharedLet].controller;
-//    NSString *path = [[blcontroller queryIRCodeScriptPath] stringByAppendingPathComponent:@"奥克斯_5935"];
-    
     BLIRCodeInfoResult *result = [self.blircode queryIRCodeInfomationWithScript:savePath deviceType:devicetype];
     if ([result succeed]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.ResultTxt.text = result.infomation;
+            self.resultTxt.text = result.infomation;
         });
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.ResultTxt.text = [Tools messageForError:result.error msg:result.msg];
+            self.resultTxt.text = [Tools messageForError:result.error msg:result.msg];
         });
     }
 }
 
 - (void)queryCloudCodeScriptInfoSavePath:(NSString *)savePath randkey:(NSString *)randkey deviceType:(NSInteger)devicetype {
-    NSDictionary *infomation =[NSJSONSerialization JSONObjectWithData:[[NSString stringWithContentsOfFile:savePath usedEncoding:nil error:nil] dataUsingEncoding:NSUTF8StringEncoding] options:NSUTF8StringEncoding error:nil] ;
+    NSDictionary *infomation = [NSJSONSerialization JSONObjectWithData:[[NSString stringWithContentsOfFile:savePath usedEncoding:nil error:nil] dataUsingEncoding:NSUTF8StringEncoding] options:NSUTF8StringEncoding error:nil];
     NSArray *infoList = [infomation objectForKey:@"functionList"];
     NSString *function = @"";
     for (NSDictionary *dic in infoList) {
-        function = [function stringByAppendingString:[NSString stringWithFormat:@"%@,",dic[@"function"]]];
+        function = [function stringByAppendingString:[NSString stringWithFormat:@"%@,", dic[@"function"]]];
     }
     [self.tvList removeAllObjects];
     NSArray *funarray = [self matchString:function toRegexString:@"\\w+"];
     [self.tvList addObjectsFromArray:funarray];
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.ResultTxt.text = function;
+        self.resultTxt.text = function;
     });
 }
 
-#pragma mark - Navigation
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    if ([segue.identifier isEqualToString:@"controllerView"]) {
-        UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[ACControlViewController class]]) {
-            ACControlViewController* opVC = (ACControlViewController *)target;
-            opVC.savePath = (NSString *)sender;
-            opVC.device = self.device;
-        }
-    }else if ([segue.identifier isEqualToString:@"TVcontrollerView"]){
-        UIViewController *target = segue.destinationViewController;
-        if ([target isKindOfClass:[TVControllTableViewController class]]) {
-            TVControllTableViewController* opVC = (TVControllTableViewController *)target;
-            opVC.savePath = (NSString *)sender;
-            opVC.device = self.device;
-            opVC.tvList = self.tvList;
-            opVC.devtype = _downloadinfo.devtype;
-        }
-    }
-}
-
-
-/**
- *  正则匹配返回符合要求的字符串 数组
- *
- *  @param string   需要匹配的字符串
- *  @param regexStr 正则表达式
- *
- *  @return 符合要求的字符串 数组 (按(),分级,正常0)
- */
-- (NSArray *)matchString:(NSString *)string toRegexString:(NSString *)regexStr
-{
+- (NSArray *)matchString:(NSString *)string toRegexString:(NSString *)regexStr {
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexStr options:NSRegularExpressionCaseInsensitive error:nil];
-    NSArray * matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
-    //match: 所有匹配到的字符,根据() 包含级
+    NSArray *matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
     NSMutableArray *array = [NSMutableArray array];
     for (NSTextCheckingResult *match in matches) {
         for (int i = 0; i < [match numberOfRanges]; i++) {
-            //以正则中的(),划分成不同的匹配部分
             NSString *component = [string substringWithRange:[match rangeAtIndex:i]];
             [array addObject:component];
         }

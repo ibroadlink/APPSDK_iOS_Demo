@@ -10,9 +10,6 @@
 
 @interface DataPassthoughViewController : BaseViewController
 
-@property (weak, nonatomic) IBOutlet UITextView *dataInputTextView;
-@property (weak, nonatomic) IBOutlet UITextView *dataShowTextView;
-
-- (IBAction)buttonClick:(UIButton *)sender;
++ (instancetype)viewController;
 
 @end

@@ -9,9 +9,8 @@
 #import "BaseViewController.h"
 #import <CoreLocation/CoreLocation.h>
 
-@interface ConfigureViewController : BaseViewController <UITextFieldDelegate,CLLocationManagerDelegate> 
-@property (weak, nonatomic) IBOutlet UITextField *ssidNameField;
-@property (weak, nonatomic) IBOutlet UITextField *passwordField;
-@property (weak, nonatomic) IBOutlet UITextView *resultText;
-- (IBAction)startConfigureButtonClick:(id)sender;
+@interface ConfigureViewController : BaseViewController <UITextFieldDelegate, CLLocationManagerDelegate>
+
++ (instancetype)viewController;
+
 @end

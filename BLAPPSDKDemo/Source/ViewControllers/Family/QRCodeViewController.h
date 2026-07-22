@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface QRCodeViewController : UIViewController
 
++ (instancetype)viewController;
 
 @end
 

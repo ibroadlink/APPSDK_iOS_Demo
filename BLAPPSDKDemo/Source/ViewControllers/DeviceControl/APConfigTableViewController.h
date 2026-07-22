@@ -10,4 +10,6 @@
 
 @interface APConfigTableViewController : BaseViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
++ (instancetype)viewController;
+
 @end
